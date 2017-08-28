@@ -12,23 +12,35 @@ function registerForm(userApi){
     link:function(scope,element,attr){
       var shell = scope.shell;
 
+      scope.passwordMatch = "canizal";
       scope.user = {
+        name: "Carlos",
+        lastname: "Canizal",
+        phone: "5535068102",
         username: "carlos@canizal.com",
         password: "canizal"
       }
       
-      scope.login = function(){
+      scope.register = function(){
         if(scope.registerForm.$valid){
           shell.showLoading();
-          userApi.login(scope.user).then(function(user){
+          userApi.register(scope.user).then(function(user){
             scope.setUser(user);
-            shell.showMessage(shell.labels.login.form.welcome);
+            shell.showMessage(shell.labels.register.form.welcome);
           },function(error){
             console.log(error);
-            shell.showError(shell.labels.login.form.unauth);
+            if(error.data.error){
+              // scope.response.register = error.data.error;
+              if(error.data.code == 202){
+                var error = scope.user.username+" "+shell.labels.register.form.errors.already;
+                shell.showError(error)
+              }
+            }else{
+              shell.showError(error);
+            }
           }).finally(shell.hideLoading);
         }else{
-          shell.showError(shell.labels.form.errors.fields);
+          shell.showError('Verifica los campos requeridos.');
         }
       };
     }

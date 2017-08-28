@@ -11,8 +11,9 @@
   function userApi($q, parse, parseheaders ,storage ) {
 
     var factory = {
-      login: login,
-      setCurrentUser: setCurrentUser
+      login           : login,
+      register        : register,
+      setCurrentUser  : setCurrentUser
     };
 
     return factory;
@@ -29,6 +30,25 @@
       },function(error){
         deferred.reject(error);
       });
+      return deferred.promise
+    }
+
+    function register(params) {
+      var deferred = $q.defer();
+      var User = parse.user();
+      User.post(params).then(function(user){
+        setSessionByToken(user.sessionToken);
+        return factory.getCurrentUser();
+      }).then(function(user){
+        var timestamp = Math.floor(Date.now() / 1000);
+        storage.set('user',user);
+        storage.set('timestamp',timestamp);
+        deferred.resolve(user);
+      },function(error){
+        console.log(error);
+        deferred.reject(error);
+      });
+
       return deferred.promise
     }
 

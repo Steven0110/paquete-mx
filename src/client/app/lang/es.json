@@ -23,12 +23,15 @@
       "name": "Nombre",
       "lastname": "Apellidos",
       "email": "Correo Electrónico",
-      "mobile": "Número Telefonico (10 digitos)",
+      "mobile": "Número Telefónico (10 digitos)",
       "password": "Contraseña",
       "confirm": "Confirmar Contraseña",
       "register": "Registrarme",
+      "welcome": "¡Bienvenido!",
       "errors":{
-        "mismatch": "Contraseña no coincide"
+        "mismatch": "Contraseña no coincide",
+        "mobile":"Número telefónico a 10 digitos",
+        "already": "ya se encuentra registrado."
       }
     }
   }

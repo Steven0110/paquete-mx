@@ -14,6 +14,12 @@
     shell.loading = false;
     shell.labels = false;
 
+    shell.regex = {
+      zip       : /^\d{5}$/,
+      mobile    : /^\d{10}$/,
+      decimal   : /^\d+(\.\d{1,2})?$/
+    }
+
 
     template.get('app/lang/es.json').then(function(labels){
       shell.labels = labels;
@@ -23,6 +29,10 @@
 
     shell.showLoading = function(){
       shell.loading = true;
+    };
+
+    shell.hideLoading = function(){
+      shell.loading = false;
     };
 
     shell.showMessage = function(message){
