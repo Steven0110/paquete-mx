@@ -22,10 +22,12 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
     script(src="bower_components/lodash/lodash.js")
     script(src="bower_components/restangular/dist/restangular.js")
     script(src="bower_components/angular-ui-router/release/angular-ui-router.js")
+    script(src="bower_components/angular-local-storage/dist/angular-local-storage.js")
     script(src="bower_components/angular-animate/angular-animate.js")
     script(src="bower_components/angular-aria/angular-aria.js")
     script(src="bower_components/angular-messages/angular-messages.js")
     script(src="bower_components/angular-material/angular-material.js")
+
 
 
     //- Core
@@ -37,19 +39,23 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
     //- Modules
     script(src="app/core/modules/storage.module.js")
 
+    //- Apis
+    script(src="app/core/api/user.api.js")
+
     //- Factories
     script(src="app/core/factories/template/template.factory.js")
+    script(src="app/core/factories/parse/parse.factory.js")
 
     //-Services
-    script(src="app/core/services/storage/storage.service.js")
+    script(src="app/core/factories/parse/parse.factory.js")
+    script(src="app/core/services/storage.service.js")
+    script(src="common/js/development.headers.js")
 
     //- Controllers
     script(src="app/shell/shell.controller.js")
     script(src="app/home/home.controller.js")
     script(src="app/login/login.controller.js")
     script(src="app/forgot/forgot.controller.js")
-
-    //- Apis
 
     //- Directives
     script(src="app/directives/auth/login/login.directive.js")

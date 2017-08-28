@@ -2,12 +2,12 @@ angular
 .module('app')
 .config(config);
 
-config.$inject = ['$locationProvider', '$urlRouterProvider','$stateProvider'];
+config.$inject = ['$locationProvider', '$urlRouterProvider','$stateProvider','localStorageServiceProvider'];
 
-function config($locationProvider,$urlRouterProvider, $stateProvider) {
+function config($locationProvider,$urlRouterProvider, $stateProvider,localStorageServiceProvider) {
 
   // $locationProvider.html5Mode(true);
-  // localStorageServiceProvider.setPrefix('kiwi_residential');
+  localStorageServiceProvider.setPrefix('general_login');
   
   $stateProvider
     .state('home',{
