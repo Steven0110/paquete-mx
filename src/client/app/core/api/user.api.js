@@ -13,7 +13,8 @@
     var factory = {
       login           : login,
       register        : register,
-      setCurrentUser  : setCurrentUser
+      setCurrentUser  : setCurrentUser,
+      getCurrentUser  : getCurrentUser
     };
 
     return factory;
@@ -50,6 +51,10 @@
       });
 
       return deferred.promise
+    }
+
+    function getCurrentUser(){
+      return parse.current().one().get();
     }
 
     function setCurrentUser(user){

@@ -60,5 +60,12 @@
           .hideDelay(3000)
       );
     }
+
+    $scope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
+      if(toState.data && toState.data.access && !userApi.currentUser()){
+        event.preventDefault();
+        $state.go('login');
+      }
+    });
   };
 })();

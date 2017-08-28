@@ -24,13 +24,34 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,localStorag
       controllerAs: 'login'
 
     })
+    .state('logout',{
+      url:'/logout',
+      templateUrl : 'app/logout/logout.template.html',
+      controller: 'Logout',
+      controllerAs: 'logout'
+
+    })
     .state('forgot',{
       url:'/forgot-password',
       templateUrl : 'app/forgot/forgot.template.html',
       controller: 'Forgot',
       controllerAs: 'forgot'
-
     })
+    .state('dashboard',{
+      url:'/dashboard',
+      templateUrl: 'app/dashboard/dashboard.template.html',
+      data:{
+        access: true,
+        dashboard: true
+      }
+    })
+    .state('dashboard.start',{
+      url:'/start',
+      templateUrl: 'app/dashboard/start/start.template.html',
+      controller: 'Start',
+      controllerAs: 'start'
+    })
+    
       
   $urlRouterProvider.otherwise('/');
 }
