@@ -24,6 +24,13 @@ function config($locationProvider,$urlRouterProvider, $stateProvider) {
       controllerAs: 'login'
 
     })
+    .state('forgot',{
+      url:'/forgot-password',
+      templateUrl : 'app/forgot/forgot.template.html',
+      controller: 'Forgot',
+      controllerAs: 'forgot'
+
+    })
       
   $urlRouterProvider.otherwise('/');
 }

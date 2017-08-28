@@ -1,0 +1,18 @@
+{
+  "form":{
+    "errors":{
+      "required": "Es requerido."
+    }
+  },
+  "login":{
+    "form":{
+      "email": "Correo Electrónico",
+      "password": "Contraseña",
+      "login": "Iniciar Sesión",
+      "forgot": "¿Olvidaste tu Contraseña?",
+      "errors":{
+
+      }
+    }
+  }
+}

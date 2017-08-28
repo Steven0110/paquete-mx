@@ -34,10 +34,24 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
     script(src="app/core/core.module.js")
     script(src="app/config.js")
 
+    //- Modules
+    script(src="app/core/modules/storage.module.js")
+
+    //- Factories
+    script(src="app/core/factories/template/template.factory.js")
+
+    //-Services
+    script(src="app/core/services/storage/storage.service.js")
+
     //- Controllers
     script(src="app/shell/shell.controller.js")
     script(src="app/home/home.controller.js")
     script(src="app/login/login.controller.js")
+    script(src="app/forgot/forgot.controller.js")
 
     //- Apis
+
+    //- Directives
+    script(src="app/directives/auth/login/login.directive.js")
+
     
