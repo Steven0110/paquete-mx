@@ -26,7 +26,10 @@
       "mobile": "Número Telefonico (10 digitos)",
       "password": "Contraseña",
       "confirm": "Confirmar Contraseña",
-      "register": "Registrarme"
+      "register": "Registrarme",
+      "errors":{
+        "mismatch": "Contraseña no coincide"
+      }
     }
   }
 }
