@@ -15,6 +15,7 @@ function config($locationProvider,$urlRouterProvider, $stateProvider) {
       templateUrl : 'app/home/home.template.html',
       controller: 'Home',
       controllerAs: 'home'
+
     })
       
   $urlRouterProvider.otherwise('/');
