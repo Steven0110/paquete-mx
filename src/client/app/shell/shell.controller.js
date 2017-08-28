@@ -5,10 +5,10 @@
     .module('app.core')
     .controller('Shell',Shell);
 
-  Shell.$inject = ['$scope','template','$mdToast'];
+  Shell.$inject = ['$scope','template','$mdToast','userApi'];
 
 
-  function Shell($scope, template, $mdToast){
+  function Shell($scope, template, $mdToast, userApi){
     // jshint validthis: true 
     var shell = this;
     shell.loading = false;
@@ -36,6 +36,11 @@
         message = "Hubo un error, recarga la página";
       showToast(message);
     }
+
+    shell.setCurrentUser = function(user){
+      userApi.setCurrentUser(user);
+      shell.currentUser = user;
+    };
 
     function showToast(message){
       $mdToast.show(

@@ -11,7 +11,8 @@
   function userApi($q, parse, parseheaders ,storage ) {
 
     var factory = {
-      login: login
+      login: login,
+      setCurrentUser: setCurrentUser
     };
 
     return factory;
@@ -29,6 +30,14 @@
         deferred.reject(error);
       });
       return deferred.promise
+    }
+
+    function setCurrentUser(user){
+      return storage.set('user', user);
+    }
+
+    function setSessionByToken(token){
+      parseheaders.restKeys['X-Parse-Session-Token'] = token;
     }
   }
 })();

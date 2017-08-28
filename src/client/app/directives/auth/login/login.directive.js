@@ -22,9 +22,10 @@ function loginForm(userApi){
           shell.showLoading();
           userApi.login(scope.user).then(function(user){
             scope.setUser(user);
-            shell.setMessage('¡Bienvenido!');
-          },function(error){            
-            shell.showError('Verifica que los datos sean correctos.');
+            shell.showMessage(shell.labels.login.form.welcome);
+          },function(error){
+            console.log(error);
+            shell.showError(shell.labels.login.form.unauth);
           }).finally(shell.hideLoading);
         }else{
           shell.showError('Verifica los campos requeridos.');

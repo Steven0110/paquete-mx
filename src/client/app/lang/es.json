@@ -9,7 +9,9 @@
       "email": "Correo Electrónico",
       "password": "Contraseña",
       "login": "Iniciar Sesión",
+      "unauth": "Correo Electrónico y/o Contraseña incorrectos",
       "forgot": "¿Olvidaste tu Contraseña?",
+      "welcome": "¡Bienvenido!",
       "errors":{
 
       }
