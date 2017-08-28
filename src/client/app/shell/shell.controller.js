@@ -5,10 +5,10 @@
     .module('app.core')
     .controller('Shell',Shell);
 
-  Shell.$inject = ['$scope','template','$mdToast','userApi'];
+  Shell.$inject = ['$scope','$state','template','$mdToast','userApi'];
 
 
-  function Shell($scope, template, $mdToast, userApi){
+  function Shell($scope, $state,template, $mdToast, userApi){
     // jshint validthis: true 
     var shell = this;
     shell.loading = false;
@@ -52,6 +52,12 @@
       shell.currentUser = user;
     };
 
+    shell.logout = function(){
+      userApi.logout();
+      shell.currentUser = null;
+      $state.go('home');
+    };
+
     function showToast(message){
       $mdToast.show(
         $mdToast.simple()
@@ -61,11 +67,5 @@
       );
     }
 
-    $scope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
-      if(toState.data && toState.data.access && !userApi.currentUser()){
-        event.preventDefault();
-        $state.go('login');
-      }
-    });
   };
 })();

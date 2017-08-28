@@ -15,7 +15,7 @@
 
     $scope.setUser = function(user){
       shell.setCurrentUser(user);
-      $state.go('dashboard.profile');
+      $state.go('dashboard.start');
     };
   };
 })();

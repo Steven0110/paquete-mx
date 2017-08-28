@@ -13,6 +13,8 @@
     var factory = {
       login           : login,
       register        : register,
+      logout          : logout,
+      isAuth          : isAuth,
       setCurrentUser  : setCurrentUser,
       getCurrentUser  : getCurrentUser
     };
@@ -34,6 +36,10 @@
       return deferred.promise
     }
 
+    function isAuth() {
+      return storage.get('user');
+    }
+
     function register(params) {
       var deferred = $q.defer();
       var User = parse.user();
@@ -51,6 +57,10 @@
       });
 
       return deferred.promise
+    }
+
+    function logout(){
+      storage.remove('user');
     }
 
     function getCurrentUser(){
