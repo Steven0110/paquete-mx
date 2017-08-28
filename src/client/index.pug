@@ -1,0 +1,45 @@
+doctype html
+html(data-ng-app="app", data-ng-controller="Shell as shell")
+  head
+    base(href="/")
+    title
+      |General Login
+    //- link(rel="shortcut icon" type="image/png" href="common/images/favicon.png")
+    meta(name="viewport", content="width=device-width,initial-scale=1")
+    meta(charset="utf-8")
+    //- styles
+    link(rel="stylesheet" href="bower_components/angular-material/angular-material.css")
+    link(rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css")
+    link(rel="stylesheet" href="bower_components/flag-icon-css/css/flag-icon.css")
+    link(rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css")
+    link(rel="stylesheet" href="common/styles/main.css")
+    link(rel="stylesheet" href="common/styles/media-query.css")
+
+  body
+    ui-view
+
+    //- Libraries
+    script(src="bower_components/angular/angular.js")
+    script(src="bower_components/lodash/lodash.js")
+    script(src="bower_components/restangular/dist/restangular.js")
+    script(src="bower_components/angular-ui-router/release/angular-ui-router.js")
+    script(src="bower_components/angular-animate/angular-animate.js")
+    script(src="bower_components/angular-aria/angular-aria.js")
+    script(src="bower_components/angular-messages/angular-messages.js")
+    script(src="bower_components/angular-material/angular-material.js")
+
+
+    //- Core
+    script(src="app/app.module.js")
+    script(src="app/initialize.js")
+    script(src="app/core/core.module.js")
+    script(src="app/config.js")
+
+    //- Controllers
+    script(src="app/shell/shell.controller.js")
+    script(src="app/home/home.controller.js")
+
+    //- Apis
+    script(src="app/core/ups/ups.api.js")
+    script(src="app/core/fedex/fedex.api.js")
+    

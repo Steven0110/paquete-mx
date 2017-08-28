@@ -1,0 +1,27 @@
+{
+  "name": "general-login",
+  "version": "1.0.0",
+  "homepage": "general-login",
+  "authors": [
+    "Carlos Canizal <carlos@canizal.com>"
+  ],
+  "description": "General Login",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [],
+  "license": "MIT",
+  "dependencies": {
+    "angular": "1.5.5",
+    "angular-ui-router": "^1.0.5",
+    "angular-messages": "1.5.5",
+    "angular-material": "1.1.0",
+    "install": "^1.0.4",
+    "ngAnimate": "*",
+    "angular-animate": "1.5.5",
+    "angular-aria": "1.5.5",
+    "font-awesome": "^4.7.0",
+    "bootstrap": "^3.3.7",
+    "restangular": "^1.6.1"
+  }
+}
