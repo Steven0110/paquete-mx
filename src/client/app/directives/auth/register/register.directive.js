@@ -1,13 +1,13 @@
 angular
   .module('app.core')
-  .directive('loginForm',loginForm);
+  .directive('registerForm',registerForm);
 
-loginForm.$inject = ['userApi'];
+registerForm.$inject = ['userApi'];
 
-function loginForm(userApi){
+function registerForm(userApi){
   return{
     restrict: 'E',
-    templateUrl: 'app/directives/auth/login/login.form.html',
+    templateUrl: 'app/directives/auth/register/register.form.html',
     scope: true,
     link:function(scope,element,attr){
       var shell = scope.shell;
@@ -18,7 +18,7 @@ function loginForm(userApi){
       }
       
       scope.login = function(){
-        if(scope.loginForm.$valid){
+        if(scope.registerForm.$valid){
           shell.showLoading();
           userApi.login(scope.user).then(function(user){
             scope.setUser(user);

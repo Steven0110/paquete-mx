@@ -1,0 +1,44 @@
+form(name="registerForm", novalidate, data-ng-submit="register()")
+  md-input-container.md-block
+    label(for="name", data-ng-bind="shell.labels.register.form.name")
+    input(name="name", data-ng-model="newUser.name", required="")
+    div(ng-messages="registerForm.name.$error")
+      div(ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+  md-input-container.md-block
+    label(for="lastname", data-ng-bind="shell.labels.register.form.lastname")
+    input(name="lastname", data-ng-model="newUser.lastname", required="")
+    div(ng-messages="registerForm.lastname.$error")
+      div(ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+  md-input-container.md-block
+    label(for="username", data-ng-bind="shell.labels.register.form.email")
+    input(name="username", data-ng-model="newUser.username", required="")
+    div(ng-messages="registerForm.username.$error")
+      div(ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+  md-input-container.md-block
+    label(for="phone", data-ng-bind="shell.labels.register.form.mobile")
+    input(name="phone", data-ng-model="newUser.phone", required="")
+    div(ng-messages="registerForm.phone.$error")
+      div(ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+  md-input-container.md-block
+    label(for="password", data-ng-bind="shell.labels.register.form.password")
+    input(name="password",type="password", data-ng-model="newUser.password", required="",password-match="passwordMatch")
+    div(ng-messages="registerForm.password.$error")
+      div(ng-message="match", data-ng-bind="shell.labels.passwordInvalid")
+      div(ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+  md-input-container.md-block
+    label(for="password", data-ng-bind="shell.labels.register.form.confirm")
+    input(name="confirmPassword",type="password", required="",data-ng-model="passwordMatch")
+    div(ng-messages="registerForm.confirmPassword.$error")
+      div(ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+  //- .privacy
+    span(data-ng-bind="shell.labels.privacyParagraph1")
+    span.accent(data-ng-bind="shell.labels.readIt")
+    span(data-ng-bind="shell.labels.and")
+    span.accent(data-ng-bind="shell.labels.acceptIt")
+    span(data-ng-bind="shell.labels.the")
+    a(data-ui-sref="terms", data-ng-bind="shell.labels.termsAndConditions")
+    span(data-ng-bind="shell.labels.as")
+    a(data-ui-sref="privacy",data-ng-bind="shell.labels.privacyTerms")
+    |.
+  .align-center.margin-bottom
+    md-button.md-raised.md-primary(type="submit",data-ng-bind="shell.labels.register.form.register",aria-label="shell.labels.register.form.register")

@@ -1,7 +1,8 @@
 {
   "form":{
     "errors":{
-      "required": "Es requerido."
+      "required": "Es requerido.",
+      "fields": "Verifica los campos requeridos."
     }
   },
   "login":{
@@ -9,12 +10,23 @@
       "email": "Correo Electrónico",
       "password": "Contraseña",
       "login": "Iniciar Sesión",
-      "unauth": "Correo Electrónico y/o Contraseña incorrectos",
+      "unauth": "Correo Electrónico y/o Contraseña incorrectos.",
       "forgot": "¿Olvidaste tu Contraseña?",
       "welcome": "¡Bienvenido!",
       "errors":{
 
       }
+    }
+  },
+  "register":{
+    "form":{
+      "name": "Nombre",
+      "lastname": "Apellidos",
+      "email": "Correo Electrónico",
+      "mobile": "Número Telefonico (10 digitos)",
+      "password": "Contraseña",
+      "confirm": "Confirmar Contraseña",
+      "register": "Registrarme"
     }
   }
 }
