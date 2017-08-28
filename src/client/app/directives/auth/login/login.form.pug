@@ -6,6 +6,7 @@ md-content(layout-padding)
         input(name="username", type="email", data-ng-model="user.username", required="", autofocus)
         div(ng-messages="loginForm.username.$error")
           div(ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+          div(ng-message="email", data-ng-bind="shell.labels.login.form.errors.email")
       md-input-container.md-block
         label(for="password", data-ng-bind="shell.labels.login.form.password")
         input(name="password", type="password", data-ng-model="user.password", required="")

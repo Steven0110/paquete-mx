@@ -12,9 +12,10 @@ md-content(layout-padding)
         div(ng-message="required", data-ng-bind="shell.labels.form.errors.required")
     md-input-container.md-block
       label(for="username", data-ng-bind="shell.labels.register.form.email")
-      input(name="username", data-ng-model="user.username", required="")
+      input(name="username", type="email", data-ng-model="user.username", required="")
       div(ng-messages="registerForm.username.$error")
         div(ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+        div(ng-message="email", data-ng-bind="shell.labels.register.form.errors.email")
     md-input-container.md-block
       label(for="phone", data-ng-bind="shell.labels.register.form.mobile")
       input(name="phone", data-ng-model="user.phone", data-ng-pattern="shell.regex.mobile",required)

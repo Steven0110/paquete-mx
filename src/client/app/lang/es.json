@@ -14,7 +14,7 @@
       "forgot": "¿Olvidaste tu Contraseña?",
       "welcome": "¡Bienvenido!",
       "errors":{
-
+        "email": "Correo Electrónico invalido"
       }
     }
   },
@@ -30,6 +30,7 @@
       "welcome": "¡Bienvenido!",
       "errors":{
         "mismatch": "Contraseña no coincide",
+        "email": "Correo Electrónico invalido",
         "mobile":"Número telefónico a 10 digitos",
         "already": "ya se encuentra registrado."
       }
