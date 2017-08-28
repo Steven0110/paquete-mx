@@ -17,6 +17,13 @@ function config($locationProvider,$urlRouterProvider, $stateProvider) {
       controllerAs: 'home'
 
     })
+    .state('login',{
+      url:'/login',
+      templateUrl : 'app/login/login.template.html',
+      controller: 'Login',
+      controllerAs: 'login'
+
+    })
       
   $urlRouterProvider.otherwise('/');
 }
