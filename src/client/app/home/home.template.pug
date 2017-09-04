@@ -21,68 +21,70 @@
                     |Entre mas envias mas descuentos obtienes.
         .col-xs-12.col-md-5
           .align-center.margin-top-2
-          div
-            form(name="registerForm", novalidate, data-ng-submit="register.send()")
-              div(layout-xs-sm="row")
-                .col-xs-12.col-md-10.center-block
-                  .container-forms
-                    md-input-container.md-block
-                      label(for="name", data-ng-bind="register.labels.name")
-                      input.capitalize(name="name", data-ng-model="register.data.name", required, autofocus)
-                      div(ng-messages="registerForm.name.$error")
-                        div(ng-message="required")
-                          |Es requerido.
-                    md-input-container.md-block
-                      label(for="lastname", data-ng-bind="register.labels.lastname")
-                      input.capitalize(name="lastname", data-ng-model="register.data.lastname", required)
-                      div(ng-messages="registerForm.lastname.$error")
-                        div(ng-message="required")
-                          |Es requerido.
-                    md-input-container.md-block
-                      label(for="mobile", data-ng-bind="register.labels.mobile")
-                      input(name="mobile", data-ng-model="register.data.mobile", required,data-ng-pattern="mobilePattern")
-                      div(ng-messages="registerForm.mobile.$error")
-                        div(ng-message="required")
-                          |Es requerido.
-                        div(ng-message="pattern")
-                          |Número Móvil requerido a 10 dígitos.
-                    md-input-container.md-block
-                      label(for="username", data-ng-bind="register.labels.email")
-                      input(name="username",type="email", data-ng-model="register.data.username", required)
-                      div(ng-messages="registerForm.username.$error")
-                        div(ng-message="required")
-                          |Es requerido.
-                    md-input-container.md-block
-                      label(for="password", data-ng-bind="register.labels.password")
-                      input(name="password", type="password" data-ng-model="register.data.password", required, password-match="passwordMatch")
-                      div(ng-messages="registerForm.password.$error")
-                        div(ng-message="required")
-                          |Es requerido.
-                        div(ng-message="match")
-                          |Contraseña no coincide.
-                    md-input-container.md-block.no-margin-bottom
-                      label(for="confirmPassword", data-ng-bind="register.labels.passwordConfirm")
-                      input(name="confirmPassword", type="password", data-ng-model="passwordMatch", required)
-                      div(ng-messages="registerForm.confirmPassword.$error")
-                        div(ng-message="required")
-                          |Es requerido.
-                    .align-center
-                      md-checkbox.custom(ng-model="register.terms" aria-label="Entiendo y acepto los términos y condiciones")
-                      span.medium-text
-                        |Entiendo y acepto los&nbsp;
-                      a.medium-text(href="#")
-                        |términos y condiciones
-                      span.medium-text
-                        |,&nbsp;
-                      span.medium-text
-                        |asi como las&nbsp;
-                      a.medium-text
-                        |politicas de privacidad.
-                    .align-center
-                      md-button.btn-themed(type="submit",data-ng-bind="register.labels.register",aria-label="shell.labels.login")
+            div
+              form(name="registerForm", novalidate, data-ng-submit="register.send()")
+                div(layout-xs-sm="row")
+                  .col-xs-12.col-md-10.center-block
+                    .container-forms
+                      md-input-container.md-block
+                        label(for="name", data-ng-bind="register.labels.name")
+                        input.capitalize(name="name", data-ng-model="register.data.name", required, autofocus)
+                        div(ng-messages="registerForm.name.$error")
+                          div(ng-message="required")
+                            |Es requerido.
+                      md-input-container.md-block
+                        label(for="lastname", data-ng-bind="register.labels.lastname")
+                        input.capitalize(name="lastname", data-ng-model="register.data.lastname", required)
+                        div(ng-messages="registerForm.lastname.$error")
+                          div(ng-message="required")
+                            |Es requerido.
+                      md-input-container.md-block
+                        label(for="mobile", data-ng-bind="register.labels.mobile")
+                        input(name="mobile", data-ng-model="register.data.mobile", required,data-ng-pattern="mobilePattern")
+                        div(ng-messages="registerForm.mobile.$error")
+                          div(ng-message="required")
+                            |Es requerido.
+                          div(ng-message="pattern")
+                            |Número Móvil requerido a 10 dígitos.
+                      md-input-container.md-block
+                        label(for="username", data-ng-bind="register.labels.email")
+                        input(name="username",type="email", data-ng-model="register.data.username", required)
+                        div(ng-messages="registerForm.username.$error")
+                          div(ng-message="required")
+                            |Es requerido.
+                      md-input-container.md-block
+                        label(for="password", data-ng-bind="register.labels.password")
+                        input(name="password", type="password" data-ng-model="register.data.password", required, password-match="passwordMatch")
+                        div(ng-messages="registerForm.password.$error")
+                          div(ng-message="required")
+                            |Es requerido.
+                          div(ng-message="match")
+                            |Contraseña no coincide.
+                      md-input-container.md-block.no-margin-bottom
+                        label(for="confirmPassword", data-ng-bind="register.labels.passwordConfirm")
+                        input(name="confirmPassword", type="password", data-ng-model="passwordMatch", required)
+                        div(ng-messages="registerForm.confirmPassword.$error")
+                          div(ng-message="required")
+                            |Es requerido.
+                      .align-center
+                        md-checkbox.custom(ng-model="register.terms" aria-label="Entiendo y acepto los términos y condiciones")
+                        span.medium-text
+                          |Entiendo y acepto los&nbsp;
+                        a.medium-text(href="#")
+                          |términos y condiciones
+                        span.medium-text
+                          |,&nbsp;
+                        span.medium-text
+                          |asi como las&nbsp;
+                        a.medium-text
+                          |politicas de privacidad.
+                      .align-center
+                        md-button.btn-themed(type="submit",data-ng-bind="register.labels.register",aria-label="shell.labels.login")
 #float-section.background-container
+  #menu
   .section-container.blue
     .section-container.orange
+      |Hola
     .section-container.yellow
   .section-container.yellow
     |Hey

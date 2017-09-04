@@ -15,6 +15,7 @@
 
     var viewport = $('.image-space').height();
     var body = $('body').height();
+    var menu = $('#menu').height();
 
     var floatSection = $('#float-section').offset().top;
 
@@ -27,10 +28,24 @@
         if(scroll >= difference){
           var distance = scroll-difference;
           $('#float-section').css({top:-(distance)});
+          $('#menu').css({'position':'absolute',top:-(menu)});
           $('#float-section').height($('#float-section').height()-distance);
-          console.log($('#float-section').height());
+          var menuTop = $('#menu').offset().top;
+
+          if(menuTop-scroll <= 0){
+            $('#menu').css({position:'fixed',top:0});
+          }else{
+            $('#menu').css({'position':'absolute',top:-(menu)});
+          }
+          
         }
       }
+
+      if(scroll <= 0){
+        $('#menu').css({'position':'fixed', top:"auto"});
+      }
+
+
     });
 
 
