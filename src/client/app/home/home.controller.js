@@ -7,45 +7,44 @@
 
   Home.$inject = ['$scope','$q'];
 
-
   function Home($scope, $q){
     // jshint validthis: true 
     var home = this;
     var shell = $scope.shell;
-
-    var viewport = $('.image-space').height();
-    var body = $('body').height();
-    var menu = $('#menu').height();
-
+    var menu = $('#menu').innerHeight();
+    // alert($('.image-space').height());
+    // $('.image-space').height(600);
+    // var viewport = $('.image-space').height();
+    // var body = $('body').height();
     var floatSection = $('#float-section').offset().top;
 
-    $(window).scroll(function (event) {
-      var viewport = $('.image-space').height();
-      var body = $('body').height();
-      var difference = viewport-body;
-      if(difference > 0){
-        var scroll = $(window).scrollTop();
-        if(scroll >= difference){
-          var distance = scroll-difference;
-          $('#float-section').css({top:-(distance)});
-          $('#menu').css({'position':'absolute',top:-(menu)});
-          $('#float-section').height($('#float-section').height()-distance);
-          var menuTop = $('#menu').offset().top;
 
-          if(menuTop-scroll <= 0){
-            $('#menu').css({position:'fixed',top:0});
-          }else{
-            $('#menu').css({'position':'absolute',top:-(menu)});
-          }
-          
+    $(window).scroll(function (event) {
+      var viewport = $('.image-space').innerHeight();
+      var body = $('body').innerHeight();
+      var difference = viewport-body;
+
+      var scroll = $(window).scrollTop();
+      var distance =  difference > 0 ?scroll-difference:scroll+difference;
+
+      if(scroll >= difference){
+        $('#float-section').css({top:-(distance)});
+        $('#menu').css({'position':'absolute',top:-(menu)});
+        $('#float-section').innerHeight($('#float-section').innerHeight()-distance);
+        var menuTop = $('#menu').offset().top;
+
+        if(menuTop-scroll <= 0){
+          $('#menu').css({position:'fixed',top:0});
+        }else{
+          $('#menu').css({'position':'absolute',top:-(menu)});
+        }
+        
+      }else{
+        if(scroll <= body ){
+          $('#menu').css({'position':'fixed', top:"auto"});
         }
       }
-
-      if(scroll <= 0){
-        $('#menu').css({'position':'fixed', top:"auto"});
-      }
-
-
+    
     });
 
 

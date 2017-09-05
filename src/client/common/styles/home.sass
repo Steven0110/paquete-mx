@@ -1,9 +1,13 @@
+@import "colors";
+$menuHeight : 80px;
+
 .image-space
   width: 100%
-  // height: 100vh
+  min-height: 100vh
   background-color: #FFF
   position: relative
   z-index: 1
+  padding-bottom: $menuHeight
 .background-container
   background-color: red
   position: relative
@@ -43,8 +47,46 @@
 #menu
   width: 100%
   background-color: red;
-  height: 80px;
+  height: $menuHeight;
   position: fixed
   bottom: 0
   z-index: 3
-  transition: bottom 0.5s
+
+md-input-container
+  margin-bottom: 0
+
+.container-forms
+  // [class*="col-"]
+    // padding-right: 5px
+
+.button-box
+  background-color: #ededed
+  display: inline-block
+  padding: 1.5rem 2rem 0 2rem
+  border-radius: 5px
+  cursor: pointer
+  outline: none
+  position: relative
+  .icon-spot
+    position: absolute
+    top: -15px
+    left: 0
+    width: 100%
+    display: inline-block
+    text-align: center
+    color: $primary-color
+    i
+      border-radius: 50%
+      display: inline-block
+      background-color: #FFF
+      padding: 3px
+      border: solid 3px $primary-color
+      &.fa-envelope
+        font-size: 2.2rem
+        padding: 5px
+  &:hover
+    background-color: $primary-color
+    color: #FFF
+  &.active
+    background-color: $primary-color
+    color: #FFF

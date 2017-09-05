@@ -2,6 +2,10 @@ body
   margin: 0
   padding: 0
 
+
+.no-margin
+  margin: 0
+
 .align-center
   text-align: center
 
@@ -9,11 +13,43 @@ body
   height: 100%
   overflow: auto
 
+.margin-top-1
+  margin-top: 2rem
 .margin-top-2
   margin-top: 2rem
+.margin-top-3
+  margin-top: 3rem
+
+.margin-bottom-1
+  margin-bottom: 1rem
+
+.margin-bottom-2
+  margin-bottom: 2rem
+
+.margin-bottom-3
+  margin-bottom: 3rem
 
 .center-block
   float: none
   display: block
   margin-left: auto
   margin-right: auto
+
+[class*="col-"]
+  padding: 0
+
+.container-fluid
+  padding: 0
+  margin: 0
+
+.row
+  margin: 0 !important;
+
+.message
+  color: rgb(221,44,0)
+  font-size: 14px
+
+md-input-container.md-input-small
+  .md-errors-spacer
+    min-height: 10px
+    height: 10px
