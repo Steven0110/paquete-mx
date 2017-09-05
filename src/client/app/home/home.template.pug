@@ -61,7 +61,7 @@
                             .align-center
                               .button-box(data-ng-class="{'active': home.shipping.type == 'box'}", data-ng-click="home.shipping.type= 'box'")
                                 .icon-spot
-                                  i.fa.fa-dropbox.fa-2x
+                                  i.fa.fa-archive
                                 h4.align-center
                                   |Paquete
                           .col-xs-6
@@ -103,7 +103,16 @@
                       md-button.md-raised.md-primary(type="submit")
                         |Cotizar
 #float-section.background-container
-  #menu
+  #menu.clearfix
+    .menu-logo
+      img(data-ng-src="common/images/paquete-text.png")
+    .navs
+      nav
+        a(href="#")
+          |COTIZAR
+      nav.active
+        a(href="#")
+          |INICIO
   .section-container.blue
     .section-container.orange
       |Hola

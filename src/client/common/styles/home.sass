@@ -1,10 +1,11 @@
 @import "colors";
 $menuHeight : 80px;
+$menuNav : 77px;
 
 .image-space
   width: 100%
   min-height: 100vh
-  background-color: #FFF
+  background-color: #ededed
   position: relative
   z-index: 1
   padding-bottom: $menuHeight
@@ -43,14 +44,39 @@ $menuHeight : 80px;
   text-align: center
   img
     width: 30%
+    max-width: 200px
 
 #menu
   width: 100%
-  background-color: red;
-  height: $menuHeight;
+  background-color: #FFF;
+  box-sizing: border-box
+  height: $menuHeight
+  border-top: solid 3px $primary-color
+  /*validar padding que se agrego al texto*/
   position: fixed
   bottom: 0
   z-index: 3
+  .navs
+    float: right
+    padding-right: 100px
+    nav
+      height: $menuNav
+      float: right
+      color: #9D9DA0
+      padding: 0 20px
+      line-height: $menuNav
+      font-family: 'Roboto'
+      font-weight: bold
+      font-size: 14px
+      text-align: center
+      &.active
+        color: #FFF
+        background-color: $primary-color
+  .menu-logo
+    float: left
+    padding: 15px 0 15px 100px
+    img
+      height: 50px
 
 md-input-container
   margin-bottom: 0
@@ -81,7 +107,7 @@ md-input-container
       background-color: #FFF
       padding: 3px
       border: solid 3px $primary-color
-      &.fa-envelope
+      &.fa-envelope, &.fa-archive
         font-size: 2.2rem
         padding: 5px
   &:hover
