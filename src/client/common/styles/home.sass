@@ -14,23 +14,12 @@ $menuNav : 77px;
   position: relative
   z-index: 3
 
-.section-container
-  width: 100%
-  &.blue
-    background-color: blue
-  &.orange
-    height: 100vh
-    background-color: orange
-  &.yellow
-    height: 100vh
-    background-color: yellow
-
 .container-forms
   width: 100%
   padding: 20px
-  background-color: rgba(255,255,255,0.85)
+  background-color: rgba(255,255,255,0.60)
   border-radius: 10px
-  box-shadow: 10px 10px 49px 0px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 49px 0px rgba(0,0,0,0.85);
   margin-bottom: 50px
 
 .container-center
@@ -45,6 +34,15 @@ $menuNav : 77px;
   img
     width: 30%
     max-width: 200px
+
+.logo-color
+  width: 200px
+  height: 174px
+  background: url('../images/logo.png') no-repeat
+  background-size: cover
+  margin: 0 auto
+  &.active
+    background-position: 100% 0
 
 #menu
   width: 100%
@@ -64,7 +62,7 @@ $menuNav : 77px;
       float: right
       color: #9D9DA0
       padding: 0 20px
-      line-height: $menuNav
+      line-height: $menuHeight
       font-family: 'Roboto'
       font-weight: bold
       font-size: 14px
@@ -86,10 +84,11 @@ md-input-container
     // padding-right: 5px
 
 .button-box
-  background-color: #ededed
+  // background-color: #999
   display: inline-block
   padding: 1.5rem 2rem 0 2rem
   border-radius: 5px
+  border: solid 3px $primary-color
   cursor: pointer
   outline: none
   position: relative
@@ -116,3 +115,85 @@ md-input-container
   &.active
     background-color: $primary-color
     color: #FFF
+
+.opacity
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background-color: rgba(255,255,255,0.3);
+  z-index: 0
+.fullscreen-bg
+  position: fixed
+  top: 0
+  left: 0
+  overflow: hidden
+  width: 100%
+  height: 100%
+  // background-color: #c3c2c3
+  z-index: 0
+  video
+    display: block
+    position: relative
+    top: 0;
+    left: 0;
+    width: 100%
+    margin: 0 auto
+    z-index: 0
+
+.main-list
+  ul
+    list-style: none
+    i
+      position: relative
+      top: 10px
+      color: $primary-color
+      margin-right: 20px
+
+
+.big-text
+  padding: 100px 20px 50px 20px
+  text-align: center
+  font-family: 'Roboto'
+  font-size: 10rem
+  font-weight: 700
+  color: #FFF
+  // background-color: #666
+  background-color: $primary-color
+  transition: background-color 1s, color 1s
+  &.active
+    background-color: #ededed
+    color: $primary-color;
+  div
+    line-height: 1em
+
+.section-description
+  width: 70%
+  margin: 0 auto
+  overflow: auto
+  font-family: 'Roboto'
+  font-weight: 300
+  // color: #FFF
+  padding: 100px 0
+  h1
+    font-size: 5rem
+
+.more-info
+  cursor: pointer
+  text-align: right
+  font-size: 2.5rem
+  i
+    margin-right: 10px
+.section-image
+  text-align: center
+
+.section-container
+  width: 100%
+  background-color: #f2f2f2
+  &.left
+    background-color: #f2f2f2
+    color: rgba(0,0,0,0.7)
+  &.right
+    background-color: $primary-color
+    color: rgba(255,255,255,0.7)

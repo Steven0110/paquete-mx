@@ -1,24 +1,39 @@
-//- .background-image
 .image-space
+  .fullscreen-bg
+    video.fullscreen-bg__video(loop muted autoplay)
+      source(src="common/videos/9922925.mp4" type="video/mp4")
+    .opacity
   .container-center
     .container-fluid
       .row
         .col-xs-12.col-md-7
           .main-info
             .align-center
-              .main-logo
+              .logo-color
+              //- .main-logo
                 img(data-ng-src="common/images/paquete-mx.png")
               .main-text
-                h1
-                  |¡Obten los mejores precios en tus envios, de una manera rápida y fácil!
-            div
+                h1.blend.black
+                  |¡Las mejores opciones de envio!
+                  //- |¡Obten los mejores precios en tus envios, de una manera rápida y fácil!
+            .main-list
               ul
                 li
-                  h2
-                    |Cotiza tus envios en México y a todo el mundo.
+                  h4.blend.black
+                    i.fa.fa-globe.fa-2x
+                    |Cotiza tus envios a México y a todo el mundo.
                 li
-                  h2
+                  h4.blend.black
+                    i.fa.fa-handshake-o.fa-2x
                     |Entre mas envias mas descuentos obtienes.
+                li
+                  h4.blend.black
+                    i.fa.fa-truck.fa-2x
+                    |Nosotros programamos tu recolección.
+                li
+                  h4.blend.black
+                    i.fa.fa-percent.fa-2x
+                    |Descuentos de hasta el 50%.
         .col-xs-12.col-md-5
           .main-info
             form(name="home.shippingForm",data-ng-submit="home.send()", novalidate)
@@ -103,19 +118,143 @@
                       md-button.md-raised.md-primary(type="submit")
                         |Cotizar
 #float-section.background-container
-  #menu.clearfix
+  //- #menu.clearfix
     .menu-logo
       img(data-ng-src="common/images/paquete-text.png")
     .navs
+      nav
+        a(href="#")
+          |MI CUENTA
+      nav
+        a(href="#")
+          |¿COMÓ FUNCIONA?
+      nav
+        a(href="#")
+          |RASTREAR
       nav
         a(href="#")
           |COTIZAR
       nav.active
         a(href="#")
           |INICIO
-  .section-container.blue
-    .section-container.orange
-      |Hola
-    .section-container.yellow
-  .section-container.yellow
-    |Hey
+  .section-container
+    .section-container
+      .big-text(data-ng-class="{'active':home.active}")
+        .logo-color(data-ng-class="{'active':!home.active}")
+        div
+          |Las mejores
+        div
+          |opciones
+        div
+          |para tus envios.
+        div
+          h1
+            |Conoce todos los beneficios que tenemos para ti:
+  .section-container.section-1.left
+    .section-description
+      .container-fluid
+        .row
+          .col-xs-6
+            h1
+              |Obtén las mejores tarifas.
+            h2
+              |Obtén descuentos desde tu primer envío y cada vez tendrás mejores tarifas.
+            .more-info
+              i.fa.fa-plus-circle
+              |Más información
+          .col-xs-6
+            .section-image
+              img(data-ng-src="common/images/section-1.png")
+  .section-container.section-2.right
+    .section-description
+      .container-fluid
+        .row
+          .col-xs-6.pull-right
+            h1
+              |Más de 20 servicios a elegir.
+            h2
+              |Una opción a la medida de tus necesidades con las mejores paqueterías locales, nacionales e internacionales.
+            .more-info
+              i.fa.fa-plus-circle
+              |Más información
+          .col-xs-6.pull-right
+            .section-image
+              img(data-ng-src="common/images/section-2.png")
+  .section-container.section-3.left
+    .section-description
+      .container-fluid
+        .row
+          .col-xs-6
+            h1
+              |Diversas opciónes de pago para ti.
+            h2
+              |Tarjeta de Crédito, Débito, Depósitos en OXXO, Paypal. <br/>¡Tu eliges!
+            .more-info
+              i.fa.fa-plus-circle
+              |Más información
+          .col-xs-6
+            .section-image
+              img(data-ng-src="common/images/section-1.png")
+  .section-container.section-4.right
+    .section-description
+      .container-fluid
+        .row
+          .col-xs-6.pull-right
+            h1
+              |Te notificamos en tiempo real.
+            h2
+              |Conoceras en todo momento del status de tus envíos.
+            .more-info
+              i.fa.fa-plus-circle
+              |Más información
+          .col-xs-6.pull-right
+            .section-image
+              img(data-ng-src="common/images/section-4.png")
+  .section-container.section-5.left
+    .section-description
+      .container-fluid
+        .row
+          .col-xs-6
+            h1
+              |Pide tu recolección con un clic.
+            h2
+              |Solicita la recolección de tus paquetes desde nuestra plataforma. Sin Llamadas con un solo clic.
+            .more-info
+              i.fa.fa-plus-circle
+              |Más información
+          .col-xs-6
+            .section-image
+              img(data-ng-src="common/images/section-1.png")
+  .section-container.section-6.right
+    .section-description
+      .container-fluid
+        .row
+          .col-xs-6.pull-right
+            h1
+              |¿Eres desarrolador?
+            h2
+              |Con nuestra API es muy fácil integrar PAQUETE.MX a tu sistema.
+            .more-info
+              i.fa.fa-plus-circle
+              |Más información
+          .col-xs-6.pull-right
+            .section-image
+              img(data-ng-src="common/images/section-1.png")
+  .section-container.section-7.left
+    .section-description
+      .container-fluid
+        .row
+          .col-xs-6
+            h1
+              |¿Tienes un eCommerce?
+            h2
+              |Tú encárgate de tu negocio, nosotros nos encargamos de los envíos.
+            .more-info
+              i.fa.fa-plus-circle
+              |Más información
+          .col-xs-6
+            .section-image
+              img(data-ng-src="common/images/section-1.png")
+  .footer
+
+
