@@ -10,7 +10,6 @@ $menuNav : 77px;
   z-index: 1
   padding-bottom: $menuHeight
 .background-container
-  background-color: red
   position: relative
   z-index: 3
 
@@ -186,7 +185,21 @@ md-input-container
   i
     margin-right: 10px
 .section-image
+  position: relative
   text-align: center
+  opacity: 0
+  transition: right 0.5s ease-in-out,left 0.5s ease-in-out, opacity 0.5s ease-in-out
+  &.image-left
+    left: -50%
+    &.active
+      left: 0
+      opacity: 1
+  &.image-right
+    right: -50%
+    &.active
+      right: 0
+      opacity: 1
+
 
 .section-container
   width: 100%
@@ -196,4 +209,4 @@ md-input-container
     color: rgba(0,0,0,0.7)
   &.right
     background-color: $primary-color
-    color: rgba(255,255,255,0.7)
+    color: rgba(255,255,255,0.9)

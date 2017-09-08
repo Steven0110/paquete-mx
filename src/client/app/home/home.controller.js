@@ -11,8 +11,10 @@
     // jshint validthis: true 
     var home = this;
     var shell = $scope.shell;
+    var index = 1;
 
     home.active = false;
+    home.sections = [false,false,false,false,false,false,false];
 
     var menu = $('#menu').innerHeight();
     // alert($('.image-space').height());
@@ -38,8 +40,7 @@
         $('#float-section').css({top:-(distance)});
         $('#menu').css({'position':'absolute',top:-(menu)});
         $('#float-section').innerHeight($('#float-section').innerHeight()-distance);
-        // var menuTop = $('#menu').offset().top;
-        var menuTop =0;
+        var menuTop = $('#menu').offset().top;
 
         if(menuTop-scroll <= 0){
           $('#menu').css({position:'fixed',top:0});
@@ -59,8 +60,12 @@
 
       /* section animation */
       // console.log($('.section-1').position().top);
-      if( scroll+(distance-viewport) >= $('.section-3').position().top ){
-        console.log('triggered');
+      if(index <= home.sections.length){
+        var sectionDistance = scroll+(distance-viewport)+menu;
+        if( sectionDistance+200 >= $('.section-'+index).position().top ){
+          $('.image-'+index).addClass('active')
+          index++;
+        }
       }
     
     });
