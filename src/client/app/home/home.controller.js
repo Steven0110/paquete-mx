@@ -5,9 +5,9 @@
     .module('app.core')
     .controller('Home',Home);
 
-  Home.$inject = ['$scope','$q'];
+  Home.$inject = ['$scope','$q','rateApi'];
 
-  function Home($scope, $q){
+  function Home($scope, $q, rateApi){
     // jshint validthis: true 
     var home = this;
     var shell = $scope.shell;
@@ -15,12 +15,88 @@
 
     home.active = false;
     home.sections = [false,false,false,false,false,false,false];
+    home.rated = false;
+    home.searching = false;
+    home.services = [];
+
+    home.shipping ={
+      from:{
+        zip: "09770"
+      },
+      to:{
+        zip: "06050"
+      },
+      type: "box",
+      package:{
+        weight: "5",
+        width: "30",
+        length: "30",
+        height: "30"
+      }
+    }
 
     var menu = $('#menu').innerHeight();
-    // alert($('.image-space').height());
-    // $('.image-space').height(600);
-    // var viewport = $('.image-space').height();
-    // var body = $('body').height();
+
+    home.send = function(){
+      home.list = [];
+      if(home.shippingForm.$valid){
+        if(home.shipping.type == 'box' || home.shipping.type == 'documents'){
+          home.rated =  true;
+          home.searching =  true;
+          var viewport = $('.image-space').innerHeight();
+          var body = $('body').innerHeight();
+          var topContent = $('.image-space').innerHeight();
+          if(viewport <= body){
+            $('body,html').stop().animate({scrollTop:topContent/2},1000);
+          }else{
+            $('body,html').stop().animate({scrollTop:topContent/2},1000);
+          }
+          
+
+
+          var services = ["ups","fedex","redpack"];
+          var rate = {
+            "from": home.shipping.from,
+            "to":  home.shipping.to,
+            "packages":[home.shipping.package]
+          };
+          var promises = [];
+          angular.forEach(services,function(service){
+            var params = {
+              "type":service,
+              "rate": rate
+            };
+            promises.push(
+              rateApi.rate(service,params).then(function(response){
+                console.log(response);
+                if(response.services){
+                  home.services = home.services.concat(response.services);
+                }
+                var deferred = $q.defer();
+                deferred.resolve(response);
+                return deferred.promise;
+              },function(err){
+                console.log(err);
+                var deferred = $q.defer();
+                deferred.reject(err);
+                return deferred.promise;
+              })
+            );
+          });
+          $q.all(promises).then(function(result){
+          },function(err){
+            console.log(err);
+          }).finally(function(){
+            console.log(home.services);
+            home.searching = false;
+          });
+
+          
+        }
+      }
+    };
+
+
     var floatSection = $('#float-section').offset().top;
 
     function setHomeState(status){
@@ -69,7 +145,5 @@
       }
     
     });
-
-
   };
 })();

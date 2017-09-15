@@ -134,8 +134,48 @@
       nav.active
         a(href="#")
           |INICIO
-  .section-container
-    .section-container
+  #content.section-container
+    .rated-text(data-ng-class="{'active':home.active}", data-ng-show="home.rated")
+      .logo-color(data-ng-class="{'active':!home.active}")
+      .line.margin-top-1
+        |Estamos buscando 
+      .line
+        |las mejores opciones
+      .line
+        |para tus envios:
+      div(data-ng-show="home.searching")
+        div(data-ng-include="'app/templates/spinner.template.html'")
+      .table-response
+        .container-fluid
+          .table-td(data-ng-repeat="item in home.services")
+            .row
+              .col-xs-3.align-center
+                .item-logo(data-ng-class="{'vertical':item.service == 'ups'}")
+                  img(data-ng-src="common/images/{{item.service}}.png")
+                .item-name
+                  |{{item.name}}
+              .col-xs-3.align-center
+                .item-text-regular.blue
+                  |Tarifa Regular
+                .item-title.lined
+                  |{{item.total | currency}} MXN
+                .item-text-regular.blue
+                  |Nuestra tarifa
+                .item-amount
+                  |{{item.total | currency}} MXN
+              .col-xs-3.align-center
+                .item-text-regular
+                  |Días
+                .item-title
+                  |{{item.delivery}}
+                .item-text-regular
+                  |Entrega estimada
+                .item-amount
+                  |{{item.delivery}}
+              .col-xs-3.align-center
+                md-button.md-raised.md-primary
+                  |Seleccionar
+    div(data-ng-if="!home.rated")
       .big-text(data-ng-class="{'active':home.active}")
         .logo-color(data-ng-class="{'active':!home.active}")
         div
@@ -147,9 +187,6 @@
         div
           h1
             |Conoce todos los beneficios que tenemos para ti:
-  .section-container
-    h1
-      |Cotización
   .section-container.section-1.left
     .section-description
       .container-fluid

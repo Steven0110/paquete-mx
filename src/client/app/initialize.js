@@ -7,6 +7,16 @@ function run($rootScope, $transitions,$state, parseheaders, userApi, Restangular
   Restangular.setBaseUrl('https://parseapi.back4app.com/');
   Restangular.setDefaultHeaders(parseheaders.restKeys);
 
+//   Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+//     console.log(responseHandler);
+//       if(response.status === 400) {
+//           console.log('response');
+
+//           return false; // error handled
+//       }
+
+//     return true; // error not handled
+// });
 
   $transitions.onSuccess({}, function($transitions){
     var newToState = $transitions.$to();
