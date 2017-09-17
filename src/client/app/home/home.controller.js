@@ -14,7 +14,29 @@
     var index = 1;
 
     home.active = false;
-    home.sections = [false,false,false,false,false,false,false];
+    home.sections = [
+      {
+        open: false
+      },
+      {
+        open: false
+      },
+      {
+        open: false
+      },
+      {
+        open: false
+      },
+      {
+        open: false
+      },
+      {
+        open: false
+      },
+      {
+        open: false
+      }
+    ];
     home.rated = false;
     home.searching = false;
     home.services = [];
@@ -36,6 +58,14 @@
     }
 
     var menu = $('#menu').innerHeight();
+
+    home.openSection = function(index){
+      $('.benefits-'+index).slideDown(500);
+    }
+
+    home.closeSection = function(index){
+      $('.benefits-'+index).slideUp(500);
+    };
 
     home.send = function(){
       home.list = [];

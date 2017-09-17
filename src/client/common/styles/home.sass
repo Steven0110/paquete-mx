@@ -198,6 +198,9 @@ md-input-container
   cursor: pointer
   text-align: right
   font-size: 2.5rem
+  color: rgba(0,0,0,0.3);
+  &:hover
+    color: $primary-color
   i
     margin-right: 10px
 .section-image
@@ -261,3 +264,56 @@ md-input-container
       img
         width: auto
         height: 60px
+
+.more-info-section
+  // font-family: 'Roboto'
+  background: url("images/background.jpg")
+  overflow: auto
+  border-top: #c5c1c1 solid 1px
+  border-bottom: #c5c1c1 solid 1px
+  position: relative
+  padding: 50px 0
+  font-family: 'Roboto'
+  display: none
+  .description
+    width: 80%
+    margin: 0 auto
+  h1
+    color: rgba(0,0,0,0.8)
+    text-align: center
+    font-size: 5rem
+  .top-line
+    position: absolute
+    width: 100%
+    height: 1px
+    background-color: rgba(255,255,255,0.5);
+    left: 0
+    top: 0px
+  .bottom-line
+    position: absolute
+    width: 100%
+    height: 1px
+    background-color: rgba(255,255,255,0.5);
+    left: 0
+    bottom: 0px
+  .close-button
+    position: absolute
+    top: 30px
+    right: 30px
+    font-size: 6rem
+    color: rgba(0,0,0,0.3);
+    cursor: pointer
+    &:hover
+      color: $primary-color
+.benefits
+  text-align: center
+  padding: 30px 0
+  .benefits-image
+    img
+      height: 150px
+  .benefits-text
+    font-family: 'Roboto'
+    padding-top: 1rem
+    color: rgba(0,0,0,0.8)
+    font-weight: 700
+    font-size: 2rem
