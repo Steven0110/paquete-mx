@@ -1,8 +1,6 @@
 .select-box
   ul
-    li
-      |Hola Mundo
-    li(data-ng-repeat="item in options", data-ng-click="selectItem(item)")
+    li(data-ng-repeat="item in vm.options", data-ng-click="vm.selectItem(item)")
       span.main
         |{{item.CP}} - {{item.asentamiento}}
       span

@@ -6,41 +6,42 @@ selectCities.$inject = [];
 
 function selectCities(){
   return{
-    // require: 'ngModel',
+    require: 'ngModel',
     templateUrl: 'app/directives/select-cities/selectDirective.template.html',
     scope: {
-      cities : "=",
-      selected: "=",
-      search: "="
+      cities : "=cities",
+      selected: "=selected",
+      search: "=search"
     },
+    replace: true,
+    transclude: true,
     restrict: 'E',
-    link:function(scope,element,attrs,ctrl){ 
+    bindToController: true,
+    controllerAs: 'vm',
+    controller:function($scope){ 
+      var vm = this;
+      var search;
+      vm.options = [];
 
-      scope.options = [];
+      $scope.$watch('vm.search', function(oldValue, newValue){
+        if(vm.search && !vm.search.includes("-")){
+          delaySearch(vm.search);
+        }
+      });
 
-      scope.$watch('cities', function(){
-        scope.cities = scope.cities;
-      })
-
-      scope.$watch('search', function(){
-        validateInput(scope.search);
-      })
-
-      scope.selectItem = function(item){
-        scope.selected = item;
-      }
-
-      validateInput = function(search){
-        delaySearch(search);
+      vm.selectItem = function(item){
+        vm.selected = item;
+        vm.search = item.CP+" - "+item.asentamiento;
+        vm.options = [];
       }
 
       var delayTimer;
       function delaySearch(term) {
         if(term && term.length > 2){
-          var options = JSON.search(scope.cities, '//*[contains(asentamiento, "'+term+'") or contains(CP, "'+term+'")]');
-          scope.options = options;
+          var options = JSON.search(vm.cities, '//*[contains(asentamiento, "'+term+'") or contains(CP, "'+term+'")]');
+          vm.options = options;
         }else{
-          scope.options = [];
+          vm.options = [];
         }
       }
     }

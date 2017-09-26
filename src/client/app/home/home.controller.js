@@ -77,17 +77,19 @@
 
     home.shipping ={
       from:{
-        zip: "09770"
+        search: null,
+        data: null
       },
       to:{
-        zip: "06050"
+        search: null,
+        data: null
       },
-      type: "box",
+      type: "envelope",
       package:{
-        weight: "5",
-        width: "30",
-        length: "30",
-        height: "30"
+        weight: null,
+        width: null,
+        length: null,
+        height: null
       }
     }
 
@@ -95,6 +97,13 @@
 
     home.openSection = function(index){
       $('.benefits-'+index).slideDown(500);
+    }
+
+    home.cleanSearch = function(type){
+      if(home.shipping[type].data){
+        home.shipping[type].data =  null;
+        home.shipping[type].search = null;
+      }
     }
 
     home.closeSection = function(index){
