@@ -5,15 +5,15 @@
     .module('app.core')
     .controller('Home',Home);
 
-  Home.$inject = ['$scope','$q','template','rateApi'];
+  Home.$inject = ['$scope','$q','$timeout','template','rateApi'];
 
-  function Home($scope, $q, template, rateApi){
+  function Home($scope, $q, $timeout, template, rateApi){
     // jshint validthis: true 
     var home = this;
     var shell = $scope.shell;
     var index = 1;
     home.cities = {};
-    home.options
+    home.options = [];
 
 
     template.get('app/countries/mx.json').then(function(cities){
@@ -22,23 +22,30 @@
       console.log(err);
     });
 
+    // function delaySearch(term, flag,callback){
+    //   if(!flag){
+    //     flag = $timeout(function(){
+    //       if(term && term.length > 2){
+    //         var search = JSON.search(home.cities, '//*[contains(asentamiento, "'+term+'") or contains(CP, "'+term+'")]');
+    //         home.options = search; 
+    //         console.log("times");
+    //         $timeout.cancel(flag);
+    //       }else{
+    //         $timeout.cancel(flag);
+    //         home.options = [];
+    //       }
+    //       return callback(false);
+    //     },500);
+    //   }else{
+    //     console.log('done');
+    //     return callback(flag);
+    //   }
+    // }
 
-    home.validateInput = function(){
-      var term = home.shipping.from.zip;
-      if(term && term.length > 2){
-        var search = JSON.search(home.cities, '//*[contains(asentamiento, "'+term+'") or contains(CP, "'+term+'")]');
-        home.options = search;
-      }else{
-        home.options = [];
-      }
-    }
-
-    home.closeSelect = function(item){
-      console.log(item);
+    home.selectItem = function(item){
+      home.shipping.from.zip = item;
       home.options = [];
     }
-
-
 
     home.active = false;
     home.sections = [

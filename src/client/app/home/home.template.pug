@@ -47,19 +47,11 @@
                           md-input-container.md-block.margin-top-3
                             label(for="fromZip")
                               |Código Postal o Colonia
-                            input(name="fromZip", data-ng-model="home.shipping.from.zip", data-ng-keyUp="home.validateInput()",required)
+                            input(name="fromZip", data-ng-model="home.shipping.from.zip",required)
                             div(ng-messages="home.shippingForm.fromZip.$error")
                               .message(ng-message="required")
                                 |Es requerido.
-                              //- .message(ng-message="pattern")
-                                |Código Postal a 5 digitos.
-                            .select-box
-                              ul
-                                li(data-ng-repeat="item in home.options", data-ng-click="home.closeSelect(item)")
-                                  span.main
-                                    |{{item.CP}} - {{item.asentamiento}}
-                                  span
-                                    |{{item.municipio}} - {{item.estado}}
+                            select-cities(data-cities="home.cities", data-selected="home.shipping.from.zip", data-search="home.shipping.from.zip")
                         .col-xs-6
                           h3.no-margin
                             |Destino

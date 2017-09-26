@@ -1,0 +1,9 @@
+.select-box
+  ul
+    li
+      |Hola Mundo
+    li(data-ng-repeat="item in options", data-ng-click="selectItem(item)")
+      span.main
+        |{{item.CP}} - {{item.asentamiento}}
+      span
+        |{{item.municipio}} - {{item.estado}}
