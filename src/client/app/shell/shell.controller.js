@@ -12,6 +12,7 @@
     // jshint validthis: true 
     var shell = this;
     shell.loading = false;
+    shell.loaded = false;
     shell.labels = false;
 
     shell.regex = {
@@ -34,6 +35,10 @@
     shell.hideLoading = function(){
       shell.loading = false;
     };
+
+    shell.setLoaded = function(status){
+      shell.loaded = status;
+    }
 
     shell.showMessage = function(message){
       if(!message)

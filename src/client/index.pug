@@ -20,6 +20,8 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
 
 
   body
+    .initial-load(data-ng-class="{'loaded':shell.loaded}")
+      .logo-color
     .loading-opacity(data-ng-show="shell.loading")
       div(data-ng-include="'app/templates/spinner.template.html'")
     ui-view

@@ -1,9 +1,24 @@
+.initial-load
+  width: 100%
+  height: 100%
+  position: fixed
+  background-color: #FFF;
+  z-index: 5
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0
+  left: 0
+  transition: top 1.5s
+  &.loaded
+    top: 100%
+
 .loading-opacity
   width: 100%
   height: 100%
   position: fixed
   background-color: rgba(0,0,0,0.7)
-  z-index: 2
+  z-index: 4
   display: flex;
   justify-content: center;
   align-items: center;

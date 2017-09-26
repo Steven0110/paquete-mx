@@ -16,18 +16,20 @@
     home.countries = {};
     home.options = [];
 
+    $timeout(function(){
+      template.get('app/countries/mx.json').then(function(cities){
+        home.cities = cities;
+      },function(err){
+        console.log(err);
+      });
 
-    template.get('app/countries/mx.json').then(function(cities){
-      home.cities = cities;
-    },function(err){
-      console.log(err);
-    });
-
-    template.get('app/countries/countries.json').then(function(countries){
-      home.countries = countries;
-    },function(err){
-      console.log(err);
-    });
+      template.get('app/countries/countries.json').then(function(countries){
+        home.countries = countries;
+      },function(err){
+        console.log(err);
+      });
+      shell.setLoaded(true);
+    },500);
 
     // function delaySearch(term, flag,callback){
     //   if(!flag){
