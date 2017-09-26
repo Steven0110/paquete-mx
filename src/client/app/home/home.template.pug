@@ -41,15 +41,13 @@
                       |¡Cotiza ahora mismo!
                     .container-fluid
                       .row
-                        .col-xs-6
-                          h3.no-margin
-                            |Origen
-                          //- md-input-container.md-block.margin-top-3
-                            //- label(for="fromZip")
-                              |País
+                        h3.no-margin
+                          |Origen
+                        .col-xs-3
                           .margin-top-1
                             select-country(data-countries="home.countries", data-country="home.shipping.from.country")
-                          md-input-container.md-block.margin-top-3
+                        .col-xs-9
+                          md-input-container.md-block
                             label(for="fromZip")
                               |Código Postal o Colonia
                             input(name="fromZip", data-ng-model="home.shipping.from.search", data-ng-focus="home.cleanSearch('from')",required)
@@ -57,23 +55,22 @@
                               .message(ng-message="required")
                                 |Es requerido.
                             select-cities(data-cities="home.cities", data-selected="home.shipping.from.data", data-search="home.shipping.from.search")
-                        .col-xs-6
+                        .row
                           h3.no-margin
                             |Destino
-                          //- md-input-container.md-block.margin-top-3
-                          .margin-top-1
-                            select-country(data-countries="home.countries", data-country="home.shipping.to.country")
-                          md-input-container.md-block.margin-top-3
-                            label(for="toZip")
-                              |Código Postal o Colonia
-                            input(name="toZip", data-ng-model="home.shipping.to.search",
-                            data-ng-focus="home.cleanSearch('to')",required,)
-                            div(ng-messages="home.shippingForm.toZip.$error")
-                              .message(ng-message="required")
-                                |Es requerido.
-                            select-cities(data-cities="home.cities", data-selected="home.shipping.to.data", data-search="home.shipping.to.search")
-                              //- .message(ng-message="pattern")
-                                |Código Postal a 5 digitos.
+                          .col-xs-3
+                            .margin-top-1
+                              select-country(data-countries="home.countries", data-country="home.shipping.to.country")
+                          .col-xs-9
+                            md-input-container.md-block
+                              label(for="toZip")
+                                |Código Postal o Colonia
+                              input(name="toZip", data-ng-model="home.shipping.to.search",
+                              data-ng-focus="home.cleanSearch('to')",required,)
+                              div(ng-messages="home.shippingForm.toZip.$error")
+                                .message(ng-message="required")
+                                  |Es requerido.
+                              select-cities(data-cities="home.cities", data-selected="home.shipping.to.data", data-search="home.shipping.to.search")
                       h3.no-margin.margin-bottom-2
                         |¿Qué es lo que envias?
                       .container-fluid

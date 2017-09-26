@@ -83,7 +83,8 @@ md-input-container.md-input-small
 .select-box
   background-color: rgba(0,0,0,0.8)
   color: #FFF
-  min-width: 300px
+  // min-width: 300px
+  width: 400%
   max-height: 300px
   overflow: auto
   position: absolute
@@ -92,6 +93,10 @@ md-input-container.md-input-small
   z-index: 2
   border-bottom-left-radius: 5px
   border-bottom-right-radius: 5px
+  &.left
+    margin-top: 5px
+    width: 130%
+    left: -30%
   ul
     list-style: none
     padding: 0
@@ -121,7 +126,7 @@ md-input-container.md-input-small
   font-family: 'Roboto'
   font-size: 1.8rem
   font-weight: 700
-  padding: 5px 10px
+  padding: 10px 10px 5px 10px
   cursor: pointer
   &:hover
     background-color: $primary-color
