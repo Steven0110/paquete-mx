@@ -11,7 +11,8 @@ function selectCities(){
     scope: {
       cities : "=cities",
       selected: "=selected",
-      search: "=search"
+      search: "=search",
+      country: "=country"
     },
     replace: true,
     transclude: true,
@@ -24,8 +25,14 @@ function selectCities(){
       vm.options = [];
 
       $scope.$watch('vm.search', function(oldValue, newValue){
-        if(vm.search && !vm.search.includes("-")){
-          delaySearch(vm.search);
+        if(vm.search){
+          if(vm.country && vm.country.listed){
+            if(!vm.search.includes("-")){
+              delaySearch(vm.search);
+            }
+          }
+        }else{
+          vm.options = [];  
         }
       });
 

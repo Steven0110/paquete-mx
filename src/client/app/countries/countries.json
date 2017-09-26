@@ -1,5 +1,5 @@
 [
-{"name": "mexico", "code": "mx"},
+{"name": "mexico", "code": "mx", "listed":true},
 {"name": "united states", "code": "us"},
 {"name": "afghanistan", "code": "af"},
 {"name": "åland islands", "code": "ax"},
@@ -142,7 +142,7 @@
 {"name": "mauritania", "code": "mr"},
 {"name": "mauritius", "code": "mu"},
 {"name": "mayotte", "code": "yt"},
-{"name": "mexico", "code": "mx"},
+{"name": "mexico", "code": "mx", "listed": true},
 {"name": "micronesia, federated states of", "code": "fm"},
 {"name": "moldova, republic of", "code": "md"},
 {"name": "monaco", "code": "mc"},

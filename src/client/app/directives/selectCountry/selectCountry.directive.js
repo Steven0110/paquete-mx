@@ -22,6 +22,9 @@ function selectCountry(){
       vm.list = [];
       vm.show = false;
       $scope.$watch('vm.countries',function(){
+        if(vm.countries && vm.countries[0]){
+          vm.country = vm.countries[0];
+        }
         vm.list = vm.countries;
       });
 
@@ -34,10 +37,7 @@ function selectCountry(){
         vm.show = false;
       }
 
-      vm.country= {
-        code: "mx",
-        name: "méxico"
-      }
+      
     }
   };
 }

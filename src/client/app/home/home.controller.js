@@ -16,6 +16,27 @@
     home.countries = {};
     home.options = [];
 
+
+    home.shipping ={
+      from:{
+        search: null,
+        data: null,
+        country: null
+      },
+      to:{
+        search: null,
+        data: null,
+        country: null
+      },
+      type: "envelope",
+      package:{
+        weight: 1,
+        width: 25,
+        length: 25,
+        height: 25
+      }
+    }
+
     $timeout(function(){
       template.get('app/countries/mx.json').then(function(cities){
         home.cities = cities;
@@ -30,26 +51,6 @@
       });
       shell.setLoaded(true);
     },500);
-
-    // function delaySearch(term, flag,callback){
-    //   if(!flag){
-    //     flag = $timeout(function(){
-    //       if(term && term.length > 2){
-    //         var search = JSON.search(home.cities, '//*[contains(asentamiento, "'+term+'") or contains(CP, "'+term+'")]');
-    //         home.options = search; 
-    //         console.log("times");
-    //         $timeout.cancel(flag);
-    //       }else{
-    //         $timeout.cancel(flag);
-    //         home.options = [];
-    //       }
-    //       return callback(false);
-    //     },500);
-    //   }else{
-    //     console.log('done');
-    //     return callback(flag);
-    //   }
-    // }
 
     home.selectItem = function(item){
       home.shipping.from.zip = item;
@@ -84,24 +85,6 @@
     home.searching = false;
     home.services = [];
 
-    home.shipping ={
-      from:{
-        search: null,
-        data: null
-      },
-      to:{
-        search: null,
-        data: null
-      },
-      type: "box",
-      package:{
-        weight: 1,
-        width: 25,
-        length: 25,
-        height: 25
-      }
-    }
-
     // angular.element(document).on('click', function () {
       
     // });
@@ -119,11 +102,20 @@
       }
     }
 
+    $scope.$watch('home.shipping.to.country',function(){
+      home.shipping.to.search = null;
+    });
+
+    $scope.$watch('home.shipping.from.country',function(){
+      home.shipping.from.search = null;
+    });
+
     home.closeSection = function(index){
       $('.benefits-'+index).slideUp(500);
     };
 
     home.send = function(){
+
       home.list = [];
       if(home.shippingForm.$valid){
         if(home.shipping.type == 'box' || home.shipping.type == 'documents'){

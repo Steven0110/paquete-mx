@@ -54,7 +54,7 @@
                             div(ng-messages="home.shippingForm.fromZip.$error")
                               .message(ng-message="required")
                                 |Es requerido.
-                            select-cities(data-cities="home.cities", data-selected="home.shipping.from.data", data-search="home.shipping.from.search")
+                            select-cities(data-cities="home.cities", data-selected="home.shipping.from.data", data-search="home.shipping.from.search",data-country="home.shipping.from.country")
                         .row
                           h3.no-margin
                             |Destino
@@ -70,7 +70,7 @@
                               div(ng-messages="home.shippingForm.toZip.$error")
                                 .message(ng-message="required")
                                   |Es requerido.
-                              select-cities(data-cities="home.cities", data-selected="home.shipping.to.data", data-search="home.shipping.to.search")
+                              select-cities(data-cities="home.cities", data-selected="home.shipping.to.data", data-search="home.shipping.to.search", data-country="home.shipping.to.country")
                       h3.no-margin.margin-bottom-2
                         |¿Qué es lo que envias?
                       .container-fluid
