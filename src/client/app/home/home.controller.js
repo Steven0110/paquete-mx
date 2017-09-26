@@ -13,11 +13,11 @@
     var shell = $scope.shell;
     var index = 1;
     home.cities = {};
+    home.options
 
 
     template.get('app/countries/mx.json').then(function(cities){
       home.cities = cities;
-      console.log('done cities');
     },function(err){
       console.log(err);
     });
@@ -27,8 +27,15 @@
       var term = home.shipping.from.zip;
       if(term && term.length > 2){
         var search = JSON.search(home.cities, '//*[contains(asentamiento, "'+term+'") or contains(CP, "'+term+'")]');
-        console.log(search);
+        home.options = search;
+      }else{
+        home.options = [];
       }
+    }
+
+    home.closeSelect = function(item){
+      console.log(item);
+      home.options = [];
     }
 
 
