@@ -48,7 +48,7 @@
                             //- label(for="fromZip")
                               |País
                           .margin-top-1
-                            select-country(data-countries="home.countries")
+                            select-country(data-countries="home.countries", data-country="home.shipping.from.country")
                           md-input-container.md-block.margin-top-3
                             label(for="fromZip")
                               |Código Postal o Colonia
@@ -62,7 +62,7 @@
                             |Destino
                           //- md-input-container.md-block.margin-top-3
                           .margin-top-1
-                            select-country(data-countries="home.countries")
+                            select-country(data-countries="home.countries", data-country="home.shipping.to.country")
                           md-input-container.md-block.margin-top-3
                             label(for="toZip")
                               |Código Postal o Colonia

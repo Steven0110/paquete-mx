@@ -136,15 +136,15 @@
             $('body,html').stop().animate({scrollTop:topContent/2},1000);
           }
           
-
-
           var services = ["ups","fedex","redpack"];
           var rate = {
             "from": {
-              "zip": home.shipping.from.data.CP
+              "zip": home.shipping.from.data.CP,
+              "country": home.shipping.from.country
             },
             "to": {
-              "zip": home.shipping.to.data.CP
+              "zip": home.shipping.to.data.CP,
+              "country": home.shipping.to.country
             },
             "packages":[home.shipping.package]
           };

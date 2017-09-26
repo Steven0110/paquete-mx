@@ -9,7 +9,8 @@ function selectCountry(){
     require: 'ngModel',
     templateUrl: 'app/directives/selectCountry/selectCountry.template.html',
     scope: {
-      countries : "="
+      countries : "=",
+      country   : "="
     },
     replace: true,
     transclude: true,
