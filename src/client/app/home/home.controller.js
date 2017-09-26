@@ -5,13 +5,33 @@
     .module('app.core')
     .controller('Home',Home);
 
-  Home.$inject = ['$scope','$q','rateApi'];
+  Home.$inject = ['$scope','$q','template','rateApi'];
 
-  function Home($scope, $q, rateApi){
+  function Home($scope, $q, template, rateApi){
     // jshint validthis: true 
     var home = this;
     var shell = $scope.shell;
     var index = 1;
+    home.cities = {};
+
+
+    template.get('app/countries/mx.json').then(function(cities){
+      home.cities = cities;
+      console.log('done cities');
+    },function(err){
+      console.log(err);
+    });
+
+
+    home.validateInput = function(){
+      var term = home.shipping.from.zip;
+      if(term && term.length > 2){
+        var search = JSON.search(home.cities, '//*[contains(asentamiento, "'+term+'") or contains(CP, "'+term+'")]');
+        console.log(search);
+      }
+    }
+
+
 
     home.active = false;
     home.sections = [

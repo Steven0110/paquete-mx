@@ -84,6 +84,12 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controller: 'Start',
       controllerAs: 'start'
     })
+    .state('dashboard.address',{
+      url:'/address',
+      templateUrl: 'app/dashboard/address/address.template.html',
+      controller: 'Addresses',
+      controllerAs: 'addreses'
+    })
     
       
   $urlRouterProvider.otherwise('/');
