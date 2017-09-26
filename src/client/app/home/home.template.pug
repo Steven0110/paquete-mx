@@ -1,6 +1,6 @@
 .image-space
   .fullscreen-bg
-    video.fullscreen-bg__video(loop muted autoplay)
+    //- video.fullscreen-bg__video(loop muted autoplay)
       source(src="common/videos/9922925.mp4" type="video/mp4")
     .opacity
   .container-center
@@ -44,6 +44,11 @@
                         .col-xs-6
                           h3.no-margin
                             |Origen
+                          //- md-input-container.md-block.margin-top-3
+                            //- label(for="fromZip")
+                              |País
+                          .margin-top-1
+                            select-country(data-countries="home.countries")
                           md-input-container.md-block.margin-top-3
                             label(for="fromZip")
                               |Código Postal o Colonia
@@ -55,6 +60,9 @@
                         .col-xs-6
                           h3.no-margin
                             |Destino
+                          //- md-input-container.md-block.margin-top-3
+                          .margin-top-1
+                            select-country(data-countries="home.countries")
                           md-input-container.md-block.margin-top-3
                             label(for="toZip")
                               |Código Postal o Colonia

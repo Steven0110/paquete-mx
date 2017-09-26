@@ -13,11 +13,18 @@
     var shell = $scope.shell;
     var index = 1;
     home.cities = {};
+    home.countries = {};
     home.options = [];
 
 
     template.get('app/countries/mx.json').then(function(cities){
       home.cities = cities;
+    },function(err){
+      console.log(err);
+    });
+
+    template.get('app/countries/countries.json').then(function(countries){
+      home.countries = countries;
     },function(err){
       console.log(err);
     });
@@ -93,6 +100,10 @@
       }
     }
 
+    // angular.element(document).on('click', function () {
+      
+    // });
+
     var menu = $('#menu').innerHeight();
 
     home.openSection = function(index){
@@ -129,8 +140,12 @@
 
           var services = ["ups","fedex","redpack"];
           var rate = {
-            "from": home.shipping.from,
-            "to":  home.shipping.to,
+            "from": {
+              "zip": home.shipping.from.data.CP
+            },
+            "to": {
+              "zip": home.shipping.to.data.CP
+            },
             "packages":[home.shipping.package]
           };
           var promises = [];

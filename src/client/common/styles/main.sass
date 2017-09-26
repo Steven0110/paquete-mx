@@ -22,7 +22,7 @@ a, a:active, a:hover, a:visited
   overflow: auto
 
 .margin-top-1
-  margin-top: 2rem
+  margin-top: 1rem
 .margin-top-2
   margin-top: 2rem
 .margin-top-3
@@ -114,3 +114,27 @@ md-input-container.md-input-small
           font-size: 1.7rem
           color: $accent-color
 /*select*/
+
+.country-container
+  position: relative
+.country-data
+  font-family: 'Roboto'
+  font-size: 1.8rem
+  font-weight: 700
+  padding: 10px
+  cursor: pointer
+  &:hover
+    background-color: $primary-color
+    border-radius: 5px
+    color: #FFF
+.flag-icon
+  margin-right: 5px
+span.country-code
+  text-transform: uppercase
+span.country-name
+  white-space: nowrap
+  text-overflow: ellipsis
+  display: inline-block
+  width: 100%
+  text-transform: capitalize
+  overflow: hidden; 

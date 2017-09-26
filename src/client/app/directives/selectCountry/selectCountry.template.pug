@@ -1,0 +1,11 @@
+.country-container
+  .country-data(data-ng-click="vm.showCountries()")
+    span.country-name
+      span.flag-icon(class="flag-icon-{{vm.country.code}}")
+      |{{vm.country.name}}
+  .select-box(data-ng-show="vm.show")
+    ul
+      li(data-ng-repeat="item in vm.list", data-ng-click="vm.selectItem(item)")
+        span.country-name
+          span.flag-icon(class="flag-icon-{{item.code}}")
+          |{{item.name}}
