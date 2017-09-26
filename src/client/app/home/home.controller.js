@@ -91,12 +91,12 @@
         search: null,
         data: null
       },
-      type: "envelope",
+      type: "box",
       package:{
-        weight: null,
-        width: null,
-        length: null,
-        height: null
+        weight: 1,
+        width: 25,
+        length: 25,
+        height: 25
       }
     }
 
@@ -137,14 +137,31 @@
           }
           
           var services = ["ups","fedex","redpack"];
+
+          var fromZip;
+          if(home.shipping.from.data && home.shipping.from.data.CP){
+            fromZip =  home.shipping.from.data.CP;
+          }else{
+            fromZip =  home.shipping.from.search;
+          }
+
+          var toZip;
+          if(home.shipping.to.data && home.shipping.to.data.CP){
+            toZip =  home.shipping.to.data.CP;
+          }else{
+            toZip =  home.shipping.to.search;
+          }
+          
+
+
           var rate = {
             "from": {
-              "zip": home.shipping.from.data.CP,
-              "country": home.shipping.from.country
+              "zip": fromZip,
+              "country": home.shipping.from.country.code
             },
             "to": {
-              "zip": home.shipping.to.data.CP,
-              "country": home.shipping.to.country
+              "zip": toZip,
+              "country": home.shipping.to.country.code
             },
             "packages":[home.shipping.package]
           };
