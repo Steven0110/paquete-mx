@@ -2,9 +2,9 @@ angular
   .module('app.core')
   .directive('selectCities',selectCities);
 
-selectCities.$inject = [];
+selectCities.$inject = ['$http'];
 
-function selectCities(){
+function selectCities($http){
   return{
     require: 'ngModel',
     templateUrl: 'app/directives/select-cities/selectDirective.template.html',
@@ -38,15 +38,33 @@ function selectCities(){
 
       vm.selectItem = function(item){
         vm.selected = item;
-        vm.search = item.CP+" - "+item.asentamiento;
+        vm.search = item.zip+" - "+item.county;
         vm.options = [];
       }
 
       var delayTimer;
-      function delaySearch(term) {
-        if(term && term.length > 2){
-          var options = JSON.search(vm.cities, '//*[contains(asentamiento, "'+term+'") or contains(CP, "'+term+'")]');
-          vm.options = options;
+      function delaySearch(search) {
+        console.log(search);
+        if(search && search.length > 2){
+          // var options = JSON.search(vm.cities, '//*[contains(county, "'+term+'") or contains(zip, "'+term+'")]');
+
+          $http({
+            method: 'POST',
+            url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/rate/counties',
+            data:{
+              search: search
+            }
+          }).then(function(response) {
+            console.log(response);
+            if(response && response.data && response.data.length > 0)
+              vm.options = response.data;
+            else
+              vm.options = [];
+              
+          }, function(err) {
+            vm.options = [];
+            console.log(err);
+          });
         }else{
           vm.options = [];
         }

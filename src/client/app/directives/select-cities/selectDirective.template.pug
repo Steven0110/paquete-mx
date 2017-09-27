@@ -2,6 +2,6 @@
   ul
     li(data-ng-repeat="item in vm.options", data-ng-click="vm.selectItem(item)")
       span.main
-        |{{item.CP}} - {{item.asentamiento}}
+        |{{item.zip}} - {{item.county}}
       span
-        |{{item.municipio}} - {{item.estado}}
+        |{{item.city}} - {{item.state}}

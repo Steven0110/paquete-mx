@@ -12,7 +12,9 @@
     var home = this;
     var shell = $scope.shell;
     var index = 1;
-    home.cities = {};
+    var citiesAllowed = ['mx'];
+    home.fromCities = {};
+    home.toCities = {};
     home.countries = {};
     home.options = [];
 
@@ -38,11 +40,12 @@
     }
 
     $timeout(function(){
-      template.get('app/countries/mx.json').then(function(cities){
-        home.cities = cities;
-      },function(err){
-        console.log(err);
-      });
+      // template.get('app/countries/mx.json').then(function(cities){
+      //   home.fromCities = cities;
+      //   home.toCities = cities;
+      // },function(err){
+      //   console.log(err);
+      // });
 
       template.get('app/countries/countries.json').then(function(countries){
         home.countries = countries;
@@ -102,12 +105,27 @@
       }
     }
 
-    $scope.$watch('home.shipping.to.country',function(){
-      home.shipping.to.search = null;
-    });
+    // function loadCities(country, section){
+    //   console.log(country);
+    //   if(citiesAllowed.indexOf(country) >= 0 ){
+    //     shell.showLoading();
+    //     template.get('app/countries/'+country+'.json').then(function(cities){
+    //       var snapshot = Defiant.getSnapshot(cities);
+    //       home[section] = snapshot;
+    //       shell.hideLoading();
+    //     },function(err){
+    //       console.log(err);
+    //     });
+    //   }
+    // }
 
-    $scope.$watch('home.shipping.from.country',function(){
-      home.shipping.from.search = null;
+    $scope.$watch('home.shipping.to.country',function(newVal, prevVal){
+      if(prevVal != newVal){
+        if(newVal && newVal.code){
+          home.shipping.to.search = null;
+          // loadCities(newVal.code,'toCities');
+        }
+      }
     });
 
     home.closeSection = function(index){
