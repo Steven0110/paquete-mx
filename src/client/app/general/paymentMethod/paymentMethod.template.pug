@@ -1,0 +1,73 @@
+.menu-container
+  .menu.menu-tabs.clearfix
+    div(data-ng-include="'app/templates/menu.template.html'")
+.pages
+  .pages-image
+    .pages-main
+      .main-title
+        h1
+          |¿Comó quieres pagar?
+        h2
+          |Puedes pagar con tarjeta de crédito, debito o con tu cuenta de PayPal.
+      .margin-top-3
+        img(data-ng-src="common/images/metodos-pago.png")
+    .page-attribute
+      .container-fluid
+        .row
+          .col-xs-6
+            h1
+              |Tarjeta de Crédito
+            h2
+              |¡Claro¡ Aceptamos cualquier tarjeta Nacional o Internacional expedida por 
+              span.accent.bold
+                |VISA
+              |, 
+              span.accent.bold
+                |MASTERCARD 
+              |o 
+              span.accent.bold
+                |AMERICAN EXPRESS.
+          .col-xs-6
+            .page-image-section
+              img(data-ng-src="common/images/cards.png")
+    .page-attribute
+      .container-fluid
+        .row
+          .col-xs-6.pull-right
+            h1
+              |Tarjeta de Débito
+            h2
+              |Aceptamos tarjetas expedidas en México por
+              span.accent.bold
+                |&nbsp;Banamex
+              |, 
+              span.accent.bold
+                |&nbsp;HSBC
+              |, 
+              span.accent.bold
+                |&nbsp;Inbursa
+              |&nbsp;y
+              span.accent.bold
+                |&nbsp;Santander
+          .col-xs-6.pull-right
+            .page-image-section
+              img(data-ng-src="common/images/cards.png")
+    .page-attribute
+      .container-fluid
+        .row
+          .col-xs-6
+            h1
+              |Pagos en Efectivo
+            h2
+              |¡Claro¡ Aceptamos cualquier tarjeta Nacional o Internacional expedida por 
+              span.accent.bold
+                |&nbsp;OXXO.
+              |&nbsp;Solo solicita hacer un deposito en 
+              span.accent.bold
+                |&nbsp;OXXO PAY.
+          .col-xs-6
+            .page-image-section
+              img(data-ng-src="common/images/oxxo.png")
+
+
+div(data-ng-include="'app/templates/footer.template.html'")

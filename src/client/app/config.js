@@ -70,6 +70,12 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controller: 'Forgot',
       controllerAs: 'forgot'
     })
+    .state('payment-method',{
+      url:'/metodos-de-pago',
+      templateUrl : 'app/general/paymentMethod/paymentMethod.template.html'
+      // controller: 'Forgot',
+      // controllerAs: 'forgot'
+    })
     .state('dashboard',{
       url:'/dashboard',
       templateUrl: 'app/dashboard/dashboard.template.html',
