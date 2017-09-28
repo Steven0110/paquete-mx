@@ -46,6 +46,7 @@ function selectCities($http){
 
       var delayTimer;
       function delaySearch(search, country) {
+        console.log(search);
         if(search && search.length > 2){
           // var options = JSON.search(vm.cities, '//*[contains(county, "'+term+'") or contains(zip, "'+term+'")]');
 

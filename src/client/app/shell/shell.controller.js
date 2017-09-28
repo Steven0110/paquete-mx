@@ -14,6 +14,7 @@
     shell.loading = false;
     shell.loaded = false;
     shell.labels = false;
+    shell.countries = [];
 
     shell.regex = {
       zip       : /^\d{5}$/,
@@ -24,7 +25,12 @@
 
     template.get('app/lang/es.json').then(function(labels){
       shell.labels = labels;
-      shell.setLoaded(true);
+      template.get('app/countries/countries.json').then(function(countries){
+        shell.countries = countries;
+        shell.setLoaded(true);
+      },function(err){
+        console.log(err);
+      });
     },function(err){
       console.log(err);
     });

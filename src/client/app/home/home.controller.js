@@ -15,10 +15,9 @@
     // var citiesAllowed = ['mx','us','ca','ar'];
     home.fromCities = {};
     home.toCities = {};
-    home.countries = {};
+    home.countries = shell.countries;
     home.options = [];
     home.international = false;
-
 
     home.shipping ={
       from:{
@@ -40,15 +39,11 @@
       }
     }
 
-    $timeout(function(){
+    // $timeout(function(){
 
-      template.get('app/countries/countries.json').then(function(countries){
-        home.countries = countries;
-      },function(err){
-        console.log(err);
-      });
       
-    },500);
+      
+    // },500);
 
     home.selectItem = function(item){
       home.shipping.from.zip = item;

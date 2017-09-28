@@ -18,8 +18,34 @@ function addressForm(userApi){
       // if(scope.address)
         // var address = scope.address;
 
+      scope.cities = [];
+      scope.county = {};
+
+      scope.$watch('county',function(newVal, oldVal){
+        if(newVal){
+          if(newVal.county){
+            scope.newAddress.county = newVal.county;
+          }
+
+          if(newVal.zip){
+            scope.newAddress.zip = newVal.zip;
+          }
+
+          if(newVal.city){
+            scope.newAddress.city = newVal.city;
+          }
+
+          if(newVal.state){
+            scope.newAddress.state = newVal.state;
+          }
+        }
+
+      });
+      if(shell.countries && shell.countries[0])
+        scope.country = shell.countries[0]
+
       scope.newAddress = {
-        country:"MX",
+        country:{},
         street:"Hamburgo",
         number: "70",
         apt:"201",
@@ -31,7 +57,12 @@ function addressForm(userApi){
 
       scope.send = function(){
         if(scope.addressForm.$valid){
-          
+          var country ={
+            code  : scope.newAddress.country.code,
+            name  : scope.newAddress.country.name
+          }
+          scope.newAddress.country = country;
+          console.log(scope.newAddress);
         }else{
           shell.showError(shell.labels.form.errors.fields);
         }
