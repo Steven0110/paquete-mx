@@ -11,7 +11,7 @@
 {"name": "anguilla", "code": "ai"},
 {"name": "antarctica", "code": "aq"},
 {"name": "antigua and barbuda", "code": "ag"},
-{"name": "argentina", "code": "ar"},
+{"name": "argentina", "code": "ar","listed":true},
 {"name": "armenia", "code": "am"},
 {"name": "aruba", "code": "aw"},
 {"name": "australia", "code": "au"},

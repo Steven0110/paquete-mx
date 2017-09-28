@@ -12,7 +12,7 @@
     var home = this;
     var shell = $scope.shell;
     var index = 1;
-    var citiesAllowed = ['mx','us','ca'];
+    // var citiesAllowed = ['mx','us','ca','ar'];
     home.fromCities = {};
     home.toCities = {};
     home.countries = {};
