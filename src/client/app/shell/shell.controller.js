@@ -77,6 +77,10 @@
         return true;
     }
 
+    shell.noSession = function(){
+      shell.logout();
+    }
+
     function showToast(message){
       $mdToast.show(
         $mdToast.simple()

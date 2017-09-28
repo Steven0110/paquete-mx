@@ -28,7 +28,19 @@ function run($rootScope, $transitions,$state, parseheaders, userApi, Restangular
     }
   });
 
-
-
+  Restangular.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
+    var extractedData ={};
+    if (operation === "getList") {
+      if(data.results){
+        deferred.resolve(data.results)
+      }
+      else{
+        var array = [data]
+        deferred.resolve(array);
+      }
+    }else{
+      deferred.resolve(data);
+    }
+  });
 }
 

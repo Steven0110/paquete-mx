@@ -16,7 +16,12 @@
       logout          : logout,
       isAuth          : isAuth,
       setCurrentUser  : setCurrentUser,
-      getCurrentUser  : getCurrentUser
+      getCurrentUser  : getCurrentUser,
+      currentUser     : currentUser,
+      saveAddress     : saveAddress,
+      getAddresses    : getAddresses,
+      getAddress      : getAddress,
+      deleteAddress   : deleteAddress
     };
 
     return factory;
@@ -65,6 +70,53 @@
 
     function getCurrentUser(){
       return parse.current().one().get();
+    }
+
+    function saveAddress(params, userId){
+      if(!userId){
+        var user = currentUser();
+        if(user && user.objectId){
+          userId = user.objectId;
+        }else{
+          var deferred = $q.defer();
+          deferred.reject({noSession:true});
+          return deferred.promise;
+        }
+      }
+      
+      params.user = {"__type":"Pointer","className":"_User","objectId":userId};
+      var Address = parse.endpoint('Address');
+      return Address.update(params);
+    }
+
+    function getAddresses(userId){
+
+      if(!userId){
+        var user = currentUser();
+        if(user && user.objectId){
+          userId = user.objectId;
+        }else{
+          var deferred = $q.defer();
+          deferred.reject({noSession:true});
+          return deferred.promise;
+        }
+      }
+
+      var where = {"user":{"__type":"Pointer","className":"_User","objectId":userId}}
+      var Address = parse.endpoint('Address');
+      return Address.getAll(where,'createdAt');
+    }
+
+    function getAddress(objectId){
+      return Address.get({objectId:objectId}).$promise;
+    }
+
+    function deleteAddress(objectId){
+      return parse.endpoint('Address').remove(objectId);
+    }
+
+    function currentUser() {
+      return storage.get('user');
     }
 
     function setCurrentUser(user){

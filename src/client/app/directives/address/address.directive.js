@@ -52,17 +52,30 @@ function addressForm(userApi){
         county:"Juarez",
         city: "Cuauhtemoc",
         state:"Ciudad de México",
-        zip:"06600"
+        zip: null
       };
 
       scope.send = function(){
         if(scope.addressForm.$valid){
+
+          if(!scope.newAddress.zip){
+            scope.newAddress.zip = scope.search;
+          }
+          console.log(scope.newAddress.zip);
           var country ={
             code  : scope.newAddress.country.code,
             name  : scope.newAddress.country.name
           }
           scope.newAddress.country = country;
           console.log(scope.newAddress);
+          userApi.saveAddress(scope.newAddress).then(function(result){
+            console.log(result);
+          },function(err){
+            console.log(err);
+            if(err.noSession == true){
+              shell.noSession();
+            }
+          });
         }else{
           shell.showError(shell.labels.form.errors.fields);
         }

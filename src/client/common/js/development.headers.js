@@ -13,12 +13,12 @@
     return {
       restKeys: {
         'Content-Type': 'application/json',
-        'X-Parse-Application-Id': 'HCGa3edfKjokvwNQRuDgtZsjL5BYyJ6r9jm8aBmT',
-        'X-Parse-REST-API-Key': 'wSO0vXjzy6jOKwRfYBEoVPlKYzu6oZKrJuV9rE2H'
+        'X-Parse-Application-Id': 'OaKte4Imh3dk5JIhsJoLAcLaPYMb2mQUeqyHXrP1',
+        'X-Parse-REST-API-Key': 'UBQ8RP6ldzRJTFeBoTtqVsXtfFwsPQDznP1lr48y'
       },
       javascriptKeys:{
-        'applicationID' : 'HCGa3edfKjokvwNQRuDgtZsjL5BYyJ6r9jm8aBmT',
-        'javascriptKey':'r3uce4uCbPp3siNMuvG4KIdalRD3wzYvKCdyvlrJ'
+        'applicationID' : 'OaKte4Imh3dk5JIhsJoLAcLaPYMb2mQUeqyHXrP1',
+        'javascriptKey':'wcFLh2UROrO8fN9SbFbgbeOZTZOlPu3YkAMys1bL'
 
       }
     };
