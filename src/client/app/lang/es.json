@@ -35,5 +35,19 @@
         "already": "ya se encuentra registrado."
       }
     }
+  },
+  "address":{
+    "form":{
+      "country": "País",
+      "street": "Calle",
+      "number":"Numero Exterior",
+      "apt":"Numero interior",
+      "zip":"Codigo Postal",
+      "county": "Colonia",
+      "city": "Ciudad",
+      "state": "Estado",
+      "save" : "Guardar",
+      "cancel": "Cancelar"
+    }
   }
 }

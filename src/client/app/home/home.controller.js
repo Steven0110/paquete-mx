@@ -131,8 +131,8 @@
 
     home.send = function(){
 
-      home.list = [];
       if(home.shippingForm.$valid){
+        home.services = [];
         var fromCountry = home.shipping.from.country.code;
         var toCountry = home.shipping.to.country.code;
         home.international =  shell.isInternational(fromCountry, toCountry);
@@ -164,17 +164,37 @@
           }else{
             toZip =  home.shipping.to.search;
           }
-          
 
+          var fromLatLng = {
+            lat: null,
+            lng: null
+          }
+
+          if(home.shipping.from.data && home.shipping.from.data.latitude && home.shipping.from.data.longitude){
+            fromLatLng.lat = home.shipping.from.data.latitude;
+            fromLatLng.lng = home.shipping.from.data.longitude;
+          }
+
+          var toLatLng = {
+            lat: null,
+            lng: null
+          }
+
+          if(home.shipping.to.data && home.shipping.to.data.latitude && home.shipping.to.data.longitude){
+            toLatLng.lat = home.shipping.to.data.latitude;
+            toLatLng.lng = home.shipping.to.data.longitude;
+          }          
 
           var rate = {
             "from": {
               "zip": fromZip,
-              "country": fromCountry
+              "country": fromCountry,
+              "geolocation":fromLatLng
             },
             "to": {
               "zip": toZip,
-              "country": toCountry
+              "country": toCountry,
+              "geolocation": toLatLng
             },
             "packages":[home.shipping.package]
           };

@@ -27,7 +27,6 @@ function selectCities($http){
       vm.options = [];
 
       $scope.$watch('vm.search', function(oldValue, newValue){
-        console.log(vm.search);
         if(vm.search){
           if(vm.country && vm.country.listed){
             if(!vm.search.includes("-")){
@@ -47,7 +46,6 @@ function selectCities($http){
 
       var delayTimer;
       function delaySearch(search, country) {
-        console.log(search);
         if(search && search.length > 2){
           // var options = JSON.search(vm.cities, '//*[contains(county, "'+term+'") or contains(zip, "'+term+'")]');
 
@@ -59,7 +57,6 @@ function selectCities($http){
               country: country
             }
           }).then(function(response) {
-            console.log(response);
             if(response && response.data && response.data.length > 0)
               vm.options = response.data;
             else
