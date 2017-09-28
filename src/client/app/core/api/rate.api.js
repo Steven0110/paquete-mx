@@ -19,8 +19,14 @@
         
     function rate(service,params){
       var deferred = $q.defer();
+      //flag de debug, quitar en produccion
+      params.debugging = true;
       var paquete = paqueteApi.endpoint("/dev-rate");
       paquete.post(params).then(function(data){
+
+        if(params.debugging){
+          console.log(data);
+        }
         var json ={
           service: service
         };

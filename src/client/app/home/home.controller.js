@@ -12,7 +12,7 @@
     var home = this;
     var shell = $scope.shell;
     var index = 1;
-    var citiesAllowed = ['mx'];
+    var citiesAllowed = ['mx','us','ca'];
     home.fromCities = {};
     home.toCities = {};
     home.countries = {};
@@ -32,10 +32,10 @@
       },
       type: "envelope",
       package:{
-        weight: 1,
-        width: 25,
-        length: 25,
-        height: 25
+        weight: "1",
+        width: "25",
+        length: "25",
+        height: "25"
       }
     }
 
@@ -183,6 +183,7 @@
               "type":service,
               "rate": rate
             };
+
             promises.push(
               rateApi.rate(service,params).then(function(response){
                 console.log(response);

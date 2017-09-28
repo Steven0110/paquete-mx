@@ -3,5 +3,10 @@
     li(data-ng-repeat="item in vm.options", data-ng-click="vm.selectItem(item)")
       span.main
         |{{item.zip}} - {{item.county}}
-      span
-        |{{item.city}} - {{item.state}}
+      div
+        span(data-ng-if="item.city")
+          |{{item.city}}&nbsp;-&nbsp;
+        span.capitalize
+          |{{item.state}}
+        span.capitalize(data-ng-if="!item.city")
+          |&nbsp;-&nbsp;{{vm.country.name}}
