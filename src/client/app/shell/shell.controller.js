@@ -63,6 +63,13 @@
       $state.go('home');
     };
 
+    shell.isInternational = function(fromCountry, toCountry){
+      if(fromCountry == "mx" && toCountry == "mx")
+        return false;    
+      else
+        return true;
+    }
+
     function showToast(message){
       $mdToast.show(
         $mdToast.simple()
