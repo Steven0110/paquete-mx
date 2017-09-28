@@ -1,10 +1,17 @@
-.container-fluid
-  .row
-    .col-sm-6
-      h1.align-center
-        |Iniciar Sesión
-      login-form
-    .col-sm-6
-      h1.align-center
-        |Registro
-      register-form
+.menu-container
+  .menu.menu-tabs.clearfix
+    div(data-ng-include="'app/templates/menu.template.html'")
+.pages-section
+  .container-fluid
+    .row
+      .col-sm-6
+        h1.align-center
+          |Iniciar Sesión
+        .padding-left
+          login-form
+      .col-sm-6
+        h1.align-center
+          |Registro
+        .padding-right
+          register-form
+div(data-ng-include="'app/templates/footer.template.html'")
