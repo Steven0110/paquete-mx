@@ -24,6 +24,7 @@
 
     template.get('app/lang/es.json').then(function(labels){
       shell.labels = labels;
+      shell.setLoaded(true);
     },function(err){
       console.log(err);
     });

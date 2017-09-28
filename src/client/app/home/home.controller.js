@@ -41,19 +41,13 @@
     }
 
     $timeout(function(){
-      // template.get('app/countries/mx.json').then(function(cities){
-      //   home.fromCities = cities;
-      //   home.toCities = cities;
-      // },function(err){
-      //   console.log(err);
-      // });
 
       template.get('app/countries/countries.json').then(function(countries){
         home.countries = countries;
       },function(err){
         console.log(err);
       });
-      shell.setLoaded(true);
+      
     },500);
 
     home.selectItem = function(item){

@@ -121,25 +121,8 @@
                       md-button.md-raised.md-primary(type="submit")
                         |Cotizar
 #float-section.background-container
-  #menu.clearfix
-    .menu-logo
-      img(data-ng-src="common/images/paquete-text.png")
-    .navs
-      nav
-        a(href="#")
-          |MI CUENTA
-      nav
-        a(href="#")
-          |¿COMÓ FUNCIONA?
-      nav
-        a(href="#")
-          |RASTREAR
-      nav
-        a(href="#")
-          |COTIZAR
-      nav.active
-        a(href="#")
-          |INICIO
+  #menu.menu-tabs.clearfix
+    div(data-ng-include="'app/templates/menu.template.html'")
   #content.section-container
     .rated-text(data-ng-class="{'active':home.active}", data-ng-show="home.rated")
       .logo-color(data-ng-class="{'active':!home.active}")
