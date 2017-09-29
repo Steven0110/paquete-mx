@@ -16,6 +16,18 @@
     shell.labels = false;
     shell.countries = [];
 
+    shell.dashMenu = [
+      {name:'shippings',label:"Mis Envios",hover:false},
+      {name:'payments',label:"Mis Pagos",hover:false}
+    ];
+
+    //verificar
+    shell.section = 'shippings';
+
+    shell.setSection =function(section){
+      shell.section = section;
+    }
+
     shell.regex = {
       zip       : /^\d{5}$/,
       mobile    : /^\d{10}$/,

@@ -13,6 +13,9 @@
     var addresses = this;
     var shell = $scope.shell;
 
+    var dashMenu = $('#dash-menu').innerWidth();
+    $('.dashboard-menu').width(Math.floor(dashMenu-2));
+
     addresses.list = [];
 
     userApi.getAddresses().then(function(response){
