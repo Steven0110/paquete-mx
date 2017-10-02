@@ -11,16 +11,10 @@ function addressForm(userApi){
     scope: {
       labels    : "=",
       countries : "=",
-      showForm  : "&"
+      showForm  : "&",
+      sendForm  : "&"
     },
     link:function(scope,element,attr){
-
-      // var shell =  scope.shell;
-      // if(scope.checkout)
-        // var checkout = scope.checkout;
-
-      // if(scope.address)
-        // var address = scope.address;
 
       scope.cities = [];
       scope.county = {};
@@ -76,16 +70,17 @@ function addressForm(userApi){
             name  : scope.newAddress.country.name
           }
           scope.newAddress.country = country;
-          userApi.saveAddress(scope.newAddress).then(function(result){
-            console.log(result);
+          userApi.saveAddress(scope.newAddress).then(function(data){
+            scope.sendForm({response:{result:true, data:data}});
           },function(err){
-            console.log(err);
             if(err.noSession == true){
-              shell.noSession();
+              scope.sendForm({response:{noSession:true}});
+            }else{
+              scope.sendForm({response:err});
             }
           });
         }else{
-          shell.showError(scope.labels.form.errors.fields);
+          scope.sendForm({response:{error:true,message:scope.labels.form.errors.fields}});
         }
       }
     }

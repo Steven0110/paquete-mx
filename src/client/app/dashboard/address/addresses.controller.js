@@ -39,7 +39,18 @@
       console.log(item);
     }
 
-
+    addresses.send = function(response){
+      if(response.noSession == true){
+        shell.noSession();
+      }
+      else if(response.error && response.message){
+        shell.showError(response.message)
+      }else if(response.data){
+        console.log(response.data);
+      }else{
+        console.log(response);
+      }
+    }
     
   };
 })();
