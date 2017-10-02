@@ -1,6 +1,12 @@
 form(name="addressForm", data-ng-submit="send()", novalidate)
   div(layout-xs-sm="row")
     md-input-container.md-block
+      label(for="alias",data-ng-bind="shell.labels.address.form.alias")
+      input(name="alias", data-ng-model="newAddress.alias", required)
+      div(ng-messages="addressForm.alias.$error")
+        div(ng-message="required",data-ng-bind="shell.labels.form.errors.required")
+  div(layout-xs-sm="row")
+    md-input-container.md-block
       label(for="street",data-ng-bind="shell.labels.address.form.street")
       input(name="street", data-ng-model="newAddress.street", required)
       div(ng-messages="addressForm.street.$error")

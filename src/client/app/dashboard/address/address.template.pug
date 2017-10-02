@@ -7,4 +7,29 @@
   .container-fluid
     .row
       .col-xs-6
-        address-form()
+        .section-space-right
+          .board-element(data-ng-repeat="item in addresses.list")
+            h2
+              |{{item.alias}}
+            .board-list
+              |{{item.street}}, {{item.number}}&nbsp;
+              span(data-ng-if="item.apt")
+                | - {{item.apt}}
+            .board-list
+              |{{item.county}}
+              span(data-ng-if="item.city")
+                |, &nbsp;{{item.city}}
+              span
+                |, {{item.zip}}
+            .board-list
+              |{{item.state}}
+              span.uppercase
+                |, {{item.country.name}}
+      .col-xs-6
+        .section-space-left
+          .add-dashboard(data-ng-click="addresses.showForm(true)",data-ng-hide="addresses.form")
+            i.fa.fa-plus-circle
+            h3
+              |Agregar Dirección
+          div(data-ng-show="addresses.form")
+            address-form(data-showIt="addresses.form")

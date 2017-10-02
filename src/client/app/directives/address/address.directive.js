@@ -45,6 +45,7 @@ function addressForm(userApi){
         scope.country = shell.countries[0]
 
       scope.newAddress = {
+        alias: "Nueva dirección",
         country:{},
         street:"Hamburgo",
         number: "70",
@@ -81,11 +82,9 @@ function addressForm(userApi){
         }
       }
 
-      // scope.hideForm = function(){
-      //   if(checkout){
-      //     checkout.hideAddressForm();
-      //   }
-      // }
+      scope.hideForm = function(){
+        scope.addresses.form = false;
+      }
 
       // scope.saveAddress = function(){
       //   if(scope.addressForm.$valid){

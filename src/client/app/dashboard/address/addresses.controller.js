@@ -16,13 +16,20 @@
     var dashMenu = $('#dash-menu').innerWidth();
     $('.dashboard-menu').width(Math.floor(dashMenu-2));
 
-    addresses.list = [];
+    addresses.list =[];
+    addresses.form = false;
 
     userApi.getAddresses().then(function(response){
       console.log(response);
+      if(response)
+        addresses.list = response;
     },function(err){
       console.log(err);
     });
+
+    addresses.showForm = function(value){
+      addresses.form = value;
+    }
 
 
     

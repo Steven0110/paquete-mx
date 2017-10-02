@@ -94,7 +94,7 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       url:'/address',
       templateUrl: 'app/dashboard/address/address.template.html',
       controller: 'Addresses',
-      controllerAs: 'addreses'
+      controllerAs: 'addresses'
     })
     
       
