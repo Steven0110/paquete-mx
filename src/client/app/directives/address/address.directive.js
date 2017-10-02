@@ -8,10 +8,14 @@ function addressForm(userApi){
   return{
     restrict: 'EA',
     templateUrl: 'app/directives/address/address.form.html',
-    scope: true,
+    scope: {
+      labels    : "=",
+      countries : "=",
+      showForm  : "&"
+    },
     link:function(scope,element,attr){
 
-      var shell =  scope.shell;
+      // var shell =  scope.shell;
       // if(scope.checkout)
         // var checkout = scope.checkout;
 
@@ -41,8 +45,8 @@ function addressForm(userApi){
         }
 
       });
-      if(shell.countries && shell.countries[0])
-        scope.country = shell.countries[0]
+      // if(scope.countries && scope.countries[0])
+        // scope.country = scope.countries[0]
 
       scope.newAddress = {
         alias: "Nueva dirección",
@@ -56,19 +60,22 @@ function addressForm(userApi){
         zip: null
       };
 
+      scope.hideForm = function(){
+        console.log(scope.showForm);
+        scope.showForm({value:false});
+      }
+
       scope.send = function(){
         if(scope.addressForm.$valid){
 
           if(!scope.newAddress.zip){
             scope.newAddress.zip = scope.search;
           }
-          console.log(scope.newAddress.zip);
           var country ={
             code  : scope.newAddress.country.code,
             name  : scope.newAddress.country.name
           }
           scope.newAddress.country = country;
-          console.log(scope.newAddress);
           userApi.saveAddress(scope.newAddress).then(function(result){
             console.log(result);
           },function(err){
@@ -78,47 +85,9 @@ function addressForm(userApi){
             }
           });
         }else{
-          shell.showError(shell.labels.form.errors.fields);
+          shell.showError(scope.labels.form.errors.fields);
         }
       }
-
-      scope.hideForm = function(){
-        scope.addresses.form = false;
-      }
-
-      // scope.saveAddress = function(){
-      //   if(scope.addressForm.$valid){
-      //     shell.showLoading();
-      //     var objectId;
-
-      //     if(address)
-      //       objectId = address.user.objectId;
-      //     else
-      //       objectId = shell.currentUser.objectId;
-
-      //     scope.newAddress.user = {"__type":"Pointer",className:"_User","objectId":objectId};
-      //     userApi.saveAddress(scope.newAddress).then(function(result){
-      //       shell.showMessage();
-      //       if(address && address.addresses){
-      //         address.addresses.push(result);
-      //       }
-            
-      //       if(checkout){
-      //         checkout.addresses.push(result);
-      //         shell.shoppingCart.shippingAddress = result;
-      //       }
-      //       scope.newAddress = {};
-      //       // scope.addressForm.$setPristine();
-      //       scope.addressForm.$setPristine();
-      //       scope.addressForm.$setUntouched();
-      //       scope.showAddressForm(false);
-      //     },function(error){
-      //       shell.showError();
-      //       console.error('status: '+error.status+', statusText: '+error.statusText+', error: '+error.data.error);
-      //     }).finally(shell.hideLoading);
-      //   }
-      // };
-      
     }
   };
 }
