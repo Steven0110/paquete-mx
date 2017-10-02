@@ -31,6 +31,14 @@
       addresses.form = value;
     }
 
+    addresses.delete = function(item){
+      console.log(item);
+    }
+
+    addresses.edit = function(item){
+      console.log(item);
+    }
+
 
     
   };

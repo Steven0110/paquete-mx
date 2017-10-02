@@ -25,6 +25,9 @@
               |{{item.state}}
               span.uppercase
                 |, {{item.country.name}}
+            .board-actions
+              i.fa.fa-pencil(data-ng-click="addresses.edit(item)")
+              i.fa.fa-trash(data-ng-click="addresses.delete(item)")
       .col-xs-6
         .section-space-left
           .add-dashboard(data-ng-click="addresses.showForm(true)",data-ng-hide="addresses.form")
