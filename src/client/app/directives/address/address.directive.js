@@ -39,8 +39,8 @@ function addressForm(userApi){
         }
 
       });
-      // if(scope.countries && scope.countries[0])
-        // scope.country = scope.countries[0]
+      if(scope.countries && scope.countries[0])
+        scope.country = scope.countries[0]
 
       scope.newAddress = {
         alias: "Nueva dirección",
