@@ -17,8 +17,9 @@
     shell.countries = [];
 
     shell.dashMenu = [
-      {name:'shippings',label:"Mis Envios",hover:false},
-      {name:'payments',label:"Mis Pagos",hover:false}
+      {name:'shippings',label:"Envios",hover:false},
+      {name:'payments',label:"Pagos",hover:false},
+      {name:'contacts',label:"Agenda",hover:false}
     ];
 
     //verificar

@@ -16,18 +16,17 @@
 .dashboard-items
   nav
     position: relative
-    font-size: 2.3rem
-    font-weight: 400
-    border-bottom: solid 1px #999
+    font-size: 2rem
+    font-weight: bold
+    font-family: 'Arial' !important
+    // border-bottom: solid 1px #999
     cursor: pointer
     box-sizing: border-box
+    color: rgba(0,0,0,0.6)
     &:first-child
-      border-top: solid 1px #999
-    &.hover
-      color: #FFF
-      background-color: $primary-color
-      .selected-bar
-        width: 100%
+      // border-top: solid 1px #999
+    &:hover
+      background-color: rgba(0,0,0,0.1)
     span, a
       position: relative
       z-index: 2
@@ -41,8 +40,10 @@
       height: 100%
       background-color: $primary-color
       &.active
-        transition: width 0.5s
         width: 15px
+    &.active
+      background-color: rgba(0,0,0,0.2)
+      color: rgba(0,0,0,0.5)
 .dashboard-header
   overflow: auto
   border-bottom: 2px solid #f2f2f2

@@ -5,7 +5,7 @@
         .dashboard-logo
           img(data-ng-src="common/images/paquete-mx.png")
         .dashboard-items
-          nav(data-ng-repeat="item in shell.dashMenu",data-ng-click="shell.setSection(item.name); shell.dashMenu[$index].hover=false",data-ng-mouseenter="item.hover = true",data-ng-mouseleave="item.hover = false", data-ng-class="{'hover': item.hover}")
+          nav(data-ng-repeat="item in shell.dashMenu",data-ng-click="shell.setSection(item.name)",data-ng-class="{'active':shell.section == item.name}")
             .selected-bar(data-ng-class="{'active':shell.section == item.name}")
             span(data-ng-bind="item.label")
     .col-xs-12.col-sm-10
