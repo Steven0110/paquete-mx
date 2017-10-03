@@ -19,6 +19,7 @@
     addresses.list =[];
     addresses.form = false;
 
+
     userApi.getAddresses().then(function(response){
       console.log(response);
       if(response)
@@ -31,8 +32,14 @@
       addresses.form = value;
     }
 
-    addresses.delete = function(item){
-      console.log(item);
+    addresses.delete = function(item, index){
+      shell.showLoading();
+      userApi.deleteAddress(item.objectId).then(function(response){
+        console.log(response);
+        addresses.list.splice(index,1);
+      },function(err){
+        console.log(err);
+      }).finally(shell.hideLoading);
     }
 
     addresses.edit = function(item){
@@ -47,9 +54,15 @@
         shell.showError(response.message)
       }else if(response.data){
         console.log(response.data);
+        if(response.data.objectId){
+          // addresses.list.splice(0,0,response.data);
+          addresses.list.push(response.data);
+        }
       }else{
         console.log(response);
       }
+
+      shell.hideLoading();
     }
     
   };

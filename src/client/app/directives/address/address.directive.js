@@ -12,7 +12,8 @@ function addressForm(userApi){
       labels    : "=",
       countries : "=",
       showForm  : "&",
-      sendForm  : "&"
+      sendForm  : "&",
+      loading   : "&"
     },
     link:function(scope,element,attr){
 
@@ -61,7 +62,7 @@ function addressForm(userApi){
 
       scope.send = function(){
         if(scope.addressForm.$valid){
-
+          scope.loading();
           if(!scope.newAddress.zip){
             scope.newAddress.zip = scope.search;
           }

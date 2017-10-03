@@ -83,6 +83,11 @@
       $state.go('home');
     };
 
+    shell.insert = function(array,item){
+      array.splice(0,0,item);
+      return array;
+    }
+
     shell.isInternational = function(fromCountry, toCountry){
       if(fromCountry == "mx" && toCountry == "mx")
         return false;    
