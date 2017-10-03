@@ -1,4 +1,8 @@
 {
+  "confirm":{
+    "noCancel": "No, Cancelar",
+    "yesContinue":"Sí, Continuar"
+  },
   "form":{
     "errors":{
       "required": "Es requerido.",

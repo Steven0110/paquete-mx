@@ -27,6 +27,7 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
       .logo-color
     .loading-opacity(data-ng-show="shell.loading")
       div(data-ng-include="'app/templates/spinner.template.html'")
+    confirm-dialog
     ui-view
 
     //- Libraries
@@ -64,6 +65,7 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
     //-Services
     script(src="app/core/factories/parse/parse.factory.js")
     script(src="app/core/services/storage.service.js")
+    script(src="app/core/services/message.service.js")
     script(src="common/js/development.headers.js")
 
     //-Scripts
@@ -85,3 +87,5 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
     script(src="app/directives/select-cities/selectCities.directive.js")
     script(src="app/directives/selectCountry/selectCountry.directive.js")
     script(src="app/directives/address/address.directive.js")
+    script(src="app/directives/message/confirm.directive.js")
+    script(src="app/directives/message/message.directive.js")

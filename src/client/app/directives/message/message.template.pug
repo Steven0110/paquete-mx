@@ -1,0 +1,8 @@
+.opacity-layer(data-ng-if="showModal")
+  .confirmation-box
+    .icon
+      i.fa.fa-question-circle
+    .confirmation-text(data-ng-bind="question")
+    .confirmation-buttons
+      md-button.md-raised(data-ng-click="cancelModal()",data-ng-bind="shell.labels.confirm.noCancel")
+      md-button.md-raised.md-primary(data-ng-click="confirmModal()", data-ng-bind="shell.labels.confirm.yesContinue")
