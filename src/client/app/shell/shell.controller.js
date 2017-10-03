@@ -5,10 +5,10 @@
     .module('app.core')
     .controller('Shell',Shell);
 
-  Shell.$inject = ['$scope','$state','template','$mdToast','userApi'];
+  Shell.$inject = ['$transitions','$scope','$state','template','$mdToast','userApi'];
 
 
-  function Shell($scope, $state,template, $mdToast, userApi){
+  function Shell($transitions, $scope, $state,template, $mdToast, userApi){
     // jshint validthis: true 
     var shell = this;
     shell.loading = false;
@@ -21,13 +21,6 @@
       {name:'payments',label:"Pagos",hover:false},
       {name:'contacts',label:"Agenda",hover:false}
     ];
-
-    //verificar
-    shell.section = 'shippings';
-
-    shell.setSection =function(section){
-      shell.section = section;
-    }
 
     shell.regex = {
       zip       : /^\d{5}$/,
@@ -99,6 +92,8 @@
       shell.logout();
     }
 
+
+
     function showToast(message){
       $mdToast.show(
         $mdToast.simple()
@@ -107,6 +102,35 @@
           .hideDelay(3000)
       );
     }
+
+    //verificar
+    shell.menu = 'shippings';
+    shell.submenu = 'shippings';
+
+    shell.setMenu =function(menu, submenu){
+      if(menu)
+        shell.menu = menu;
+      if(submenu)
+        shell.submenu = submenu;
+    }
+
+    $transitions.onSuccess({}, function($transitions){
+      var newToState = $transitions.$to();
+      
+      var menu = null;
+      var submenu = null;
+
+      if(newToState.data){
+        if(newToState.data.menu){
+          menu = newToState.data.menu
+        }
+        if(newToState.data.submenu){
+          submenu = newToState.data.submenu
+        }
+
+        shell.setMenu(menu, submenu);
+      }
+    });
 
   };
 })();

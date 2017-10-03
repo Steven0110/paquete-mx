@@ -5,11 +5,13 @@
         .dashboard-logo
           img(data-ng-src="common/images/paquete-mx.png")
         .dashboard-items
-          nav(data-ng-repeat="item in shell.dashMenu",data-ng-click="shell.setSection(item.name)",data-ng-class="{'active':shell.section == item.name}")
-            .selected-bar(data-ng-class="{'active':shell.section == item.name}")
+          nav(data-ng-repeat="item in shell.dashMenu",data-ng-click="shell.setMenu(item.name)",data-ng-class="{'active':shell.menu == item.name}")
+            .selected-bar(data-ng-class="{'active':shell.menu == item.name}")
             span(data-ng-bind="item.label")
     .col-xs-12.col-sm-10
-      //- div
-        a(data-ng-click="shell.logout()")
-        |Salir
+      .dashboard-header
+        .dash-section-title
+          |Mis Direcciones
+        .dash-section-subtitle
+          |Agrega o modifica las direcciones que más usas.
       ui-view

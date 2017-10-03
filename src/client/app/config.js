@@ -92,9 +92,28 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
     })
     .state('dashboard.address',{
       url:'/address',
-      templateUrl: 'app/dashboard/address/address.template.html',
+      templateUrl: 'app/dashboard/address/addresses.template.html',
       controller: 'Addresses',
-      controllerAs: 'addresses'
+      controllerAs: 'addresses',
+      data:{
+        menu: "contacts",
+        submenu: "addresses"
+      }
+    })
+    .state('dashboard.editAddress',{
+      url:'/address/:objectId',
+      templateUrl: 'app/dashboard/address/address.template.html',
+      controller: 'Address',
+      controllerAs: 'address',
+      resolve:{
+        data: function($stateParams, userApi){
+          return userApi.getAddress($stateParams.objectId);
+        }
+      },
+      data:{
+        menu: "contacts",
+        submenu: "addresses"
+      }
     })
     
       

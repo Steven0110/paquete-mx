@@ -83,8 +83,10 @@
           return deferred.promise;
         }
       }
-      
-      params.user = {"__type":"Pointer","className":"_User","objectId":userId};
+      if(params.objectId){
+      }else{
+        params.user = {"__type":"Pointer","className":"_User","objectId":userId};
+      }
       var Address = parse.endpoint('Address');
       return Address.update(params);
     }
@@ -108,7 +110,8 @@
     }
 
     function getAddress(objectId){
-      return Address.get({objectId:objectId}).$promise;
+      var Address = parse.endpoint('Address');
+      return Address.get(objectId);
     }
 
     function deleteAddress(objectId){

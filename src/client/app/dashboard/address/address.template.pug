@@ -1,53 +1,15 @@
-.dashboard-header
-  .dash-section-title
-    |Mis Direcciones
-  .dash-section-subtitle
-    |Agrega o modifica las direcciones que más usas.
 .dashboard-content
   .container-fluid
-    .row
-      .col-xs-6
-        .section-space-right
-          .form-container(data-ng-hide="addresses.list.length > 0")
-            .align-center
-              h1
-                |Aun no tienes direcciones guardadas.
-              p
-                |Al guardar tus direcciones frecuentes, ahorras tiempo cuando haces tus envios y cotizaciones.
-              //- h2.accent(data-ng-click="addresses.showForm(true)")
-                |¡Agrega la primera!
-              .add-dashboard
-                i.fa.fa-plus-circle(data-ng-click="addresses.showForm(true)")
-                h3(data-ng-click="addresses.showForm(true)")
-                  |¡Agrega la primera!
-          .board-element(data-ng-repeat="item in addresses.list")
-            h2
-              |{{item.alias}}
-            .board-list
-              |{{item.street}}, {{item.number}}&nbsp;
-              span(data-ng-if="item.apt")
-                | - {{item.apt}}
-            .board-list
-              |{{item.county}}
-              span(data-ng-if="item.city")
-                |, &nbsp;{{item.city}}
-              span
-                |, {{item.zip}}
-            .board-list
-              |{{item.state}}
-              span.uppercase
-                |, {{item.country.name}}
-            .board-actions
-              i.fa.fa-pencil(data-ng-click="addresses.edit(item)")
-              i.fa.fa-trash(confirm-message, data-ng-click="showModal()", data-question='¿Borrar Dirección?', data-confirm="addresses.delete(item, $index)")
+    .row        
       .col-xs-6
         .section-space-left
           .form-container
-            .add-dashboard(data-ng-hide="addresses.form")
-              i.fa.fa-plus-circle(data-ng-click="addresses.showForm(true)")
-              h3(data-ng-click="addresses.showForm(true)")
-                |Agregar Dirección
-            div(data-ng-show="addresses.form")
+            div
               .form-title
-                |Ingresa tu nueva dirección
-              address-form(data-labels="shell.labels", data-countries="shell.countries",data-show-form="addresses.showForm(value)",data-send-form="addresses.send(response)",data-loading="shell.showLoading()")
+                |Actualizar Dirección
+              address-form(data-labels="shell.labels", data-countries="shell.countries",data-cancel="address.cancel()",data-send-form="address.send(response)",data-loading="shell.showLoading()", data-current-address="address.data")
+      .col-xs-6
+        .section-space-left
+          .form-container
+            md-button.md-raised(data-ng-click="address.delete()")
+              |Eliminar
