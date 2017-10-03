@@ -17,9 +17,10 @@
     shell.countries = [];
 
     shell.dashMenu = [
-      {name:'shippings',label:"Envios",hover:false},
-      {name:'payments',label:"Pagos",hover:false},
-      {name:'contacts',label:"Agenda",hover:false}
+      {name:'shippings',label:"Envios"},
+      {name:'payments',label:"Pagos"},
+      {name:'contacts',label:"Agenda"},
+      {name:'logout',label:"Salir"}
     ];
 
     shell.regex = {
@@ -27,7 +28,6 @@
       mobile    : /^\d{10}$/,
       decimal   : /^\d+(\.\d{1,2})?$/
     }
-
 
     template.get('app/lang/es.json').then(function(labels){
       shell.labels = labels;

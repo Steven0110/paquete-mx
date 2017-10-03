@@ -132,7 +132,7 @@
           var object;
           var deferred = $q.defer();
           id = params && params.objectId ? params.objectId : false;
-          // this.setId(id);
+          this.setId(id);
           if(id){
             this.put(params).then(function(){
               return getObject();
