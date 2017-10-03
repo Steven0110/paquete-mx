@@ -8,6 +8,18 @@
     .row
       .col-xs-6
         .section-space-right
+          .form-container(data-ng-hide="addresses.list.length > 0")
+            .align-center
+              h1
+                |Aun no tienes direcciones guardadas.
+              p
+                |Al guardar tus direcciones frecuentes, ahorras tiempo cuando haces tus envios y cotizaciones.
+              //- h2.accent(data-ng-click="addresses.showForm(true)")
+                |¡Agrega la primera!
+              .add-dashboard
+                i.fa.fa-plus-circle(data-ng-click="addresses.showForm(true)")
+                h3(data-ng-click="addresses.showForm(true)")
+                  |¡Agrega la primera!
           .board-element(data-ng-repeat="item in addresses.list")
             h2
               |{{item.alias}}
@@ -31,9 +43,9 @@
       .col-xs-6
         .section-space-left
           .form-container
-            .add-dashboard(data-ng-click="addresses.showForm(true)",data-ng-hide="addresses.form")
-              i.fa.fa-plus-circle
-              h3
+            .add-dashboard(data-ng-hide="addresses.form")
+              i.fa.fa-plus-circle(data-ng-click="addresses.showForm(true)")
+              h3(data-ng-click="addresses.showForm(true)")
                 |Agregar Dirección
             div(data-ng-show="addresses.form")
               .form-title
