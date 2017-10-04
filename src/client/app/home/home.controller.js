@@ -5,14 +5,13 @@
     .module('app.core')
     .controller('Home',Home);
 
-  Home.$inject = ['$scope','$q','$timeout','template','rateApi'];
+  Home.$inject = ['$state','$scope','$q','$timeout','template','rateApi'];
 
-  function Home($scope, $q, $timeout, template, rateApi){
+  function Home($state, $scope, $q, $timeout, template, rateApi){
     // jshint validthis: true 
     var home = this;
     var shell = $scope.shell;
     var index = 1;
-    // var citiesAllowed = ['mx','us','ca','ar'];
     home.fromCities = {};
     home.toCities = {};
     home.countries = shell.countries;
@@ -21,22 +20,37 @@
 
     home.shipping ={
       from:{
-        search: null,
-        data: null,
+        search: "09770",
+        data: {},
         country: null
       },
       to:{
-        search: null,
-        data: null,
+        search: "06050",
+        data: {},
         country: null
       },
-      type: "envelope",
+      type: "box",
       package:{
         weight: "1",
         width: "25",
         length: "25",
         height: "25"
       }
+    }
+
+    home.setService = function(service){
+
+      home.shipping.from.data.country = home.shipping.from.country;
+      home.shipping.to.data.country = home.shipping.to.country;
+
+      var shipping ={
+        service     : service,
+        from        : home.shipping.from.data,
+        to          : home.shipping.to.data,
+        package     : home.shipping.package
+      }
+      shell.setShipping(shipping);
+      $state.go('checkout');
     }
 
     // $timeout(function(){
@@ -88,12 +102,12 @@
       $('.benefits-'+index).slideDown(500);
     }
 
-    home.cleanSearch = function(type){
-      if(home.shipping[type].data){
-        home.shipping[type].data =  null;
-        home.shipping[type].search = null;
-      }
-    }
+    // home.cleanSearch = function(type){
+    //   if(home.shipping[type].data){
+    //     home.shipping[type].data =  null;
+    //     home.shipping[type].search = null;
+    //   }
+    // }
 
     // function loadCities(country, section){
     //   console.log(country);
@@ -112,7 +126,7 @@
     $scope.$watch('home.shipping.to.country',function(newVal, prevVal){
       if(prevVal != newVal){
         if(newVal && newVal.code){
-          home.shipping.to.search = null;
+          // home.shipping.to.search = null;
           // loadCities(newVal.code,'toCities');
         }
       }
@@ -280,10 +294,12 @@
       /* section animation */
       // console.log($('.section-1').position().top);
       if(index <= home.sections.length){
-        var sectionDistance = scroll+(distance-viewport)+menu;
-        if( sectionDistance+200 >= $('.section-'+index).position().top ){
-          $('.image-'+index).addClass('active')
-          index++;
+        if($('.section-'+index).position()){
+          var sectionDistance = scroll+(distance-viewport)+menu;
+          if( sectionDistance+200 >= $('.section-'+index).position().top ){
+            $('.image-'+index).addClass('active')
+            index++;
+          }
         }
       }
     

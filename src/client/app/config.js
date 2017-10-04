@@ -57,6 +57,13 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controllerAs: 'home'
 
     })
+    .state('checkout',{
+      url:'/checkout',
+      templateUrl : 'app/checkout/checkout.template.html',
+      controller: 'Checkout',
+      controllerAs: 'checkout'
+
+    })
     .state('login',{
       url:'/login',
       templateUrl : 'app/login/login.template.html',

@@ -15,6 +15,7 @@
     shell.loaded = false;
     shell.labels = false;
     shell.countries = [];
+    shell.shipping = false;
 
     shell.dashMenu = [
       {name:'shippings',label:"Envios"},
@@ -63,6 +64,16 @@
       if(!message)
         message = "Hubo un error, recarga la página";
       showToast(message);
+    }
+
+
+    shell.setShipping = function(shipping){
+      console.log(shipping);
+      shell.shipping = shipping;
+    }
+
+    shell.getShipping = function(){
+      return shell.shipping;
     }
 
     shell.setCurrentUser = function(user){

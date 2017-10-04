@@ -5,10 +5,13 @@
   .module('app.core')
   .factory('parse', parse);
 
-  parse.$inject = ['$q', 'Restangular'];
+  parse.$inject = ['$q', 'Restangular', 'parseheaders'];
 
   /* @ngInject */
-  function parse($q, Restangular) {
+  function parse($q, Restangular, parseheaders) {
+
+    // Restangular.setBaseUrl('https://parseapi.back4app.com/');
+    // Restangular.setDefaultHeaders(parseheaders.restKeys);
 
     var factory = {
       cloud     : cloud,
@@ -21,6 +24,8 @@
     return factory;
 
     function cloud(cloudFunction){
+      Restangular.setBaseUrl('https://parseapi.back4app.com/');
+      Restangular.setDefaultHeaders(parseheaders.restKeys);
       return Restangular.service('functions/'+cloudFunction);
     }
 

@@ -162,7 +162,7 @@
                 .item-amount
                   |{{item.delivery}}
               .col-xs-3.align-center
-                md-button.md-raised.md-primary
+                md-button.md-raised.md-primary(data-ng-click="home.setService(item)")
                   |Seleccionar
     div(data-ng-if="!home.rated")
       .big-text(data-ng-class="{'active':home.active}")

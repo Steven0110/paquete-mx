@@ -83,10 +83,9 @@
           return deferred.promise;
         }
       }
-      if(params.objectId){
-      }else{
-        params.user = {"__type":"Pointer","className":"_User","objectId":userId};
-      }
+          
+      params.user = {"__type":"Pointer","className":"_User","objectId":userId};
+      
       var Address = parse.endpoint('Address');
       return Address.update(params);
     }

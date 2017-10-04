@@ -4,8 +4,8 @@ angular
 run.$inject = ['$rootScope','$transitions','$state','parseheaders','userApi','Restangular'];
 
 function run($rootScope, $transitions,$state, parseheaders, userApi, Restangular) {  
-  Restangular.setBaseUrl('https://parseapi.back4app.com/');
-  Restangular.setDefaultHeaders(parseheaders.restKeys);
+  // Restangular.setBaseUrl('https://parseapi.back4app.com/');
+  // Restangular.setDefaultHeaders(parseheaders.restKeys);
 
 //   Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
 //     console.log(responseHandler);

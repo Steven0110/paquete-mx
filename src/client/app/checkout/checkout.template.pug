@@ -1,0 +1,69 @@
+.menu-container
+  .menu.menu-tabs.clearfix
+    div(data-ng-include="'app/templates/menu.template.html'")
+.pages
+  .dashboard-content
+    .container-fluid
+      .row
+        .col-xs-6
+          .section-space-right
+            .form-container
+              h1.accent
+                |Servicio Seleccionado
+              div
+                .container-fluid
+                  .row
+                    .col-xs-6
+                      .section-space-right
+                        h2
+                          |Origen
+                        div(data-ng-if="!checkout.from")
+                          |Debes ingresar la dirección de origen.
+                        div(data-ng-if="checkout.from")
+                          .board-list
+                            |{{checkout.from.street}}, {{checkout.from.number}}&nbsp;
+                            span(data-ng-if="checkout.from.apt")
+                              | - {{checkout.from.apt}}
+                          .board-list
+                            |{{checkout.from.county}}
+                            span(data-ng-if="checkout.from.city")
+                              |, {{checkout.from.city}}
+                            span
+                              |, {{checkout.from.zip}}
+                          .board-list
+                            |{{checkout.from.state}}
+                            span.uppercase
+                              |, {{checkout.from.country.name}}
+                    .col-xs-6
+                      .section-space-left
+                        h2
+                          |Destino
+                        div(data-ng-if="!checkout.to")
+                          |Debes ingresar la dirección de destino.
+                        div(data-ng-if="checkout.to")
+                          .board-list
+                            |{{checkout.to.street}}, {{checkout.to.number}}&nbsp;
+                            span(data-ng-if="checkout.to.apt")
+                              | - {{checkout.to.apt}}
+                          .board-list
+                            |{{checkout.to.county}}
+                            span(data-ng-if="checkout.to.city")
+                              |, {{checkout.to.city}}
+                            span
+                              |, {{checkout.to.zip}}
+                          .board-list
+                            |{{checkout.to.state}}
+                            span.uppercase
+                              |, {{checkout.to.country.name}}
+        .col-xs-6
+          .section-space-left
+            .form-container(data-ng-show="checkout.step=='payment'")
+              md-button.md-raised(data-ng-click="checkout.order()")
+            .form-container(data-ng-show="checkout.step=='from'")
+              .form-title
+                |Dirección de Origen
+              address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.fromAddress(response)", data-current-address="checkout.shipping.from")
+            .form-container(data-ng-show="checkout.step=='to'")
+              .form-title
+                |Dirección de Destino
+              address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.toAddress(response)",data-current-address="checkout.shipping.to")
