@@ -1,0 +1,45 @@
+div(layout-xs-sm="row")
+  md-input-container.md-block
+    label(for="cardName",data-ng-bind="labels.name")
+    input(name="cardName", data-ng-model="newCard.name", required)
+    div(ng-messages="formName.cardName.$error")
+      div(ng-message="required")
+        |Es requerido
+  md-input-container.md-block
+    label(for="cardNumber",data-ng-bind="labels.number")
+    input(name="cardNumber", data-ng-model="newCard.number", validate-card)
+    div(ng-messages="formName.cardNumber.$error")
+      div(ng-message="required")
+        |Es requerido
+  .row-content
+    .container-fluid.big-icon
+      .row.align-center
+        .col-xs-4
+          i.icon.fa.fa-cc-visa(data-ng-class="{'active': brand =='visa'}")
+        .col-xs-4
+          i.icon.fa.fa-cc-mastercard(data-ng-class="{'active': brand =='mastercard'}")
+        .col-xs-4
+          i.icon.fa.fa-cc-amex(data-ng-class="{'active': brand =='amex'}")
+  md-input-container.md-block
+    label(for="cvc",data-ng-bind="labels.cvc")
+    input(name="cvc", data-ng-model="newCard.cvc", validate-cvc)
+    div(ng-messages="formName.cvc.$error")
+      div(ng-message="required")
+        |Es requerido
+  div
+    .row
+      .col-xs-12.col-sm-5
+        md-input-container.md-block
+          label
+            |Mes de Expiración
+          md-select(name="month", data-ng-model="newCard.exp_month")
+            md-option(data-ng-repeat="item in months", value="{{item}}")
+              |{{item}}
+      .col-xs-2
+      .col-xs-12.col-sm-5
+        md-input-container.md-block
+          label
+            |Año de Expiración
+          md-select(name="month", data-ng-model="newCard.exp_year")
+            md-option(data-ng-repeat="item in years", value="{{item}}")
+              |{{item}}

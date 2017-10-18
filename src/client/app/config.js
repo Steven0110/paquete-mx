@@ -107,6 +107,16 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
         submenu: "addresses"
       }
     })
+    .state('dashboard.paymentMethod',{
+      url:'/payment-method',
+      templateUrl: 'app/dashboard/paymentMethod/paymentMethod.template.html',
+      controller: 'PaymentMethod',
+      controllerAs: 'paymentMethod',
+      data:{
+        menu: "contacts",
+        submenu: "addresses"
+      }
+    })
     .state('dashboard.editAddress',{
       url:'/address/:objectId',
       templateUrl: 'app/dashboard/address/address.template.html',

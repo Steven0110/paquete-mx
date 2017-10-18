@@ -19,8 +19,8 @@
 
     function endpoint(endpoint){
       ///dev-rate
-      Restangular.setBaseUrl('https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/rate');
-      Restangular.setDefaultHeaders({'Content-Type': 'application/json'});
+      // Restangular.setBaseUrl('https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/rate');
+      // Restangular.setDefaultHeaders({'Content-Type': 'application/json'});
       return new ParseClass(endpoint);
     }
 
