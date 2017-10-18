@@ -20,6 +20,9 @@
         'applicationID' : 'OaKte4Imh3dk5JIhsJoLAcLaPYMb2mQUeqyHXrP1',
         'javascriptKey':'wcFLh2UROrO8fN9SbFbgbeOZTZOlPu3YkAMys1bL'
 
+      },
+      conektaKeys:{
+        'public': 'key_OhCaMWr5dkyi8V8PuzoGUPw'
       }
     };
   }

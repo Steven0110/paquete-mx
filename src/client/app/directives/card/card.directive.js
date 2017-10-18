@@ -15,7 +15,6 @@ function cardForm(userApi){
     bindToController: true,
     controllerAs: 'card',
     controller: function($scope){
-
       var card = this;
 
       // if(!card.info){
@@ -40,8 +39,25 @@ function cardForm(userApi){
 
       card.send = function(){
         if(card.form.$valid){
-          var data = card.info;
-          card.sendForm({response:{result:true, data:data}});
+          // var data = card.info;
+
+          conektaApi.update(card.info).then(function(newcard){
+            // shell.setSuccess("La tarjeta se agrego con éxito.");
+            // $state.go($state.current, {}, {reload: true});
+            console.log(newcard);
+          },function(error){
+            console.log(error);
+            if(error && error.message_to_purchaser){
+              error = error.message_to_purchaser;
+            }else{
+              error = 'Hubo un error por favor recarga tu navegador e intenta de nuevo.';
+            }
+            console.log(error);
+            // shell.setError(error);
+          });
+          // .finally(shell.stopLoading);
+
+          // card.sendForm({response:{result:true, data:data}});
         }else{
           alert('invalid form');
         }

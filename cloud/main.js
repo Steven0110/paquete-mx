@@ -1,6 +1,7 @@
 /*change log
 
 3-Octubre-2017: Se crea la función para registrar el shipping
+18-Octubre-2017: Se crea la función para guardar tarjetas
 change log*/
 
 
@@ -17,10 +18,133 @@ if(production){
   // var masterKey = "GDF6rB6TfdUzV14WjPTCpsC8bT4ki0lzf0KC4L0Q";
   // var javascriptKey = "IgkJ82CLUN4xIpiwD9UmFblPaUE650tRsw46Mbld";
 }else{
+  var conekta_key = 'Basic OmtleV81elE2NGZIcWhRZmYzSEthaUNWVDRn';
   var appId = "OaKte4Imh3dk5JIhsJoLAcLaPYMb2mQUeqyHXrP1";
   var masterKey = "rZx1h8G9530G73xbzk5F1MLvGzb080KL2u55uC8S";
   var javascriptKey = "wcFLh2UROrO8fN9SbFbgbeOZTZOlPu3YkAMys1bL";
 }
+
+
+//CREATES & UPDATES CONKETA USER WHEN PARSE USER IS UPDATED
+Parse.Cloud.beforeSave("_User", function(request, response){
+  // var clientId = request.object.get('clientId');
+
+  var name = request.object.get('name');
+  var lastname = request.object.get('lastname');
+  var fullName = name+" "+lastname;
+  var email = request.object.get('username');
+  var mobile = request.object.get('mobile');
+  var body = {name:fullName,email:email};
+  var conektaId = null;
+  var url = 'https://api.conekta.io/customers';
+  conektaId = request.object.get('conektaId');
+  var method = "POST";
+
+  if(conektaId){
+    url += "/"+conektaId;
+    method =  "PUT";
+
+    if(mobile && mobile.length == 10){
+      body.phone = "+52"+mobile;
+    }
+
+    conektaUser(method,body,url).then(function(httpResponse){
+      response.success();
+    },function(error){
+      response.error(error);
+    });
+  }else{
+    response.success();
+  }
+});
+
+Parse.Cloud.afterSave("_User", function(request){
+  var conektaId = null;
+  conektaId = request.object.get('conektaId');
+
+  if(!conektaId){
+    var method = "POST";
+    var name = request.object.get('name');
+    var lastname = request.object.get('lastname');
+    var fullName = name+" "+lastname;
+    var email = request.object.get('username');
+    var mobile = request.object.get('mobile');
+    var body = {name:fullName,email:email,phone:mobile};
+
+
+    conektaUser(method,body).then(function(httpResponse){
+      if(httpResponse.text){
+        conektaId = JSON.parse(httpResponse.text);
+        console.log('conektaId');
+        console.log(conektaId.id);
+        if(conektaId && conektaId.id){
+          conektaId =  conektaId.id;
+          request.object.set('conektaId',conektaId);
+          request.object.save(null,{useMasterKey:true});
+        }
+      }
+    },function(error){
+      request.object.errors = [];
+      request.object.errors.push(error);
+      resques.object.save();
+    });
+  }
+});
+
+
+
+//CREATES & UPDATES CONKETA USER WHEN PARSE USER IS UPDATED
+
+//CONEKTA REQUEST
+function conektaUser(method,body, url){
+  if(!url)
+    url = 'https://api.conekta.io/customers';
+  return Parse.Cloud.httpRequest({
+    method: method,
+    headers: {
+      'Accept':'application/vnd.conekta-v2.0.0+json',
+      'Content-Type': 'application/json',
+      'Authorization': conekta_key
+    },
+    url: url,
+    body: body
+    });
+}
+//CONEKTA REQUEST
+
+/*SAVE CARD CONEKTA*/
+Parse.Cloud.define("saveCard", function(request, response){
+  var params = request.params;
+  var conektaId =  params.conektaId;
+  
+  if(!conektaId){
+    var user = request.user;
+    conektaId = user.get('conektaId');
+  }
+
+  var token =  params.token;
+
+  var url = 'https://api.conekta.io/customers/'+conektaId+"/payment_sources";
+  var method = 'POST';
+  var result;
+  Parse.Cloud.httpRequest({
+    method: method,
+    headers: {
+      'Accept':'application/vnd.conekta-v2.0.0+json',
+      'Content-Type': 'application/json',
+      'Authorization': conekta_key
+    },
+    url: url,
+    body: {token_id:token, type:'card'}
+    }).then(function(httpResponse){
+      result = httpResponse;
+      response.success(result);
+    },function(result){
+      response.error(result);
+    });
+});
+/*SAVE CARD CONEKTA*/
+
 
 Parse.Cloud.define("Shipping", function(request, response) {
   
