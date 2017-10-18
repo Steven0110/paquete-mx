@@ -54,5 +54,18 @@
       "save" : "Guardar",
       "cancel": "Cancelar"
     }
+  },
+  "paymentMethod":{
+    "form":{
+      "name": "Nombre que aparece en tu tarjeta.",
+      "number": "Número que aparece en tu tarjeta",
+      "expirationYear": "Año de expiración",
+      "expirationMonth": "Mes de expiración",
+      "cvc":"Código de Seguridad",
+      "save": "Guardar Tarjeta",
+      "errors":{
+        "required": "Es requerido"
+      }
+    }
   }
 }

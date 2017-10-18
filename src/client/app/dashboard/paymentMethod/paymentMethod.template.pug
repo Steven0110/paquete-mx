@@ -7,4 +7,7 @@
             div
               .form-title
                 |Tarjeta de Crédito
-              card-form()
+              form(name="cardForm", novalidate, data-ng-submit="paymentMethod.update()")
+                card-form( data-labels="paymentMethod.labels")
+                .align-center
+                  md-button.md-raised.md-primary(type="submit", data-ng-bind="paymentMethod.labels.form.save")

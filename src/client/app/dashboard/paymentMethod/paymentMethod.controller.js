@@ -12,6 +12,10 @@
     // jshint validthis: true 
     var paymentMethod = this;
     var shell = $scope.shell;
+
+    paymentMethod.labels = shell.labels.paymentMethod;
+
+    console.log(shell.labels.paymentMethod);
     
   };
 })();
