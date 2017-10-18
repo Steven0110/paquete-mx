@@ -16,6 +16,7 @@
     shell.labels = false;
     shell.countries = [];
     shell.shipping = false;
+    shell.currentUser = false;
 
     shell.dashMenu = [
       {name:'shippings',label:"Envios"},
@@ -80,6 +81,10 @@
       userApi.setCurrentUser(user);
       shell.currentUser = user;
     };
+
+    shell.getCurrentUser = function(){
+      return userApi.currentUser();
+    }
 
     shell.logout = function(){
       userApi.logout();

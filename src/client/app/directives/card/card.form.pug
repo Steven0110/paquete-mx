@@ -31,14 +31,14 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
         .col-xs-12.col-sm-5
           md-input-container.md-block
             label(data-ng-bind="card.labels.form.expirationMonth")
-            md-select(name="month", data-ng-model="card.info.expMonth")
+            md-select(name="month", data-ng-model="card.info.exp_month")
               md-option(data-ng-repeat="item in card.months", value="{{item}}")
                 |{{item}}
         .col-xs-2
         .col-xs-12.col-sm-5
           md-input-container.md-block
             label(data-ng-bind="card.labels.form.expirationYear")
-            md-select(name="month", data-ng-model="card.info.expYear")
+            md-select(name="month", data-ng-model="card.info.exp_year")
               md-option(data-ng-repeat="item in card.years", value="{{item}}")
                 |{{item}}
     .align-center

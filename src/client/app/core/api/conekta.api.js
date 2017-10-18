@@ -55,9 +55,10 @@
       return deferred.promise;
     }
 
-    function update(card){
+    function update(card, conektaId){
       var deferred = $q.defer();
-      Conekta.setPublishableKey(conketaPublicKey);
+      console.log(Conekta);
+      // Conekta.setPublishableKey(conketaPublicKey);
       var errorResponseHandler,
           successResponseHandler,
           tokenParams;
@@ -65,7 +66,7 @@
       tokenParams = {card:card};
 
       successResponseHandler = function(token) {
-        var params = {token:token.id};
+        var params = {token:token.id, conektaId: conektaId};
         var Cloud = parse.cloud('saveCard');
         Cloud.post(params).then(function(result){
           deferred.resolve(result.result);
@@ -80,7 +81,7 @@
         deferred.reject(error)
       };
 
-      Conekta.token.create(tokenParams, successResponseHandler, errorResponseHandler);
+      Conekta.Token.create(tokenParams, successResponseHandler, errorResponseHandler);
       return deferred.promise;
 
     }
