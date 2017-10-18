@@ -145,6 +145,36 @@ Parse.Cloud.define("saveCard", function(request, response){
 });
 /*SAVE CARD CONEKTA*/
 
+/*GET CUSTOMER CARDS IN CONEKTA*/
+Parse.Cloud.define("getCustomer",function(request, response){
+  var conektaId = request.params.conektaId;
+
+  if(!conektaId){
+    var user = request.user;
+    conektaId = user.get('conektaId');
+  }
+
+  var url = 'https://api.conekta.io/customers/'+conektaId;
+
+  Parse.Cloud.httpRequest({
+    method: "GET",
+    headers: {
+      'Accept':'application/vnd.conekta-v2.0.0+json',
+      'Content-Type': 'application/json',
+      'Authorization': conekta_key
+    },
+    url: url,
+    success: function(httpResponse) {
+      response.success(httpResponse);
+    },
+    error: function(httpResponse) {
+      console.error('Request failed with response code ' + httpResponse.status);
+      response.error();
+    }
+  });
+});
+/*GET CUSTOMER CARDS IN CONEKTA*/
+
 
 Parse.Cloud.define("Shipping", function(request, response) {
   

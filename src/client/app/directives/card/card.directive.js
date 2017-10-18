@@ -10,7 +10,6 @@ function cardForm(conektaApi){
     templateUrl: 'app/directives/card/card.form.html',
     scope: {
       labels    : "=",
-      user      : "=",
       sendForm  : "&"
     },
     bindToController: true,
@@ -26,8 +25,6 @@ function cardForm(conektaApi){
         exp_year : 2018
       }
 
-      console.log('user',card.user);
-
       card.months = [];
       for(var i=1; i<=12; i++){
         card.months.push(i);
@@ -42,14 +39,8 @@ function cardForm(conektaApi){
         if(card.form.$valid){
           // var data = card.info;
           var conektaId =  false;
-
-          console.log(card.user);
-          if( card.user && card.user.conektaId)
-            conektaId = card.user.conektaId;
-          else
-            alert('Error invalid conektaId');
           
-          conektaApi.update(card.info, conektaId).then(function(newCard){
+          conektaApi.update(card.info).then(function(newCard){
             // shell.setSuccess("La tarjeta se agrego con éxito.");
             // $state.go($state.current, {}, {reload: true});
             card.sendForm(newCard);

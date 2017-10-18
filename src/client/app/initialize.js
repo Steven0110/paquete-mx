@@ -18,6 +18,11 @@ function run($rootScope, $transitions,$state, parseheaders, userApi, Restangular
 //     return true; // error not handled
 // });
 
+  var user = userApi.currentUser()
+  if(user){
+    parseheaders.restKeys['X-Parse-Session-Token'] = user.sessionToken;
+  }
+
   $transitions.onSuccess({}, function($transitions){
     var newToState = $transitions.$to();
     if(newToState.parent && newToState.parent.data && newToState.parent.data.access){

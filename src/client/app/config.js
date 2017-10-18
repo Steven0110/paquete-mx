@@ -115,6 +115,11 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       data:{
         menu: "contacts",
         submenu: "addresses"
+      },
+      resolve:{
+        data: function(conektaApi){
+          return conektaApi.getCards();
+        }
       }
     })
     .state('dashboard.editAddress',{

@@ -2,9 +2,44 @@
   .container-fluid
     .row        
       .col-xs-6
+        .section-space-right
+          .form-container(data-ng-show="paymentMethod.list.length < 1")
+            .align-center
+              h1
+                |Aun no tienes tarjetas guardadas.
+              
+              .add-dashboard
+                i.fa.fa-plus-circle(data-ng-click="paymentMethod.showForm(true)")
+                h3(data-ng-click="paymentMethod.showForm(true)")
+                  |¡Agrega la primera!
+          .board-element(data-ng-repeat="item in paymentMethod.list")
+            |{{item}}
+            //- .board-list
+            //-   |{{item.street}}, {{item.number}}&nbsp;
+            //-   span(data-ng-if="item.apt")
+            //-     | - {{item.apt}}
+            //- .board-list
+            //-   |{{item.county}}
+            //-   span(data-ng-if="item.city")
+            //-     |, &nbsp;{{item.city}}
+            //-   span
+            //-     |, {{item.zip}}
+            //- .board-list
+            //-   |{{item.state}}
+            //-   span.uppercase
+            //-     |, {{item.country.name}}
+            //- .board-actions
+            //-   a(ui-sref="dashboard.editAddress({'objectId':item.objectId})")
+            //-     i.fa.fa-pencil
+            //-   i.fa.fa-trash(confirm-message, data-ng-click="showModal()", data-question='¿Borrar Dirección?', data-confirm="addresses.delete(item, $index)")
+      .col-xs-6
         .section-space-left
           .form-container
-            div
+            .add-dashboard(data-ng-hide="paymentMethod.form")
+              i.fa.fa-plus-circle(data-ng-click="paymentMethod.showForm(true)")
+              h3(data-ng-click="paymentMethod.showForm(true)")
+                |Agregar Tarjeta
+            div(data-ng-show="paymentMethod.form")
               .form-title
-                |Tarjeta de Crédito
-              card-form( data-labels="paymentMethod.labels", data-send-form="paymentMethod.send(response)", data-user="paymentMethod.user")
+                |Agregar Tarjeta.
+              card-form( data-labels="paymentMethod.labels", data-send-form="paymentMethod.send(response)")
