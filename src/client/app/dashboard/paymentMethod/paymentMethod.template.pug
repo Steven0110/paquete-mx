@@ -13,25 +13,12 @@
                 h3(data-ng-click="paymentMethod.showForm(true)")
                   |¡Agrega la primera!
           .board-element(data-ng-repeat="item in paymentMethod.list")
-            |{{item}}
-            //- .board-list
-            //-   |{{item.street}}, {{item.number}}&nbsp;
-            //-   span(data-ng-if="item.apt")
-            //-     | - {{item.apt}}
-            //- .board-list
-            //-   |{{item.county}}
-            //-   span(data-ng-if="item.city")
-            //-     |, &nbsp;{{item.city}}
-            //-   span
-            //-     |, {{item.zip}}
-            //- .board-list
-            //-   |{{item.state}}
-            //-   span.uppercase
-            //-     |, {{item.country.name}}
-            //- .board-actions
-            //-   a(ui-sref="dashboard.editAddress({'objectId':item.objectId})")
-            //-     i.fa.fa-pencil
-            //-   i.fa.fa-trash(confirm-message, data-ng-click="showModal()", data-question='¿Borrar Dirección?', data-confirm="addresses.delete(item, $index)")
+            .board-list
+              |{{item.brand}}
+            .board-list
+              |**** **** **** {{item.last4}}
+            .board-actions
+              i.fa.fa-trash(confirm-message, data-ng-click="showModal()", data-question='¿Borrar Dirección?', data-confirm="paymentMethod.delete(item, $index)")
       .col-xs-6
         .section-space-left
           .form-container

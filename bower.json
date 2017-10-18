@@ -25,6 +25,8 @@
     "restangular": "^1.6.1",
     "angular-local-storage": "^0.7.1",
     "flag-icon-css": "^2.8.0",
-    "conekta.js": "^0.6.0"
+    "conekta.js": "^0.6.0",
+    "angular-card": "^0.3.12",
+    "card": "^2.4.0"
   }
 }

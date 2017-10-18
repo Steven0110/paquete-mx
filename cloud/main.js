@@ -25,6 +25,31 @@ if(production){
 }
 
 
+//DELETES CARD FROM CONEKTA
+Parse.Cloud.define("removeCard",function(request, response){
+  var user = request.user;
+  var conektaId = user.get('conektaId');
+  var cardId = request.params.cardId;
+  var url = 'https://api.conekta.io/customers/'+conektaId+"/payment_sources/"+cardId;
+
+  Parse.Cloud.httpRequest({
+    method: "DELETE",
+    headers: {
+      'Accept':'application/vnd.conekta-v2.0.0+json',
+      'Content-Type': 'application/json',
+      'Authorization': conekta_key
+    },
+    url: url,
+    success: function(httpResponse) {
+      response.success(httpResponse);
+    },
+    error: function(httpResponse) {
+      response.error(httpResponse);
+    }
+  });
+});
+//DELETES CARD FROM CONEKTA
+
 //CREATES & UPDATES CONKETA USER WHEN PARSE USER IS UPDATED
 Parse.Cloud.beforeSave("_User", function(request, response){
   // var clientId = request.object.get('clientId');
