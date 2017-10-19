@@ -21,6 +21,7 @@ function selectCities($http){
     controllerAs: 'vm',
     controller:function($scope){ 
       var vm = this;
+      vm.loading;
       var search;
       var country;
 
@@ -52,6 +53,8 @@ function selectCities($http){
         if(search && search.length > 2){
           // var options = JSON.search(vm.cities, '//*[contains(county, "'+term+'") or contains(zip, "'+term+'")]');
           console.log(search);
+          vm.loading = true;
+          vm.options = [];
           $http({
             method: 'POST',
             url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/rate/counties',
@@ -65,10 +68,12 @@ function selectCities($http){
               vm.options = response.data;
             else
               vm.options = [];
-              
+            
           }, function(err) {
             vm.options = [];
             console.log(err);
+          }).finally(function(){
+            vm.loading = false;
           });
         }else{
           vm.options = [];

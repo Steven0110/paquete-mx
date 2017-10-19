@@ -20,16 +20,16 @@
 
     home.shipping ={
       from:{
-        search: "09770",
+        search: null,
         data: {},
         country: null
       },
       to:{
-        search: "06050",
+        search: null,
         data: {},
         country: null
       },
-      type: "box",
+      type: "envelope",
       package:{
         weight: "1",
         width: "25",
@@ -58,6 +58,11 @@
       
       
     // },500);
+    home.fromSearch  = null;
+
+    home.changeFrom = function(){
+      home.shipping.from.search = home.fromSearch;
+    }
 
     home.selectItem = function(item){
       home.shipping.from.zip = item;
