@@ -20,15 +20,19 @@
 
     checkout.shipping = shell.getShipping();
 
+
+    console.log('checkout-shipping',checkout.shipping);
+
     checkout.order = function(){
       var order = {
-        service : checkout.shipping.service,
-        from    : checkout.from,
-        to      : checkout.to
+        service   : checkout.shipping.service,
+        from      : checkout.from,
+        to        : checkout.to,
+        packages  : [checkout.shipping.package]
       }
 
-      console.log(order);
-      rateApi.ship({}).then(function(response){
+      console.log('order-shipping',order);
+      rateApi.ship(order).then(function(response){
         console.log(response);
       },function(err){
         console.log(err);

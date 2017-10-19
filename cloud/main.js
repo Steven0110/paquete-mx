@@ -219,6 +219,11 @@ Parse.Cloud.define("Shipping", function(request, response) {
   // query.equalTo({"objectId":userId});
   var user;
   var params ={};
+
+  var body = {
+    type      : shipping.service.service,
+    shipping  : shipping
+  }
   query.get(userId).then(function(user){
     user = user;
 
@@ -228,15 +233,18 @@ Parse.Cloud.define("Shipping", function(request, response) {
         'Content-Type': 'application/json'
       },
       url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/rate/ship',
-      body: shipping
+      body: body
     }).then(function(result){
+      console.log('result-shipping');
+      console.log(result);
       var Shipping = Parse.Object.extend('Shipping');
       var shipping = new Shipping();
       shipping.set("user",user);
 
       if(result.text){
         result =  JSON.parse(result.text);
-
+        console.log('result-json');
+        console.log(result);
         params = {
           total : result.total,
           negotiated : result.negotiated,

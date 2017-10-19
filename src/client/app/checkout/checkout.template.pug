@@ -7,6 +7,18 @@
       .row
         .col-xs-6
           .section-space-right
+            .form-container(data-ng-show="checkout.step=='payment'")
+              md-button.md-raised(data-ng-click="checkout.order()")
+            .form-container(data-ng-show="checkout.step=='from'")
+              .form-title
+                |Dirección de Origen
+              address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.fromAddress(response)", data-current-address="checkout.shipping.from")
+            .form-container(data-ng-show="checkout.step=='to'")
+              .form-title
+                |Dirección de Destino
+              address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.toAddress(response)",data-current-address="checkout.shipping.to")
+        .col-xs-6
+          .section-space-left
             .form-container
               h1.accent
                 |Servicio Seleccionado
@@ -55,15 +67,3 @@
                             |{{checkout.to.state}}
                             span.uppercase
                               |, {{checkout.to.country.name}}
-        .col-xs-6
-          .section-space-left
-            .form-container(data-ng-show="checkout.step=='payment'")
-              md-button.md-raised(data-ng-click="checkout.order()")
-            .form-container(data-ng-show="checkout.step=='from'")
-              .form-title
-                |Dirección de Origen
-              address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.fromAddress(response)", data-current-address="checkout.shipping.from")
-            .form-container(data-ng-show="checkout.step=='to'")
-              .form-title
-                |Dirección de Destino
-              address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.toAddress(response)",data-current-address="checkout.shipping.to")

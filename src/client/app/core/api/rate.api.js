@@ -59,13 +59,17 @@
       params.debugging = true;
 
       //automatizar
-      params.type = "ups";
+      // if(params.service && params.service.service)
+        // params.type = params.service.service;
+
+      // console.log('params-order',params);
 
       var Shipping = parse.cloud('Shipping');
       Shipping.post({shipping:params,userId:userId}).then(function(result){
+        // console.log(result);
         deferred.resolve(result.result);
       },function(error){
-        console.log(error);
+        console.error(error);
         deferred.reject(error);
       });
       return deferred.promise;

@@ -50,29 +50,34 @@
                           md-input-container.md-block
                             label(for="fromZip")
                               |Código Postal o Colonia
-                            input(name="fromZip", data-ng-model="home.fromSearch", data-ng-focus="home.cleanSearch('from')",
-                            data-ng-change="home.changeFrom()",
-                            data-ng-model-options="{debounce: 800}",required)
-                            div(ng-messages="home.shippingForm.fromZip.$error")
-                              .message(ng-message="required")
-                                |Es requerido.
-                            select-cities(data-cities="home.fromCities", data-selected="home.shipping.from.data", data-search="home.shipping.from.search",data-country="home.shipping.from.country")
-                        .row
-                          h3.no-margin
-                            |Destino
-                          .col-xs-3
-                            .margin-top-1
-                              select-country(data-countries="shell.countries", data-country="home.shipping.to.country")
-                          .col-xs-9
-                            md-input-container.md-block
-                              label(for="toZip")
-                                |Código Postal o Colonia
-                              input(name="toZip", data-ng-model="home.shipping.to.search",
-                              data-ng-focus="home.cleanSearch('to')",data-ng-model-options="{debounce: 800}",required)
+                            .input-container
+                              .city-selected(data-ng-show="home.shipping.from.data.zip", data-ng-click="home.cleanSearch('from')")
+                                |{{home.shipping.from.data.zip}} - {{home.shipping.from.data.county}} - {{home.shipping.from.data.city}}
+                              div(data-ng-hide="home.shipping.from.data.zip")
+                                input(name="fromZip", data-ng-model="home.fromSearch",data-ng-change="home.changeFrom()", data-ng-model-options="{debounce: 1000}",required)
+                              div(ng-messages="home.shippingForm.fromZip.$error")
+                                .message(ng-message="required")
+                                  |Es requerido.
+                              select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.shipping.from.search",data-country="home.shipping.from.country")
+                      .row
+                        h3.no-margin
+                          |Destino
+                        .col-xs-3
+                          .margin-top-1
+                            select-country(data-countries="shell.countries", data-country="home.shipping.to.country")
+                        .col-xs-9
+                          md-input-container.md-block
+                            label(for="toZip")
+                              |Código Postal o Colonia
+                            .input-container
+                              .city-selected(data-ng-show="home.shipping.to.data.zip", data-ng-click="home.cleanSearch('to')")
+                                |{{home.shipping.to.data.zip}} {{home.shipping.to.data.county}} {{home.shipping.to.data.city}}
+                              div(data-ng-hide="home.shipping.to.data.zip")
+                                input(name="toZip", data-ng-model="home.toSearch",data-ng-change="home.changeTo()", data-ng-model-options="{debounce: 1000}",required)
                               div(ng-messages="home.shippingForm.toZip.$error")
                                 .message(ng-message="required")
                                   |Es requerido.
-                              select-cities(data-cities="home.toCities", data-selected="home.shipping.to.data", data-search="home.shipping.to.search", data-country="home.shipping.to.country")
+                              select-cities(data-cities="home.toCities", data-selected="home.shipping.to.data",data-clean = "home.toClean",data-search="home.shipping.to.search", data-country="home.shipping.to.country")
                       h3.no-margin.margin-bottom-2
                         |¿Qué es lo que envias?
                       .container-fluid

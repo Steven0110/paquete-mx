@@ -59,9 +59,22 @@
       
     // },500);
     home.fromSearch  = null;
+    home.toSearch  = null;
 
     home.changeFrom = function(){
       home.shipping.from.search = home.fromSearch;
+    }
+
+    home.changeTo = function(){
+      home.shipping.to.search = home.toSearch;
+    }
+
+    home.fromClean = function(){
+      home.fromClean = true;
+    }
+
+    home.toClean = function(){
+      home.toClean = true;
     }
 
     home.selectItem = function(item){
@@ -107,12 +120,16 @@
       $('.benefits-'+index).slideDown(500);
     }
 
-    // home.cleanSearch = function(type){
-    //   if(home.shipping[type].data){
-    //     home.shipping[type].data =  null;
-    //     home.shipping[type].search = null;
-    //   }
-    // }
+    home.cleanSearch = function(type){
+      if(home.shipping[type].data){
+        home.shipping[type].data =  null;
+        home.shipping[type].search = null;
+        if(type == 'from')
+          home.fromSearch =  null;
+        else  
+          home.toSearch =  null;
+      }
+    }
 
     // function loadCities(country, section){
     //   console.log(country);
@@ -229,7 +246,7 @@
 
               promises.push(
                 rateApi.rate(service,params).then(function(response){
-                  console.log(response);
+                  // console.log(response);
                   if(response.services){
                     home.services = home.services.concat(response.services);
                   }

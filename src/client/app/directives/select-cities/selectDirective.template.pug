@@ -3,7 +3,8 @@
     li(data-ng-show="vm.loading")
       .signal-container
         .signal
-    li(data-ng-repeat="item in vm.options", data-ng-click="vm.selectItem(item)")
+    li.select-item(data-ng-repeat="item in vm.options", data-ng-click="vm.selectItem(item)")
+      .absolute-item
       span.main
         |{{item.zip}} - {{item.county}}
       div

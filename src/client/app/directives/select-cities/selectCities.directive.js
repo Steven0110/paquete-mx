@@ -2,17 +2,17 @@ angular
   .module('app.core')
   .directive('selectCities',selectCities);
 
-selectCities.$inject = ['$http'];
+selectCities.$inject = ['$http','$document'];
 
-function selectCities($http){
+function selectCities($http, $document){
   return{
     require: 'ngModel',
     templateUrl: 'app/directives/select-cities/selectDirective.template.html',
     scope: {
-      cities : "=cities",
-      selected: "=selected",
-      search: "=search",
-      country: "=country"
+      cities    : "=cities",
+      selected  : "=selected",
+      search    : "=search",
+      country   : "=country"
     },
     replace: true,
     transclude: true,
@@ -22,13 +22,25 @@ function selectCities($http){
     controller:function($scope){ 
       var vm = this;
       vm.loading;
-      var search;
       var country;
 
       vm.options = [];
 
+      $document.on('click', function(element){
+        if(vm.options.length > 0){
+          if(element.target && element.target.className){
+            var item = element.target.className;
+            if(item != 'absolute-item'){
+              vm.options =[];
+              vm.loading = false;
+              $scope.$apply();
+            }
+          }
+        }
+      });
+
+
       $scope.$watch('vm.search', function(oldValue, newValue){
-        console.log(vm.search);
         if(vm.search){
           if(vm.country && vm.country.listed){
             if(!vm.search.includes("-")){
@@ -46,13 +58,11 @@ function selectCities($http){
         vm.options = [];
       }
 
+
       var delayTimer;
       function delaySearch(search, country) {
-        console.log(search);
-        console.log(country);
         if(search && search.length > 2){
-          // var options = JSON.search(vm.cities, '//*[contains(county, "'+term+'") or contains(zip, "'+term+'")]');
-          console.log(search);
+          vm.clean =false;
           vm.loading = true;
           vm.options = [];
           $http({
@@ -63,7 +73,6 @@ function selectCities($http){
               country: country
             }
           }).then(function(response) {
-            console.log(response);
             if(response && response.data && response.data.length > 0)
               vm.options = response.data;
             else
@@ -71,7 +80,6 @@ function selectCities($http){
             
           }, function(err) {
             vm.options = [];
-            console.log(err);
           }).finally(function(){
             vm.loading = false;
           });

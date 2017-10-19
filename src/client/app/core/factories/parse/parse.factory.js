@@ -24,8 +24,8 @@
     return factory;
 
     function cloud(cloudFunction){
-      // Restangular.setBaseUrl('https://parseapi.back4app.com/');
-      // Restangular.setDefaultHeaders(parseheaders.restKeys);
+      Restangular.setBaseUrl('https://parseapi.back4app.com/');
+      Restangular.setDefaultHeaders(parseheaders.restKeys);
       return Restangular.service('functions/'+cloudFunction);
     }
 
