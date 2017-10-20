@@ -5,10 +5,10 @@
     .module('app.core')
     .controller('Shell',Shell);
 
-  Shell.$inject = ['$transitions','$scope','$state','template','$mdToast','userApi'];
+  Shell.$inject = ['$transitions','$scope','$state','template','$mdToast','userApi','shippingApi'];
 
 
-  function Shell($transitions, $scope, $state,template, $mdToast, userApi){
+  function Shell($transitions, $scope, $state,template, $mdToast, userApi, shippingApi){
     // jshint validthis: true 
     var shell = this;
     shell.loading = false;
@@ -19,10 +19,10 @@
     shell.currentUser = false;
 
     shell.dashMenu = [
-      {name:'shippings',label:"Envios"},
-      {name:'payments',label:"Pagos"},
-      {name:'contacts',label:"Agenda"},
-      {name:'logout',label:"Salir"}
+      {name:'shippings',label:"Envios",uiref:"#"},
+      {name:'payments',label:"Pagos", uiref:"#"},
+      {name:'contacts',label:"Agenda",uiref:"#"},
+      {name:'logout',label:"Salir", uiref:"logout"}
     ];
 
     shell.regex = {
@@ -69,17 +69,15 @@
 
 
     shell.setShipping = function(shipping){
-      console.log(shipping);
-      shell.shipping = shipping;
+      shippingApi.setShipping(shipping);
     }
 
     shell.getShipping = function(){
-      return shell.shipping;
+      return shippingApi.getShipping();
     }
 
     shell.setCurrentUser = function(user){
       userApi.setCurrentUser(user);
-      shell.currentUser = user;
     };
 
     shell.getCurrentUser = function(){

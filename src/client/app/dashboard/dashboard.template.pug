@@ -7,7 +7,7 @@
         .dashboard-items
           nav(data-ng-repeat="item in shell.dashMenu",data-ng-click="shell.setMenu(item.name)",data-ng-class="{'active':shell.menu == item.name}")
             .selected-bar(data-ng-class="{'active':shell.menu == item.name}")
-            span(data-ng-bind="item.label")
+            a(data-ng-bind="item.label", ui-sref="{{item.uiref}}")
     .col-xs-12.col-sm-10
       .dashboard-header
         .dash-section-title

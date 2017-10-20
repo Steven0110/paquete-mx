@@ -5,23 +5,32 @@
     .module('app.core')
     .controller('Checkout',Checkout);
 
-  Checkout.$inject = ['$scope','$q','rateApi'];
+  Checkout.$inject = ['$scope','$q','$state','rateApi'];
 
-  function Checkout($scope, $q, rateApi){
+  function Checkout($scope, $q, $state, rateApi){
     // jshint validthis: true 
     var checkout = this;
     var shell = $scope.shell;
 
-    checkout.step = "from";
-
-    checkout.from = false
-
-    checkout.to = false
 
     checkout.shipping = shell.getShipping();
+    
+    console.log(checkout.shipping);
+    if(!checkout.shipping){
+      shell.showMessage('Selecciona un servicio');
+      $state.go('home');
+    }
 
 
-    console.log('checkout-shipping',checkout.shipping);
+
+
+    checkout.step = "from";
+    checkout.from = false
+    checkout.to = false
+
+
+
+
 
     checkout.order = function(){
       var order = {

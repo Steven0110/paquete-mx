@@ -71,6 +71,12 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controllerAs: 'login'
 
     })
+    .state('logout',{
+      url:'/logout',
+      controller: 'Logout',
+      controllerAs: 'logout'
+
+    })
     .state('forgot',{
       url:'/forgot-password',
       templateUrl : 'app/forgot/forgot.template.html',
