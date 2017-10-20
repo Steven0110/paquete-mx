@@ -41,9 +41,8 @@ function cardForm(conektaApi){
           var conektaId =  false;
           
           conektaApi.update(card.info).then(function(newCard){
-            // shell.setSuccess("La tarjeta se agrego con éxito.");
-            // $state.go($state.current, {}, {reload: true});
-            card.sendForm(newCard);
+            var response = newCard.text ? JSON.parse(newCard.text) : newCard;
+            card.sendForm({response:response});
           },function(error){
             console.log(error);
             if(error && error.message_to_purchaser){

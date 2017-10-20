@@ -118,7 +118,12 @@
     }
 
     function currentUser() {
-      return storage.get('user');
+      var user = storage.get('user');
+      if(user && user.objectId){
+        return user;
+      }else{
+        return false;
+      }
     }
 
     function setCurrentUser(user){

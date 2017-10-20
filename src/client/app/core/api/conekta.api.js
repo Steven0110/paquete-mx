@@ -57,7 +57,6 @@
 
     function update(card, conektaId){
       var deferred = $q.defer();
-      console.log(Conekta);
       // Conekta.setPublishableKey(conketaPublicKey);
       var errorResponseHandler,
           successResponseHandler,

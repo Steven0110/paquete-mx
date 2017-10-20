@@ -8,7 +8,14 @@
         .col-xs-6
           .section-space-right
             .form-container(data-ng-show="checkout.step=='payment'")
-              md-button.md-raised(data-ng-click="checkout.order()")
+              //- md-button.md-raised(data-ng-click="checkout.order()")
+                |Ordenar
+              h1.accent.align-center
+                |Agrega tu Tarjeta
+              card-form( data-labels="checkout.labels.payment", data-send-form="checkout.paymentMethod(response)")
+
+            .form-container(data-ng-show="checkout.step=='login'")
+              login-form
             .form-container(data-ng-show="checkout.step=='from'")
               .form-title
                 |Dirección de Origen
@@ -67,3 +74,6 @@
                             |{{checkout.to.state}}
                             span.uppercase
                               |, {{checkout.to.country.name}}
+                    .col-xs-12
+                      h2
+                        |Método de Pago
