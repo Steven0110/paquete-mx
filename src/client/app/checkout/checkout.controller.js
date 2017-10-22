@@ -5,9 +5,9 @@
     .module('app.core')
     .controller('Checkout',Checkout);
 
-  Checkout.$inject = ['$scope','$q','$state','rateApi','shippingApi'];
+  Checkout.$inject = ['$scope','$q','$state','rateApi','conektaApi','shippingApi'];
 
-  function Checkout($scope, $q, $state, rateApi, shippingApi){
+  function Checkout($scope, $q, $state, rateApi, conektaApi,shippingApi){
     // jshint validthis: true 
     var checkout = this;
     var shell = $scope.shell;
@@ -33,19 +33,21 @@
       alert('yeah');
     };
 
-    checkout.paymentMethod = function(response){
-      console.log(response);
+    checkout.paymentMethod = function(card){
+      checkout.card = card;
       checkout.step = 'confirm';
     }
 
-
-
     checkout.order = function(){
       var order = {
-        service   : checkout.shipping.service,
-        from      : checkout.shipping.from,
-        to        : checkout.shipping.to,
-        packages  : [checkout.shipping.package]
+        shipping:{
+          service       : checkout.shipping.service,
+          from          : checkout.shipping.from,
+          to            : checkout.shipping.to,
+          packages      : [checkout.shipping.package]
+        },
+        paymentMethod : {card: checkout.card},
+        amount        : 10000
       }
 
       console.log('order-shipping',order);
@@ -74,12 +76,31 @@
         checkout.user = shell.getCurrentUser();
 
         if(checkout.user){
-          checkout.step = 'payment';
+          getPaymentMethods();
         }else{
           alert('login');
           checkout.step = 'login';  
         }
       }
+    }
+
+    checkout.selectCard = function(card){
+      checkout.card = card;
+      checkout.step = 'confirm';
+    }
+
+    var getPaymentMethods = function(){
+      console.log('get Cards');
+      conektaApi.getCards().then(function(result){
+        checkout.cardForm = true;
+        if(result && result.length > 0){
+          checkout.paymentMethods = result;
+          checkout.cardForm = false;
+        }
+        checkout.step = 'payment';
+      },function(err){
+        console.log(err);
+      });
     }
 
     var validateUser = function(){

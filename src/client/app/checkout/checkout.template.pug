@@ -7,12 +7,26 @@
       .row
         .col-xs-6
           .section-space-right
-            .form-container(data-ng-show="checkout.step=='payment'")
-              //- md-button.md-raised(data-ng-click="checkout.order()")
+            .form-container(data-ng-show="checkout.step=='confirm'")
+              md-button.md-raised(data-ng-click="checkout.order()")
                 |Ordenar
+            .form-container(data-ng-show="checkout.step=='payment'")
               h1.accent.align-center
                 |Agrega tu Tarjeta
-              card-form( data-labels="checkout.labels.payment", data-send-form="checkout.paymentMethod(response)")
+              div
+                div.card-select(data-ng-repeat="item in checkout.paymentMethods", data-ng-click="checkout.selectCard(item)")
+                  div
+                    |{{item.name}}
+                  div
+                    |{{item.brand}}
+                  div
+                    |{{item.last4}}
+                .add-dashboard(data-ng-hide="checkout.cardForm")
+                  i.fa.fa-plus-circle(data-ng-click="checkout.cardForm = true")
+                  h3(data-ng-click="checkout.cardForm = true")
+                    |¡Agregar tarjeta!
+              div(data-ng-show="checkout.cardForm")
+                card-form( data-labels="checkout.labels.payment", data-send-form="checkout.paymentMethod(response)")
 
             .form-container(data-ng-show="checkout.step=='login'")
               login-form
@@ -77,3 +91,12 @@
                     .col-xs-12
                       h2
                         |Método de Pago
+                      div(data-ng-if="!checkout.card")
+                        |Selecciona una tarjeta para realizar tu pago.
+                      div(data-ng-if="checkout.card")
+                        .board-list
+                          |{{checkout.card.name}} 
+                        .board-list
+                          |{{checkout.card.brand}}
+                        .board-list
+                          |{{checkout.card.last4}}

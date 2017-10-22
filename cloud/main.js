@@ -2,6 +2,7 @@
 
 3-Octubre-2017: Se crea la función para registrar el shipping
 18-Octubre-2017: Se crea la función para guardar tarjetas
+20-Octubre-2017: Se crea la función para cargar a las tarjetas
 change log*/
 
 
@@ -137,6 +138,99 @@ function conektaUser(method,body, url){
 }
 //CONEKTA REQUEST
 
+
+//CONEKTA 
+var chargeCard = function(conektaId, cardId, amount, isToken){
+
+  var charge = {};
+  var customerInfo = {};
+
+  charge =  {
+              "payment_method": {
+                "type": "card"
+              }
+            };
+
+  if(isToken){
+    charge.payment_method.token_id = cardId;
+  }else{
+    charge.payment_method.payment_source_id = cardId;
+  }
+
+  if(conektaId){
+    customerInfo.customer_id =  conektaId;
+  }
+
+    var referenceId = randomString(8);
+
+  var order = {
+    "currency": "MXN",
+    "metadata":{
+      "reference_id": referenceId
+    },
+    "customer_info" : customerInfo,
+    "line_items": [{
+      "name": "Servicio de envio" + referenceId,
+      "unit_price": amount,
+      "quantity": 1
+    }],
+    "charges": [
+      charge
+    ],
+    "shipping_lines":[
+      {
+        "amount"  : 10000,
+        "carrier" : 'fedex'
+      }
+    ],
+    "shipping_contact":{
+          "phone" : "5535068102",
+          "email": "carlos@canizal.com",
+          "receiver": "Carlos Canizal",
+          "address":{
+            "street1": "Rio Misisipi",
+            "city": "Iztapalapa",
+            "state": "Ciudad de Mexico",
+            "country": "Mexico",
+            "postal_code": "09770"
+          }
+        }
+  }
+
+  return order;
+}
+//CONEKTA
+
+
+//CONEKTA CREATE ORDER
+var conektaCreateOrder = function(order, method){
+
+  var parse_promise = new Parse.Promise();
+  var url = 'https://api.conekta.io/orders';
+
+  if(!method)
+    method = 'POST';
+
+  Parse.Cloud.httpRequest({
+  method: method,
+  headers: {
+    'Accept':'application/vnd.conekta-v2.0.0+json',
+    'Content-Type': 'application/json',
+    'Authorization': conekta_key
+  },
+  url: url,
+  body: order
+  }).then(function(response){
+    var result = JSON.parse(response.text);
+    parse_promise.resolve(result);
+  },function(httpResponse){
+    parse_promise.reject(httpResponse);
+  });
+
+  return parse_promise; 
+}
+//CONEKTA CREATE ORDER
+
 /*SAVE CARD CONEKTA*/
 Parse.Cloud.define("saveCard", function(request, response){
   var params = request.params;
@@ -170,6 +264,73 @@ Parse.Cloud.define("saveCard", function(request, response){
 });
 /*SAVE CARD CONEKTA*/
 
+//GENERATES RANDOM STRING
+function randomString(length)
+{
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  for( var i=0; i < length; i++ )
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  return text;
+}
+//GENERATES RANDOM STRING
+
+//CONEKTA CHARGE CARD
+Parse.Cloud.define("chargeCard",function(request, response){
+
+  var conektaId = request.params.conektaId;
+  if(!conektaId){
+    var user = request.user;
+    conektaId = user.get('conektaId');
+  }
+
+  var paymentMethod = request.params.paymentMethod;
+  var shipping = request.params.shipping;
+  var amount = request.params.amount;
+  var isToken = request.params.isToken
+  var requestResult = {};
+  isToken = isToken ==true;
+
+  var cardId = paymentMethod.card.id;
+
+  var order = chargeCard(conektaId, cardId, amount, isToken);
+  conektaCreateOrder(order).then(function(result){
+    requestResult.payment = result;
+    var Payment = Parse.Object.extend('Payment');
+    var payment = new Payment();
+
+    //TODO Agregar el user cuando solo envian el conektaId
+    payment.set('user',user);
+    payment.set('response',result);
+
+    if(result.payment_status){
+      payment.set('status', result.payment_status);
+      payment.set('amount', (result.amount/100));
+    }
+    return payment.save();
+  }).then(function(payment){
+    var status;
+    if(requestResult.payment && requestResult.payment.payment_status)
+      status =  requestResult.payment.payment_status;
+
+    if(status == "paid"){
+      var paymentObject ={
+        paymentStatus : requestResult.payment.payment_status,
+        paymentAmount : (requestResult.payment.amount/100)
+      };
+      return sendShipOrder(user, shipping,paymentObject);
+    }
+
+  }).then(function(shipOrder){
+    requestResult.shipOrder = shipOrder
+    response.success(requestResult);
+  },function(error){
+    response.error(error);
+  });
+  // response.success(order);
+});
+//CONEKTA CHARGE CARD
+
 /*GET CUSTOMER CARDS IN CONEKTA*/
 Parse.Cloud.define("getCustomer",function(request, response){
   var conektaId = request.params.conektaId;
@@ -201,79 +362,56 @@ Parse.Cloud.define("getCustomer",function(request, response){
 /*GET CUSTOMER CARDS IN CONEKTA*/
 
 
-Parse.Cloud.define("Shipping", function(request, response) {
-  
-  if(!request.params.userId){
-    response.error({message:"userId is required"});
-  }
+function sendShipOrder(user, shipping, payment) {
+  var parse_promise = new Parse.Promise();
 
-  if(!request.params.shipping){
-    response.error({message:"shipping is required"});
-  }
-
-  var userId =  request.params.userId;
-  var shipping =  request.params.shipping;
-
-  var User = Parse.Object.extend('_User');
-  var query = new Parse.Query(User);
-  // query.equalTo({"objectId":userId});
-  var user;
   var params ={};
 
   var body = {
     type      : shipping.service.service,
     shipping  : shipping
   }
-  query.get(userId).then(function(user){
-    user = user;
 
-    Parse.Cloud.httpRequest({
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/rate/ship',
-      body: body
-    }).then(function(result){
-      console.log('result-shipping');
+  Parse.Cloud.httpRequest({
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/rate/ship',
+    body: body
+  }).then(function(result){
+    console.log('result-shipping');
+    console.log(result);
+    var Shipping = Parse.Object.extend('Shipping');
+    var shipping = new Shipping();
+    shipping.set("user",user);
+
+    if(result.text){
+      result =  JSON.parse(result.text);
+      console.log('result-json');
       console.log(result);
-      var Shipping = Parse.Object.extend('Shipping');
-      var shipping = new Shipping();
-      shipping.set("user",user);
-
-      if(result.text){
-        result =  JSON.parse(result.text);
-        console.log('result-json');
-        console.log(result);
-        params = {
-          total : result.total,
-          negotiated : result.negotiated,
-          trackingNumber: result.trackingNumber,
-          packages: result.packages
-        }
+      params = {
+        total : result.total,
+        negotiated : result.negotiated,
+        trackingNumber: result.trackingNumber,
+        packages: result.packages
       }
+    }
 
-      return shipping.save(params);
-    }).then(function(){
-      response.success(params);
-    },function(err){
-      response.error(err);
-    })
+    if(payment){
+      if(payment.paymentAmount)
+        params.paymentAmount = payment.paymentAmount;
+      if(payment.paymentStatus)
+        params.paymentStatus = payment.paymentStatus;
+    }
 
 
-    // var Shipping = Parse.Object.extend('Shipping');
-    // var shipping = new Shipping();
-    // shipping.set("user",user);
-    // var params = {
-    //   total : request.params.total,
-    //   negotiated : request.params.negotiated,
-    //   trackingNumber: request.params.trackingNumber,
-    //   packages: request.params.packages
-    // };
-    // return shipping.save(params);
-    // response.success(user);
+    return shipping.save(params);
+  }).then(function(){
+    parse_promise.resolve(params);
   },function(err){
-    response.error(err);
+    parse_promise.reject(err);
   });
 
-});
+  return parse_promise;
+};

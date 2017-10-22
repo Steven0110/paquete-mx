@@ -44,7 +44,6 @@
 
     function ship(params, userId){
       var deferred = $q.defer();
-      //flag de debug, quitar en produccion
 
       if(!userId){
         var user = userApi.currentUser();
@@ -56,17 +55,12 @@
           return deferred.promise;
         }
       }
+      //flag de debug, quitar en produccion
       params.debugging = true;
 
-      //automatizar
-      // if(params.service && params.service.service)
-        // params.type = params.service.service;
-
-      // console.log('params-order',params);
-
-      var Shipping = parse.cloud('Shipping');
-      Shipping.post({shipping:params,userId:userId}).then(function(result){
-        // console.log(result);
+      var Shipping = parse.cloud('chargeCard');
+      Shipping.post(params).then(function(result){
+        console.log(result);
         deferred.resolve(result.result);
       },function(error){
         console.error(error);
@@ -76,7 +70,5 @@
       
     }      
       
-    
-
   }
 })();
