@@ -5,10 +5,10 @@
     .module('app.core')
     .controller('Shell',Shell);
 
-  Shell.$inject = ['$transitions','$scope','$state','template','$mdToast','userApi','shippingApi'];
+  Shell.$inject = ['$transitions','$scope','$state','$window','template','$mdToast','userApi','shippingApi'];
 
 
-  function Shell($transitions, $scope, $state,template, $mdToast, userApi, shippingApi){
+  function Shell($transitions, $scope, $state, $window,template, $mdToast, userApi, shippingApi){
     // jshint validthis: true 
     var shell = this;
     shell.loading = false;
@@ -53,6 +53,10 @@
 
     shell.setLoaded = function(status){
       shell.loaded = status;
+    }
+
+    shell.moveToTop = function(delay){
+      $window.scrollTo(0, 0);          
     }
 
     shell.showMessage = function(message){

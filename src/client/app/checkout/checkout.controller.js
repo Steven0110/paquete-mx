@@ -5,9 +5,9 @@
     .module('app.core')
     .controller('Checkout',Checkout);
 
-  Checkout.$inject = ['$scope','$q','$state','rateApi','conektaApi','shippingApi'];
+  Checkout.$inject = ['$scope','$q','$state','$timeout','rateApi','conektaApi','shippingApi'];
 
-  function Checkout($scope, $q, $state, rateApi, conektaApi,shippingApi){
+  function Checkout($scope, $q, $state, $timeout, rateApi, conektaApi,shippingApi){
     // jshint validthis: true 
     var checkout = this;
     var shell = $scope.shell;
@@ -51,20 +51,23 @@
       }
 
       console.log('order-shipping',order);
+      shell.showLoading();
       rateApi.ship(order).then(function(response){
         console.log(response);
       },function(err){
         console.log(err);
-      })
+      }).finally(shell.hideLoading);
     }
 
     checkout.fromAddress = function(response){
       if(response.result && response.data){
         checkout.shipping.from = response.data;
-        console.log('shipping-from',checkout.shipping);
         shippingApi.setShipping(checkout.shipping);
-
-        checkout.step = 'to';
+        shell.moveToTop();
+        $timeout(function(){
+          checkout.step = 'to';
+          console.log('to');
+        },300)
       }
     }
 
@@ -76,6 +79,7 @@
         checkout.user = shell.getCurrentUser();
 
         if(checkout.user){
+          shell.moveToTop();
           getPaymentMethods();
         }else{
           alert('login');
@@ -90,17 +94,20 @@
     }
 
     var getPaymentMethods = function(){
-      console.log('get Cards');
+      shell.showLoading();
       conektaApi.getCards().then(function(result){
         checkout.cardForm = true;
         if(result && result.length > 0){
           checkout.paymentMethods = result;
           checkout.cardForm = false;
         }
-        checkout.step = 'payment';
+        shell.hideLoading();
+        $timeout(function(){
+          checkout.step = 'payment';
+        },300);
       },function(err){
         console.log(err);
-      });
+      }).finally(shell.hideLoading);
     }
 
     var validateUser = function(){

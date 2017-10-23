@@ -6,6 +6,7 @@
     'ngAnimate',
     'ngMaterial',
     'ngMessages',
-    'restangular'
+    'restangular',
+    'cp.ngConfirm'
   ]);
 })();

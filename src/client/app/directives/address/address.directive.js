@@ -2,9 +2,9 @@ angular
   .module('app.core')
   .directive('addressForm',addressForm);
 
-addressForm.$inject = ['userApi'];
+addressForm.$inject = ['userApi','Dialog'];
 
-function addressForm(userApi){
+function addressForm(userApi, Dialog){
   return{
     restrict: 'EA',
     templateUrl: 'app/directives/address/address.form.html',
@@ -111,7 +111,8 @@ function addressForm(userApi){
             scope.sendForm({response:{result:true,data:scope.newAddress}});
           }
         }else{
-          scope.sendForm({response:{error:true,message:scope.labels.form.errors.fields}});
+          Dialog.showMessage();
+          // scope.sendForm({response:{error:true,message:scope.labels.form.errors.fields}});
         }
       }
     }

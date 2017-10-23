@@ -32,21 +32,51 @@
               login-form
             .form-container(data-ng-show="checkout.step=='from'")
               .form-title
-                |Dirección de Origen
+                |¿Cual es el origen?
               address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.fromAddress(response)", data-current-address="checkout.shipping.from")
             .form-container(data-ng-show="checkout.step=='to'")
               .form-title
                 |Dirección de Destino
               address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.toAddress(response)",data-current-address="checkout.shipping.to")
         .col-xs-6
-          .section-space-left
+          .checkout-header.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='from'}")
+            h3
+              |Selecciona el origen.
+          .checkout-info(data-ng-show="checkout.step =='from'")
+            .container-fluid
+              .row
+                .col-xs-3
+                  img(data-ng-src="common/images/origen.png")
+                .col-xs-9
+                  .padding-side
+                    h4
+                      |Selecciona la dirección de envio y en donde se realizara la recolección.
+          .checkout-header.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='to'}")
+            h3
+              |Selecciona el destino.
+          .checkout-info(data-ng-show="checkout.step =='to'")
+            .container-fluid
+              .row
+                .col-xs-9
+                  .padding-side
+                    h4
+                      |Selecciona la dirección de destino y quien es el destinatario.
+                .col-xs-3
+                  img(data-ng-src="common/images/destino.png")
+          .checkout-header.hvr-bounce-to-right.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='payment'}")
+            h3
+              |Selecciona el método de Pago.
+          .checkout-header.hvr-bounce-to-right.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='confirm'}")
+            h3
+              |Confirma y ¡Envia!.
+          //- .section-space-left
             .form-container
               h1.accent
                 |Servicio Seleccionado
               div
                 .container-fluid
                   .row
-                    .col-xs-6
+                    //- .col-xs-6
                       .section-space-right
                         h2
                           |Origen
@@ -67,7 +97,7 @@
                             |{{checkout.from.state}}
                             span.uppercase
                               |, {{checkout.from.country.name}}
-                    .col-xs-6
+                    //- .col-xs-6
                       .section-space-left
                         h2
                           |Destino
@@ -88,7 +118,7 @@
                             |{{checkout.to.state}}
                             span.uppercase
                               |, {{checkout.to.country.name}}
-                    .col-xs-12
+                    //- .col-xs-12
                       h2
                         |Método de Pago
                       div(data-ng-if="!checkout.card")

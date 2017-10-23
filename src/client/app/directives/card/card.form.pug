@@ -42,4 +42,4 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
               md-option(data-ng-repeat="item in card.years", value="{{item}}")
                 |{{item}}
     .align-center
-      md-button.md-raised.md-primary(type="submit", data-ng-bind="card.labels.form.save")
+      md-button.md-raised.md-primary(type="submit", data-ng-bind="card.labels.form.save", aria-label="card.labels.form.save")

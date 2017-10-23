@@ -11,6 +11,7 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
     link(rel="stylesheet" href="bower_components/angular-material/angular-material.css")
     link(rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css")
     link(rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css")
+    link(rel="stylesheet" href="bower_components/angular-confirm/css/angular-confirm.css")
     link(rel="stylesheet" href="bower_components/flag-icon-css/css/flag-icon.min.css")
     link(rel="stylesheet" href="common/styles/loading.css")
     link(rel="stylesheet" href="common/styles/main.css")
@@ -32,6 +33,7 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
     ui-view
 
     //- Libraries
+    script(src="bower_components/jquery/dist/jquery.js")
     script(src="bower_components/angular/angular.js")
     script(src="bower_components/lodash/lodash.js")
     script(src="bower_components/restangular/dist/restangular.js")
@@ -42,7 +44,7 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
     script(src="bower_components/angular-aria/angular-aria.js")
     script(src="bower_components/angular-messages/angular-messages.js")
     script(src="bower_components/angular-material/angular-material.js")
-    script(src="bower_components/jquery/dist/jquery.js")
+    script(src="bower_components/angular-confirm/dist/angular-confirm.min.js")
 
 
 
@@ -67,9 +69,10 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
     script(src="app/core/factories/parse/parse.factory.js")
 
     //-Services
-    script(src="app/core/factories/parse/parse.factory.js")
+    //- script(src="app/core/factories/parse/parse.factory.js")
     script(src="app/core/services/storage.service.js")
     script(src="app/core/services/message.service.js")
+    script(src="app/core/services/dialogs.service.js")
     script(src="common/js/development.headers.js")
 
     //-Scripts
