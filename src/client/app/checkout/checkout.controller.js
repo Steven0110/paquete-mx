@@ -5,9 +5,9 @@
     .module('app.core')
     .controller('Checkout',Checkout);
 
-  Checkout.$inject = ['$scope','$q','$state','$timeout','rateApi','conektaApi','shippingApi'];
+  Checkout.$inject = ['$scope','$q','$state','$timeout','rateApi','conektaApi','shippingApi','Dialog'];
 
-  function Checkout($scope, $q, $state, $timeout, rateApi, conektaApi,shippingApi){
+  function Checkout($scope, $q, $state, $timeout, rateApi, conektaApi,shippingApi, Dialog){
     // jshint validthis: true 
     var checkout = this;
     var shell = $scope.shell;
@@ -56,6 +56,10 @@
         console.log(response);
       },function(err){
         console.log(err);
+        checkout.step = 'payment';
+        if(err.error && err.message){
+          Dialog.showError(err.message, 'No se pudo cargar tu tarjeta.');
+        }
       }).finally(shell.hideLoading);
     }
 

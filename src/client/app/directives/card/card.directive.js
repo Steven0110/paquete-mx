@@ -9,8 +9,10 @@ function cardForm(conektaApi, Dialog){
     restrict: 'EA',
     templateUrl: 'app/directives/card/card.form.html',
     scope: {
-      labels    : "=",
-      sendForm  : "&"
+      labels        : "=",
+      sendForm      : "&",
+      showLoading   : "&",
+      hideLoading   : "&"
     },
     bindToController: true,
     controllerAs: 'card',
@@ -37,9 +39,8 @@ function cardForm(conektaApi, Dialog){
 
       card.send = function(){
         if(card.form.$valid){
-          // var data = card.info;
           var conektaId =  false;
-          
+          card.showLoading();
           conektaApi.update(card.info).then(function(newCard){
             var response = newCard.text ? JSON.parse(newCard.text) : newCard;
             card.sendForm({response:response});
@@ -50,12 +51,8 @@ function cardForm(conektaApi, Dialog){
             }else{
               error = 'Hubo un error por favor recarga tu navegador e intenta de nuevo.';
             }
-            console.log(error);
-            // shell.setError(error);
-          });
-          // .finally(shell.stopLoading);
-
-          // card.sendForm({response:{result:true, data:data}});
+            Dialog.showError(error);
+          }).finally(card.hideLoading);
         }else{
           Dialog.showMessage();
         }

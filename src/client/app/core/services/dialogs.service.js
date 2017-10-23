@@ -9,6 +9,26 @@
 
   function Dialog($ngConfirm) {
 
+    this.showError = function(message, title){
+      var title = title?title:'¡Ops, Hubo un error!';
+
+      $ngConfirm({
+          theme: 'supervan',
+        title: title,
+          content: message,
+          icon: 'fa fa-warning',
+          type: 'red',
+          buttons: {
+              close:{
+                text: "Cerrar",
+                action: function(scope, button){
+                  
+                }
+              }
+          }
+      });
+    }
+
     this.showMessage = function(){
       $ngConfirm({
           theme: 'supervan',

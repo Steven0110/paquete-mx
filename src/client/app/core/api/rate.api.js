@@ -64,7 +64,9 @@
         deferred.resolve(result.result);
       },function(error){
         console.error(error);
-        deferred.reject(error);
+        if(error.data && error.data.error){
+          deferred.reject(error.data.error);
+        }
       });
       return deferred.promise;
       

@@ -224,7 +224,21 @@ var conektaCreateOrder = function(order, method){
     var result = JSON.parse(response.text);
     parse_promise.resolve(result);
   },function(httpResponse){
-    parse_promise.reject(httpResponse);
+    var result= {error: true, message:null, result: httpResponse};
+    if(httpResponse.text){
+      
+      var response = JSON.parse(httpResponse.text);
+      result.result = response;
+      
+      if(response && response.details){
+        if(response.details.length > 0 && response.details[0].message){
+          result.message = response.details[0].message;
+        }
+      }
+    }
+    
+    parse_promise.reject(result);
+    
   });
 
   return parse_promise; 

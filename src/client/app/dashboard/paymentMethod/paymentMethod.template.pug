@@ -29,4 +29,4 @@
             div(data-ng-show="paymentMethod.form")
               .form-title
                 |Agregar Tarjeta.
-              card-form( data-labels="paymentMethod.labels", data-send-form="paymentMethod.send(response)")
+              card-form( data-labels="paymentMethod.labels", data-send-form="paymentMethod.send(response)", data-show-loading="shell.showLoading()", data-hide-loading="shell.hideLoading()")
