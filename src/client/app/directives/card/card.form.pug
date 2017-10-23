@@ -10,22 +10,14 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
       label(for="cardNumber",data-ng-bind="card.labels.form.number")
       input(name="cardNumber", data-ng-model="card.info.number", validate-card)
       div(ng-messages="card.form.cardNumber.$error")
-        div(ng-message="required")
-          |Es requerido
-    .row-content
-      .container-fluid.big-icon
-        .row.align-center
-          .col-xs-4
-            i.icon.fa.fa-cc-visa(data-ng-class="{'active': brand =='visa'}")
-          .col-xs-4
-            i.icon.fa.fa-cc-mastercard(data-ng-class="{'active': brand =='mastercard'}")
-          .col-xs-4
-            i.icon.fa.fa-cc-amex(data-ng-class="{'active': brand =='amex'}")
+        div(ng-message="validateCard")
+          |Número de tarjeta invalido.
     md-input-container.md-block
       label(for="cvc",data-ng-bind="card.labels.form.cvc")
       input(name="cvc", data-ng-model="card.info.cvc", validate-cvc)
       div(ng-messages="card.form.cvc.$error")
-        div(ng-message="required", data-ng-bind="card.labels.form.erros.required")
+        div(ng-message="validateCvc")
+          |Código de seguridad invalido.
     div
       .row
         .col-xs-12.col-sm-5

@@ -2,9 +2,9 @@ angular
   .module('app.core')
   .directive('cardForm',cardForm);
 
-cardForm.$inject = ['conektaApi'];
+cardForm.$inject = ['conektaApi','Dialog'];
 
-function cardForm(conektaApi){
+function cardForm(conektaApi, Dialog){
   return{
     restrict: 'EA',
     templateUrl: 'app/directives/card/card.form.html',
@@ -57,7 +57,7 @@ function cardForm(conektaApi){
 
           // card.sendForm({response:{result:true, data:data}});
         }else{
-          alert('invalid form');
+          Dialog.showMessage();
         }
       }
 
