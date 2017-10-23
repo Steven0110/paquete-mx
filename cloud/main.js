@@ -229,7 +229,6 @@ var conektaCreateOrder = function(order, method){
       
       var response = JSON.parse(httpResponse.text);
       result.result = response;
-      
       if(response && response.details){
         if(response.details.length > 0 && response.details[0].message){
           result.message = response.details[0].message;

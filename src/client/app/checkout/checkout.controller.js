@@ -15,6 +15,8 @@
     checkout.labels.payment = shell.labels.paymentMethod;
 
     checkout.shipping = shell.getShipping();
+    checkout.response = false;
+    checkout.connecting = false;
 
     console.log('shipping',checkout.shipping);
     
@@ -51,16 +53,21 @@
       }
 
       console.log('order-shipping',order);
-      shell.showLoading();
+      // shell.showLoading();
+      checkout.connecting = true;
       rateApi.ship(order).then(function(response){
         console.log(response);
+        checkout.response = true;
+        checkout.labels = response.shipOrder.packages;
       },function(err){
         console.log(err);
         checkout.step = 'payment';
         if(err.error && err.message){
           Dialog.showError(err.message, 'No se pudo cargar tu tarjeta.');
         }
-      }).finally(shell.hideLoading);
+      }).finally(function(){
+        checkout.connecting = false;
+      });
     }
 
     checkout.fromAddress = function(response){

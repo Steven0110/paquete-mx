@@ -4,7 +4,71 @@
 .pages
   .dashboard-content
     .container-fluid
-      .row
+      .align-center(data-ng-if="checkout.connecting")
+        h1
+          |Estamos obteniendo tu guia y etiquetas.
+        h2
+          |No cierres la página hasta obtener una respuesta.
+      .row(data-ng-if="checkout.response")
+        .col-xs-12
+            .success-checkout
+              i.fa.fa-check-circle
+              h2.success
+                |¡Listo!
+            .row
+              .col-xs-3
+                h2
+                  |Origen
+                div
+                  .board-list
+                    |{{checkout.shipping.from.street}}, {{checkout.shipping.from.number}}&nbsp;
+                    span(data-ng-if="checkout.from.apt")
+                      | - {{checkout.shipping..from.apt}}
+                  .board-list
+                    |{{checkout.shipping.from.county}}
+                    span(data-ng-if="checkout.from.city")
+                      |, {{checkout.shipping.from.city}}
+                    span
+                      |, {{checkout.shipping.from.zip}}
+                  .board-list
+                    |{{checkout.shipping.from.state}}
+                    span.uppercase
+                      |, {{checkout.shipping.from.country.name}}
+              .col-xs-3
+                h2
+                  |Destino
+                div
+                  .board-list
+                    |{{checkout.shipping.to.street}}, {{checkout.shipping.to.number}}&nbsp;
+                    span(data-ng-if="checkout.to.apt")
+                      | - {{checkout.shipping.to.apt}}
+                  .board-list
+                    |{{checkout.shipping.to.county}}
+                    span(data-ng-if="checkout.to.city")
+                      |, {{checkout.shipping.to.city}}
+                    span
+                      |, {{checkout.shipping.to.zip}}
+                  .board-list
+                    |{{checkout.shipping.to.state}}
+                    span.uppercase
+                      |, {{checkout.shipping.to.country.name}}
+              .col-xs-3
+                h2
+                  |Método de Pago
+                div
+                  .board-list
+                    |{{checkout.card.name}}
+                  .board-list
+                    |{{checkout.card.brand}}
+                  .board-list
+                    |{{checkout.card.last4}}
+              .col-xs-3
+                h2
+                  |Guia y Etiqueta
+                div
+                  .board-list(data-ng-repeat="item in checkout.labels")
+                    |{{item.TrackingNumber}}
+      .row(data-ng-hide="checkout.response || checkout.connecting")
         .col-xs-6
           .section-space-right
             .form-container(data-ng-show="checkout.step=='confirm'")
