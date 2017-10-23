@@ -63,7 +63,7 @@
   // background-color: $primary-color
 .dashboard-content
   padding: 30px 30px
-  background-color: #FFF
+  // background-color: #FFF
 
 .board-element
   margin-bottom: 20px
@@ -93,8 +93,20 @@
   margin-bottom: 30px
   color: $primary-color
   font-family: 'Roboto'
+  font-weight: 400
   font-size: 3rem
   line-height: 1em
+
+.card-icons
+  i
+    font-size: 7rem
+    margin-right: 20px
+    &.fa-cc-visa
+      color: $visa-color
+    &.fa-cc-amex
+      color: $amex-color
+    &.fa-cc-mastercard
+      color: $mastercard-color
 
 .board-actions
   color: #CCC
@@ -108,5 +120,5 @@
 
 .form-container
   padding: 15px
-  border: 2px solid #f2f2f2
+  border: 2px solid rgba(0,0,0,0.12)
   border-radius: 10px

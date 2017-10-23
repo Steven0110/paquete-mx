@@ -52,6 +52,7 @@
       "city": "Ciudad",
       "state": "Estado",
       "save" : "Guardar",
+      "continue" : "Continuar",
       "cancel": "Cancelar"
     }
   },

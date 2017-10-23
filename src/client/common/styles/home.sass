@@ -43,6 +43,14 @@ $menuNav : 77px;
   &.active
     background-position: 100% 0
 
+.logo-color-small
+  width: 150px
+  height: 130px
+  background: url('../images/logo.png') no-repeat
+  background-size: cover
+  margin: 20px auto
+  
+
 .menu-container
   height: $menuHeight
 .menu
@@ -374,10 +382,12 @@ md-input-container
     width: 100%
 .checkout-header
   cursor: pointer
+  border-bottom: 2px solid rgba(0,0,0,0.12)
   h3
     margin-top: 0
     padding: 10px
-    border-bottom: 2px solid #f2f2f2
+  &.active
+    border-bottom: 0
 
 /* Bounce To Right */
 .hvr-bounce-to-right

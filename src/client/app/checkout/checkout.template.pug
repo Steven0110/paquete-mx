@@ -1,7 +1,7 @@
 .menu-container
   .menu.menu-tabs.clearfix
     div(data-ng-include="'app/templates/menu.template.html'")
-.pages
+.pages.colored
   .dashboard-content
     .container-fluid
       .align-center(data-ng-if="checkout.connecting")
@@ -76,7 +76,7 @@
                 |Ordenar
             .form-container(data-ng-show="checkout.step=='payment'")
               h1.accent.align-center
-                |Agrega tu Tarjeta
+                |Selecciona Tarjeta
               div
                 div.card-select(data-ng-repeat="item in checkout.paymentMethods", data-ng-click="checkout.selectCard(item)")
                   div
@@ -87,7 +87,7 @@
                     |{{item.last4}}
                 .add-dashboard(data-ng-hide="checkout.cardForm")
                   i.fa.fa-plus-circle(data-ng-click="checkout.cardForm = true")
-                  h3(data-ng-click="checkout.cardForm = true")
+                  h2(data-ng-click="checkout.cardForm = true")
                     |¡Agregar tarjeta!
               div(data-ng-show="checkout.cardForm")
                 card-form( data-labels="checkout.labels.payment", data-send-form="checkout.paymentMethod(response)")
@@ -103,6 +103,7 @@
                 |Dirección de Destino
               address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.toAddress(response)",data-current-address="checkout.shipping.to")
         .col-xs-6
+          .logo-color-small
           .checkout-header.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='from'}")
             h3
               |Selecciona el origen.
@@ -114,7 +115,9 @@
                 .col-xs-9
                   .padding-side
                     h4
-                      |Selecciona la dirección de envio y en donde se realizara la recolección.
+                      |Selecciona la dirección de envio, recuerda que si ya tienes cuenta puedes guardarlas para fácil acceso.
+                    h3
+                      |¡Al final podras solicitar tu recolección!
           .checkout-header.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='to'}")
             h3
               |Selecciona el destino.
@@ -125,11 +128,21 @@
                   .padding-side
                     h4
                       |Selecciona la dirección de destino y quien es el destinatario.
+                    h3
+                      |¡Guarda tus direcciones y destinatarios frecuentes desde tu cuenta!
                 .col-xs-3
                   img(data-ng-src="common/images/destino.png")
           .checkout-header.hvr-bounce-to-right.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='payment'}")
             h3
               |Selecciona el método de Pago.
+          .checkout-info(data-ng-show="checkout.step =='payment'")
+            .card-icons
+              i.fa.fa-cc-visa
+              i.fa.fa-cc-amex
+              i.fa.fa-cc-mastercard
+            .padding-side
+              h3
+                |¡Aceptamos VISA, AMEX y MASTERCARD!
           .checkout-header.hvr-bounce-to-right.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='confirm'}")
             h3
               |Confirma y ¡Envia!.
