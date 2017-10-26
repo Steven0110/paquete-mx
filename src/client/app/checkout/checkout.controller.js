@@ -35,12 +35,18 @@
       alert('yeah');
     };
 
+    checkout.changeSection = function(section){
+      shell.moveToTop();
+      checkout.step = section;
+    }
+
     checkout.paymentMethod = function(card){
       checkout.card = card;
       checkout.step = 'confirm';
     }
 
     checkout.order = function(){
+      var total = (checkout.shipping.service.total * 100).toFixed(0);
       var order = {
         shipping:{
           service       : checkout.shipping.service,
@@ -49,7 +55,7 @@
           packages      : [checkout.shipping.package]
         },
         paymentMethod : {card: checkout.card},
-        amount        : 10000
+        amount        : total
       }
 
       console.log('order-shipping',order);

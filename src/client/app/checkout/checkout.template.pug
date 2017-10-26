@@ -72,19 +72,147 @@
         .col-xs-6
           .section-space-right
             .form-container(data-ng-show="checkout.step=='confirm'")
-              md-button.md-raised(data-ng-click="checkout.order()")
-                |Ordenar
+              h1.accent.align-center
+                |¡Confirma la información!
+              div
+
+                .container-fluid
+                  .row
+                    .col-xs-6
+                      .section-space-right
+                        h2
+                          |Origen
+                        div(data-ng-if="checkout.shipping.from")
+                          .board-list
+                            |{{checkout.shipping.from.street}}, {{checkout.shipping.from.number}}&nbsp;
+                            span(data-ng-if="checkout.shipping.from.apt")
+                              | - {{checkout.shipping.from.apt}}
+                          .board-list
+                            |{{checkout.shipping.from.county}}
+                            span(data-ng-if="checkout.shipping.from.city")
+                              |, {{checkout.shipping.from.city}}
+                            span
+                              |, CP. {{checkout.shipping.from.zip}}
+                          .board-list
+                            |{{checkout.shipping.from.state}}
+                            span.uppercase
+                              |, {{checkout.shipping.from.country.name}}
+                        .align-right
+                          .anchor-section(data-ng-click="checkout.changeSection('from')")
+                            |Modificar
+                    .col-xs-6
+                      .section-space-left
+                        h2
+                          |Destino
+                        div(data-ng-if="checkout.shipping.to")
+                          .board-list
+                            |{{checkout.shipping.to.street}}, {{checkout.shipping.to.number}}&nbsp;
+                            span(data-ng-if="checkout.shipping.to.apt")
+                              | - {{checkout.shipping.to.apt}}
+                          .board-list
+                            |{{checkout.shipping.to.county}}
+                            span(data-ng-if="checkout.shipping.to.city")
+                              |, {{checkout.shipping.to.city}}
+                            span
+                              |, CP. {{checkout.shipping.to.zip}}
+                          .board-list
+                            |{{checkout.shipping.to.state}}
+                            span.uppercase
+                              |, {{checkout.shipping.to.country.name}}
+                        .align-right
+                          .anchor-section(data-ng-click="checkout.changeSection('to')")
+                            |Modificar
+                    .col-xs-12
+                      h2
+                        |Método de Pago
+                      .card-item(data-ng-if="checkout.card")
+                        div
+                          h3
+                            |{{checkout.card.name}}
+                        div
+                          i.big.fa.fa-cc-mastercard(data-ng-if="checkout.card.brand == 'MC'")
+                          i.big.fa.fa-cc-visa(data-ng-if="checkout.card.brand == 'VISA'")
+                          i.big.fa.fa-cc-amex(data-ng-if="checkout.card.brand == 'AMERICAN_EXPRESS'")
+                          i.fa.fa-circle
+                          i.fa.fa-circle
+                          i.fa.fa-circle
+                          i.fa.fa-circle
+                          |&nbsp;
+                          i.fa.fa-circle
+                          i.fa.fa-circle
+                          i.fa.fa-circle
+                          i.fa.fa-circle
+                          |&nbsp;
+                          i.fa.fa-circle
+                          i.fa.fa-circle
+                          i.fa.fa-circle
+                          i.fa.fa-circle
+                          |&nbsp;
+                          span
+                            |{{checkout.card.last4}}
+                      .align-right
+                        .anchor-section(data-ng-click="checkout.changeSection('payment')")
+                          |Modificar
+                    .col-xs-12
+                      h2
+                        |Servicio Seleccionado
+                      .container-fluid
+                        .row
+                          .col-xs-4
+                            .item-logo(data-ng-class="{'vertical':checkout.shipping.service.service == 'ups'}")
+                              img(data-ng-src="common/images/{{checkout.shipping.service.service}}.png")
+                          .col-xs-4
+                            .board-list
+                              |{{checkout.shipping.service.billingWeight}}
+                          .col-xs-4
+                            .board-list
+                              |{{checkout.shipping.service.name}}
+                    .col-xs-12
+                      .board-list.align-center
+                        h1
+                          |Total a Pagar:
+                          span.secondary-accent
+                            |&nbsp;{{checkout.shipping.service.total | currency}} MXN
+
+                      //- div
+                        .board-list
+                          .item-logo(data-ng-class="{'vertical':checkout.shipping.service.service == 'ups'}")
+                            img(data-ng-src="common/images/{{item.service}}.png")
+                          span
+                            |{{checkout.shipping.service.service}} {{checkout.shipping.service.name}}
+                        |{{checkout.shipping.service}}
+                .align-center
+                  md-button.md-raised.md-primary(data-ng-click="checkout.order()")
+                    |Confirmar y pagar
             .form-container(data-ng-show="checkout.step=='payment'")
               h1.accent.align-center
                 |Selecciona Tarjeta
               div
                 div.card-select(data-ng-repeat="item in checkout.paymentMethods", data-ng-click="checkout.selectCard(item)")
                   div
-                    |{{item.name}}
+                    h3
+                      |{{item.name}}
                   div
-                    |{{item.brand}}
-                  div
-                    |{{item.last4}}
+                    i.big.fa.fa-cc-mastercard(data-ng-if="item.brand == 'MC'")
+                    i.big.fa.fa-cc-visa(data-ng-if="item.brand == 'VISA'")
+                    i.big.fa.fa-cc-amex(data-ng-if="item.brand == 'AMERICAN_EXPRESS'")
+                    i.fa.fa-circle
+                    i.fa.fa-circle
+                    i.fa.fa-circle
+                    i.fa.fa-circle
+                    |&nbsp;
+                    i.fa.fa-circle
+                    i.fa.fa-circle
+                    i.fa.fa-circle
+                    i.fa.fa-circle
+                    |&nbsp;
+                    i.fa.fa-circle
+                    i.fa.fa-circle
+                    i.fa.fa-circle
+                    i.fa.fa-circle
+                    |&nbsp;
+                    span
+                      |{{item.last4}}
                 .add-dashboard(data-ng-hide="checkout.cardForm")
                   i.fa.fa-plus-circle(data-ng-click="checkout.cardForm = true")
                   h2(data-ng-click="checkout.cardForm = true")
@@ -95,11 +223,11 @@
             .form-container(data-ng-show="checkout.step=='login'")
               login-form
             .form-container(data-ng-show="checkout.step=='from'")
-              .form-title
-                |¿Cual es el origen?
+              h1.accent.align-center
+                |Dirección de Origen
               address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.fromAddress(response)", data-current-address="checkout.shipping.from")
             .form-container(data-ng-show="checkout.step=='to'")
-              .form-title
+              h1.accent.align-center
                 |Dirección de Destino
               address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.toAddress(response)",data-current-address="checkout.shipping.to")
         .col-xs-6
@@ -114,10 +242,10 @@
                   img(data-ng-src="common/images/origen.png")
                 .col-xs-9
                   .padding-side
-                    h4
-                      |Selecciona la dirección de envio, recuerda que si ya tienes cuenta puedes guardarlas para fácil acceso.
-                    h3
-                      |¡Al final podras solicitar tu recolección!
+                    h4.disabled-color
+                      |Selecciona la dirección de envió, recuerda que si ya tienes cuenta puedes guardarlas para fácil acceso.
+                    h3.secondary-accent
+                      |¡Al final podrás solicitar tu recolección!
           .checkout-header.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='to'}")
             h3
               |Selecciona el destino.
@@ -126,9 +254,9 @@
               .row
                 .col-xs-9
                   .padding-side
-                    h4
+                    h4.disabled-color
                       |Selecciona la dirección de destino y quien es el destinatario.
-                    h3
+                    h3.secondary-accent
                       |¡Guarda tus direcciones y destinatarios frecuentes desde tu cuenta!
                 .col-xs-3
                   img(data-ng-src="common/images/destino.png")
@@ -141,11 +269,35 @@
               i.fa.fa-cc-amex
               i.fa.fa-cc-mastercard
             .padding-side
-              h3
-                |¡Aceptamos VISA, AMEX y MASTERCARD!
+              h3.secondary-accent
+                |¡Aceptamos tarjetas de Crédito y Débito!
+              h4.disabled-color
+                |Tarjetas de crédito nacionales e internacionales, expedidas por 
+                span.secondary-accent
+                  |VISA
+                |,&nbsp;
+                span.secondary-accent
+                  |AMERICAN EXPRESS
+                |&nbsp;o&nbsp;
+                span.secondary-accent
+                  |MASTERCARD.
+              h4.disabled-color
+                |Tarjetas de debido de 
+                span.secondary-accent
+                  |Banamex
+                |,&nbsp;
+                span
+                  |HSBC
+                |,&nbsp;
+                span.secondary-accent
+                  |Inbursa 
+                |&nbsp;y&nbsp; 
+                span.secondary-accent
+                  |Santander
+                |.
           .checkout-header.hvr-bounce-to-right.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='confirm'}")
             h3
-              |Confirma y ¡Envia!.
+              |Confirma y ¡Envia!
           //- .section-space-left
             .form-container
               h1.accent

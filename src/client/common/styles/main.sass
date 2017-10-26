@@ -17,9 +17,20 @@ a, a:active, a:hover, a:visited
 .align-center
   text-align: center
 
+.align-right
+  text-align: right
+
 .height-100
   height: 100%
   overflow: auto
+
+.anchor-section
+  cursor: pointer
+  font-size: 1.5rem
+  text-decoration: underline
+  color: $gray-disabled
+  &:hover
+   color: $accent-color
 
 .margin-top-1
   margin-top: 1rem
@@ -77,6 +88,10 @@ md-input-container.md-input-small
 
 .accent
   color: $primary-color
+.secondary-accent
+  color: $accent-color
+.disabled-color
+  color: $gray-disabled
 .bold
   font-weight: 700
 .relative

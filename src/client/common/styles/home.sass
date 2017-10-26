@@ -368,15 +368,51 @@ md-input-container
     color: rgba(0,0,0,0.8)
     font-size: 2rem
 
+i.fa-cc-mastercard
+  color: $mastercard-color
+i.fa-cc-visa
+  color: $visa-color
+i.fa-cc-amex
+  color: $amex-color
+
 .card-select
   border: solid 1px #ccc
   margin-bottom: 1rem
   cursor: pointer
+  padding: 10px
+  color: rgba(0,0,0,0.8)
+  border-radius: 5px
+  &:hover
+    background-color: $primary-color
+    color: #FFF
+    border-color: $primary-color
+    span
+      color: #FFF
+    i
+      color: rgba(255,255,255,0.7)
+.card-select, .card-item
+  h3
+    margin: 0
+  i
+    &.fa-circle
+      position: relative
+      font-size: 1.2rem
+      top: -8px
+      margin-right: 5px
+      color: #ccc
+    &.big
+      display: inline-block
+      font-size: 4rem
+      margin: 10px 10px 10px 0;
+  span
+    font-size: 3rem
+    color: $primary-color
 
 
 /*checkout*/
 .checkout-info
   padding-bottom: 20px
+  border-bottom: 2px solid rgba(0,0,0,0.12)
   text-align: center
   img
     width: 100%
