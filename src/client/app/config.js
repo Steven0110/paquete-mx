@@ -103,6 +103,18 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controller: 'Start',
       controllerAs: 'start'
     })
+    .state('dashboard.account',{
+      url:'/account',
+      templateUrl: 'app/dashboard/account/account.template.html',
+      controller: 'Account',
+      controllerAs: 'account'
+    })
+    .state('dashboard.shipping',{
+      url:'/shipping',
+      templateUrl: 'app/dashboard/shipping/shipping.template.html',
+      controller: 'Shipping',
+      controllerAs: 'shipping'
+    })
     .state('dashboard.address',{
       url:'/address',
       templateUrl: 'app/dashboard/address/addresses.template.html',
