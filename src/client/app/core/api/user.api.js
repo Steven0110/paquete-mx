@@ -11,18 +11,21 @@
   function userApi($q, parse, parseheaders ,storage ) {
 
     var factory = {
-      login           : login,
-      register        : register,
-      logout          : logout,
-      isAuth          : isAuth,
-      setCurrentUser  : setCurrentUser,
-      getCurrentUser  : getCurrentUser,
-      currentUser     : currentUser,
-      saveAddress     : saveAddress,
-      getAddresses    : getAddresses,
-      getAddress      : getAddress,
-      deleteAddress   : deleteAddress,
-      updateProfile   : updateProfile
+      login             : login,
+      register          : register,
+      logout            : logout,
+      isAuth            : isAuth,
+      setCurrentUser    : setCurrentUser,
+      getCurrentUser    : getCurrentUser,
+      currentUser       : currentUser,
+      saveAddress       : saveAddress,
+      getAddresses      : getAddresses,
+      getAddress        : getAddress,
+      deleteAddress     : deleteAddress,
+      updateProfile     : updateProfile,
+      updatePassword    : updatePassword,
+      checkPassword     : checkPassword,
+      setSessionByToken : setSessionByToken
     };
 
     return factory;
@@ -49,6 +52,22 @@
     function updateProfile(params){
       var User = parse.user(params.objectId);
       return User.one().customPUT(params);
+    }
+
+    function checkPassword(params){
+      var Login = parse.login();
+      return Login.one().get(params);
+    }
+
+    function updatePassword(user,oldPassword, newPassword){
+      return this.checkPassword({username:user.username, password:oldPassword}).then(function(user){
+        var User = parse.user(user.objectId);
+        return User.one().customPUT({password: newPassword});
+      });
+    }
+
+    function setSessionByToken(token){
+      parseheaders.restKeys['X-Parse-Session-Token'] = token;
     }
 
     function register(params) {

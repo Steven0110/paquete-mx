@@ -25,22 +25,56 @@
     }
 
     account.updateProfile = function(){
-        if(account.profile.$valid){
-          shell.showLoading();
-          userApi.updateProfile(account.user).then(function(user){
-            console.log(user);
-            // shell.showMessage();
-            shell.updateCurrentUser();
-          },function(error){
-            console.log(error);
-            // shell.setError();
-            // shell.showMessage(error);
-          }).finally(shell.hideLoading);
-        }else{
-          Dialog.showMessage();
-          // shell.showError('Verifica los campos requeridos.');
-        }
-      };
+      if(account.profile.$valid){
+        shell.showLoading();
+        userApi.updateProfile(account.user).then(function(user){
+          console.log(user);
+          shell.showMessage();
+          shell.updateCurrentUser();
+        },function(error){
+          console.log(error);
+          // shell.setError();
+          // shell.showMessage(error);
+        }).finally(shell.hideLoading);
+      }else{
+        Dialog.showMessage();
+      }
+    };
+
+    account.updatePassword = function(){
+      if(account.password.$valid){
+        shell.showLoading();
+        var oldPassword = account.oldPassword;
+        var newPassword = account.newPassword;
+        userApi.updatePassword(account.user,oldPassword, newPassword).then(function(user){
+          
+          account.newPassword = null;
+          account.oldPassword = null;
+          $scope.passwordMatch = null;
+
+          account.password.$setPristine();
+          account.password.$setUntouched();
+
+          account.password.confirmPassword.$setPristine();
+          account.password.confirmPassword.$setUntouched();
+
+          userApi.setSessionByToken(user.sessionToken);
+          // shell.showMessage('Acutalización Exitosa');
+          return shell.updateCurrentUser();
+        }).then(function(user){
+          console.log(user);
+          // shell.setMessage('passwordSuccess');
+          shell.showMessage();
+        },function(error){
+          console.log(error);
+          // shell.showError();
+          // shell.setError(error);
+        }).finally(shell.hideLoading);
+      }else{
+        // shell.showMessage('Verifica los campos requeridos.');
+        Dialog.showMessage();
+      }
+    };
 
 
   };

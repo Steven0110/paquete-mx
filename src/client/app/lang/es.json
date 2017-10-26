@@ -32,6 +32,7 @@
       "confirm": "Confirmar Contraseña",
       "register": "Registrarme",
       "welcome": "¡Bienvenido!",
+
       "errors":{
         "mismatch": "Contraseña no coincide",
         "email": "Correo Electrónico invalido",
@@ -75,7 +76,11 @@
       "lastname":"Apellido",
       "email":"Correo Electrónico",
       "mobile":"Telefono",
+      "oldPassword":"Contraseña Actual",
+      "newPassword":"Contraseña Nueva",
+      "confirmPassword":"Confirmar Contraseña",
       "save":"Guardar",
+      "update":"Actualizar",
       "errors":{
         "required":"Es requerido"
       }

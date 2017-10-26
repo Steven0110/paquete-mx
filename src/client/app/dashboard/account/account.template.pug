@@ -31,3 +31,31 @@
                     div(ng-message="pattern",data-ng-bind="account.labels.form.mobileInvalid")
               .align-center
                 md-button.md-raised.md-primary(type="submit",data-ng-bind="account.labels.form.save",aria-label="account.labels.form.save")
+      .col-xs-6
+        .section-space-right
+          .form-container
+            h1.accent.align-center
+              |Cambiar Contraseña
+            form(name="account.password", data-ng-submit="account.updatePassword()", novalidate="")
+              div(layout-xs-sm="row")
+                md-input-container.md-block
+                  label(for="oldPassword",data-ng-bind="account.labels.form.oldPassword")
+                  input(name="oldPassword",type="password", data-ng-model="account.oldPassword", required="")
+                  div(ng-messages="passwordForm.oldPassword.$error")
+                    div(ng-message="required")
+                      |Es requerido
+                md-input-container.md-block
+                  label(for="password", data-ng-bind="account.labels.form.newPassword")
+                  input.pure-input-1#password(name="password", type="password" data-ng-model="account.newPassword", required="", password-match="passwordMatch")
+                  div(ng-messages="passwordForm.password.$error")
+                    div(ng-message="required")
+                      |Es requerido
+                    div(ng-message="match",data-ng-bind="account.labels.form.newPasswordNoMatch")
+                md-input-container.md-block
+                  label(for="confirmPassword", data-ng-bind="account.labels.form.confirmPassword")
+                  input.pure-input-1(name="confirmPassword", type="password", data-ng-model="passwordMatch", required="")
+                  div(ng-messages="passwordForm.password.$error")
+                    div(ng-message="required")     
+                      |Es requerido
+              .align-center
+                md-button.md-raised.md-primary(type="submit",data-ng-bind="account.labels.form.update",aria-label="account.labels.form.update")
