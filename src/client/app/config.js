@@ -115,6 +115,12 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controller: 'Shipping',
       controllerAs: 'shipping'
     })
+    .state('dashboard.payment',{
+      url:'/payment',
+      templateUrl: 'app/dashboard/payment/payment.template.html',
+      controller: 'Payment',
+      controllerAs: 'payment'
+    })
     .state('dashboard.address',{
       url:'/address',
       templateUrl: 'app/dashboard/address/addresses.template.html',
