@@ -1,2 +1,33 @@
-h1
-  |Account
+.dashboard-content
+  .container-fluid
+    .row
+      .col-xs-6
+        .section-space-right
+          .form-container
+            h1.accent.align-center
+              |Mis Datos de Cuenta
+            form(name="account.profile", novalidate="", data-ng-submit="account.updateProfile()")
+              div(layout-xs-sm="row")
+                md-input-container.md-block
+                  label(for="name", data-ng-bind="account.labels.form.name")
+                  input(name="name", data-ng-model="account.user.name", required="")
+                  div(ng-messages="account.account.name.$error")
+                    div(ng-message="required",data-ng-bind="account.labels.errors.required")
+                md-input-container.md-block
+                  label(for="lastname", data-ng-bind="account.labels.form.lastname")
+                  input(name="lastname", data-ng-model="account.user.lastname", required="")
+                  div(ng-messages="account.account.lastname.$error")
+                    div(ng-message="required",data-ng-bind="account.labels.errors.required")
+                md-input-container.md-block
+                  label(for="username", data-ng-bind="account.labels.form.email")
+                  input(name="username", type="email", data-ng-model="account.user.username", required="")
+                  div(ng-messages="account.account.username.$error")
+                    div(ng-message="required",data-ng-bind="account.labels.errors.required")
+                md-input-container.md-block
+                  label(for="phone", data-ng-bind="account.labels.form.mobile")
+                  input(name="phone", data-ng-model="account.user.phone", required="", data-ng-pattern="account.mobilePattern")
+                  div(ng-messages="account.account.phone.$error")
+                    div(ng-message="required",data-ng-bind="account.labels.errors.required")
+                    div(ng-message="pattern",data-ng-bind="account.labels.form.mobileInvalid")
+              .align-center
+                md-button.md-raised.md-primary(type="submit",data-ng-bind="account.labels.form.save",aria-label="account.labels.form.save")

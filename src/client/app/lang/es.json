@@ -68,5 +68,18 @@
         "required": "Es requerido"
       }
     }
+  },
+  "account":{
+    "form":{
+      "name":"Nombre",
+      "lastname":"Apellido",
+      "email":"Correo Electrónico",
+      "mobile":"Telefono",
+      "save":"Guardar",
+      "errors":{
+        "required":"Es requerido"
+      }
+
+    }
   }
 }

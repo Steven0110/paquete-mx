@@ -5,10 +5,10 @@
     .module('app.core')
     .controller('Shell',Shell);
 
-  Shell.$inject = ['$transitions','$scope','$state','$window','template','$mdToast','userApi','shippingApi'];
+  Shell.$inject = ['$transitions','$scope','$state','$window','$q','template','$mdToast','userApi','shippingApi'];
 
 
-  function Shell($transitions, $scope, $state, $window,template, $mdToast, userApi, shippingApi){
+  function Shell($transitions, $scope, $state, $window, $q,template, $mdToast, userApi, shippingApi){
     // jshint validthis: true 
     var shell = this;
     shell.loading = false;
@@ -87,6 +87,19 @@
     shell.getCurrentUser = function(){
       return userApi.currentUser();
     }
+
+    shell.updateCurrentUser = function(){
+      var deferred = $q.defer();
+      userApi.getCurrentUser().then(function(user){
+        shell.currentUser = user;
+        userApi.setCurrentUser(user);
+        deferred.resolve(user);
+      },function(error){
+        shell.setError(error);
+        deferred.reject(error);
+      });
+      return deferred.promise;
+    };
 
     shell.logout = function(){
       userApi.logout();

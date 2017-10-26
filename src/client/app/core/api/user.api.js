@@ -21,7 +21,8 @@
       saveAddress     : saveAddress,
       getAddresses    : getAddresses,
       getAddress      : getAddress,
-      deleteAddress   : deleteAddress
+      deleteAddress   : deleteAddress,
+      updateProfile   : updateProfile
     };
 
     return factory;
@@ -43,6 +44,11 @@
 
     function isAuth() {
       return storage.get('user');
+    }
+
+    function updateProfile(params){
+      var User = parse.user(params.objectId);
+      return User.one().customPUT(params);
     }
 
     function register(params) {
