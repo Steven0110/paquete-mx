@@ -302,6 +302,7 @@ Parse.Cloud.define("chargeCard",function(request, response){
   var amount = request.params.amount;
   var isToken = request.params.isToken
   var requestResult = {};
+  var paymentSave;
   isToken = isToken ==true;
 
   var cardId = paymentMethod.card.id;
@@ -323,6 +324,7 @@ Parse.Cloud.define("chargeCard",function(request, response){
     return payment.save();
   }).then(function(payment){
     var status;
+    paymentSave = payment;
     if(requestResult.payment && requestResult.payment.payment_status)
       status =  requestResult.payment.payment_status;
 
@@ -335,7 +337,18 @@ Parse.Cloud.define("chargeCard",function(request, response){
     }
 
   }).then(function(shipOrder){
-    requestResult.shipOrder = shipOrder
+
+    requestResult.shipOrder = shipOrder.params;
+    /*agregar el shipOrder a payment*/
+    // var Payment = Parse.Object.extend('Payment');
+    // var payment = new Payment();
+    
+    paymentSave.set("order",shipOrder.shipping);
+    paymentSave.set("trackingNumber",shipOrder.params.trackingNumber);
+
+    return paymentSave.save();
+    /*agregar el shipOrder a payment*/
+  }).then(function(){
     response.success(requestResult);
   },function(error){
     response.error(error);
@@ -420,8 +433,8 @@ function sendShipOrder(user, shipping, payment) {
 
 
     return shipping.save(params);
-  }).then(function(){
-    parse_promise.resolve(params);
+  }).then(function(shipping){
+    parse_promise.resolve({params:params, shipping:shipping});
   },function(err){
     parse_promise.reject(err);
   });
