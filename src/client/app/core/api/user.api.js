@@ -21,6 +21,8 @@
       saveAddress       : saveAddress,
       getAddresses      : getAddresses,
       getAddress        : getAddress,
+      getPayments       : getPayments ,
+      getOrders         : getOrders,
       deleteAddress     : deleteAddress,
       updateProfile     : updateProfile,
       updatePassword    : updatePassword,
@@ -131,6 +133,47 @@
       var where = {"user":{"__type":"Pointer","className":"_User","objectId":userId}}
       var Address = parse.endpoint('Address');
       return Address.getAll(where,'createdAt');
+    }
+
+    function getPayments(userId){
+
+      if(!userId){
+        var user = currentUser();
+        if(user && user.objectId){
+          userId = user.objectId;
+        }else{
+          var deferred = $q.defer();
+          deferred.reject({noSession:true});
+          return deferred.promise;
+        }
+      }
+
+      var where = {"user":{"__type":"Pointer","className":"_User","objectId":userId}}
+      var Payment = parse.endpoint('Payment');
+      return Payment.getAll(where,'createdAt');
+    }
+
+    function getOrders(delivered,userId){
+
+      if(!userId){
+        var user = currentUser();
+        if(user && user.objectId){
+          userId = user.objectId;
+        }else{
+          var deferred = $q.defer();
+          deferred.reject({noSession:true});
+          return deferred.promise;
+        }
+      }
+
+      var where = {"user":{"__type":"Pointer","className":"_User","objectId":userId}}
+      if(delivered == true){
+        where.delivered = true;
+      }else if(delivered == false){
+        where.delivered = false
+      }
+      var Shipping = parse.endpoint('Shipping');
+      return Shipping.getAll(where,'createdAt');
     }
 
     function getAddress(objectId){

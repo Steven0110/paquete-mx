@@ -1,0 +1,31 @@
+.dashboard-content
+  h1.accent
+    |Envios en curso
+  table.dashboard-table
+    thead
+      tr
+        th
+          |Número de rastreo
+        th
+          |Servicio
+        th
+          |Status
+        th
+          |Fecha de creación
+        th
+          |Ultima Actualización
+    tbody
+      tr(data-ng-repeat="item in shippings.list")
+        td.accent.bold.medium-font.pointer
+          a(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
+            |{{item.trackingNumber}}
+        td.pointer
+          |{{item.service.service.name}}
+        td.success.pointer
+          |{{item.status}}
+        td.uppercase.pointer
+          |{{item.createdAt | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
+        td.uppercase.pointer
+          |{{item.updatedAt | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
+  h1.accent
+    |Envios finalizados

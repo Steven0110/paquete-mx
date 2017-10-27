@@ -1,2 +1,22 @@
-h1
-  |Payment
+.dashboard-content
+  table.dashboard-table
+    thead
+      tr
+        th
+          |Número de rastreo
+        th
+          |Monto
+        th
+          |Fecha de pago
+        th
+          |Método de Pago
+    thbody
+      tr(data-ng-repeat="item in payments.list")
+        td
+          |{{item.trackingNumber}}
+        td
+          |{{item.amount | currency}}
+        td
+          |{{item.createdAt }}
+        td
+          |{{item.charge.brand}} **** **** **** {{item.charge.last4}}

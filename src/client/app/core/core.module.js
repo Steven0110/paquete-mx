@@ -3,6 +3,7 @@
   angular.module('app.core', [
     'ui.router',
     'app.core',
-    'app.storage'
+    'app.storage',
+    'angularMoment'
   ]);
 })();

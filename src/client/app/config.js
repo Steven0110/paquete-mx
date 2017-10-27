@@ -109,17 +109,39 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controller: 'Account',
       controllerAs: 'account'
     })
-    .state('dashboard.shipping',{
+    .state('dashboard.shippings',{
       url:'/shipping',
+      templateUrl: 'app/dashboard/shipping/shippings.template.html',
+      controller: 'Shippings',
+      controllerAs: 'shippings',
+      resolve:{
+        data: function(userApi){
+          return userApi.getOrders();
+        }
+      }
+    })
+    .state('dashboard.shipping',{
+      url:'/shipping/:trackId',
       templateUrl: 'app/dashboard/shipping/shipping.template.html',
       controller: 'Shipping',
-      controllerAs: 'shipping'
+      controllerAs: 'shipping',
+      resolve:{
+        data: function($stateParams,shippingApi){
+          var trackId = $stateParams.trackId;
+          return shippingApi.getOrder(trackId);
+        }
+      }
     })
     .state('dashboard.payment',{
       url:'/payment',
       templateUrl: 'app/dashboard/payment/payment.template.html',
-      controller: 'Payment',
-      controllerAs: 'payment'
+      controller: 'Payments',
+      controllerAs: 'payments',
+      resolve:{
+        data: function(userApi){
+          return userApi.getPayments();
+        }
+      }
     })
     .state('dashboard.address',{
       url:'/address',

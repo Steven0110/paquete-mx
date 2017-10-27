@@ -28,6 +28,8 @@
     "conekta.js": "^0.6.0",
     "angular-card": "^0.3.12",
     "card": "^2.4.0",
-    "angular-confirm": "angular1-confirm#^1.1.0"
+    "angular-confirm": "angular1-confirm#^1.1.0",
+    "moment": "^2.19.1",
+    "angular-moment": "^1.1.0"
   }
 }

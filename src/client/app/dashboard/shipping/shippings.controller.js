@@ -3,24 +3,23 @@
 
   angular
     .module('app.core')
-    .controller('Payments',Payments);
+    .controller('Shippings',Shippings);
 
-  Payments.$inject = ['$scope','$q','userApi','data'];
+  Shippings.$inject = ['$scope','data'];
 
 
-  function Payments($scope, $q, userApi, data){
+  function Shippings($scope, data){
     // jshint validthis: true 
-    var payments = this;
+    var shippings = this;
     var shell = $scope.shell;
-    payments.list = [];
 
     var dashMenu = $('#dash-menu').innerWidth();
     $('.dashboard-menu').width(Math.floor(dashMenu-2));
 
-    if(data){
-      payments.list = data;
-    }
+    shippings.list = [];
 
-    console.log(payments.list);
+    if(data){
+      shippings.list = data;
+    }
   };
 })();

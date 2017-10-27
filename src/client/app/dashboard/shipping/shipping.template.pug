@@ -1,2 +1,121 @@
-h1
-  |Shipping
+.dashboard-content
+  h1.accent.align-center
+      |&nbsp;{{shipping.data.trackingNumber}}
+  .container-fluid
+    .shipping-info
+      .row
+        .col-xs-4
+          h2.accent
+            |Origen
+          .section-space-right
+            .board-list
+              |{{shipping.data.service.from.street}}, {{shipping.data.service.from.number}}&nbsp;
+              span(data-ng-if="shipping.data.service.from.apt")
+                | - {{shipping.data.service.from.apt}}
+            .board-list
+              |{{shipping.data.service.from.county}}
+              span(data-ng-if="shipping.data.service.from.city")
+                |, {{shipping.data.service.from.city}}
+              span
+                |, CP. {{shipping.data.service.from.zip}}
+            .board-list
+              |{{shipping.data.service.from.state}}
+              span.uppercase
+                |, {{shipping.data.service.from.country.name}}
+        .col-xs-4
+          .align-center
+            .small-image
+              img(ng-src="common/images/section-1-1.png")
+            h1.success
+              |{{shipping.data.status}}
+        .col-xs-4
+          h2.accent
+            |Destino
+          .board-list
+            |{{shipping.data.service.to.street}}, {{shipping.data.service.to.number}}&nbsp;
+            span(data-ng-if="shipping.data.service.to.apt")
+              | - {{shipping.data.service.to.apt}}
+          .board-list
+            |{{shipping.data.service.to.county}}
+            span(data-ng-if="shipping.data.service.to.city")
+              |, {{shipping.data.service.to.city}}
+            span
+              |, CP. {{shipping.data.service.to.zip}}
+          .board-list
+            |{{shipping.data.service.to.state}}
+            span.uppercase
+              |, {{shipping.data.service.to.country.name}}
+    .shipping-info
+      h1.accent
+        |Paquetes
+      h3.disabled-color(data-ng-if="shipping.packages.length < 1")
+        |No hay paquetes en este envio.
+      table.info-table(data-ng-if="shipping.packages.length > 0")
+        thead
+          tr
+            th
+              |#
+            th
+              |Peso
+            th
+              |Alto
+            th
+              |Ancho
+            th
+              |Largo
+        tbody(data-ng-repeat="item in shipping.packages")
+          tr
+            td
+              |{{$index+1 }}
+            td
+              |{{item.weight}} Kgs.
+            td
+              |{{item.height}} cms.
+            td
+              |{{item.width}} cms.
+            td
+              |{{item.length}} cms.
+    .shipping-info
+      h1.accent
+        |Actualizaciones
+      h3.disabled-color(data-ng-if="shipping.updates.length < 1")
+        |No hay actualizaciones disponibles
+    .shipping-info
+      h1
+        span.accent
+          |Monto: 
+        span.success
+          |&nbsp;{{shipping.data.paymentAmount | currency}}
+      h3
+        span.accent
+          |Pagado con:
+      .card-item
+        i.big.fa.fa-cc-mastercard(data-ng-if="shipping.data.charge.brand == 'mc'")
+        i.big.fa.fa-cc-visa(data-ng-if="shipping.data.charge.brand == 'visa'")
+        i.big.fa.fa-cc-amex(data-ng-if="shipping.data.charge.brand == 'american_express'")
+        i.fa.fa-circle
+        i.fa.fa-circle
+        i.fa.fa-circle
+        i.fa.fa-circle
+        |&nbsp;
+        i.fa.fa-circle
+        i.fa.fa-circle
+        i.fa.fa-circle
+        i.fa.fa-circle
+        |&nbsp;
+        i.fa.fa-circle
+        i.fa.fa-circle
+        i.fa.fa-circle
+        i.fa.fa-circle
+        |&nbsp;
+        span
+          |{{shipping.data.charge.last4}}
+      h3
+        span.accent
+          |Cargos de Sobrepeso
+      h3.disabled-color(data-ng-if="shipping.overWeight.length < 1")
+        |No hay cargos de sobrepeso.
+
+
+        
+    

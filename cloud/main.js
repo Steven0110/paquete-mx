@@ -316,6 +316,12 @@ Parse.Cloud.define("chargeCard",function(request, response){
     //TODO Agregar el user cuando solo envian el conektaId
     payment.set('user',user);
     payment.set('response',result);
+    if(result && result.charges && result.charges.data){
+      var charge = result.charges.data;
+      if(charge[0] && charge[0].payment_method){
+        payment.set('charge',charge[0].payment_method);
+      }
+    }
 
     if(result.payment_status){
       payment.set('status', result.payment_status);
@@ -329,11 +335,11 @@ Parse.Cloud.define("chargeCard",function(request, response){
       status =  requestResult.payment.payment_status;
 
     if(status == "paid"){
-      var paymentObject ={
-        paymentStatus : requestResult.payment.payment_status,
-        paymentAmount : (requestResult.payment.amount/100)
-      };
-      return sendShipOrder(user, shipping,paymentObject);
+      // var paymentObject ={
+        // paymentStatus : requestResult.payment.payment_status,
+        // paymentAmount : (requestResult.payment.amount/100)
+      // };
+      return sendShipOrder(user, shipping,requestResult.payment);
     }
 
   }).then(function(shipOrder){
@@ -414,21 +420,29 @@ function sendShipOrder(user, shipping, payment) {
 
     if(result.text){
       result =  JSON.parse(result.text);
-      console.log('result-json');
-      console.log(result);
       params = {
         total : result.total,
         negotiated : result.negotiated,
         trackingNumber: result.trackingNumber,
-        packages: result.packages
+        packages: result.packages,
+        status:'label_created',
+        delivered: false,
+        service: body.shipping
       }
     }
 
     if(payment){
-      if(payment.paymentAmount)
-        params.paymentAmount = payment.paymentAmount;
-      if(payment.paymentStatus)
-        params.paymentStatus = payment.paymentStatus;
+
+      if(payment.amount)
+        params.paymentAmount = (payment.amount/100);
+      if(payment.payment_status)
+        params.paymentStatus = payment.payment_status;
+      if(payment && payment.charges && payment.charges.data){
+        var charge = payment.charges.data;
+        if(charge[0] && charge[0].payment_method){
+          params.charge =charge[0].payment_method;
+        }
+      }
     }
 
 

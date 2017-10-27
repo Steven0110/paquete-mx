@@ -5,12 +5,23 @@
     .module('app.core')
     .controller('Shipping',Shipping);
 
-  Shipping.$inject = ['$scope','$q'];
+  Shipping.$inject = ['$scope','data'];
 
 
-  function Shipping($scope, $q){
+  function Shipping($scope, data){
     // jshint validthis: true 
     var shipping = this;
+    shipping.updates = [];
+    shipping.overWeight = [];
     var shell = $scope.shell;
+
+    var dashMenu = $('#dash-menu').innerWidth();
+    $('.dashboard-menu').width(Math.floor(dashMenu-2));
+
+    if(data){
+      console.log(data);
+      shipping.data = data;
+      shipping.packages = data.service.packages;
+    }
   };
 })();

@@ -5,15 +5,16 @@
   .module('app.core')
   .factory('shippingApi', shippingApi);
 
-  shippingApi.$inject = ['$q', 'storage'];
+  shippingApi.$inject = ['$q', 'storage','parse'];
 
   /* @ngInject */
 
-  function shippingApi($q, storage) {
+  function shippingApi($q, storage, parse) {
 
     var factory = {
       setShipping  : setShipping,
-      getShipping  : getShipping
+      getShipping  : getShipping,
+      getOrder     : getOrder
     };
 
     return factory;
@@ -29,6 +30,12 @@
         return shipping;
       else
         return false;
+    }
+
+    function getOrder(trackId){
+      var where = {'trackingNumber':trackId};
+      var Shipping = parse.endpoint('Shipping');
+      return Shipping.getFirst(where);
     }
       
   }
