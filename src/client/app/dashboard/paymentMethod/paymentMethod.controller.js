@@ -12,6 +12,10 @@
     // jshint validthis: true 
     var paymentMethod = this;
     paymentMethod.list = [];
+
+    var dashMenu = $('#dash-menu').innerWidth();
+    $('.dashboard-menu').width(Math.floor(dashMenu-2));
+    
     var shell = $scope.shell;
     paymentMethod.labels = shell.labels.paymentMethod;
     paymentMethod.send =function(card){

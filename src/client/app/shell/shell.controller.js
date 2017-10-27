@@ -17,6 +17,10 @@
     shell.countries = [];
     shell.shipping = false;
     shell.currentUser = false;
+    shell.dashboard ={
+      title: "Title",
+      subtitle: "Subtitle"
+    }
 
     shell.dashMenu = [
       {name:'shippings',label:"Envios",uiref:"#"},
@@ -123,6 +127,16 @@
       shell.logout();
     }
 
+    shell.setTitle = function(title, subtitle){
+      if(title){
+        shell.dashboard.title = title;
+      }
+
+      if(subtitle){
+        shell.dashboard.subtitle = subtitle;
+      }
+    }
+
 
 
     function showToast(message){
@@ -157,6 +171,11 @@
         }
         if(newToState.data.submenu){
           submenu = newToState.data.submenu
+        }
+
+        console.log(newToState.data)
+        if(newToState.data.title && newToState.data.subtitle){
+          shell.setTitle(newToState.data.title, newToState.data.subtitle);
         }
 
         shell.setMenu(menu, submenu);

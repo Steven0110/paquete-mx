@@ -10,8 +10,6 @@
             a(data-ng-bind="item.label", ui-sref="{{item.uiref}}")
     .col-xs-12.col-sm-10
       .dashboard-header
-        .dash-section-title
-          |Mis Direcciones
-        .dash-section-subtitle
-          |Agrega o modifica las direcciones que más usas.
+        .dash-section-title(data-ng-bind="shell.dashboard.title")
+        .dash-section-subtitle(data-ng-bind="shell.dashboard.subtitle")
       ui-view

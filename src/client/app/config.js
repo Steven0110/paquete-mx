@@ -107,13 +107,21 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       url:'/account',
       templateUrl: 'app/dashboard/account/account.template.html',
       controller: 'Account',
-      controllerAs: 'account'
+      controllerAs: 'account',
+      data:{
+        title: "Mi Cuenta",
+        subtitle: "Actualiza los datos y contraseña de tu cuenta"
+      }
     })
     .state('dashboard.shippings',{
       url:'/shipping',
       templateUrl: 'app/dashboard/shipping/shippings.template.html',
       controller: 'Shippings',
       controllerAs: 'shippings',
+      data:{
+        title: "Mis Envios",
+        subtitle: "Verifica el status y detalles de tus envios"
+      },
       resolve:{
         data: function(userApi){
           return userApi.getOrders();
@@ -125,6 +133,10 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       templateUrl: 'app/dashboard/shipping/shipping.template.html',
       controller: 'Shipping',
       controllerAs: 'shipping',
+      data:{
+        title: "Detalles Orden",
+        subtitle: "Detalles de la orden"
+      },
       resolve:{
         data: function($stateParams,shippingApi){
           var trackId = $stateParams.trackId;
@@ -137,6 +149,10 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       templateUrl: 'app/dashboard/payment/payment.template.html',
       controller: 'Payments',
       controllerAs: 'payments',
+      data:{
+        title: "Mis Pagos",
+        subtitle: "Detalles de tus pagos realizados"
+      },
       resolve:{
         data: function(userApi){
           return userApi.getPayments();
@@ -150,7 +166,9 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controllerAs: 'addresses',
       data:{
         menu: "contacts",
-        submenu: "addresses"
+        submenu: "addresses",
+        title: "Mis Direcciones",
+        subtitle : "Agregar tus direcciones frecuentes."
       }
     })
     .state('dashboard.paymentMethod',{
@@ -160,7 +178,9 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controllerAs: 'paymentMethod',
       data:{
         menu: "contacts",
-        submenu: "addresses"
+        submenu: "addresses",
+        title: "Mis Tarjetas",
+        subtitle: "Agrega o edita tus métodos de pago"
       },
       resolve:{
         data: function(conektaApi){

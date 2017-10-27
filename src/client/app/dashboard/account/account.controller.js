@@ -13,6 +13,9 @@
     var account = this;
     var shell = $scope.shell;
 
+    var dashMenu = $('#dash-menu').innerWidth();
+    $('.dashboard-menu').width(Math.floor(dashMenu-2));
+
     account.labels = shell.labels.account;
 
     var currentUser = shell.getCurrentUser();
