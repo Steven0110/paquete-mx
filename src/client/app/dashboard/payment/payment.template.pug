@@ -17,6 +17,6 @@
         td
           |{{item.amount | currency}}
         td
-          |{{item.createdAt }}
+          |{{item.createdAt | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
         td
           |{{item.charge.brand}} **** **** **** {{item.charge.last4}}

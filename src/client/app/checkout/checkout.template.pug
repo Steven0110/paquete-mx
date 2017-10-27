@@ -1,73 +1,111 @@
 .menu-container
   .menu.menu-tabs.clearfix
     div(data-ng-include="'app/templates/menu.template.html'")
-.pages.colored
+.pages
   .dashboard-content
     .container-fluid
       .align-center(data-ng-if="checkout.connecting")
+        .logo-color
+        div(data-ng-include="'app/templates/spinner.template.html'")
         h1
           |Estamos obteniendo tu guia y etiquetas.
         h2
           |No cierres la página hasta obtener una respuesta.
       .row(data-ng-if="checkout.response")
-        .col-xs-12
-            .success-checkout
-              i.fa.fa-check-circle
-              h2.success
-                |¡Listo!
-            .row
-              .col-xs-3
-                h2
-                  |Origen
-                div
-                  .board-list
-                    |{{checkout.shipping.from.street}}, {{checkout.shipping.from.number}}&nbsp;
-                    span(data-ng-if="checkout.from.apt")
-                      | - {{checkout.shipping..from.apt}}
-                  .board-list
-                    |{{checkout.shipping.from.county}}
-                    span(data-ng-if="checkout.from.city")
-                      |, {{checkout.shipping.from.city}}
-                    span
-                      |, {{checkout.shipping.from.zip}}
-                  .board-list
-                    |{{checkout.shipping.from.state}}
-                    span.uppercase
-                      |, {{checkout.shipping.from.country.name}}
-              .col-xs-3
-                h2
-                  |Destino
-                div
-                  .board-list
-                    |{{checkout.shipping.to.street}}, {{checkout.shipping.to.number}}&nbsp;
-                    span(data-ng-if="checkout.to.apt")
-                      | - {{checkout.shipping.to.apt}}
-                  .board-list
-                    |{{checkout.shipping.to.county}}
-                    span(data-ng-if="checkout.to.city")
-                      |, {{checkout.shipping.to.city}}
-                    span
-                      |, {{checkout.shipping.to.zip}}
-                  .board-list
-                    |{{checkout.shipping.to.state}}
-                    span.uppercase
-                      |, {{checkout.shipping.to.country.name}}
-              .col-xs-3
-                h2
-                  |Método de Pago
-                div
-                  .board-list
-                    |{{checkout.card.name}}
-                  .board-list
-                    |{{checkout.card.brand}}
-                  .board-list
-                    |{{checkout.card.last4}}
-              .col-xs-3
-                h2
-                  |Guia y Etiqueta
-                div
-                  .board-list(data-ng-repeat="item in checkout.labels")
-                    |{{item.TrackingNumber}}
+        .col-xs-6
+          .section-space-right
+            .logo-color
+            h1.align-center.accent
+              |¡Gracias por usar Paquete.MX!
+            h3.secondary-accent.align-center
+              |Recuerda que entre mas envies mas descuentos obtienes.
+            .align-center
+              md-button.md-primary.md-raised
+                |Descargar Etiqueta
+            .align-center
+              md-button.md-raised
+                |Programar Recolección
+
+        .col-xs-6
+            .form-container
+              .success-checkout
+                i.fa.fa-check-circle
+                
+              .row
+                .col-xs-6
+                  h2.accent.align-center
+                    |Origen
+                  div.align-center
+                    .board-list
+                      |{{checkout.shipping.from.street}}, {{checkout.shipping.from.number}}&nbsp;
+                      span(data-ng-if="checkout.from.apt")
+                        | - {{checkout.shipping..from.apt}}
+                    .board-list
+                      |{{checkout.shipping.from.county}}
+                      span(data-ng-if="checkout.from.city")
+                        |, {{checkout.shipping.from.city}}
+                      span
+                        |, {{checkout.shipping.from.zip}}
+                    .board-list
+                      |{{checkout.shipping.from.state}}
+                      span.uppercase
+                        |, {{checkout.shipping.from.country.name}}
+                .col-xs-6
+                  h2.accent.align-center
+                    |Destino
+                  div.align-center
+                    .board-list
+                      |{{checkout.shipping.to.street}}, {{checkout.shipping.to.number}}&nbsp;
+                      span(data-ng-if="checkout.to.apt")
+                        | - {{checkout.shipping.to.apt}}
+                    .board-list
+                      |{{checkout.shipping.to.county}}
+                      span(data-ng-if="checkout.to.city")
+                        |, {{checkout.shipping.to.city}}
+                      span
+                        |, {{checkout.shipping.to.zip}}
+                    .board-list
+                      |{{checkout.shipping.to.state}}
+                      span.uppercase
+                        |, {{checkout.shipping.to.country.name}}
+                .col-xs-6
+                  h2.accent.align-center
+                    |Método de Pago
+                  div.align-center
+                    .card-item(data-ng-if="checkout.card")
+                      div
+                        h3
+                          |{{checkout.card.name}}
+                      div
+                        i.big.fa.fa-cc-mastercard(data-ng-if="checkout.card.brand == 'MC'")
+                        i.big.fa.fa-cc-visa(data-ng-if="checkout.card.brand == 'VISA'")
+                        i.big.fa.fa-cc-amex(data-ng-if="checkout.card.brand == 'AMERICAN_EXPRESS'")
+                        i.fa.fa-circle
+                        i.fa.fa-circle
+                        i.fa.fa-circle
+                        i.fa.fa-circle
+                        |&nbsp;
+                        i.fa.fa-circle
+                        i.fa.fa-circle
+                        i.fa.fa-circle
+                        i.fa.fa-circle
+                        |&nbsp;
+                        i.fa.fa-circle
+                        i.fa.fa-circle
+                        i.fa.fa-circle
+                        i.fa.fa-circle
+                        |&nbsp;
+                        span
+                          |{{checkout.card.last4}}
+                .col-xs-6
+                  h2.accent.align-center
+                    |Guia y Etiqueta
+                  div.align-center
+                    .board-list(data-ng-repeat="item in checkout.labels")
+                      |{{item.TrackingNumber}}
+                    .board-list
+                      md-button.md-raised.md-primary
+                        |Descargar Etiqueta
       .row(data-ng-hide="checkout.response || checkout.connecting")
         .col-xs-6
           .section-space-right
