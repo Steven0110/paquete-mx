@@ -18,6 +18,10 @@
 
     function get(file) {
       // Search for template in $templateCache, if found, return it, otherwise, search for template in given path.
+
+      /*elminiar en produccion*/
+      $templateCache.removeAll();
+      /*elminiar en produccion*/
       if ($templateCache.get(file)) {
         var ext = file.substr(file.length - 5, file.length);
         if (ext === '.json') {

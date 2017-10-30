@@ -86,8 +86,10 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
     .state('payment-method',{
       url:'/metodos-de-pago',
       templateUrl : 'app/general/paymentMethod/paymentMethod.template.html'
-      // controller: 'Forgot',
-      // controllerAs: 'forgot'
+    })
+    .state('security',{
+      url:'/seguridad',
+      templateUrl : 'app/general/security/security.template.html'
     })
     .state('dashboard',{
       url:'/dashboard',

@@ -58,17 +58,22 @@
         .row
           .col-xs-6
             h1
-              |Pagos en Efectivo
+              |¡Tu información esta Segura!
             h2
-              |¡Claro¡ Aceptamos cualquier tarjeta Nacional o Internacional expedida por 
-              span.accent.bold
-                |&nbsp;OXXO.
-              |&nbsp;Solo solicita hacer un deposito en 
-              span.accent.bold
-                |&nbsp;OXXO PAY.
+              |No te preocupes tu información esta cifrada y no se almacenan datos bancarios.
+            h3.disabled-color
+              |¿Tienes dudas? 
+              a.accent(ui-sref="security")
+                |Conoce mas de nuestro sistema de seguridad.
           .col-xs-6
             .page-image-section
               img(data-ng-src="common/images/oxxo.png")
 
-
+    .page-final-text
+      .logo-text
+      h2
+        |La manera más fácil de 
+        span.accent
+          |PAGAR
+        |&nbsp;tus envios.
 div(data-ng-include="'app/templates/footer.template.html'")
