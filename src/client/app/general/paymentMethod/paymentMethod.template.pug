@@ -1,79 +1,82 @@
 .menu-container
   .menu.menu-tabs.clearfix
     div(data-ng-include="'app/templates/menu.template.html'")
-.pages
-  .pages-image
-    .pages-main
-      .logo-color
-      .main-title
-        h1
-          |¿Comó quieres pagar?
-        h2
-          |Puedes pagar con tarjeta de Crédito internacional o tarjeta de Débito Nacional.
-      .margin-top-3
-        img(data-ng-src="common/images/metodos-pago.png")
-    .page-attribute
-      .container-fluid
-        .row
-          .col-xs-6
-            h1
-              |Tarjeta de Crédito
-            h2
-              |¡Claro¡ Aceptamos cualquier tarjeta Nacional o Internacional expedida por 
-              span.accent.bold
-                |VISA
-              |, 
-              span.accent.bold
-                |MASTERCARD 
-              |o 
-              span.accent.bold
-                |AMERICAN EXPRESS.
-          .col-xs-6
-            .page-image-section
-              img(data-ng-src="common/images/cards.png")
-    .page-attribute
-      .container-fluid
-        .row
-          .col-xs-6.pull-right
-            h1
-              |Tarjeta de Débito
-            h2
-              |Aceptamos tarjetas expedidas en México por
-              span.accent.bold
-                |&nbsp;Banamex
-              |, 
-              span.accent.bold
-                |&nbsp;HSBC
-              |, 
-              span.accent.bold
-                |&nbsp;Inbursa
-              |&nbsp;y
-              span.accent.bold
-                |&nbsp;Santander
-          .col-xs-6.pull-right
-            .page-image-section
-              img(data-ng-src="common/images/cards.png")
-    .page-attribute
-      .container-fluid
-        .row
-          .col-xs-6
-            h1
-              |¡Tu información esta Segura!
-            h2
-              |No te preocupes tu información esta cifrada y no se almacenan datos bancarios.
-            h3.disabled-color
-              |¿Tienes dudas? 
-              a.accent(ui-sref="security")
-                |Conoce mas de nuestro sistema de seguridad.
-          .col-xs-6
-            .page-image-section
-              img(data-ng-src="common/images/oxxo.png")
+.container-fluid
+  .row
+    .pages
+      .col-xs-10.col-sm-11.center-block
+        .pages-image
+          .pages-main
+            .logo-color
+            .main-title
+              h1
+                |¿Comó quieres pagar?
+              h2
+                |Puedes pagar con tarjeta de Crédito internacional o tarjeta de Débito Nacional.
+            .margin-top-3
+              img(data-ng-src="common/images/metodos-pago.png")
+          .page-attribute
+            .container-fluid
+              .row
+                .col-xs-12.col-sm-6
+                  h1
+                    |Tarjeta de Crédito
+                  h2
+                    |¡Claro¡ Aceptamos cualquier tarjeta Nacional o Internacional expedida por 
+                    span.accent.bold
+                      |VISA
+                    |, 
+                    span.accent.bold
+                      |MASTERCARD 
+                    |o 
+                    span.accent.bold
+                      |AMERICAN EXPRESS.
+                .col-xs-12.col-sm-6
+                  .page-image-section
+                    img(data-ng-src="common/images/cards.png")
+          .page-attribute
+            .container-fluid
+              .row
+                .col-xs-12.col-sm-6.pull-right
+                  h1
+                    |Tarjeta de Débito
+                  h2
+                    |Aceptamos tarjetas expedidas en México por
+                    span.accent.bold
+                      |&nbsp;Banamex
+                    |, 
+                    span.accent.bold
+                      |&nbsp;HSBC
+                    |, 
+                    span.accent.bold
+                      |&nbsp;Inbursa
+                    |&nbsp;y
+                    span.accent.bold
+                      |&nbsp;Santander
+                .col-xs-12.col-sm-6.pull-right
+                  .page-image-section
+                    img(data-ng-src="common/images/debito.png")
+          .page-attribute
+            .container-fluid
+              .row
+                .col-xs-12.col-sm-6
+                  h1
+                    |¡Tu información esta Segura!
+                  h2
+                    |No te preocupes tu información esta cifrada y no se almacenan datos bancarios.
+                  h3.disabled-color
+                    |¿Tienes dudas? 
+                    a.accent(ui-sref="security")
+                      |Conoce mas de nuestro sistema de seguridad.
+                .col-xs-12.col-sm-6
+                  .page-image-section
+                    img(data-ng-src="common/images/oxxo.png")
 
-    .page-final-text
-      .logo-text
-      h2
-        |La manera más fácil de 
-        span.accent
-          |PAGAR
-        |&nbsp;tus envios.
+          .page-final-text
+            .logo-text
+            h2
+              |La manera más fácil de 
+              span.accent
+                |PAGAR
+              |&nbsp;tus envios.
 div(data-ng-include="'app/templates/footer.template.html'")
