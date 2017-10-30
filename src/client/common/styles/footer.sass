@@ -1,12 +1,37 @@
+@import 'colors'
+
 .footer
   padding: 20px 0
   width: 100%
   background-color: #333
+  font-family: 'Roboto'
+  color: #FFF
 
 .padding-footer
   padding: 10px 20px
-  height: 100px
+  // height: 100px
   color: #FFF
 
 .footer-separator
-  border-right: solid 1px #666
+  // border-right: solid 1px #666
+
+.footer-item
+  padding: 0px 0
+  font-size: 1.1em
+  a
+    text-decoration: none
+    cursor: pointer
+    &:hover
+      color: $primary-color
+  i
+    display: inline-block
+    position: relative
+    top: 5px
+    padding-top: 10px
+    font-size: 2.5rem
+    width: 35px
+.footer-title
+  font-size: 1.4em
+  font-weight: 700
+  border-bottom: solid 1px #666
+  margin: 10px 0
