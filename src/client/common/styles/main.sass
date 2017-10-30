@@ -241,3 +241,32 @@ table.info-table
 .col-centered
     float: none
     margin: 0 auto
+
+.navs.mobile
+  top: 18px
+  right: 10px
+  position: absolute
+  padding-right: 10px
+
+.menu-mobile
+  position: fixed
+  right: 10px
+  top: 80px
+  background-color: $primary-color
+  color: #FFF
+  font-family: 'Roboto'
+  font-weight: 700
+  display: none
+  &.active
+    display: block
+  nav
+    padding: 10px
+    &:hover
+      background-color: #FFF
+      color: $primary-color
+
+
+/*media query defaults*/
+.navs.mobile
+  display: none
+/*media query defaults*/

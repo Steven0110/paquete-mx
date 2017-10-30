@@ -1,6 +1,39 @@
 .menu-logo
   a.logo-link(ui-sref="home")
-.navs
+.navs.mobile
+  nav.container-bars(data-ng-click="shell.menuOpen = !shell.menuOpen", data-ng-class="{'active':shell.menuOpen}")
+    .menu-bar.bar1
+    .menu-bar.bar2
+    .menu-bar.bar3
+.menu-mobile(data-ng-class="{'active':shell.menuOpen}")
+  nav.active
+    a(href="#")
+      |INICIO
+  nav
+    a(href="#")
+      |COTIZAR
+  nav
+    a(href="#")
+      |RASTREAR
+  nav
+    a(href="#")
+      |eCOMMERCE
+  nav
+    a(href="#")
+      |MÉTODOS DE PAGO
+  nav
+    a(href="#")
+      |PREGUNTAS FRECUENTES
+  nav
+    a(href="#")
+      |SEGURIDAD
+  nav
+    a(href="#")
+      |¿COMÓ FUNCIONA?
+  nav
+    a(href="#")
+      |MI CUENTA
+.navs.desktop
   nav
     a(href="#")
       |MI CUENTA

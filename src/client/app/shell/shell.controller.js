@@ -17,6 +17,7 @@
     shell.countries = [];
     shell.shipping = false;
     shell.currentUser = false;
+    shell.menuOpen = false;
     shell.dashboard ={
       title: "Title",
       subtitle: "Subtitle"
