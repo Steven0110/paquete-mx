@@ -5,10 +5,14 @@ $menuNav : 77px;
 .image-space
   width: 100%
   min-height: 100vh
-  background-color: #ededed
+  // background-color: #ededed
+  background-color: #FFF
   position: relative
   z-index: 1
   padding-bottom: $menuHeight
+  display: flex;
+  justify-content: center;
+  align-items: center;
 .background-container
   position: relative
   z-index: 3
@@ -34,6 +38,14 @@ $menuNav : 77px;
     width: 30%
     max-width: 200px
 
+.header-home
+  position: absolute
+  width: 90%
+  left: 5%
+  top: 0
+  padding: 20px 0 
+  z-index: 10
+
 .logo-color
   width: 200px
   height: 174px
@@ -42,6 +54,9 @@ $menuNav : 77px;
   margin: 0 auto
   &.active
     background-position: 100% 0
+  &.absolute
+    position: absolute
+    left: 0
 
 .logo-text
   width: 167px
@@ -475,3 +490,79 @@ i.fa-cc-amex
   -webkit-transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
   transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
 /*checkout*/
+
+
+/*cotizador*/
+.cotizador-element
+  font-family: 'Roboto'
+  .padding-sides
+    padding: 0 10px
+.cotizador-element-box
+  position: relative
+  height: 50px;
+  width: 100%;
+  box-shadow: 3px 3px 10px 3px rgba(0,0,0,0.1);
+  // border: solid 1px black
+  .input-cotizador
+    padding: 5px
+  input
+    border: 0
+    font-size: 2.5rem
+    width: 100%
+    background-color: transparent
+.cotizador-button
+  text-align: center
+  display: inline-block
+  box-shadow: 3px 3px 10px 3px rgba(0,0,0,0.1);
+  background-color: $primary-color
+  width: 100%
+  height: 50px
+  color: #FFF
+  font-size: 2rem
+  line-height: 50px
+.cotizador-type
+  cursor: pointer
+  height: 50px
+  text-align: center
+  color: $primary-color
+  font-size: 2rem
+  line-height: 50px
+  i
+    display: inline-block
+    font-size: 3rem
+    position: relative
+    top: 5px
+    margin-right: 10px
+  &.active
+    background-color: $primary-color
+    color: #FFF
+.cotizador-document,.cotizador-box
+  padding: 20px
+  top: 100%
+  position: absolute
+  width: 100%
+  // height: 300px
+  // background-color: #CCC
+  border: solid 1px $primary-color
+  border-top: 0
+
+.select-weight
+  // margin-top: 20px
+  font-weight: 700
+  select
+    margin-top: 16px
+  span
+    display: inline-block
+    margin-left: 10px
+  font-size: 1.8rem
+
+.box-attr
+  padding: 5px
+  input
+    border: solid 1px $primary-color
+
+.box-attr-secondary
+  input
+    font-size: 1.5rem
+    border: solid 1px $primary-color
+/*cotizador*/

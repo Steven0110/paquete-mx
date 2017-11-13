@@ -57,6 +57,13 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controllerAs: 'home'
 
     })
+    .state('home2',{
+      url:'/alternativo',
+      templateUrl : 'app/home/home-2.template.html',
+      controller: 'Home2',
+      controllerAs: 'home'
+
+    })
     .state('checkout',{
       url:'/checkout',
       templateUrl : 'app/checkout/checkout.template.html',
@@ -90,6 +97,10 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
     .state('security',{
       url:'/seguridad',
       templateUrl : 'app/general/security/security.template.html'
+    })
+    .state('ecommerce',{
+      url:'/plugins-ecommerce',
+      templateUrl : 'app/general/ecommerce/ecommerce.template.html'
     })
     .state('dashboard',{
       url:'/dashboard',
