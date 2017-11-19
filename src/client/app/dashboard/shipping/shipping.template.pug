@@ -32,6 +32,11 @@
               img(ng-src="common/images/in_transit.png")
             h1.disabled-color(data-ng-class="{'success': shipping.data.status =='delivered'}")
               |{{shipping.labels[shipping.data.status]}}
+            div(data-ng-if="shipping.data.signedBy")
+              |Recibido Por
+              h3.uppercase
+                |{{shipping.data.signedBy}}
+
             div(data-ng-if="shipping.data.status == 'label_created'")
               md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{shipping.data.trackingNumber}}", download)
                 |Imprimir Etiqueta
@@ -52,12 +57,32 @@
             |{{shipping.data.service.to.state}}
             span.uppercase
               |, {{shipping.data.service.to.country.name}}
-    .shipping-info
+    .shipping-info(data-ng-if="shipping.data.status == 'label_created'")
       h1.accent
         |Etiqueta y Recolección
       div(data-ng-if="shipping.data.status == 'label_created'")
         md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{shipping.data.trackingNumber}}", download)
           |Imprimir Etiqueta
+    .shipping-info
+      h1.accent
+        |Actualizaciones
+      h3.disabled-color(data-ng-if="shipping.data.activity.length < 1")
+        |No hay actualizaciones disponibles
+      .container-fluid
+        .row
+          .col-xs-3
+            |Fecha
+          .col-xs-3
+            |Ubicación
+          .col-xs-3
+            |Status
+        .row(data-ng-repeat="item in shipping.data.activity| orderBy:'-'")
+          .col-xs-3.uppercase
+            |{{item.dateTime}}
+          .col-xs-3.uppercase
+            |{{item.location.city}} - {{item.location.countryCode}}
+          .col-xs-3
+            |{{item.status.description}}
     .shipping-info
       h1.accent
         |Paquetes
@@ -88,11 +113,6 @@
               |{{item.width}} cms.
             td
               |{{item.length}} cms.
-    .shipping-info
-      h1.accent
-        |Actualizaciones
-      h3.disabled-color(data-ng-if="shipping.updates.length < 1")
-        |No hay actualizaciones disponibles
     .shipping-info
       h1
         span.accent
