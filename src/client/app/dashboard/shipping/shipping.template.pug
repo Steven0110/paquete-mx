@@ -66,9 +66,9 @@
     .shipping-info
       h1.accent
         |Actualizaciones
-      h3.disabled-color(data-ng-if="shipping.data.activity.length < 1")
+      h3.disabled-color(data-ng-if="!shipping.data.activity || shipping.data.activity.length < 1")
         |No hay actualizaciones disponibles
-      .container-fluid
+      .container-fluid(data-ng-if="shipping.data.activity && shipping.data.activity.length > 1")
         .row
           .col-xs-3
             |Fecha

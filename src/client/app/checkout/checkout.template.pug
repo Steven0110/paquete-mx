@@ -20,7 +20,7 @@
             h3.secondary-accent.align-center
               |Recuerda que entre mas envies mas descuentos obtienes.
             .align-center
-              md-button.md-primary.md-raised
+              md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{checkout.trackingNumber}}", download)
                 |Descargar Etiqueta
             .align-center
               md-button.md-raised
@@ -104,7 +104,7 @@
                     .board-list(data-ng-repeat="item in checkout.labels")
                       |{{item.TrackingNumber}}
                     .board-list
-                      md-button.md-raised.md-primary
+                      md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{checkout.trackingNumber}}", download)
                         |Descargar Etiqueta
       .row(data-ng-hide="checkout.response || checkout.connecting")
         .col-xs-6

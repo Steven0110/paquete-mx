@@ -62,6 +62,7 @@
       // shell.showLoading();
       checkout.connecting = true;
       rateApi.ship(order).then(function(response){
+        checkout.trackingNumber = response.shipOrder.trackingNumber;
         console.log(response);
         checkout.response = true;
         checkout.labels = response.shipOrder.packages;
