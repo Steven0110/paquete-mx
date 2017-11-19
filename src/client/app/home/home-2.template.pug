@@ -13,9 +13,9 @@
                       .padding-sides
                         h3
                           span.light
-                            |LUGAR DE 
+                            |LUGAR DE
                           span.bold
-                            |ORIGEN
+                            |&nbsp;ORIGEN
                         .cotizador-element-box
                           .col-xs-4
                             select-country(data-countries="shell.countries", data-country="home.shipping.from.country")
@@ -38,7 +38,7 @@
                           span.light
                             |LUGAR DE
                           span.bold
-                            |DESTINO
+                            |&nbsp;DESTINO
                         .cotizador-element-box
                           .col-xs-4
                             select-country(data-countries="shell.countries", data-country="home.shipping.to.country")
@@ -124,18 +124,18 @@
                             .col-xs-6
                               .cotizador-type(data-ng-class="{'active': home.shipping.type == 'envelope'}", data-ng-click="home.shipping.type= 'envelope'")
                                 i.fa.fa-angle-down
-                                |Documento
+                                |DOCUMENTO
                             .col-xs-6
                               .cotizador-type(data-ng-class="{'active': home.shipping.type == 'box'}", data-ng-click="home.shipping.type= 'box'")
                                 i.fa.fa-angle-down
-                                |Paquete
+                                |PAQUETE
                   .col-xs-2
                     .padding-sides
                       h3
                         span.bold
                           |COMPARA
                       .cotizador-element-box
-                        .cotizador-button(type="submit")
+                        .cotizador-button(data-ng-click="home.send()")
                           |BUSCA TU OPCIÓN
             //- form(name="home.shippingForm",data-ng-submit="home.send()", novalidate)
               div(layout-xs-sm="row")
@@ -234,6 +234,78 @@
 #float-section.background-container
   //- #menu.menu-tabs.clearfix
     div(data-ng-include="'app/templates/menu.template.html'")
+  .table-container.clearfix
+    .table-box.red
+      div
+        |ENTREGA ESTIMADA
+      div
+        span.important-text
+          |5
+        span.secondary-text
+          |&nbsp;DIAS
+      div.service-name
+        |EXPRESS
+    .table-box.service-logo
+      img(data-ng-src="common/images/ups.png")
+    .table-box.big-table-box
+      div
+        |PRECIO AL PÚBLICO
+      div.regular-price
+        |{{150 | currency}} MXN
+      div.semi-important-red
+        |AHORRA
+      div.important-red
+        |{{50 | currency}} MXN
+    .table-box
+    .table-box.big-table-box
+      span.light-font
+        |PRECIO
+      span.bold-font
+        |&nbsp;PAQUETE.MX
+      div
+        span.big-price
+          |{{1149.90| currency}}
+        span.red-color
+          |MXN
+    .table-box.service-logo
+      .button-send
+        |ENVIAR
+  .table-container.clearfix
+    .table-box.red
+      div
+        |ENTREGA ESTIMADA
+      div
+        span.important-text
+          |5
+        span.secondary-text
+          |&nbsp;DIAS
+      div.service-name
+        |EXPRESS
+    .table-box.service-logo
+      img(data-ng-src="common/images/fedex.png")
+    .table-box.big-table-box
+      div
+        |PRECIO AL PÚBLICO
+      div.regular-price
+        |{{150 | currency}} MXN
+      div.semi-important-red
+        |AHORRA
+      div.important-red
+        |{{50 | currency}} MXN
+    .table-box
+    .table-box.big-table-box
+      span.light-font
+        |PRECIO
+      span.bold-font
+        |&nbsp;PAQUETE.MX
+      div
+        span.big-price
+          |{{1149.90| currency}}
+        span.red-color
+          |MXN
+    .table-box.service-logo
+      .button-send
+        |ENVIAR
   #content.section-container
     .rated-text(data-ng-class="{'active':home.active}", data-ng-show="home.rated")
       .logo-color(data-ng-class="{'active':!home.active}")
@@ -245,7 +317,7 @@
         |para tus envios:
       div(data-ng-show="home.searching")
         div(data-ng-include="'app/templates/spinner.template.html'")
-      .table-response
+      //- .table-response
         .container-fluid
           .table-td(data-ng-repeat="item in home.services")
             .row

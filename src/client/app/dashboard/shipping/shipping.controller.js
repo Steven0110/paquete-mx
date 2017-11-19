@@ -18,8 +18,11 @@
     var dashMenu = $('#dash-menu').innerWidth();
     $('.dashboard-menu').width(Math.floor(dashMenu-2));
 
+
+    shipping.labels = shell.labels.shipping;
+
+
     if(data){
-      console.log(data);
       shipping.data = data;
       shipping.packages = data.service.packages;
     }

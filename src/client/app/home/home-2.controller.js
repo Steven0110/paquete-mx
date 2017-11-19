@@ -31,7 +31,7 @@
         data: {},
         country: null
       },
-      type: "envelope",
+      type: null,
       package:{
         weight: "1",
         width: "25",
@@ -163,7 +163,7 @@
 
 
     home.send = function(){
-
+      alert();
       if(home.shippingForm.$valid){
         home.services = [];
         var fromCountry = home.shipping.from.country.code;

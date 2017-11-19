@@ -24,10 +24,17 @@
                 |, {{shipping.data.service.from.country.name}}
         .col-xs-4
           .align-center
-            .small-image
-              img(ng-src="common/images/section-1-1.png")
-            h1.success
-              |{{shipping.data.status}}
+            .small-image(data-ng-if="shipping.data.status == 'delivered'")
+              img(ng-src="common/images/delivered.png")
+            .small-image(data-ng-if="shipping.data.status == 'label_created'")
+              img(ng-src="common/images/label_created.png")
+            .small-image(data-ng-if="shipping.data.status != 'label_created' && shipping.data.status != 'delivered'")
+              img(ng-src="common/images/in_transit.png")
+            h1.disabled-color(data-ng-class="{'success': shipping.data.status =='delivered'}")
+              |{{shipping.labels[shipping.data.status]}}
+            div(data-ng-if="shipping.data.status == 'label_created'")
+              md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{shipping.data.trackingNumber}}", download)
+                |Imprimir Etiqueta
         .col-xs-4
           h2.accent
             |Destino
@@ -45,6 +52,12 @@
             |{{shipping.data.service.to.state}}
             span.uppercase
               |, {{shipping.data.service.to.country.name}}
+    .shipping-info
+      h1.accent
+        |Etiqueta y Recolección
+      div(data-ng-if="shipping.data.status == 'label_created'")
+        md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{shipping.data.trackingNumber}}", download)
+          |Imprimir Etiqueta
     .shipping-info
       h1.accent
         |Paquetes

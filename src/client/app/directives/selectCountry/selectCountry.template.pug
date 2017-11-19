@@ -6,7 +6,7 @@
       i.fa.fa-angle-down
   .select-box(data-ng-show="vm.show")
     ul
-      li(data-ng-repeat="item in vm.list", data-ng-click="vm.selectItem(item)")
+      li.select-item(data-ng-repeat="item in vm.list", data-ng-click="vm.selectItem(item)")
         span.country-name
           span.flag-icon(class="flag-icon-{{item.code}}")
           |{{item.name}}

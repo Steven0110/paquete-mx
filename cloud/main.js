@@ -8,7 +8,7 @@ change log*/
 
 
 var production = false;
-
+var Mailgun = null;
 //Production
 
 if(production){
@@ -19,11 +19,77 @@ if(production){
   // var masterKey = "GDF6rB6TfdUzV14WjPTCpsC8bT4ki0lzf0KC4L0Q";
   // var javascriptKey = "IgkJ82CLUN4xIpiwD9UmFblPaUE650tRsw46Mbld";
 }else{
+  var domain = "sandbox0ac0a2a5c16246be98c97c0c2628f3fa.mailgun.org";
+  Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-5e0f8c7de60172d4428cb1edbed23275'});
   var conekta_key = 'Basic OmtleV81elE2NGZIcWhRZmYzSEthaUNWVDRn';
   var appId = "OaKte4Imh3dk5JIhsJoLAcLaPYMb2mQUeqyHXrP1";
   var masterKey = "rZx1h8G9530G73xbzk5F1MLvGzb080KL2u55uC8S";
   var javascriptKey = "wcFLh2UROrO8fN9SbFbgbeOZTZOlPu3YkAMys1bL";
 }
+
+Parse.Cloud.define("sendCotizacion",function(request, response){
+  var params = request.params;
+  var to =  "<carlos@paquete.mx>,<diego@paquete.mx>,<joe@paquete.mx>,<thalia@paquete.mx>";
+  var subject =  "Cotización Solicitada";
+  
+  var fromZip = params.from.search;
+  var fromCountry = params.from.country.name;
+  if(fromCountry)
+    fromCountry =  fromCountry.toUpperCase();
+  var toZip = params.to.search;
+  var toCountry = params.to.country.name;
+  if(toCountry)
+    toCountry =  toCountry.toUpperCase();
+  var insurance ="";
+  if(params.insurance && params.valueDeclared){
+    insurance = "Valor Declarado: "+params.valueDeclared+"<br/>";
+  }
+  var packages = params.packages;
+  var packagesList = "<br/>Paquetes: <br/>";
+  if(params.type == 'envelope')
+    packagesList = "<br/>Documentos: <br/>";
+  packagesList += "------------------<br/>";
+  for(var i=0; i< packages.length; i++){
+    var width = packages[i].width;
+    var length = packages[i].length;
+    var weight = packages[i].weight;
+    var height = packages[i].height;
+    
+    if(weight)
+      packagesList += "Peso: "+weight+" Kg.<br/>";
+    if(height)
+      packagesList += "Alto: "+height+" cms.<br/>";
+    if(length)
+      packagesList += "Largo: "+length+"cms.<br/>";
+    if(width)
+      packagesList += "Ancho: "+width+" cms.<br/>";
+    packagesList += "------------------<br/>";
+
+  }
+  var name = params.contact.name;
+  if(name)
+    name = name.toUpperCase();
+  var lastname = params.contact.lastname;
+  if(lastname)
+    lastname = lastname.toUpperCase();
+  var phone = params.contact.phone;
+  var email = params.contact.email;
+  if(email)
+    email = email.toLowerCase();
+  var contact = "Información de Contacto <br/><br/>";
+  contact +="Nombre: "+name+"<br/>";
+  contact +="Apellido: "+lastname+"<br/>";
+  contact +="Telefono: "+phone+"<br/>";
+  contact +="Correo Electrónico: "+email+"<br/>";
+
+  var html = "<h2>Solicitud de Cotización</h2>País Origen: "+fromCountry+"<br/>Código Postal Origen: "+fromZip+"<br/>País Destino: "+toCountry+"<br/>Código Postal Destino: "+toZip+"<br/>"+packagesList+"<br/>"+insurance+"<br/>"+contact;
+  sendEmail(to, subject, html, false, false).then(function(res){
+    response.success(res);
+  },function(err){
+    response.error(err);
+  });
+
+})
 
 
 //DELETES CARD FROM CONEKTA
@@ -455,3 +521,29 @@ function sendShipOrder(user, shipping, payment) {
 
   return parse_promise;
 };
+
+var sendEmail = function(to, subject, html, bcc, attch){
+  var parse_promise = new Parse.Promise();
+  var params = { to: to,
+                 from: "Paquete MX <hola@paquete.mx>",
+                 subject: subject,
+                 html: html
+               };
+
+  if(attch){
+    params.attachment = attch;
+  }
+
+  if(bcc){
+    params.bcc = 'jc.canizal@gmail.com';
+  }
+
+  Mailgun.messages().send(params,function(err, body) {
+    if(err){
+      parse_promise.reject(err);
+    }else{
+      parse_promise.resolve("Email sent!");
+    }
+  });
+  return parse_promise;
+}
