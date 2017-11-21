@@ -1,132 +1,157 @@
 .image-space
-  .fullscreen-bg
+  //- .fullscreen-bg
     //- video.fullscreen-bg__video(loop muted autoplay)
       source(src="common/videos/9922925.mp4" type="video/mp4")
     //- .opacity
   .container-center
     .container-fluid
       .row
-        .col-xs-12.col-md-7
-          .main-info
-            .align-center
-              .logo-color
-              .main-text
-                h1.blend.black
-                  |¡Las mejores opciones de envio!
-            .main-list
-              ul
-                li
-                  h4.blend.black
-                    i.fa.fa-globe.fa-2x
-                    |Cotiza tus envios a México y a todo el mundo.
-                li
-                  h4.blend.black
-                    i.fa.fa-handshake-o.fa-2x
-                    |Entre mas envias mas descuentos obtienes.
-                li
-                  h4.blend.black
-                    i.fa.fa-truck.fa-2x
-                    |Nosotros programamos tu recolección.
-                li
-                  h4.blend.black
-                    i.fa.fa-percent.fa-2x
-                    |Descuentos de hasta el 50%.
-        .col-xs-12.col-md-5
-          .main-info
+        .col-xs-12.center-block
+            .logo-color
+            //- .align-center
+              h1
+                |¡Las mejores opciones para tus envios!
             form(name="home.shippingForm",data-ng-submit="home.send()", novalidate)
-              div(layout-xs-sm="row")
-                .col-xs-12.col-md-10.center-block
-                  .container-forms
-                    h2.no-margin.align-center.margin-bottom-2
-                      |¡Cotiza ahora mismo!
-                    .container-fluid
-                      .row
-                        h3.no-margin
-                          |Origen
-                        .col-xs-3
-                          .margin-top-1
+              .container-fluid.opacity-box
+                .row
+                  .col-xs-12.col-sm-6.col-md-3
+                    .cotizador-element
+                      .padding-sides
+                        h3
+                          span.light
+                            |LUGAR DE
+                          span.bold
+                            |&nbsp;ORIGEN
+                        .cotizador-element-box
+                          .col-xs-4
                             select-country(data-countries="shell.countries", data-country="home.shipping.from.country")
-                        .col-xs-9
-                          md-input-container.md-block
-                            label(for="fromZip")
-                              |Código Postal o Colonia
-                            .input-container
-                              .city-selected(data-ng-show="home.shipping.from.data.zip", data-ng-click="home.cleanSearch('from')")
-                                |{{home.shipping.from.data.zip}} - {{home.shipping.from.data.county}} - {{home.shipping.from.data.city}}
-                              div(data-ng-hide="home.shipping.from.data.zip")
-                                input(name="fromZip", data-ng-model="home.fromSearch",data-ng-change="home.changeFrom()", data-ng-model-options="{debounce: 1000}",required)
-                              div(ng-messages="home.shippingForm.fromZip.$error")
-                                .message(ng-message="required")
-                                  |Es requerido.
-                              select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.shipping.from.search",data-country="home.shipping.from.country")
-                      .row
-                        h3.no-margin
-                          |Destino
-                        .col-xs-3
-                          .margin-top-1
+                          .col-xs-8
+                            .input-cotizador
+                              .input-container
+                                .city-selected(data-ng-show="home.shipping.from.data.zip", data-ng-click="home.cleanSearch('from')")
+                                  |{{home.shipping.from.data.zip}} - {{home.shipping.from.data.county}} - {{home.shipping.from.data.city}}
+                                div(data-ng-hide="home.shipping.from.data.zip")
+                                  input(
+                                  placeholder="C.P."
+                                  name="fromZip", data-ng-model="home.shipping.from.search",required)
+                                //- select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.shipping.from.search",data-country="home.shipping.from.country")
+                            
+
+                  .col-xs-12.col-sm-6.col-md-3
+                    .cotizador-element
+                      .padding-sides
+                        h3
+                          span.light
+                            |LUGAR DE
+                          span.bold
+                            |&nbsp;DESTINO
+                        .cotizador-element-box
+                          .col-xs-4
                             select-country(data-countries="shell.countries", data-country="home.shipping.to.country")
-                        .col-xs-9
-                          md-input-container.md-block
-                            label(for="toZip")
-                              |Código Postal o Colonia
-                            .input-container
+                          .col-xs-8
+                            .input-cotizador
                               .city-selected(data-ng-show="home.shipping.to.data.zip", data-ng-click="home.cleanSearch('to')")
                                 |{{home.shipping.to.data.zip}} {{home.shipping.to.data.county}} {{home.shipping.to.data.city}}
                               div(data-ng-hide="home.shipping.to.data.zip")
-                                input(name="toZip", data-ng-model="home.toSearch",data-ng-change="home.changeTo()", data-ng-model-options="{debounce: 1000}",required)
-                              div(ng-messages="home.shippingForm.toZip.$error")
+                                input(placeholder="C.P.",name="toZip", data-ng-model="home.shipping.to.search",required)
+                              //- div(ng-messages="home.shippingForm.toZip.$error")
                                 .message(ng-message="required")
                                   |Es requerido.
-                              select-cities(data-cities="home.toCities", data-selected="home.shipping.to.data",data-clean = "home.toClean",data-search="home.shipping.to.search", data-country="home.shipping.to.country")
-                      h3.no-margin.margin-bottom-2
-                        |¿Qué es lo que envias?
-                      .container-fluid
-                        .row
-                          .col-xs-6
-                            .align-center
-                              .button-box(data-ng-class="{'active': home.shipping.type == 'box'}", data-ng-click="home.shipping.type= 'box'")
-                                .icon-spot
-                                  i.fa.fa-archive
-                                h4.align-center
-                                  |Paquete
-                          .col-xs-6
-                            .align-center
-                              .button-box(data-ng-class="{'active': home.shipping.type == 'envelope'}", data-ng-click="home.shipping.type= 'envelope'")
-                                .icon-spot
-                                  i.fa.fa-envelope
-                                h4.align-center
-                                  |Documentos
-                      .dimensions(data-ng-show="home.shipping.type == 'box'")
+                              //- select-cities(data-cities="home.toCities", data-selected="home.shipping.to.data",data-clean = "home.toClean",data-search="home.shipping.to.search", data-country="home.shipping.to.country")
+                  .col-xs-12.col-sm-6.col-md-4
+                    .cotizador-element
+                      .padding-sides
                         h3
-                          |Dimensiones y Peso
-                        .container-fluid
+                          span.bold
+                            |¿QUÉ ENVIAS?
+                        .cotizador-element-box.complex
                           .row
-                            .col-xs-3
-                              md-input-container.md-block.md-input-small
-                                label(for="weight")
-                                  |Peso
-                                input(name="weight", placeholder="en cms", data-ng-model="home.shipping.package.weight", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'box'")
-                            .col-xs-3
-                              md-input-container.md-block.md-input-small
-                                label(for="length")
-                                  |Largo
-                                input(name="length",placeholder="en cms", data-ng-model="home.shipping.package.length", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'box'")
-                            .col-xs-3
-                              md-input-container.md-block.md-input-small
-                                label(for="width")
-                                  |Ancho
-                                input(name="width",placeholder="en cms", data-ng-model="home.shipping.package.width", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'box'")
-                            .col-xs-3
-                              md-input-container.md-block.md-input-small
-                                label(for="height")
-                                  |Alto
-                                input(name="height",placeholder="en cms", data-ng-model="home.shipping.package.height", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'box'")
-                          div(data-ng-show="home.shippingForm.$submitted && (home.shippingForm.weight.$invalid || home.shippingForm.length.$invalid ||home.shippingForm.height.$invalid || home.shippingForm.width.$invalid)")
-                            .message
-                              |Peso, alto, ancho y largo requeridos en formato decimal. Ej 1.5, 2, 0.5
-                    .align-center.margin-top-2
-                      md-button.md-raised.md-primary(type="submit")
-                        |Cotizar
+                            .col-xs-6
+                              .cotizador-type(data-ng-class="{'active': home.shipping.type == 'envelope'}", data-ng-click="home.selectType('envelope')")
+                                i.fa.fa-angle-down(data-ng-hide="home.documentOpen")
+                                i.fa.fa-angle-up(data-ng-show="home.documentOpen")
+                                |DOCUMENTO
+                            .col-xs-6
+                              .cotizador-type(data-ng-class="{'active': home.shipping.type == 'box'}", data-ng-click="home.selectType('box')")
+                                i.fa.fa-angle-down(data-ng-hide="home.packageOpen")
+                                i.fa.fa-angle-up(data-ng-show="home.packageOpen")
+                                |PAQUETE
+
+                          .cotizador-document(data-ng-show="home.documentOpen")
+                            .row
+                              .col-xs-4
+                                .select-weight
+                                  select(ng-model="home.weightDocuments" ng-options="n for n in home.weightList")
+                                  span.bold
+                                    |KG
+                              .col-xs-8
+                                .select-weight
+                                  md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
+                                    |ASEGURAR
+                            .select-weight(data-ng-show="home.shipping.insurance")
+                              .row
+                                .col-xs-4
+                                  .box-attr-secondary
+                                    input(data-ng-model="home.shipping.valueDeclared",placeholder="Pesos (MXN)", data-ng-pattern="shell.regex.decimal")
+                                .col-xs-8
+                                  span.bold
+                                    |VALOR ($)
+
+                          .cotizador-box(data-ng-show="home.packageOpen")
+                            .row
+                              .col-xs-12(data-ng-repeat="package in home.shipping.packages")
+                                .select-weight
+                                  .row
+                                    .col-xs-11
+                                      .col-xs-3
+                                        .box-attr
+                                          div
+                                            |PESO
+                                          div
+                                            input(name="weight", placeholder="Kg", data-ng-model="package.weight", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'box'")
+                                      .col-xs-3
+                                        .box-attr
+                                          div
+                                            |ANCHO
+                                          div
+                                            input(name="width",placeholder="cms", data-ng-model="package.width", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'box'")
+                                      .col-xs-3
+                                        .box-attr
+                                          div
+                                            |LARGO
+                                          div
+                                            input(name="length",placeholder="cms", data-ng-model="package.length", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'box'")
+                                      .col-xs-3
+                                        .box-attr
+                                          div
+                                            |ALTO
+                                          div
+                                            input(name="height",placeholder="cms", data-ng-model="package.height", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'box'")
+                                    .col-xs-1
+                                      .box-attr
+                                        i.fa.fa-plus(data-ng-show="$index+1 == home.shipping.packages.length", data-ng-click="home.addPackage()")
+                                        i.fa.fa-trash(data-ng-show="$index > 0", data-ng-click="home.removePackage($index)")
+                              .col-xs-12
+                                .select-weight
+                                  md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
+                                    |ASEGURAR
+                                .select-weight(data-ng-show="home.shipping.insurance")
+                                  .row
+                                    .col-xs-4
+                                      .box-attr-secondary
+                                        input(data-ng-model="home.shipping.valueDeclared", placeholder="Pesos (MXN)",data-ng-pattern="shell.regex.decimal")
+                                    .col-xs-8
+                                      span.bold
+                                        |VALOR ($)
+
+                  .col-xs-12.col-sm-6.col-md-2
+                    .padding-sides
+                      h3
+                        span.bold
+                          |COMPARA
+                      .cotizador-element-box
+                        .cotizador-button(data-ng-click="home.send()")
+                          |COTIZAR
 #float-section.background-container
   #menu.menu-tabs.clearfix
     div(data-ng-include="'app/templates/menu.template.html'")
