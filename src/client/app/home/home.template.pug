@@ -33,7 +33,7 @@
                                 div(data-ng-hide="home.shipping.from.data.zip")
                                   input(
                                   placeholder="C.P."
-                                  name="fromZip", data-ng-model="home.shipping.from.search",required)
+                                  name="fromZip", data-ng-model="home.shipping.from.zip",required)
                                 //- select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.shipping.from.search",data-country="home.shipping.from.country")
                             
 
@@ -53,7 +53,7 @@
                               .city-selected(data-ng-show="home.shipping.to.data.zip", data-ng-click="home.cleanSearch('to')")
                                 |{{home.shipping.to.data.zip}} {{home.shipping.to.data.county}} {{home.shipping.to.data.city}}
                               div(data-ng-hide="home.shipping.to.data.zip")
-                                input(placeholder="C.P.",name="toZip", data-ng-model="home.shipping.to.search",required)
+                                input(placeholder="C.P.",name="toZip", data-ng-model="home.shipping.to.zip",required)
                               //- div(ng-messages="home.shippingForm.toZip.$error")
                                 .message(ng-message="required")
                                   |Es requerido.
@@ -153,7 +153,7 @@
                         .cotizador-button(data-ng-click="home.send()")
                           |COTIZAR
 #float-section.background-container
-  #menu.menu-tabs.clearfix
+  //- #menu.menu-tabs.clearfix
     div(data-ng-include="'app/templates/menu.template.html'")
   #content.section-container
     .rated-text(data-ng-class="{'active':home.active}", data-ng-show="home.rated")
