@@ -34,7 +34,7 @@
                                   input(
                                   placeholder="C.P."
                                   name="fromZip", data-ng-model="home.shipping.from.zip",required)
-                                //- select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.shipping.from.search",data-country="home.shipping.from.country")
+                                select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.shipping.from.zip",data-country="home.shipping.from.country")
                             
 
                   .col-xs-12.col-sm-6.col-md-3
@@ -57,7 +57,7 @@
                               //- div(ng-messages="home.shippingForm.toZip.$error")
                                 .message(ng-message="required")
                                   |Es requerido.
-                              //- select-cities(data-cities="home.toCities", data-selected="home.shipping.to.data",data-clean = "home.toClean",data-search="home.shipping.to.search", data-country="home.shipping.to.country")
+                              select-cities(data-cities="home.toCities", data-selected="home.shipping.to.data",data-clean = "home.toClean",data-search="home.shipping.to.zip", data-country="home.shipping.to.country")
                   .col-xs-12.col-sm-6.col-md-4
                     .cotizador-element
                       .padding-sides

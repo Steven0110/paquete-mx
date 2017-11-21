@@ -42,6 +42,7 @@ function selectCities($http, $document){
 
       $scope.$watch('vm.search', function(oldValue, newValue){
         if(vm.search){
+          console.log(vm.search);
           if(vm.country && vm.country.listed){
             if(!vm.search.includes("-")){
               delaySearch(vm.search, vm.country.code);
@@ -61,17 +62,14 @@ function selectCities($http, $document){
 
       var delayTimer;
       function delaySearch(search, country) {
+        console.log(search);
         if(search && search.length > 2){
           vm.clean =false;
           vm.loading = true;
           vm.options = [];
           $http({
-            method: 'POST',
-            url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/rate/counties',
-            data:{
-              search: search,
-              country: country
-            }
+            method: 'GET',
+            url: 'http://54.245.38.66:8081/'+country+'/'+search,
           }).then(function(response) {
             if(response && response.data && response.data.length > 0)
               vm.options = response.data;
