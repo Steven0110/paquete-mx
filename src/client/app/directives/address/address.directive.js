@@ -50,7 +50,8 @@ function addressForm(userApi, Dialog){
         scope.search = scope.currentAddress.zip;
         scope.newAddress = {
           objectId: scope.currentAddress.objectId,
-          alias: scope.currentAddress.alias,
+          name: scope.currentAddress.name,
+          phone: scope.currentAddress.phone,
           country:scope.currentAddress.country,
           street:scope.currentAddress.street,
           number: scope.currentAddress.number,

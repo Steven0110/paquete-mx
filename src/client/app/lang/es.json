@@ -44,6 +44,8 @@
   "address":{
     "form":{
       "alias": "Alias",
+      "name": "Nombre/Empresa",
+      "phone": "Telefóno",
       "country": "País",
       "street": "Calle",
       "number":"Numero Exterior",
