@@ -28,10 +28,9 @@
                           .col-xs-8
                             .input-cotizador
                               .input-container
-                                .city-selected(data-ng-show="home.shipping.from.data.zip", data-ng-click="home.cleanSearch('from')")
+                                //- .city-selected(data-ng-show="home.shipping.from.data.zip", data-ng-click="home.cleanSearch('from')")
                                   |{{home.shipping.from.data.zip}} - {{home.shipping.from.data.county}} - {{home.shipping.from.data.city}}
-                                div(data-ng-hide="home.shipping.from.data.zip")
-                                  input(
+                                input(
                                   placeholder="C.P."
                                   name="fromZip", data-ng-model="home.shipping.from.zip",required)
                                 select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.shipping.from.zip",data-country="home.shipping.from.country")
@@ -50,10 +49,10 @@
                             select-country(data-countries="shell.countries", data-country="home.shipping.to.country")
                           .col-xs-8
                             .input-cotizador
-                              .city-selected(data-ng-show="home.shipping.to.data.zip", data-ng-click="home.cleanSearch('to')")
+                              //- .city-selected(data-ng-show="home.shipping.to.data.zip", data-ng-click="home.cleanSearch('to')")
                                 |{{home.shipping.to.data.zip}} {{home.shipping.to.data.county}} {{home.shipping.to.data.city}}
-                              div(data-ng-hide="home.shipping.to.data.zip")
-                                input(placeholder="C.P.",name="toZip", data-ng-model="home.shipping.to.zip",required)
+                              //- div(data-ng-hide="home.shipping.to.data.zip")
+                              input(placeholder="C.P.",name="toZip", data-ng-model="home.shipping.to.zip",required)
                               //- div(ng-messages="home.shippingForm.toZip.$error")
                                 .message(ng-message="required")
                                   |Es requerido.
@@ -67,82 +66,88 @@
                         .cotizador-element-box.complex
                           .row
                             .col-xs-6
-                              .cotizador-type(data-ng-class="{'active': home.shipping.type == 'envelope'}", data-ng-click="home.selectType('envelope')")
+                              .cotizador-type(data-ng-class="{'active': home.shipping.type == 'document'}", data-ng-click="home.selectType('document')")
                                 i.fa.fa-angle-down(data-ng-hide="home.documentOpen")
                                 i.fa.fa-angle-up(data-ng-show="home.documentOpen")
                                 |DOCUMENTO
                             .col-xs-6
-                              .cotizador-type(data-ng-class="{'active': home.shipping.type == 'box'}", data-ng-click="home.selectType('box')")
+                              .cotizador-type(data-ng-class="{'active': home.shipping.type == 'package'}", data-ng-click="home.selectType('package')")
                                 i.fa.fa-angle-down(data-ng-hide="home.packageOpen")
                                 i.fa.fa-angle-up(data-ng-show="home.packageOpen")
                                 |PAQUETE
 
-                          .cotizador-document(data-ng-show="home.documentOpen")
+                          .cotizador-document(data-ng-if="home.documentOpen")
                             .row
-                              .col-xs-4
-                                .select-weight
-                                  select(ng-model="home.weightDocuments" ng-options="n for n in home.weightList")
-                                  span.bold
-                                    |KG
-                              .col-xs-8
+                              .col-xs-12
                                 .select-weight
                                   md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
                                     |ASEGURAR
-                            .select-weight(data-ng-show="home.shipping.insurance")
-                              .row
-                                .col-xs-4
-                                  .box-attr-secondary
-                                    input(data-ng-model="home.shipping.valueDeclared",placeholder="Pesos (MXN)", data-ng-pattern="shell.regex.decimal")
-                                .col-xs-8
+                            .row(data-ng-repeat="package in home.documents")
+                              .col-xs-11
+                                .select-weight
+                                  span
+                                    |Peso de tu sobre.
+                                  select(ng-model="package.weight" ng-options="n for n in home.weightList")
                                   span.bold
-                                    |VALOR ($)
+                                    |KG
+                              .col-xs-1
+                                i.fa.fa-plus(data-ng-show="$index+1 == home.documents.length", data-ng-click="home.addDocuments()")
+                                i.fa.fa-trash(data-ng-show="$index > 0", data-ng-click="home.removeDocument($index)")
+                              .select-weiht(data-ng-show="home.shipping.insurance")
+                                .row
+                                  .col-xs-4
+                                    .box-attr-secondary
+                                      input(data-ng-model="package.valueDeclared",placeholder="Pesos (MXN)", data-ng-pattern="shell.regex.decimal",ng-required='home.shipping.insurance')
+                                  .col-xs-8
+                                    span.bold
+                                      |VALOR ($)
 
-                          .cotizador-box(data-ng-show="home.packageOpen")
+                          .cotizador-box(data-ng-if="home.packageOpen")
                             .row
+                              md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
+                                  |ASEGURAR
                               .col-xs-12(data-ng-repeat="package in home.shipping.packages")
                                 .select-weight
                                   .row
+                                    .select-weight
                                     .col-xs-11
                                       .col-xs-3
                                         .box-attr
                                           div
                                             |PESO
                                           div
-                                            input(name="weight", placeholder="Kg", data-ng-model="package.weight", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'box'")
+                                            input(name="weight", placeholder="Kg", data-ng-model="package.weight", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'")
                                       .col-xs-3
                                         .box-attr
                                           div
                                             |ANCHO
                                           div
-                                            input(name="width",placeholder="cms", data-ng-model="package.width", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'box'")
+                                            input(name="width",placeholder="cms", data-ng-model="package.width", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'")
                                       .col-xs-3
                                         .box-attr
                                           div
                                             |LARGO
                                           div
-                                            input(name="length",placeholder="cms", data-ng-model="package.length", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'box'")
+                                            input(name="length",placeholder="cms", data-ng-model="package.length", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'")
                                       .col-xs-3
                                         .box-attr
                                           div
                                             |ALTO
                                           div
-                                            input(name="height",placeholder="cms", data-ng-model="package.height", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'box'")
+                                            input(name="height",placeholder="cms", data-ng-model="package.height", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'")
                                     .col-xs-1
                                       .box-attr
                                         i.fa.fa-plus(data-ng-show="$index+1 == home.shipping.packages.length", data-ng-click="home.addPackage()")
                                         i.fa.fa-trash(data-ng-show="$index > 0", data-ng-click="home.removePackage($index)")
-                              .col-xs-12
-                                .select-weight
-                                  md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
-                                    |ASEGURAR
-                                .select-weight(data-ng-show="home.shipping.insurance")
-                                  .row
-                                    .col-xs-4
-                                      .box-attr-secondary
-                                        input(data-ng-model="home.shipping.valueDeclared", placeholder="Pesos (MXN)",data-ng-pattern="shell.regex.decimal")
-                                    .col-xs-8
-                                      span.bold
-                                        |VALOR ($)
+                                  .col-xs-12
+                                    .select-weight(data-ng-show="home.shipping.insurance")
+                                      .row
+                                        .col-xs-4
+                                          .box-attr-secondary
+                                            input(name="valueDeclared",data-ng-model="package.valueDeclared", placeholder="Pesos (MXN)",data-ng-pattern="shell.regex.decimal",ng-required='home.shipping.insurance')
+                                        .col-xs-8
+                                          span.bold
+                                            |VALOR ($)
 
                   .col-xs-12.col-sm-6.col-md-2
                     .padding-sides
@@ -168,34 +173,72 @@
         div(data-ng-include="'app/templates/spinner.template.html'")
       .table-response
         .container-fluid
-          .table-td(data-ng-repeat="item in home.services")
-            .row
-              .col-xs-3.align-center
-                .item-logo(data-ng-class="{'vertical':item.service == 'ups'}")
-                  img(data-ng-src="common/images/{{item.service}}.png")
-                .item-name
-                  |{{item.name}}
-              .col-xs-3.align-center
-                .item-text-regular.blue
-                  |Tarifa Regular
-                .item-title.lined
-                  |{{item.total | currency}} MXN
-                .item-text-regular.blue
-                  |Nuestra tarifa
-                .item-amount
-                  |{{item.total | currency}} MXN
-              .col-xs-3.align-center
-                .item-text-regular
-                  |Días
-                .item-title
-                  |{{item.delivery}}
-                .item-text-regular
-                  |Entrega estimada
-                .item-amount
-                  |{{item.delivery}}
-              .col-xs-3.align-center
-                md-button.md-raised.md-primary(data-ng-click="home.setService(item)")
-                  |Seleccionar
+          .table-container.clearfix(data-ng-repeat="item in home.services")
+            .table-box.red
+              div
+                |ENTREGA ESTIMADA
+              div
+                span.important-text
+                  |{{item.deliveryHours}}
+                span.secondary-text
+                  |&nbsp;DIAS
+              div.service-name
+                |{{item.name}}
+            .table-box.service-logo
+              //- .item-logo(data-ng-class="{'vertical':item.service == 'ups'}")
+              img(data-ng-src="common/images/{{item.service}}.png")
+            .table-box.big-table-box
+              div
+                |PRECIO AL PÚBLICO
+              div.regular-price
+                |{{item.total}} | currency}} MXN
+              div.semi-important-red
+                |AHORRA
+              div.important-red
+                |{{item.total-item.discountTotal | currency}} MXN
+            .table-box
+            .table-box.big-table-box
+              span.light-font
+                |PRECIO
+              span.bold-font
+                |&nbsp;PAQUETE.MX
+              div
+                span.big-price
+                  |{{item.discountTotal| currency}}
+                span.red-color
+                  |MXN
+            .table-box.service-logo
+              .button-send(data-ng-click="home.setService(item)")
+                |ENVIAR
+
+          //- .table-td(data-ng-repeat="item in home.services")
+          //-   .row
+          //-     .col-xs-3.align-center
+          //-       .item-logo(data-ng-class="{'vertical':item.service == 'ups'}")
+          //-         img(data-ng-src="common/images/{{item.service}}.png")
+          //-       .item-name
+          //-         |{{item.name}}
+          //-     .col-xs-3.align-center
+          //-       .item-text-regular.blue
+          //-         |Tarifa Regular
+          //-       .item-title.lined
+          //-         |{{item.total | currency}} MXN
+          //-       .item-text-regular.blue
+          //-         |Nuestra tarifa
+          //-       .item-amount
+          //-         |{{item.discountTotal | currency}} MXN
+          //-     .col-xs-3.align-center
+          //-       .item-text-regular
+          //-         |Días
+          //-       .item-title
+          //-         |{{item.delivery}}
+          //-       .item-text-regular
+          //-         |Entrega estimada
+          //-       .item-amount
+          //-         |{{item.deliveryHours}}
+          //-     .col-xs-3.align-center
+          //-       md-button.md-raised.md-primary(data-ng-click="home.setService(item)")
+          //-         |Seleccionar
     div(data-ng-if="!home.rated")
       .big-text(data-ng-class="{'active':home.active}")
         .logo-color(data-ng-class="{'active':!home.active}")

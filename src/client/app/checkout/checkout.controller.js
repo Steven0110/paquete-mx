@@ -49,10 +49,11 @@
       var total = (checkout.shipping.service.total * 100).toFixed(0);
       var order = {
         shipping:{
+          packagingType : checkout.shipping.packagingType,
           service       : checkout.shipping.service,
           from          : checkout.shipping.from,
           to            : checkout.shipping.to,
-          packages      : [checkout.shipping.package]
+          packages      : checkout.shipping.packages
         },
         paymentMethod : {card: checkout.card},
         amount        : total

@@ -19,27 +19,35 @@
     home.international = false;
 
     /*nuevo diseño*/
-    home.weightList = [1,2,3,4,5,6,7,8,9,10];
+    home.weightList = ["1","2","3","4","5","6","7","8","9","10"];
     home.weightDocuments = 1;
     home.selectType = function(type){
       home.shipping.type = type;
-      if(type == 'box'){
+      if(type == 'package'){
         home.documentOpen = false;
         home.packageOpen = !home.packageOpen;        
       }
-      else if(type == 'envelope'){
+      else if(type == 'document'){
         home.packageOpen = false;
         home.documentOpen = !home.documentOpen;        
       }
     }
+
+    home.documents = [{
+      weight: "1",
+      width: "25",
+      length: "25",
+      height: "1"
+    }]
+
     home.initialize ={
       from:{
-        zip: null,
+        zip: "09770",
         data: {},
         country: "MX"
       },
       to:{
-        zip: null,
+        zip: "06050",
         data: {},
         country: "MX"
       },
@@ -47,10 +55,10 @@
       valueDeclared: null,
       insurance: false,
       packages:[{
-        weight: null,
-        width: null,
-        length: null,
-        height: null
+        weight: "1",
+        width: "25",
+        length: "25",
+        height: "1"
       }
       ]
     };
@@ -66,8 +74,21 @@
       })
     }
 
+    home.addDocuments = function(){
+      home.documents.push({
+        weight: "1",
+        width: "30",
+        length: "20",
+        height: "1"
+      })
+    }
+
     home.removePackage = function(index){
       home.shipping.packages.splice(index,1)
+    }
+
+    home.removeDocument = function(index){
+      home.documents.splice(index,1)
     }
     /*nuevo diseño*/
 
@@ -82,7 +103,7 @@
     //     data: {},
     //     country: null
     //   },
-    //   type: "envelope",
+    //   type: "document",
     //   package:{
     //     weight: "1",
     //     width: "25",
@@ -97,10 +118,11 @@
       home.shipping.to.data.country = home.shipping.to.country;
 
       var shipping ={
+        packagingType: home.shipping.type,
         service     : service,
         from        : home.shipping.from.data,
         to          : home.shipping.to.data,
-        package     : home.shipping.package
+        packages    : home.shipping.packages
       }
       shell.setShipping(shipping);
       $state.go('checkout');
@@ -214,18 +236,138 @@
     home.send = function(){
       if(home.shippingForm.fromZip.$valid){
         if(home.shippingForm.toZip.$valid){
-          if(home.shipping.type == 'box' || home.shipping.type == 'envelope'){
-            if(!home.shipping.insurance || (home.shipping.insurance && home.shipping.valueDeclared && home.shipping.valueDeclared > 0)){
+          if(home.shipping.type == 'package' || home.shipping.type == 'document'){
+            // if(!home.shipping.insurance || (home.shipping.insurance && home.shipping.valueDeclared && home.shipping.valueDeclared > 0)){
               if(home.shippingForm.$valid){
 
+                if(home.shipping.type == "document"){
+                  home.shipping.packages = home.documents;
+                }
+
                 console.log(home.shipping);
+
+                home.services = [];
+                var fromCountry = home.shipping.from.country.code;
+                var toCountry = home.shipping.to.country.code;
+                home.international =  shell.isInternational(fromCountry, toCountry);
+                home.rated =  true;
+                home.searching =  true;
+                var viewport = $('.image-space').innerHeight();
+                var body = $('body').innerHeight();
+                var topContent = $('.image-space').innerHeight();
+                if(viewport <= body){
+                  $('body,html').stop().animate({scrollTop:topContent/2},1000);
+                }else{
+                  $('body,html').stop().animate({scrollTop:topContent/2},1000);
+                }
+                
+                // var services = [{code:"ups", international:true},{code:"fedex",international:true},{code:"redpack",international:false}];
+                var services = [{code:"ups", international:true},{code:"fedex",international:true}];
+
+                var fromZip;
+                if(home.shipping.from.data && home.shipping.from.data.zip){
+                  fromZip =  home.shipping.from.data.zip;
+                }else{
+                  fromZip =  home.shipping.from.zip;
+                }
+
+                var toZip;
+                if(home.shipping.to.data && home.shipping.to.data.zip){
+                  toZip =  home.shipping.to.data.zip;
+                }else{
+                  toZip =  home.shipping.to.zip;
+                }
+
+                // var fromLatLng = {
+                //   lat: null,
+                //   lng: null
+                // }
+
+                // if(home.shipping.from.data && home.shipping.from.data.latitude && home.shipping.from.data.longitude){
+                //   fromLatLng.lat = home.shipping.from.data.latitude;
+                //   fromLatLng.lng = home.shipping.from.data.longitude;
+                // }
+
+                // var toLatLng = {
+                //   lat: null,
+                //   lng: null
+                // }
+
+                // if(home.shipping.to.data && home.shipping.to.data.latitude && home.shipping.to.data.longitude){
+                //   toLatLng.lat = home.shipping.to.data.latitude;
+                //   toLatLng.lng = home.shipping.to.data.longitude;
+                // }          
+
+                var rate = {
+                  "type":home.shipping.type,
+                  "from": {
+                    "zip": fromZip,
+                    "country": fromCountry
+                  },
+                  "to": {
+                    "zip": toZip,
+                    "country": toCountry
+                  },
+                  "packages": home.shipping.packages
+                };
+
+                console.log("rate", rate);
+                var promises = [];
+                angular.forEach(services,function(service){
+
+                  var runRate = true; 
+                  if(home.international && !service.international){
+                    console.log('service no international'+service.code);
+                    runRate = false;
+                  }
+
+                  if(runRate){
+                    var params = {
+                      "type":service.code,
+                      "rate": rate
+                    };
+
+                    promises.push(
+                      rateApi.rate(service,params).then(function(response){
+                        // console.log(response);
+                        if(response.services){
+                          home.services = home.services.concat(response.services);
+                        }
+                        var deferred = $q.defer();
+                        deferred.resolve(response);
+                        return deferred.promise;
+                      },function(err){
+                        console.log(err);
+                        var deferred = $q.defer();
+                        deferred.reject(err);
+                        return deferred.promise;
+                      })
+                    );
+                  }
+                });
+                $q.all(promises).then(function(result){
+                },function(err){
+                  console.log(err);
+                }).finally(function(){
+                  console.log(home.services);
+                  home.searching = false;
+                });
+
+                
+              // }
+            // }
+          // };
+
+
+
+
                 
               }else{
                 Dialog.showError('Verifica las dimensiones de los paquetes, recuerda que deben ser numéricos mayores a 0','Dimensiones de los paquetes');  
               }
-            }else{
-              Dialog.showError('El valor declarado debe ser mayor a 0 si deseas asegurar.','¿Cuál es el valor declarado?');
-            }
+            // }else{
+              // Dialog.showError('El valor declarado debe ser mayor a 0 si deseas asegurar.','¿Cuál es el valor declarado?');
+            // }
           }else{
             // alert('Selecciona si tu envio son documentos o paquetes.');
             Dialog.showError('Selecciona si tu envío son documentos o paquetes.','¿Qué envías?');
@@ -247,7 +389,7 @@
     //     var toCountry = home.shipping.to.country.code;
     //     home.international =  shell.isInternational(fromCountry, toCountry);
     //     console.log('international', home.international);
-    //     if(home.shipping.type == 'box' || home.shipping.type == 'documents'){
+    //     if(home.shipping.type == 'package' || home.shipping.type == 'documents'){
     //       home.rated =  true;
     //       home.searching =  true;
     //       var viewport = $('.image-space').innerHeight();
