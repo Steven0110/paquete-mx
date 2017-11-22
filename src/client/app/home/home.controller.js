@@ -497,7 +497,7 @@
     // };
 
 
-    var floatSection = $('#float-section').offset().top;
+    // var floatSection = $('#float-section').offset().top;
 
     function setHomeState(status){
       home.active = status;
@@ -516,16 +516,16 @@
         $('#float-section').css({top:-(distance)});
         $('#menu').css({'position':'absolute',top:-(menu)});
         $('#float-section').innerHeight($('#float-section').innerHeight()-distance);
-        var menuTop = $('#menu').offset().top;
+        // var menuTop = $('#menu').offset().top;
 
-        if(menuTop-scroll <= 0){
-          $('#menu').css({position:'fixed',top:0});
-          if(!home.active)
-            setHomeState(true);
+        // if(menuTop-scroll <= 0){
+        //   $('#menu').css({position:'fixed',top:0});
+        //   if(!home.active)
+        //     setHomeState(true);
 
-        }else{
-          $('#menu').css({'position':'absolute',top:-(menu)});
-        }
+        // }else{
+        //   $('#menu').css({'position':'absolute',top:-(menu)});
+        // }
         
       }else{
         if(scroll <= body ){

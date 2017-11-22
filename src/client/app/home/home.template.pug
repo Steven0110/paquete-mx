@@ -8,9 +8,6 @@
       .row
         .col-xs-12.center-block
             .logo-color
-            //- .align-center
-              h1
-                |¡Las mejores opciones para tus envios!
             form(name="home.shippingForm",data-ng-submit="home.send()", novalidate)
               .container-fluid.opacity-box
                 .row
@@ -157,7 +154,8 @@
                       .cotizador-element-box
                         .cotizador-button(data-ng-click="home.send()")
                           |COTIZAR
-#float-section.background-container
+//- #float-section.background-container
+.background-container
   //- #menu.menu-tabs.clearfix
     div(data-ng-include="'app/templates/menu.template.html'")
   #content.section-container

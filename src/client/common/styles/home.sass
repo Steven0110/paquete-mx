@@ -5,14 +5,21 @@ $menuNav : 77px;
 .image-space
   width: 100%
   min-height: 100vh
-  // background-color: #ededed
+  background-color: #ededed
   background-color: #FFF
-  position: relative
-  z-index: 1
+  // position: relative
+  // z-index: 1
   padding-bottom: $menuHeight
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url("images/cities.jpg");
+
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  // overflow: auto
 .background-container
   position: relative
   z-index: 3
@@ -52,6 +59,7 @@ $menuNav : 77px;
   background: url('../images/logo.png') no-repeat
   background-size: cover
   margin: 0 auto
+  margin-bottom: 20px
   &.active
     background-position: 100% 0
   &.absolute
@@ -493,6 +501,10 @@ i.fa-cc-amex
 
 
 /*cotizador*/
+.opacity-box
+  background-color: rgba(255,255,255,0.7)
+  border-radius: 5px
+  padding-bottom: 20px
 .cotizador-element
   font-family: 'Roboto'
   .padding-sides
@@ -501,6 +513,7 @@ i.fa-cc-amex
   position: relative
   height: 50px;
   width: 100%;
+  background-color: #FFF
   box-shadow: 3px 3px 10px 3px rgba(0,0,0,0.1);
   // border: solid 1px black
   .input-cotizador
@@ -542,9 +555,10 @@ i.fa-cc-amex
   position: absolute
   width: 100%
   // height: 300px
-  // background-color: #CCC
+  background-color: #FFF
   border: solid 1px $primary-color
   border-top: 0
+  z-index: 10
 
 .select-weight
   // margin-top: 20px
