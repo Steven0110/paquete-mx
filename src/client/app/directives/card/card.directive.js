@@ -11,6 +11,7 @@ function cardForm(conektaApi, Dialog){
     scope: {
       labels        : "=",
       sendForm      : "&",
+      cancelForm    : "&",
       showLoading   : "&",
       hideLoading   : "&"
     },
@@ -35,6 +36,10 @@ function cardForm(conektaApi, Dialog){
       card.years = [];
       for(var j=2017; j<=2030; j++){
         card.years.push(j);
+      }
+
+      card.cancel = function(){
+        card.cancelForm();
       }
 
       card.send = function(){

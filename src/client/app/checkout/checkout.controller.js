@@ -17,7 +17,7 @@
     checkout.shipping = shell.getShipping();
     checkout.response = false;
     checkout.connecting = false;
-
+    checkout.paymentMethods = [];
     console.log('shipping',checkout.shipping);
     
     if(!checkout.shipping){
@@ -46,8 +46,16 @@
     }
 
     checkout.changeSection = function(section){
+      if(section == "payment"){
+        getPaymentMethods();
+        checkout.cardForm = false;
+      }
       shell.moveToTop();
       checkout.step = section;
+    }
+
+    checkout.cancelPayment =function(){
+      checkout.cardForm = false;
     }
 
     checkout.paymentMethod = function(card){

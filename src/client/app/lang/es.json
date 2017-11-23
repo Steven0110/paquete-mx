@@ -70,7 +70,8 @@
       "expirationYear": "Año de expiración",
       "expirationMonth": "Mes de expiración",
       "cvc":"Código de Seguridad",
-      "save": "Guardar Tarjeta",
+      "save": "Continuar",
+      "cancel": "Cancelar",
       "errors":{
         "required": "Es requerido"
       }

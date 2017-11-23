@@ -223,40 +223,46 @@
                   md-button.md-raised.md-primary(data-ng-click="checkout.order()")
                     |Confirmar y pagar
             .form-container(data-ng-show="checkout.step=='payment'")
-              h1.accent.align-center
-                |Selecciona Tarjeta
-              div
-                div.card-select(data-ng-repeat="item in checkout.paymentMethods", data-ng-click="checkout.selectCard(item)")
-                  div
-                    h3
-                      |{{item.name}}
-                  div
-                    i.big.fa.fa-cc-mastercard(data-ng-if="item.brand == 'MC'")
-                    i.big.fa.fa-cc-visa(data-ng-if="item.brand == 'VISA'")
-                    i.big.fa.fa-cc-amex(data-ng-if="item.brand == 'AMERICAN_EXPRESS'")
-                    i.fa.fa-circle
-                    i.fa.fa-circle
-                    i.fa.fa-circle
-                    i.fa.fa-circle
-                    |&nbsp;
-                    i.fa.fa-circle
-                    i.fa.fa-circle
-                    i.fa.fa-circle
-                    i.fa.fa-circle
-                    |&nbsp;
-                    i.fa.fa-circle
-                    i.fa.fa-circle
-                    i.fa.fa-circle
-                    i.fa.fa-circle
-                    |&nbsp;
-                    span
-                      |{{item.last4}}
+              div(data-ng-hide="checkout.cardForm")
+                h1.accent.align-center(data-ng-show="checkout.paymentMethods.length > 0")
+                  |Selecciona Tarjeta
+                h1.accent.align-center(data-ng-show="checkout.paymentMethods.length < 1")
+                  |No tienes tarjetas registradas
+                div
+                  div.card-select(data-ng-repeat="item in checkout.paymentMethods", data-ng-click="checkout.selectCard(item)")
+                    div
+                      h3
+                        |{{item.name}}
+                    div
+                      i.big.fa.fa-cc-mastercard(data-ng-if="item.brand == 'MC'")
+                      i.big.fa.fa-cc-visa(data-ng-if="item.brand == 'VISA'")
+                      i.big.fa.fa-cc-amex(data-ng-if="item.brand == 'AMERICAN_EXPRESS'")
+                      i.fa.fa-circle
+                      i.fa.fa-circle
+                      i.fa.fa-circle
+                      i.fa.fa-circle
+                      |&nbsp;
+                      i.fa.fa-circle
+                      i.fa.fa-circle
+                      i.fa.fa-circle
+                      i.fa.fa-circle
+                      |&nbsp;
+                      i.fa.fa-circle
+                      i.fa.fa-circle
+                      i.fa.fa-circle
+                      i.fa.fa-circle
+                      |&nbsp;
+                      span
+                        |{{item.last4}}
                 .add-dashboard(data-ng-hide="checkout.cardForm")
                   i.fa.fa-plus-circle(data-ng-click="checkout.cardForm = true")
                   h2(data-ng-click="checkout.cardForm = true")
                     |¡Agregar tarjeta!
               div(data-ng-show="checkout.cardForm")
-                card-form( data-labels="checkout.labels.payment", data-send-form="checkout.paymentMethod(response)")
+                h1.accent.align-center
+                  |Agregar Tarjeta
+                .margin-top-4
+                  card-form( data-show-loading="shell.showLoading()", data-hide-Loading="shell.hideLoading()",data-labels="checkout.labels.payment", data-send-form="checkout.paymentMethod(response)",data-cancel-form="checkout.cancelPayment()")
 
             .form-container(data-ng-show="checkout.step=='login'")
               h3.align-center

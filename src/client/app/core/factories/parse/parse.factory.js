@@ -30,18 +30,26 @@
     }
 
     function login(){
+      Restangular.setBaseUrl('https://parseapi.back4app.com/');
+      Restangular.setDefaultHeaders(parseheaders.restKeys);
       return Restangular.service('login');
     }
 
     function endpoint(className, id){
+      Restangular.setBaseUrl('https://parseapi.back4app.com/');
+      Restangular.setDefaultHeaders(parseheaders.restKeys);
       return new ParseClass(className, id);
     }
 
     function current(){
+      Restangular.setBaseUrl('https://parseapi.back4app.com/');
+      Restangular.setDefaultHeaders(parseheaders.restKeys);
       return Restangular.service('users/me');
     }
 
     function user(userId){
+      Restangular.setBaseUrl('https://parseapi.back4app.com/');
+      Restangular.setDefaultHeaders(parseheaders.restKeys);
       var user = 'users';
       if(userId)
         user = 'users/'+userId;
