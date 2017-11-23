@@ -57,7 +57,11 @@
       "save" : "Guardar",
       "continue" : "Continuar",
       "cancel": "Cancelar"
+    },
+    "errors":{
+      "pattern": "Telefóno invalido, requerido a 10 digitos"
     }
+
   },
   "paymentMethod":{
     "form":{

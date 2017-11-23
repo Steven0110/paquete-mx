@@ -1,9 +1,9 @@
 angular
 .module('app')
 .run(run);
-run.$inject = ['$rootScope','$transitions','$state','parseheaders','userApi','Restangular'];
+run.$inject = ['$rootScope','$transitions','$state','$window','parseheaders','userApi','Restangular'];
 
-function run($rootScope, $transitions,$state, parseheaders, userApi, Restangular) {  
+function run($rootScope, $transitions,$state,$window, parseheaders, userApi, Restangular) {  
   // Restangular.setBaseUrl('https://parseapi.back4app.com/');
   // Restangular.setDefaultHeaders(parseheaders.restKeys);
 
@@ -24,6 +24,7 @@ function run($rootScope, $transitions,$state, parseheaders, userApi, Restangular
   }
 
   $transitions.onSuccess({}, function($transitions){
+    $window.scrollTo(0, 0);
     var newToState = $transitions.$to();
     if(newToState.parent && newToState.parent.data && newToState.parent.data.access){
       if(!userApi.isAuth()){

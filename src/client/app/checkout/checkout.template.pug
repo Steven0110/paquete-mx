@@ -259,7 +259,16 @@
                 card-form( data-labels="checkout.labels.payment", data-send-form="checkout.paymentMethod(response)")
 
             .form-container(data-ng-show="checkout.step=='login'")
+              h3.align-center
+                |¿Ya tienes cuenta?
+              h1.accent.align-center
+                |Inicia Sesión
               login-form
+              h3.align-center
+                |¿No tienes cuenta?
+              h1.accent.align-center
+                |¡Registrate!
+              register-form
             .form-container(data-ng-show="checkout.step=='from'")
               h1.accent.align-center
                 |Dirección de Origen

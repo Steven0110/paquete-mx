@@ -154,8 +154,8 @@
                       .cotizador-element-box
                         .cotizador-button(data-ng-click="home.send()")
                           |COTIZAR
-//- #float-section.background-container
-.background-container
+#float-section.background-container
+  //- .background-container
   //- #menu.menu-tabs.clearfix
     div(data-ng-include="'app/templates/menu.template.html'")
   #content.section-container
@@ -171,7 +171,7 @@
         div(data-ng-include="'app/templates/spinner.template.html'")
       .table-response
         .container-fluid
-          .table-container.clearfix(data-ng-repeat="item in home.services")
+          .table-container.clearfix.animated.bounceIn(data-ng-repeat="item in home.services")
             .table-box.red
               div
                 |ENTREGA ESTIMADA

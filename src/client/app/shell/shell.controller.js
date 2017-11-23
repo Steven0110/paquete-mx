@@ -5,10 +5,10 @@
     .module('app.core')
     .controller('Shell',Shell);
 
-  Shell.$inject = ['$transitions','$scope','$state','$window','$q','template','$mdToast','userApi','shippingApi'];
+  Shell.$inject = ['$transitions','$scope','$state','$window','$q','$timeout','template','$mdToast','userApi','shippingApi'];
 
 
-  function Shell($transitions, $scope, $state, $window, $q,template, $mdToast, userApi, shippingApi){
+  function Shell($transitions, $scope, $state, $window, $q, $timeout,template, $mdToast, userApi, shippingApi){
     // jshint validthis: true 
     var shell = this;
     shell.loading = false;
@@ -159,8 +159,25 @@
       if(submenu)
         shell.submenu = submenu;
     }
+    $transitions.onStart({}, function($transitions){
+      // alert();
+      // $('html').offset().top =0;
+      // $(window).scrollTop(0);
+      // $(document).scrollTop(0);
+      // alert();
+      shell.showLoading();
+    });
+
+    $transitions.onFinish({}, function($transitions){
+      // alert();
+      $timeout(shell.hideLoading,1000);
+
+    });
 
     $transitions.onSuccess({}, function($transitions){
+      // shell.hideLoading();
+      
+      
       var newToState = $transitions.$to();
       
       var menu = null;
@@ -173,8 +190,6 @@
         if(newToState.data.submenu){
           submenu = newToState.data.submenu
         }
-
-        console.log(newToState.data)
         if(newToState.data.title && newToState.data.subtitle){
           shell.setTitle(newToState.data.title, newToState.data.subtitle);
         }

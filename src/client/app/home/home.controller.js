@@ -18,6 +18,9 @@
     home.options = [];
     home.international = false;
 
+    // alert();
+    // $('html').animate({scrollTop:"408px"},1000);
+
     /*nuevo diseño*/
     home.weightList = ["1","2","3","4","5","6","7","8","9","10"];
     home.weightDocuments = 1;
@@ -252,14 +255,18 @@
                 home.international =  shell.isInternational(fromCountry, toCountry);
                 home.rated =  true;
                 home.searching =  true;
-                var viewport = $('.image-space').innerHeight();
-                var body = $('body').innerHeight();
-                var topContent = $('.image-space').innerHeight();
-                if(viewport <= body){
-                  $('body,html').stop().animate({scrollTop:topContent/2},1000);
-                }else{
-                  $('body,html').stop().animate({scrollTop:topContent/2},1000);
-                }
+                // var viewport = $('.image-space').innerHeight();
+                // var body = $('body').innerHeight();
+                var topContent = $('#float-section').position().top;
+                // alert(topContent);
+                // if(viewport <= body){
+                $('html').animate({scrollTop:topContent},1000);
+
+                home.documentOpen = false;
+                home.packageOpen = false;
+                // }else{
+                  // $('body,html').stop().animate({scrollTop:topContent/2},1000);
+                // }
                 
                 // var services = [{code:"ups", international:true},{code:"fedex",international:true},{code:"redpack",international:false}];
                 var services = [{code:"ups", international:true},{code:"fedex",international:true}];
@@ -320,6 +327,7 @@
                     console.log('service no international'+service.code);
                     runRate = false;
                   }
+
 
                   if(runRate){
                     var params = {
@@ -513,10 +521,12 @@
       var distance =  difference > 0 ?scroll-difference:scroll+difference;
 
       if(scroll >= difference){
-        $('#float-section').css({top:-(distance)});
-        $('#menu').css({'position':'absolute',top:-(menu)});
-        $('#float-section').innerHeight($('#float-section').innerHeight()-distance);
+        /*parallax*/
+        // $('#float-section').css({top:-(distance)});
+        // $('#menu').css({'position':'absolute',top:-(menu)});
+        // $('#float-section').innerHeight($('#float-section').innerHeight()-distance);
         // var menuTop = $('#menu').offset().top;
+        /*parallax*/
 
         // if(menuTop-scroll <= 0){
         //   $('#menu').css({position:'fixed',top:0});
@@ -530,16 +540,20 @@
       }else{
         if(scroll <= body ){
           setHomeState(false);
-          $('#menu').css({'position':'fixed', top:"auto"});
+          // $('#menu').css({'position':'fixed', top:"auto"});
         }
       }
 
       /* section animation */
       // console.log($('.section-1').position().top);
       if(index <= home.sections.length){
+        // console.log($('.section-'+index).position());
         if($('.section-'+index).position()){
-          var sectionDistance = scroll+(distance-viewport)+menu;
-          if( sectionDistance+200 >= $('.section-'+index).position().top ){
+          // var sectionDistance = scroll+(distance-viewport);
+          // console.log('sectionDistance',sectionDistance);
+          // console.log('scroll',scroll);
+          // console.log('section',$('.section-'+index).offset().top);
+          if( scroll+200 >= $('.section-'+index).offset().top ){
             $('.image-'+index).addClass('active')
             index++;
           }

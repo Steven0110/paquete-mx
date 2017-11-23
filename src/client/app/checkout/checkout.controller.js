@@ -32,8 +32,18 @@
 
     $scope.setUser = function(user){
       shell.setCurrentUser(user);
-      alert('yeah');
+      // alert('yeah');
     };
+
+    $scope.loginSuccess = function(){
+      checkout.user = shell.getCurrentUser();
+      if(checkout.user){
+        shell.moveToTop();
+        getPaymentMethods();
+      }else{
+        checkout.step = 'login';  
+      }
+    }
 
     checkout.changeSection = function(section){
       shell.moveToTop();
@@ -101,7 +111,7 @@
           shell.moveToTop();
           getPaymentMethods();
         }else{
-          alert('login');
+          // alert('login');
           checkout.step = 'login';  
         }
       }

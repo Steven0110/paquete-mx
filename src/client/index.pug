@@ -24,6 +24,8 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
     link(rel="stylesheet" href="common/styles/media-query.css")
     link(rel="stylesheet" href="common/styles/fonts.css")
     link(href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css")
+
 
 
   body
@@ -32,7 +34,7 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
     .loading-opacity(data-ng-show="shell.loading")
       div(data-ng-include="'app/templates/spinner.template.html'")
     confirm-dialog
-    ui-view
+    ui-view(autoscroll="false")
 
     //- Libraries
     script(src="bower_components/jquery/dist/jquery.js")

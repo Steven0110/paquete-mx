@@ -23,6 +23,10 @@ function addressForm(userApi, Dialog){
       scope.cities = [];
       scope.county = {};
 
+      scope.regex ={
+        mobile    : /^\d{10}$/
+      }
+
       scope.$watch('county',function(newVal, oldVal){
         if(newVal){
           if(newVal.county){
@@ -79,6 +83,8 @@ function addressForm(userApi, Dialog){
       //   console.log(scope.showForm);
       //   scope.showForm({value:false});
       // }
+
+      // alert(scope.type);
 
       scope.hideForm =  function(){
         scope.cancel();
