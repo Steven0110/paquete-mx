@@ -2,9 +2,9 @@ angular
   .module('app.core')
   .directive('addressForm',addressForm);
 
-addressForm.$inject = ['userApi','Dialog'];
+addressForm.$inject = ['userApi','$state',$ngConfirm,'Dialog'];
 
-function addressForm(userApi, Dialog){
+function addressForm(userApi,$state,$ngConfirm,Dialog){
   return{
     restrict: 'EA',
     templateUrl: 'app/directives/address/address.form.html',
@@ -88,6 +88,29 @@ function addressForm(userApi, Dialog){
 
       scope.hideForm =  function(){
         scope.cancel();
+      }
+      scope.showZipMessage = function(){
+        $ngConfirm({
+            theme: 'supervan',
+            title: "Cambiar Código Postal",
+            content: "No puedes cambiar el código postal ni el País ya que se realizo una cotización de precio y servicios de acuerdo a ellos. Si deseas cambiar código postal o País debes realizar una nueva cotización.",
+            icon: 'fa fa-warning',
+            type: 'red',
+            buttons: {
+                back:{
+                  text: "Nueva cotización",
+                  action: function(scope, button){
+                    $state.go('home');
+                  }
+                },
+                close:{
+                  text: "Continuar",
+                  action: function(scope, button){
+                    
+                  }
+                }
+            }
+        });
       }
 
       scope.send = function(){

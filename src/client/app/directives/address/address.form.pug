@@ -46,7 +46,7 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
           |{{newAddress.zip}}
       .col-xs-4
         .change-zip
-          span
+          span(data-ng-click="showZipMessage()")
             |Modificar Código Postal
   div(layout-xs-sm="row", data-ng-if="type != 'checkout' ")
     .container-fluid
