@@ -268,8 +268,8 @@
                   // $('body,html').stop().animate({scrollTop:topContent/2},1000);
                 // }
                 
-                // var services = [{code:"ups", international:true},{code:"fedex",international:true},{code:"redpack",international:false}];
-                var services = [{code:"ups", international:true},{code:"fedex",international:true}];
+                var services = [{code:"ups", international:true},{code:"fedex",international:true},{code:"redpack",international:false}];
+                // var services = [{code:"ups", international:true},{code:"fedex",international:true}];
 
                 var fromZip;
                 if(home.shipping.from.data && home.shipping.from.data.zip){

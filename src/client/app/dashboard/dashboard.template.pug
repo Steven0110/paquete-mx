@@ -1,15 +1,10 @@
-.container-fluid
-  .row
-    #dash-menu.col-sm-2
-      .dashboard-menu
-        .dashboard-logo
-          img(data-ng-src="common/images/paquete-mx.png")
-        .dashboard-items
-          nav(data-ng-repeat="item in shell.dashMenu",data-ng-click="shell.setMenu(item.name)",data-ng-class="{'active':shell.menu == item.name}")
-            .selected-bar(data-ng-class="{'active':shell.menu == item.name}")
-            a(data-ng-bind="item.label", ui-sref="{{item.uiref}}")
-    .col-xs-12.col-sm-10
-      .dashboard-header
-        .dash-section-title(data-ng-bind="shell.dashboard.title")
-        .dash-section-subtitle(data-ng-bind="shell.dashboard.subtitle")
-      ui-view
+#side-menu
+  .dashboard-logo
+    img(data-ng-src="common/images/logo-blanco.png")
+  .item-side(data-ng-repeat="item in shell.dashMenu")
+    a(ui-sref="{{item.uiref}}")
+      i.fa(class="{{item.icon}}")
+      div
+        |{{item.label}}
+#side-content
+  ui-view

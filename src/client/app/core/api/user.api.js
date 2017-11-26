@@ -150,7 +150,7 @@
 
       var where = {"user":{"__type":"Pointer","className":"_User","objectId":userId}}
       var Payment = parse.endpoint('Payment');
-      return Payment.getAll(where,'createdAt');
+      return Payment.getAll(where,'-createdAt');
     }
 
     function getOrders(delivered,userId){
@@ -173,7 +173,7 @@
         where.delivered = false
       }
       var Shipping = parse.endpoint('Shipping');
-      return Shipping.getAll(where,'createdAt');
+      return Shipping.getAll(where,'-createdAt');
     }
 
     function getAddress(objectId){

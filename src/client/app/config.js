@@ -136,8 +136,21 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
         subtitle: "Verifica el status y detalles de tus envios"
       },
       resolve:{
-        data: function(userApi){
-          return userApi.getOrders();
+        data: function(userApi, $q){
+          var response = {
+            delivered :[],
+            inTransit :[]
+          };
+          var deferred = $q.defer();
+          userApi.getOrders(true).then(function(deliveredList){
+            response.delivered = deliveredList;
+            return userApi.getOrders(false).then(function(inTransitList){
+              response.inTransit = inTransitList;
+              deferred.resolve(response);
+            })
+          });
+
+          return deferred.promise;
         }
       }
     })

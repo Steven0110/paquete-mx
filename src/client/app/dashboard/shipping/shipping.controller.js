@@ -21,7 +21,6 @@
 
     shipping.labels = shell.labels.shipping;
 
-
     if(data){
       shipping.data = data;
       shipping.packages = data.service.packages;

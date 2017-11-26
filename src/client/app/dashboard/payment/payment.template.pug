@@ -1,5 +1,11 @@
+.dashboard-header
+  .dashboard-header-content
+    .dash-section-title(data-ng-bind="shell.dashboard.title")
+    .dash-section-subtitle(data-ng-bind="shell.dashboard.subtitle")
 .dashboard-content
-  table.dashboard-table
+  h1(data-ng-if="payments.list.length < 1")
+    |No hay pagos registrados.
+  table.dashboard-table(data-ng-if="payments.list.length  > 0")
     thead
       tr
         th

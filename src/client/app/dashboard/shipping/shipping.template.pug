@@ -1,3 +1,17 @@
+.dashboard-header
+  .dashboard-header-content
+    .dash-section-title
+      span.back-button(ui-sref="dashboard.shippings")
+        i.fa.fa-arrow-circle-left
+        |&nbsp;
+      span(data-ng-bind="shell.dashboard.title")
+    .dash-section-subtitle
+      span.uppercase
+        |{{shipping.data.carrier}}
+      span
+        |&nbsp;-&nbsp;{{shipping.data.trackingNumber}}
+      span
+        |&nbsp;-&nbsp;{{shipping.labels[shipping.data.status]}}
 .dashboard-content
   h1.accent.align-center
       |&nbsp;{{shipping.data.trackingNumber}}
@@ -148,7 +162,3 @@
           |Cargos de Sobrepeso
       h3.disabled-color(data-ng-if="shipping.overWeight.length < 1")
         |No hay cargos de sobrepeso.
-
-
-        
-    

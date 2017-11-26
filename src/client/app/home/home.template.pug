@@ -46,14 +46,9 @@
                             select-country(data-countries="shell.countries", data-country="home.shipping.to.country")
                           .col-xs-8
                             .input-cotizador
-                              //- .city-selected(data-ng-show="home.shipping.to.data.zip", data-ng-click="home.cleanSearch('to')")
-                                |{{home.shipping.to.data.zip}} {{home.shipping.to.data.county}} {{home.shipping.to.data.city}}
-                              //- div(data-ng-hide="home.shipping.to.data.zip")
-                              input(placeholder="C.P.",name="toZip", data-ng-model="home.shipping.to.zip",required)
-                              //- div(ng-messages="home.shippingForm.toZip.$error")
-                                .message(ng-message="required")
-                                  |Es requerido.
-                              select-cities(data-cities="home.toCities", data-selected="home.shipping.to.data",data-clean = "home.toClean",data-search="home.shipping.to.zip", data-country="home.shipping.to.country")
+                              .input-container
+                                input(placeholder="C.P.",name="toZip", data-ng-model="home.shipping.to.zip",required)
+                                select-cities(data-cities="home.toCities", data-selected="home.shipping.to.data",data-clean = "home.toClean",data-search="home.shipping.to.zip", data-country="home.shipping.to.country")
                   .col-xs-12.col-sm-6.col-md-4
                     .cotizador-element
                       .padding-sides
@@ -74,10 +69,10 @@
                                 |PAQUETE
 
                           .cotizador-document(data-ng-if="home.documentOpen")
-                            .row
+                            //- .row
                               .col-xs-12
                                 .select-weight
-                                  md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
+                                  //- md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
                                     |ASEGURAR
                             .row(data-ng-repeat="package in home.documents")
                               .col-xs-11
@@ -101,7 +96,7 @@
 
                           .cotizador-box(data-ng-if="home.packageOpen")
                             .row
-                              md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
+                              //- md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
                                   |ASEGURAR
                               .col-xs-12(data-ng-repeat="package in home.shipping.packages")
                                 .select-weight
@@ -136,7 +131,7 @@
                                       .box-attr
                                         i.fa.fa-plus(data-ng-show="$index+1 == home.shipping.packages.length", data-ng-click="home.addPackage()")
                                         i.fa.fa-trash(data-ng-show="$index > 0", data-ng-click="home.removePackage($index)")
-                                  .col-xs-12
+                                  //- .col-xs-12
                                     .select-weight(data-ng-show="home.shipping.insurance")
                                       .row
                                         .col-xs-4

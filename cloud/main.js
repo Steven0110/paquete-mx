@@ -469,6 +469,8 @@ function sendShipOrder(user, shipping, payment) {
     type      : shipping.service.service,
     shipping  : shipping
   }
+  console.log('payment-response0');
+  console.log(payment);
 
   Parse.Cloud.httpRequest({
     method: 'POST',
@@ -487,8 +489,9 @@ function sendShipOrder(user, shipping, payment) {
     if(result.text){
       result =  JSON.parse(result.text);
       params = {
-        total : result.total,
-        negotiated : result.negotiated,
+        carrier: body.type.toUpperCase(),
+        // total : result.total,
+        // negotiated : result.negotiated,
         trackingNumber: result.trackingNumber,
         packages: result.packages,
         status:'label_created',

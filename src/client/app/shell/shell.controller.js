@@ -24,10 +24,12 @@
     }
 
     shell.dashMenu = [
-      {name:'shippings',label:"Envios",uiref:"#"},
-      {name:'payments',label:"Pagos", uiref:"#"},
-      {name:'contacts',label:"Agenda",uiref:"#"},
-      {name:'logout',label:"Salir", uiref:"logout"}
+      {name:'shippings',label:"MIS ENVIOS",uiref:"dashboard.shippings",icon:"fa-truck"},
+      {name:'payments',label:"MIS PAGOS", uiref:"dashboard.payment",icon:"fa-usd"},
+      {name:'contacts',label:"MI AGENDA",uiref:"dashboard.address",icon:"fa-address-book"},
+      {name:'contacts',label:"MIS TARJETAS",uiref:"dashboard.paymentMethod",icon:"fa-credit-card"},
+      {name:'account',label:"MI CUENTA",uiref:"dashboard.account",icon:"fa-truck"},
+      {name:'logout',label:"SALIR", uiref:"logout",icon:"fa-sign-out"}
     ];
 
     shell.regex = {

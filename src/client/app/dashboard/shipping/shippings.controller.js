@@ -16,10 +16,14 @@
     var dashMenu = $('#dash-menu').innerWidth();
     $('.dashboard-menu').width(Math.floor(dashMenu-2));
 
-    shippings.list = [];
+    shippings.delivered = [];
+    shippings.inTransit = [];
 
     if(data){
-      shippings.list = data;
+      if(data.delivered)
+        shippings.delivered = data.delivered;
+      if(data.inTransit)
+        shippings.inTransit = data.inTransit;
     }
   };
 })();
