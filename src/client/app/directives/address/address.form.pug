@@ -32,19 +32,19 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
         div(ng-message="required",data-ng-bind="labels.form.errors.required")
   .country-zip(layout-xs-sm="row",data-ng-if="type == 'checkout' ")
     .row
-      .col-xs-4
+      .col-xs-6
         div
           |País
         div
           span.flag-icon.flag-icon-squared.icon-xl(class="flag-icon-{{newAddress.country.code}}")
           span.address-country
             |{{newAddress.country.code}}
-      .col-xs-4
+      .col-xs-6
         div
           |Código Postal
         span.address-country
           |{{newAddress.zip}}
-      .col-xs-4
+      .col-xs-12
         .change-zip
           span(data-ng-click="showZipMessage()")
             |Modificar Código Postal

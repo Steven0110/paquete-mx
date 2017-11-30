@@ -186,8 +186,11 @@
     ];
     home.rated = false;
     home.searching = false;
-    home.services = [];
-
+    //
+    // home.searching = false;
+    home.rated = true;
+    home.services = [{service:"ups",deliveryHours:"24", name:"UPS SAVER", total:100, discountTotal: 80}];
+    // alert();
     // angular.element(document).on('click', function () {
       
     // });
@@ -249,6 +252,9 @@
 
                 console.log(home.shipping);
 
+                
+
+
                 home.services = [];
                 var fromCountry = home.shipping.from.country.code;
                 var toCountry = home.shipping.to.country.code;
@@ -274,37 +280,22 @@
                 var fromZip;
                 if(home.shipping.from.data && home.shipping.from.data.zip){
                   fromZip =  home.shipping.from.data.zip;
+                  home.shipping.from.zip = home.shipping.from.data.zip;
                 }else{
                   fromZip =  home.shipping.from.zip;
+                  home.shipping.from.data.zip = home.shipping.from.zip;
                 }
 
                 var toZip;
                 if(home.shipping.to.data && home.shipping.to.data.zip){
                   toZip =  home.shipping.to.data.zip;
+                  home.shipping.to.zip = home.shipping.to.data.zip;
                 }else{
                   toZip =  home.shipping.to.zip;
+                  home.shipping.to.data.zip = home.shipping.to.zip;
                 }
 
-                // var fromLatLng = {
-                //   lat: null,
-                //   lng: null
-                // }
-
-                // if(home.shipping.from.data && home.shipping.from.data.latitude && home.shipping.from.data.longitude){
-                //   fromLatLng.lat = home.shipping.from.data.latitude;
-                //   fromLatLng.lng = home.shipping.from.data.longitude;
-                // }
-
-                // var toLatLng = {
-                //   lat: null,
-                //   lng: null
-                // }
-
-                // if(home.shipping.to.data && home.shipping.to.data.latitude && home.shipping.to.data.longitude){
-                //   toLatLng.lat = home.shipping.to.data.latitude;
-                //   toLatLng.lng = home.shipping.to.data.longitude;
-                // }          
-
+                return true;
                 var rate = {
                   "type":home.shipping.type,
                   "from": {

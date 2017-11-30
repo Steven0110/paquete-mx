@@ -415,28 +415,28 @@ i.fa-cc-amex
     background-color: $primary-color
     color: #FFF
     border-color: $primary-color
-    span
+    span.last4
       color: #FFF
     i
-      color: rgba(255,255,255,0.7)
+      color: rgba(255,255,255,1)
 .card-select, .card-item
   h3
     margin: 0
   i
     &.fa-circle
       position: relative
-      font-size: 1.2rem
+      font-size: 0.8rem
       top: -8px
       margin-right: 5px
       color: #ccc
     &.big
       display: inline-block
-      font-size: 4rem
+      font-size: 3rem
       margin: 10px 10px 10px 0;
-  span
-    font-size: 3rem
+  span.last4
+    font-weight: bold
+    font-size: 2.5rem
     color: $primary-color
-
 
 /*checkout*/
 .checkout-info
@@ -671,8 +671,13 @@ i.fa-cc-amex
 .country-zip
   padding-bottom: 15px
 .change-zip
-  line-height: 80px
   color: $gray-disabled
   cursor: pointer
 
+.checkout-content
+  padding: 50px 30px
+
+.payment-name
+  font-size: 2rem
+  color: $gray-disabled
 /*checkout*/

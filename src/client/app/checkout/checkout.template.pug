@@ -2,7 +2,7 @@
   .menu.menu-tabs.clearfix
     div(data-ng-include="'app/templates/menu.template.html'")
 .pages
-  .dashboard-content
+  .checkout-content
     .container-fluid
       .align-center(data-ng-if="checkout.connecting")
         .logo-color
@@ -12,30 +12,28 @@
         h2
           |No cierres la página hasta obtener una respuesta.
       .row(data-ng-if="checkout.response")
-        .col-xs-6
+        .col-xs-12.col-sm-6
           .section-space-right
             .logo-color
             h1.align-center.accent
               |¡Gracias por usar Paquete.MX!
             h3.secondary-accent.align-center
               |Recuerda que entre mas envies mas descuentos obtienes.
-            .align-center
+            .align-center.margin-bottom-2
               md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{checkout.trackingNumber}}", download)
                 |Descargar Etiqueta
-            .align-center
+            //- .align-center
               md-button.md-raised
                 |Programar Recolección
-
-        .col-xs-6
+        .col-xs-12.col-sm-6
             .form-container
               .success-checkout
                 i.fa.fa-check-circle
-                
               .row
-                .col-xs-6
-                  h2.accent.align-center
+                .col-xs-12
+                  .confirm-title.accent.margin-top-1
                     |Origen
-                  div.align-center
+                  div
                     .board-list
                       |{{checkout.shipping.from.street}}, {{checkout.shipping.from.number}}&nbsp;
                       span(data-ng-if="checkout.from.apt")
@@ -50,10 +48,10 @@
                       |{{checkout.shipping.from.state}}
                       span.uppercase
                         |, {{checkout.shipping.from.country.name}}
-                .col-xs-6
-                  h2.accent.align-center
+                .col-xs-12
+                  .confirm-title.accent.margin-top-1
                     |Destino
-                  div.align-center
+                  div
                     .board-list
                       |{{checkout.shipping.to.street}}, {{checkout.shipping.to.number}}&nbsp;
                       span(data-ng-if="checkout.to.apt")
@@ -68,13 +66,13 @@
                       |{{checkout.shipping.to.state}}
                       span.uppercase
                         |, {{checkout.shipping.to.country.name}}
-                .col-xs-6
-                  h2.accent.align-center
+                .col-xs-12
+                  .confirm-title.accent.margin-top-1
                     |Método de Pago
-                  div.align-center
+                  div
                     .card-item(data-ng-if="checkout.card")
                       div
-                        h3
+                        .payment-name
                           |{{checkout.card.name}}
                       div
                         i.big.fa.fa-cc-mastercard(data-ng-if="checkout.card.brand == 'MC'")
@@ -95,77 +93,76 @@
                         i.fa.fa-circle
                         i.fa.fa-circle
                         |&nbsp;
-                        span
+                        span.last4
                           |{{checkout.card.last4}}
-                .col-xs-6
-                  h2.accent.align-center
+                .col-xs-12
+                  .confirm-title.accent.margin-top-1
                     |Guia y Etiqueta
-                  div.align-center
+                  div
                     .board-list(data-ng-repeat="item in checkout.labels")
                       |{{item.TrackingNumber}}
-                    .board-list
+                    .board-list.align-center.margin-top-2
                       md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{checkout.trackingNumber}}", download)
                         |Descargar Etiqueta
       .row(data-ng-hide="checkout.response || checkout.connecting")
-        .col-xs-6
+        .col-xs-12.col-sm-6
           .section-space-right
             .form-container(data-ng-show="checkout.step=='confirm'")
               h1.accent.align-center
                 |¡Confirma la información!
               div
-
                 .container-fluid
                   .row
-                    .col-xs-6
-                      .section-space-right
-                        h2
-                          |Origen
-                        div(data-ng-if="checkout.shipping.from")
-                          .board-list
-                            |{{checkout.shipping.from.street}}, {{checkout.shipping.from.number}}&nbsp;
-                            span(data-ng-if="checkout.shipping.from.apt")
-                              | - {{checkout.shipping.from.apt}}
-                          .board-list
-                            |{{checkout.shipping.from.county}}
-                            span(data-ng-if="checkout.shipping.from.city")
-                              |, {{checkout.shipping.from.city}}
-                            span
-                              |, CP. {{checkout.shipping.from.zip}}
-                          .board-list
-                            |{{checkout.shipping.from.state}}
-                            span.uppercase
-                              |, {{checkout.shipping.from.country.name}}
-                        .align-right
-                          .anchor-section(data-ng-click="checkout.changeSection('from')")
-                            |Modificar
-                    .col-xs-6
-                      .section-space-left
-                        h2
-                          |Destino
-                        div(data-ng-if="checkout.shipping.to")
-                          .board-list
-                            |{{checkout.shipping.to.street}}, {{checkout.shipping.to.number}}&nbsp;
-                            span(data-ng-if="checkout.shipping.to.apt")
-                              | - {{checkout.shipping.to.apt}}
-                          .board-list
-                            |{{checkout.shipping.to.county}}
-                            span(data-ng-if="checkout.shipping.to.city")
-                              |, {{checkout.shipping.to.city}}
-                            span
-                              |, CP. {{checkout.shipping.to.zip}}
-                          .board-list
-                            |{{checkout.shipping.to.state}}
-                            span.uppercase
-                              |, {{checkout.shipping.to.country.name}}
-                        .align-right
-                          .anchor-section(data-ng-click="checkout.changeSection('to')")
-                            |Modificar
                     .col-xs-12
-                      h2
+                      //- .section-space-right
+                      .confirm-title.accent
+                        |Origen
+                      div(data-ng-if="checkout.shipping.from")
+                        .board-list
+                          |{{checkout.shipping.from.street}}, {{checkout.shipping.from.number}}&nbsp;
+                          span(data-ng-if="checkout.shipping.from.apt")
+                            | - {{checkout.shipping.from.apt}}
+                        .board-list
+                          |{{checkout.shipping.from.county}}
+                          span(data-ng-if="checkout.shipping.from.city")
+                            |, {{checkout.shipping.from.city}}
+                          span
+                            |, CP. {{checkout.shipping.from.zip}}
+                        .board-list
+                          |{{checkout.shipping.from.state}}
+                          span.uppercase
+                            |, {{checkout.shipping.from.country.name}}
+                      .align-right
+                        .anchor-section(data-ng-click="checkout.changeSection('from')")
+                          |Modificar
+                    .col-xs-12
+                      //- .section-space-left
+                      .confirm-title.accent
+                        |Destino
+                      div(data-ng-if="checkout.shipping.to")
+                        .board-list
+                          |{{checkout.shipping.to.street}}, {{checkout.shipping.to.number}}&nbsp;
+                          span(data-ng-if="checkout.shipping.to.apt")
+                            | - {{checkout.shipping.to.apt}}
+                        .board-list
+                          |{{checkout.shipping.to.county}}
+                          span(data-ng-if="checkout.shipping.to.city")
+                            |, {{checkout.shipping.to.city}}
+                          span
+                            |, CP. {{checkout.shipping.to.zip}}
+                        .board-list
+                          |{{checkout.shipping.to.state}}
+                          span.uppercase
+                            |, {{checkout.shipping.to.country.name}}
+                      .align-right
+                        .anchor-section(data-ng-click="checkout.changeSection('to')")
+                          |Modificar
+                    .col-xs-12
+                      .confirm-title.accent
                         |Método de Pago
                       .card-item(data-ng-if="checkout.card")
                         div
-                          h3
+                          .payment-name
                             |{{checkout.card.name}}
                         div
                           i.big.fa.fa-cc-mastercard(data-ng-if="checkout.card.brand == 'MC'")
@@ -186,23 +183,23 @@
                           i.fa.fa-circle
                           i.fa.fa-circle
                           |&nbsp;
-                          span
+                          span.last4
                             |{{checkout.card.last4}}
                       .align-right
                         .anchor-section(data-ng-click="checkout.changeSection('payment')")
                           |Modificar
                     .col-xs-12
-                      h2
+                      .confirm-title.accent
                         |Servicio Seleccionado
                       .container-fluid
                         .row
-                          .col-xs-4
+                          .col-xs-5
                             .item-logo(data-ng-class="{'vertical':checkout.shipping.service.service == 'ups'}")
                               img(data-ng-src="common/images/{{checkout.shipping.service.service}}.png")
-                          .col-xs-4
+                          .col-xs-2
                             .board-list
-                              |{{checkout.shipping.service.billingWeight}}
-                          .col-xs-4
+                              |{{checkout.shipping.packages.length}}
+                          .col-xs-5
                             .board-list
                               |{{checkout.shipping.service.name}}
                     .col-xs-12
@@ -231,7 +228,7 @@
                 div
                   div.card-select(data-ng-repeat="item in checkout.paymentMethods", data-ng-click="checkout.selectCard(item)")
                     div
-                      h3
+                      .payment-name
                         |{{item.name}}
                     div
                       i.big.fa.fa-cc-mastercard(data-ng-if="item.brand == 'MC'")
@@ -252,7 +249,7 @@
                       i.fa.fa-circle
                       i.fa.fa-circle
                       |&nbsp;
-                      span
+                      span.last4
                         |{{item.last4}}
                 .add-dashboard(data-ng-hide="checkout.cardForm")
                   i.fa.fa-plus-circle(data-ng-click="checkout.cardForm = true")
@@ -278,12 +275,14 @@
             .form-container(data-ng-show="checkout.step=='from'")
               h1.accent.align-center
                 |Dirección de Origen
-              address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.fromAddress(response)", data-current-address="checkout.shipping.from")
+              .margin-top-4
+                address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.fromAddress(response)", data-current-address="checkout.shipping.from")
             .form-container(data-ng-show="checkout.step=='to'")
               h1.accent.align-center
                 |Dirección de Destino
-              address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.toAddress(response)",data-current-address="checkout.shipping.to")
-        .col-xs-6
+              .margin-top-4
+                address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.toAddress(response)",data-current-address="checkout.shipping.to")
+        .col-xs-12.col-sm-6
           .logo-color-small
           .checkout-header.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='from'}")
             h3

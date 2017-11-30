@@ -163,7 +163,7 @@
       .line
         |para tus envios:
       div(data-ng-show="home.searching")
-        div(data-ng-include="'app/templates/spinner.template.html'")
+        div(data-ng-include="'app/templates/spinner.white.template.html'")
       .table-response
         .container-fluid
           .table-container.clearfix.animated.bounceIn(data-ng-repeat="item in home.services")
@@ -184,7 +184,7 @@
               div
                 |PRECIO AL PÚBLICO
               div.regular-price
-                |{{item.total}} | currency}} MXN
+                |{{item.total}} MXN
               div.semi-important-red
                 |AHORRA
               div.important-red

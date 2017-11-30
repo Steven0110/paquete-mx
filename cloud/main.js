@@ -5,8 +5,7 @@
 20-Octubre-2017: Se crea la función para cargar a las tarjetas
 change log*/
 
-
-
+var templates = require("./templates.js").templates;
 var production = false;
 var Mailgun = null;
 //Production
@@ -420,7 +419,44 @@ Parse.Cloud.define("chargeCard",function(request, response){
 
     return paymentSave.save();
     /*agregar el shipOrder a payment*/
+  }).then(function(paymentSave){
+
+    var fromAddress = shipping.from.street+" "+shipping.from.number;
+    if(shipping.from.apt)
+      fromAddress += " "+shipping.from.apt;
+    fromAddress += "<br>";
+    fromAddress += shipping.from.state+", "+shipping.from.city+", "+(shipping.from.country.code.toUpperCase())+"<br>"+shipping.from.zip+"<br>";
+
+    var toAddress = shipping.to.street+" "+shipping.to.number;
+    if(shipping.to.apt)
+      toAddress += " "+shipping.to.apt;
+    toAddress += "<br>";
+    toAddress += shipping.to.state+", "+shipping.to.city+", "+(shipping.to.country.code.toUpperCase())+"<br>"+shipping.to.zip+"<br>";
+
+    var trackingNumber = paymentSave.get("trackingNumber");
+    var packages = '<table><thead><tr><th style="padding: 10px">#</th><th>Largo</th style="padding: 10px"><th style="padding: 10px">Ancho</th><th style="padding: 10px">Alto</th><th style="padding: 10px">Peso</th></tr></thead><tbody>';
+    for(var i=0; i<shipping.packages.length; i++){
+      packages += '<tr><td style="padding: 10px">'+(i+1)+'</td><td style="padding: 10px">'+shipping.packages[i].length+' cms</td><td style="padding: 10px">'+shipping.packages[i].width+' cms</td><td style="padding: 10px">'+shipping.packages[i].height+' cms</td><td style="padding: 10px">'+shipping.packages[i].weight+' Kg</td></tr>';
+    }
+    packages += "</tbody></table>";
+
+
+    var html = templates.getOrderTemplate(fromAddress, toAddress, trackingNumber, (amount/100), packages, requestResult.shipOrder.carrier, shipping.service.name);
+    //jccz send-email
+
+    var file = "http://54.245.38.66/?trackingNumber="+trackingNumber; 
+    return Parse.Cloud.httpRequest({
+      method: 'GET',
+      headers:{},
+      url: file
+    }).then(function(data){
+      pdfBuffer = {data: data.buffer, filename: trackingNumber+".pdf"};
+      var attch = [new Mailgun.Attachment(pdfBuffer)];
+      return sendEmail(user.get('username'), "¡Gracias por usar Paquete.MX!", html, false, attch);
+    });
+
   }).then(function(){
+    
     response.success(requestResult);
   },function(error){
     response.error(error);
