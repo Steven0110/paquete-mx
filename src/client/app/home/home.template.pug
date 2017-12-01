@@ -25,8 +25,6 @@
                           .col-xs-8
                             .input-cotizador
                               .input-container
-                                //- .city-selected(data-ng-show="home.shipping.from.data.zip", data-ng-click="home.cleanSearch('from')")
-                                  |{{home.shipping.from.data.zip}} - {{home.shipping.from.data.county}} - {{home.shipping.from.data.city}}
                                 input(
                                   placeholder="C.P."
                                   name="fromZip", data-ng-model="home.shipping.from.zip",required)
@@ -75,14 +73,14 @@
                                   //- md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
                                     |ASEGURAR
                             .row(data-ng-repeat="package in home.documents")
-                              .col-xs-11
+                              .col-xs-12
                                 .select-weight
                                   span
-                                    |Peso de tu sobre.
-                                  select(ng-model="package.weight" ng-options="n for n in home.weightList")
-                                  span.bold
+                                    |Tu sobre debe ser tamaño estandar y no pesar mas de 0.5 Kg.
+                                  //- select(ng-model="package.weight" ng-options="n for n in home.weightList")
+                                  //- span.bold
                                     |KG
-                              .col-xs-1
+                              //- .col-xs-1
                                 i.fa.fa-plus(data-ng-show="$index+1 == home.documents.length", data-ng-click="home.addDocuments()")
                                 i.fa.fa-trash(data-ng-show="$index > 0", data-ng-click="home.removeDocument($index)")
                               .select-weiht(data-ng-show="home.shipping.insurance")
@@ -170,16 +168,17 @@
             .table-box.red
               div
                 |ENTREGA ESTIMADA
-              div
+              div.margin-top-1
                 span.important-text
-                  |{{item.deliveryHours}}
+                  |{{item.qty}}
                 span.secondary-text
-                  |&nbsp;DIAS
-              div.service-name
-                |{{item.name}}
+                  |&nbsp;{{item.units}}
             .table-box.service-logo
-              //- .item-logo(data-ng-class="{'vertical':item.service == 'ups'}")
-              img(data-ng-src="common/images/{{item.service}}.png")
+              div
+                div
+                  img(data-ng-src="common/images/{{item.service}}.png", data-ng-class="{'vertical-icon':item.service == 'ups' || item.service == 'fedex'}")
+                div.service-name
+                  |{{item.name}}
             .table-box.big-table-box
               div
                 |PRECIO AL PÚBLICO
@@ -189,7 +188,9 @@
                 |AHORRA
               div.important-red
                 |{{item.total-item.discountTotal | currency}} MXN
-            .table-box
+            .table-box.attr-img
+              img(data-ng-src="common/images/cheapest.png", data-ng-if="home.cheapest.code == item.code")
+              img(data-ng-src="common/images/fastest.png", data-ng-if="home.fastest.code == item.code")
             .table-box.big-table-box
               span.light-font
                 |PRECIO
