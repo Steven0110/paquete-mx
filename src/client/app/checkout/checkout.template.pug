@@ -22,6 +22,8 @@
             .align-center.margin-bottom-2
               md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{checkout.trackingNumber}}", download)
                 |Descargar Etiqueta
+              md-button.md-raised(ui-sref="dashboard.shippings")
+                |Rastrear Paquete
             //- .align-center
               md-button.md-raised
                 |Programar Recolección
@@ -100,10 +102,13 @@
                     |Guia y Etiqueta
                   div
                     .board-list(data-ng-repeat="item in checkout.labels")
-                      |{{item.TrackingNumber}}
+                      h3.secondary-accent.align-center
+                        |{{item.TrackingNumber}}
                     .board-list.align-center.margin-top-2
                       md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{checkout.trackingNumber}}", download)
                         |Descargar Etiqueta
+                      md-button.md-raised(ui-sref="dashboard.shippings")
+                        |Rastrear Paquete
       .row(data-ng-hide="checkout.response || checkout.connecting")
         .col-xs-12.col-sm-6
           .section-space-right
@@ -191,19 +196,10 @@
                     .col-xs-12
                       .confirm-title.accent
                         |Servicio Seleccionado
-                      .container-fluid
-                        .row
-                          .col-xs-5
-                            .item-logo(data-ng-class="{'vertical':checkout.shipping.service.service == 'ups'}")
-                              img(data-ng-src="common/images/{{checkout.shipping.service.service}}.png")
-                          .col-xs-2
-                            .board-list
-                              |{{checkout.shipping.packages.length}}
-                          .col-xs-5
-                            .board-list
-                              |{{checkout.shipping.service.name}}
+                      .service-name-checkout.uppercase
+                        |{{checkout.shipping.service.service}} / {{checkout.shipping.service.name}}
                     .col-xs-12
-                      .board-list.align-center
+                      .board-list.align-center.margin-top2
                         h1
                           |Total a Pagar:
                           span.secondary-accent
