@@ -264,8 +264,8 @@ table.info-table
   padding-right: 10px
 
 .menu-mobile
-  position: absolute
-  right: -100%
+  position: fixed
+  right: -300px
   top: 0
   background-color: $primary-color
   color: #FFF
@@ -274,9 +274,8 @@ table.info-table
   font-size: 1.8rem
   width: 300px
   height: 105vh
-  z-index: 4
+  z-index: 1
   transition: right 0.4s
-
   // display: none
   &.active
     // display: block

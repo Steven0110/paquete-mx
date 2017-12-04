@@ -1,33 +1,3 @@
-.menu-mobile(data-ng-class="{'active':shell.menuOpen}")
-  .padding-top-bottom
-    .logo-complete-link.margin-auto
-  nav
-    a(href="#")
-      |INICIO
-  nav
-    a(href="#")
-      |COTIZAR
-  nav
-    a(href="#")
-      |RASTREAR
-  nav
-    a(href="#")
-      |eCOMMERCE
-  nav
-    a(href="#")
-      |MÉTODOS DE PAGO
-  nav
-    a(href="#")
-      |PREGUNTAS FRECUENTES
-  nav
-    a(href="#")
-      |SEGURIDAD
-  nav
-    a(href="#")
-      |¿COMÓ FUNCIONA?
-  nav
-    a(href="#")
-      |MI CUENTA
 .home-menu-container
   .home-menu(data-ng-class="{'active':shell.menuOpen}")
     nav.container-bars.secondary(data-ng-click="shell.menuOpen = !shell.menuOpen", data-ng-class="{'active':shell.menuOpen}")
@@ -41,11 +11,41 @@
     i.fa.fa-location-arrow
     |Rastrear Envío
 .image-space
+  .menu-mobile(data-ng-class="{'active':shell.menuOpen}")
+    .padding-top-bottom
+      .logo-complete-link.margin-auto
+    nav
+      a(href="#")
+        |INICIO
+    nav
+      a(href="#")
+        |COTIZAR
+    nav
+      a(href="#")
+        |RASTREAR
+    nav
+      a(href="#")
+        |eCOMMERCE
+    nav
+      a(href="#")
+        |MÉTODOS DE PAGO
+    nav
+      a(href="#")
+        |PREGUNTAS FRECUENTES
+    nav
+      a(href="#")
+        |SEGURIDAD
+    nav
+      a(href="#")
+        |¿COMÓ FUNCIONA?
+    nav
+      a(href="#")
+        |MI CUENTA
   .container-center
     .container-fluid
       .row
         .col-xs-12.center-block
-            .logo-color
+            .logo-color.logo-home
             form(name="home.shippingForm",data-ng-submit="home.send()", novalidate)
               .container-fluid.opacity-box
                 .row
@@ -211,6 +211,10 @@
                   |{{item.qty}}
                 span.secondary-text
                   |&nbsp;{{item.units}}
+              div(data-ng-if="item.service == 'fedex'")
+                |{{item.delivery | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
+              div(data-ng-if="item.service == 'redpack'")
+                |{{item.delivery | amDateFormat:'DD-MMM-YY'}}
             .table-box.service-logo
               div
                 div
@@ -221,7 +225,7 @@
               div
                 |PRECIO AL PÚBLICO
               div.regular-price
-                |{{item.total}} MXN
+                |{{item.total | currency}} MXN
               div.semi-important-red
                 |AHORRA
               div.important-red
@@ -235,7 +239,7 @@
               span.bold-font
                 |&nbsp;PAQUETE.MX
               div
-                span.big-price
+                span.big-price(ng-class="{'small-font': item.discountTotal > 1000}")
                   |{{item.discountTotal| currency}}
                 span.red-color
                   |MXN
@@ -287,7 +291,7 @@
     .section-description
       .container-fluid
         .row
-          .col-xs-6
+          .col-xs-12.col-md-6
             h1
               |Obtén las mejores tarifas.
             h2
@@ -295,7 +299,7 @@
             .more-info(data-ng-click="home.openSection(0)")
               i.fa.fa-plus-circle
               |Más información
-          .col-xs-6
+          .col-xs-12.col-md-6
             .section-image.image-1.image-right
               img(data-ng-src="common/images/section-1.png")
   .more-info-section.benefits-0
@@ -314,17 +318,17 @@
       .benefits 
         .container-fluid
           .row
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-1-1.png")
               .benefits-text
                 |Descuentos desde tu primer envió.
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-1-2.png")
               .benefits-text
                 |Las mejores tarifas con más de X servicios.
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-1-3.png")
               .benefits-text
@@ -335,7 +339,7 @@
     .section-description
       .container-fluid
         .row
-          .col-xs-6.pull-right
+          .col-xs-12.col-md-6.pull-right
             h1
               |Más de 20 servicios a elegir.
             h2
@@ -343,7 +347,7 @@
             .more-info-right(data-ng-click="home.openSection(1)")
               i.fa.fa-plus-circle
               |Más información
-          .col-xs-6.pull-right
+          .col-xs-12.col-md-6.pull-right
             .section-image.image-2.image-left
               img(data-ng-src="common/images/section-2.png")
   .more-info-section.benefits-1
@@ -359,17 +363,17 @@
       .benefits 
         .container-fluid
           .row
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-2-1.png")
               .benefits-text
                 |Más de X  opciones de servicios que se ajusten a tus necesidades.
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-2-2.png")
               .benefits-text
                 |Programamos tu recolección o lo puedes dejar en mostrador ¡Tu decides!
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-2-3.png")
               .benefits-text
@@ -382,7 +386,7 @@
     .section-description
       .container-fluid
         .row
-          .col-xs-6
+          .col-xs-12.col-md-6
             h1
               |Diversas opciónes de pago para ti.
             h2
@@ -390,7 +394,7 @@
             .more-info(data-ng-click="home.openSection(2)")
               i.fa.fa-plus-circle
               |Más información
-          .col-xs-6
+          .col-xs-12.col-md-6
             .section-image.image-3.image-right
               img(data-ng-src="common/images/section-3.png")
   .more-info-section.benefits-2
@@ -408,17 +412,17 @@
       .benefits 
         .container-fluid
           .row
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-3-1.png")
               .benefits-text
                 |Aceptamos tarjetas de crédito Nacionales e Internacionales expedidas por VISA, MASTERCARD, AMERICAN EXPRESS.
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-3-2.png")
               .benefits-text
                 |Paga con tu cuenta de PAYPAL.
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-3-3.png")
               .benefits-text
@@ -429,7 +433,7 @@
     .section-description
       .container-fluid
         .row
-          .col-xs-6.pull-right
+          .col-xs-12.col-md-6.pull-right
             h1
               |Te notificamos en tiempo real.
             h2
@@ -437,7 +441,7 @@
             .more-info-right(data-ng-click="home.openSection(3)")
               i.fa.fa-plus-circle
               |Más información
-          .col-xs-6.pull-right
+          .col-xs-12.col-md-6.pull-right
             .section-image.image-4.image-left
               img(data-ng-src="common/images/section-4.png")
   .more-info-section.benefits-3
@@ -455,17 +459,17 @@
       .benefits 
         .container-fluid
           .row
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-4-1.png")
               .benefits-text
                 |Puedes verificar el status de tu envío en todo momento desde nuestro Panel de Control.
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-4-2.png")
               .benefits-text
                 |Te enviamos notificaciones de recolección, entrega e incidencias. 
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-4-3.png")
               .benefits-text
@@ -476,7 +480,7 @@
     .section-description
       .container-fluid
         .row
-          .col-xs-6
+          .col-xs-12.col-md-6
             h1
               |¿Tienes un eCommerce?
             h2
@@ -484,7 +488,7 @@
             .more-info(data-ng-click="home.openSection(4)")
               i.fa.fa-plus-circle
               |Más información
-          .col-xs-6
+          .col-xs-12.col-md-6
             .section-image.image-5.image-right
               img(data-ng-src="common/images/section-5.png")
   .more-info-section.benefits-4
@@ -500,17 +504,17 @@
       .benefits 
         .container-fluid
           .row
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-5-1.png")
               .benefits-text
                 |Tenemos plugins para las plataformas más comunes de ventas en línea.
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-5-2.png")
               .benefits-text
                 |Instálalas con un solo clic y empieza a disfrutar de los beneficios que paquete.mx tiene para ti.
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-5-3.png")
               .benefits-text
@@ -521,7 +525,7 @@
     .section-description
       .container-fluid
         .row
-          .col-xs-6.pull-right
+          .col-xs-12.col-md-6.pull-right
             h1
               |Pide tu recolección con un clic.
             h2
@@ -529,7 +533,7 @@
             .more-info-right(data-ng-click="home.openSection(5)")
               i.fa.fa-plus-circle
               |Más información
-          .col-xs-6.pull-right
+          .col-xs-12.col-md-6.pull-right
             .section-image.image-6.image-left
               img(data-ng-src="common/images/section-6.png")
   .more-info-section.benefits-5
@@ -547,17 +551,17 @@
       .benefits 
         .container-fluid
           .row
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-6-1.png")
               .benefits-text
                 |Solicita la recolección de tus paquetes con un clic.
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-6-2.png")
               .benefits-text
                 |No tienes por que transportar tus paquetes a mostrador.
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-6-3.png")
               .benefits-text
@@ -568,7 +572,7 @@
     .section-description
       .container-fluid
         .row
-          .col-xs-6
+          .col-xs-12.col-md-6
             h1
               |¿Eres desarrolador?
             h2
@@ -576,7 +580,7 @@
             .more-info(data-ng-click="home.openSection(6)")
               i.fa.fa-plus-circle
               |Más información
-          .col-xs-6
+          .col-xs-12.col-md-6
             .section-image.image-7.image-right
               img(data-ng-src="common/images/section-7.png")
   .more-info-section.benefits-6
@@ -595,17 +599,17 @@
       .benefits 
         .container-fluid
           .row
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-1-1.png")
               .benefits-text
                 |Descuentos desde tu primer envió.
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-1-2.png")
               .benefits-text
                 |Las mejores tarifas con más de X servicios.
-            .col-xs-4
+            .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-1-3.png")
               .benefits-text

@@ -42,7 +42,6 @@ function selectCities($http, $document){
 
       $scope.$watch('vm.search', function(oldValue, newValue){
         if(vm.search){
-          console.log(vm.search);
           if(vm.country && vm.country.listed){
             if(!vm.search.includes("-")){
               delaySearch(vm.search, vm.country.code);
@@ -54,6 +53,7 @@ function selectCities($http, $document){
       });
 
       vm.selectItem = function(item){
+        console.log('item',item);
         vm.selected = item;
         vm.search = item.zip+" - "+item.county;
         vm.options = [];

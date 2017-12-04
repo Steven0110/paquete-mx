@@ -20,7 +20,7 @@ $menuNav : 77px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  // overflow: auto
+  overflow: hidden
 .background-container
   position: relative
   z-index: 3
@@ -259,7 +259,6 @@ md-input-container
   overflow: auto
   font-family: 'Roboto'
   font-weight: 300
-  // color: #FFF
   padding: 100px 0
   h1
     font-size: 5rem
@@ -679,6 +678,8 @@ i.fa-cc-amex
     color: #D3001A
     font-size: 6rem
     font-family: "bebas_neuebold"
+    &.small-font
+      font-size: 5rem
     
 /*tabla de resultados*/
 
@@ -710,8 +711,9 @@ i.fa-cc-amex
   width: 90%
   position: absolute
   right: 5%
-  z-index: 5
+  z-index: 2
   top: 20px
+  // overflow: hidden
 
 .home-menu-list
   height: 100vh
@@ -754,3 +756,4 @@ i.fa-cc-amex
   transition: right 0.4s
   &.active
     right: -40px
+    // right: 3%

@@ -4,9 +4,11 @@
       .signal-container
         .signal
     li.select-item(data-ng-repeat="item in vm.options", data-ng-click="vm.selectItem(item)")
-      .absolute-item
+      //- .absolute-item
       span.main
         |{{item.zip}}
+      div
+        |{{item.county}}
       div
         span(data-ng-if="item.city")
           |{{item.city}}&nbsp;-&nbsp;
