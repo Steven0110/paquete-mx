@@ -1,8 +1,46 @@
+.menu-mobile(data-ng-class="{'active':shell.menuOpen}")
+  .padding-top-bottom
+    .logo-complete-link.margin-auto
+  nav
+    a(href="#")
+      |INICIO
+  nav
+    a(href="#")
+      |COTIZAR
+  nav
+    a(href="#")
+      |RASTREAR
+  nav
+    a(href="#")
+      |eCOMMERCE
+  nav
+    a(href="#")
+      |MÉTODOS DE PAGO
+  nav
+    a(href="#")
+      |PREGUNTAS FRECUENTES
+  nav
+    a(href="#")
+      |SEGURIDAD
+  nav
+    a(href="#")
+      |¿COMÓ FUNCIONA?
+  nav
+    a(href="#")
+      |MI CUENTA
+.home-menu-container
+  .home-menu(data-ng-class="{'active':shell.menuOpen}")
+    nav.container-bars.secondary(data-ng-click="shell.menuOpen = !shell.menuOpen", data-ng-class="{'active':shell.menuOpen}")
+      .menu-bar.bar1
+      .menu-bar.bar2
+      .menu-bar.bar3
+  .login-home(data-ui-sref="login", data-ng-hide="shell.menuOpen")
+    i.fa.fa-home
+    |Iniciar Sesión
+  .tracking-home(ui-sref="dashboard.shippings", data-ng-hide="shell.menuOpen")
+    i.fa.fa-location-arrow
+    |Rastrear Envío
 .image-space
-  //- .fullscreen-bg
-    //- video.fullscreen-bg__video(loop muted autoplay)
-      source(src="common/videos/9922925.mp4" type="video/mp4")
-    //- .opacity
   .container-center
     .container-fluid
       .row
@@ -176,7 +214,7 @@
             .table-box.service-logo
               div
                 div
-                  img(data-ng-src="common/images/{{item.service}}.png", data-ng-class="{'vertical-icon':item.service == 'ups' || item.service == 'fedex'}")
+                  img(data-ng-src="common/images/{{item.service}}.png", data-ng-class="{'ups':item.service == 'ups', 'fedex':item.service == 'fedex'}")
                 div.service-name
                   |{{item.name}}
             .table-box.big-table-box

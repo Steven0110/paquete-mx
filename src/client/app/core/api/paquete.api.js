@@ -29,7 +29,7 @@
 
       var restObject;
       this.init = function(){
-        Restangular.setBaseUrl('https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/rate');
+        Restangular.setBaseUrl('https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api');
         Restangular.setDefaultHeaders({'Content-Type': 'application/json'});
         restObject = Restangular.service(endpoint);
       }

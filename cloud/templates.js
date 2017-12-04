@@ -735,7 +735,7 @@ var templates = {
                                                                             <tbody><tr>\
                                                                                 \
                                                                                     <td align="center" valign="middle" width="24" class="mcnFollowIconContent">\
-                                                                                        <a href="http://www.facebook.com" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-light-facebook-48.png" style="display:block;" height="24" width="24" class=""></a>\
+                                                                                        <a href="http://www.facebook.com/pqtmex" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-light-facebook-48.png" style="display:block;" height="24" width="24" class=""></a>\
                                                                                     </td>\
                                                                                 \
                                                                                 \
@@ -767,7 +767,7 @@ var templates = {
                                                                             <tbody><tr>\
                                                                                 \
                                                                                     <td align="center" valign="middle" width="24" class="mcnFollowIconContent">\
-                                                                                        <a href="http://www.twitter.com/" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-light-twitter-48.png" style="display:block;" height="24" width="24" class=""></a>\
+                                                                                        <a href="http://www.twitter.com/pqtmex" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-light-twitter-48.png" style="display:block;" height="24" width="24" class=""></a>\
                                                                                     </td>\
                                                                                 \
                                                                                 \
@@ -799,7 +799,7 @@ var templates = {
                                                                             <tbody><tr>\
                                                                                 \
                                                                                     <td align="center" valign="middle" width="24" class="mcnFollowIconContent">\
-                                                                                        <a href="http://www.instagram.com/" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-light-instagram-48.png" style="display:block;" height="24" width="24" class=""></a>\
+                                                                                        <a href="http://www.instagram.com/pqtmex" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-light-instagram-48.png" style="display:block;" height="24" width="24" class=""></a>\
                                                                                     </td>\
                                                                                 \
                                                                                 \

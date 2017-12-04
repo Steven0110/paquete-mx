@@ -45,12 +45,12 @@
 
     home.initialize ={
       from:{
-        zip: "09770",
+        zip: "06600",
         data: {},
         country: "MX"
       },
       to:{
-        zip: "06050",
+        zip: "09770",
         data: {},
         country: "MX"
       },
@@ -61,7 +61,7 @@
         weight: "1",
         width: "25",
         length: "25",
-        height: "1"
+        height: "25"
       }
       ]
     };
@@ -188,8 +188,9 @@
     home.searching = false;
     //
     // home.searching = false;
-    home.rated = true;
-    home.services = [{service:"ups",deliveryHours:"24", name:"UPS SAVER", total:100, discountTotal: 80}];
+    // home.rated = true;
+    // home.services = [{service:"ups",deliveryHours:"24", name:"UPS SAVER", total:100, discountTotal: 80}];
+    home.services = [];
     // alert();
     // angular.element(document).on('click', function () {
       

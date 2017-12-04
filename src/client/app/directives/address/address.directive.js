@@ -2,7 +2,7 @@ angular
   .module('app.core')
   .directive('addressForm',addressForm);
 
-addressForm.$inject = ['userApi','$state',$ngConfirm,'Dialog'];
+addressForm.$inject = ['userApi','$state','$ngConfirm','Dialog'];
 
 function addressForm(userApi,$state,$ngConfirm,Dialog){
   return{

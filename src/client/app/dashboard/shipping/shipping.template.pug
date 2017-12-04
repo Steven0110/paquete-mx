@@ -92,9 +92,12 @@
             |Status
         .row(data-ng-repeat="item in shipping.data.activity| orderBy:'-'")
           .col-xs-3.uppercase
-            |{{item.dateTime}}
+            |{{item.dateTime| amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
           .col-xs-3.uppercase
-            |{{item.location.city}} - {{item.location.countryCode}}
+            span(data-ng-if="item.location.description")
+              |{{item.location.description}}
+            span(data-ng-if="item.location.city")
+              |{{item.location.city}} - {{item.location.countryCode}}
           .col-xs-3
             |{{item.status.description}}
     .shipping-info

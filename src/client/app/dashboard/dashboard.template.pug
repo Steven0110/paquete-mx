@@ -1,6 +1,7 @@
 #side-menu
   .dashboard-logo
-    img(data-ng-src="common/images/logo-blanco.png")
+    a(ui-sref="home")
+      img(data-ng-src="common/images/logo-blanco.png")
   .item-side(data-ng-repeat="item in shell.dashMenu")
     a(ui-sref="{{item.uiref}}")
       i.fa(class="{{item.icon}}")

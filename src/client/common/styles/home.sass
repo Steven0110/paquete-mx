@@ -3,6 +3,7 @@ $menuHeight : 80px;
 $menuNav : 77px;
 
 .image-space
+  position: relative
   width: 100%
   min-height: 100vh
   background-color: #ededed
@@ -13,7 +14,7 @@ $menuNav : 77px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("images/cities.jpg");
+  background-image: url("images/plane.jpg");
 
   background-attachment: fixed;
   background-position: center;
@@ -547,8 +548,9 @@ i.fa-cc-amex
     top: 5px
     margin-right: 10px
   &.active
-    background-color: $primary-color
-    color: #FFF
+    background-color: #FCFCF8
+    // background-color: $primary-color
+    // color: #FFF
 .cotizador-document,.cotizador-box
   padding: 20px
   top: 100%
@@ -658,7 +660,10 @@ i.fa-cc-amex
     align-items: center;
     img
       width: 100%
-      &.vertical-icon
+      &.ups
+        width: 80%
+        max-width: 50px
+      &.fedex
         width: 80%
   .red-color
     color: #D3001A
@@ -700,3 +705,52 @@ i.fa-cc-amex
   font-size: 2rem
   color: $gray-disabled
 /*checkout*/
+
+.home-menu-container
+  width: 90%
+  position: absolute
+  right: 5%
+  z-index: 5
+  top: 20px
+
+.home-menu-list
+  height: 100vh
+  width: 300px
+  background-color: $primary-color
+  position: absolute
+  top: 0
+  right: 0
+  z-index: 3
+
+.login-home
+  position: absolute
+  right: 100px
+  font-size: 2.5rem
+  font-family: 'Roboto'
+  color: rgba(0,0,0,0.6)
+  cursor: pointer
+  &:hover
+    text-decoration: underline
+  i
+    color: $primary-color
+    margin-right: 1rem
+
+.tracking-home
+  position: absolute
+  right: 300px
+  font-size: 2.5rem
+  font-family: 'Roboto'
+  color: rgba(0,0,0,0.6)
+  cursor: pointer
+  &:hover
+    text-decoration: underline
+  i
+    color: $primary-color
+    margin-right: 1rem
+
+.home-menu
+  position: absolute
+  right: 0
+  transition: right 0.4s
+  &.active
+    right: -40px

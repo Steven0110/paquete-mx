@@ -22,7 +22,7 @@
       var deferred = $q.defer();
       //flag de debug, quitar en produccion
       params.debugging = true;
-      var paquete = paqueteApi.endpoint("/dev-rate");
+      var paquete = paqueteApi.endpoint("/rate");
       paquete.post(params).then(function(data){
 
         if(params.debugging){
