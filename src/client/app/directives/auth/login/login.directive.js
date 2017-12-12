@@ -13,8 +13,8 @@ function loginForm(userApi, Dialog){
       var shell = scope.shell;
 
       scope.user = {
-        username: "carlos@canizal.com",
-        password: "canizal"
+        username: null,
+        password: null
       }
       
       scope.login = function(){

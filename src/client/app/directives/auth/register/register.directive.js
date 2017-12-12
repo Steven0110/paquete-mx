@@ -12,13 +12,13 @@ function registerForm(userApi, Dialog){
     link:function(scope,element,attr){
       var shell = scope.shell;
 
-      scope.passwordMatch = "canizal";
+      scope.passwordMatch = null;
       scope.user = {
-        name: "Carlos",
-        lastname: "Canizal",
-        phone: "5535068102",
-        username: "carlos@canizal.com",
-        password: "canizal"
+        name: null,
+        lastname: null,
+        phone: null,
+        username: null,
+        password: null
       }
       
       scope.register = function(){

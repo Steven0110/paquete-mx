@@ -114,7 +114,7 @@
                               .col-xs-12
                                 .select-weight
                                   span
-                                    |Tu sobre debe ser tamaño estandar y no pesar mas de 0.5 Kg.
+                                    |Tu sobre debe ser tamaño estandar y no pesar más de 0.5 Kg.
                                   //- select(ng-model="package.weight" ng-options="n for n in home.weightList")
                                   //- span.bold
                                     |KG
@@ -357,9 +357,9 @@
     .bottom-line
     .description
       h1
-        |Más de X servicios a elegir.
+        |Más de 20 servicios a elegir.
       h2
-        |Tenemos alianzas con las mejores paqueterías nacionales e internacionales. Tenemos una opción que se ajuste a las necesidades de tu envío, origen, destino, urgencia. 
+        |Tenemos alianzas con las mejores mensajerías y paqueterías nacionales e internacionales. Tenemos una opción que se ajuste a las necesidades de tu envío, origen, destino y urgencia.
       .benefits 
         .container-fluid
           .row
@@ -367,7 +367,7 @@
               .benefits-image
                 img(data-ng-src="common/images/section-2-1.png")
               .benefits-text
-                |Más de X  opciones de servicios que se ajusten a tus necesidades.
+                |Más de 20 opciones de servicios que se ajusten a tus necesidades.
             .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-2-2.png")
@@ -388,9 +388,9 @@
         .row
           .col-xs-12.col-md-6
             h1
-              |Diversas opciónes de pago para ti.
+              |No tienes que salir para hacer tus pagos
             h2
-              |Tarjeta de Crédito, Débito, Depósitos en OXXO, Paypal. <br/>¡Tu eliges!
+              |Tarjeta de Crédito o Débito. <br/>¡Tu eliges!
             .more-info(data-ng-click="home.openSection(2)")
               i.fa.fa-plus-circle
               |Más información
@@ -404,31 +404,31 @@
     .bottom-line
     .description
       h1
-        |La opción de pago que más te convenga
+        |Paga desde la comodidad de tu hogar o negocio.
       h2
-        |Puedes pagar con tarjetas de crédito, debito desde nuestro portal o si lo prefieres a través de cuenta PAYPAL. 
+        |Puedes pagar con tarjetas de crédito o debito. 
       h2
-        |¿Pagar en efectivo? ¡Claro! Genera tu orden de pago desde nuestro portal para pagar en OXXO.
+        |Contamos con un sistema seguro para las transacciónes el línea !No te preocupes! Nosotros te protegemos.
       .benefits 
         .container-fluid
           .row
-            .col-xs-12.col-md-4
+            .col-xs-12.col-md-4.center-block
               .benefits-image
                 img(data-ng-src="common/images/section-3-1.png")
               .benefits-text
                 |Aceptamos tarjetas de crédito Nacionales e Internacionales expedidas por VISA, MASTERCARD, AMERICAN EXPRESS.
-            .col-xs-12.col-md-4
+            //- .col-xs-12.col-md-4
               .benefits-image
-                img(data-ng-src="common/images/section-3-2.png")
+                img(data-ng-src="common/images/cards.png")
               .benefits-text
                 |Paga con tu cuenta de PAYPAL.
-            .col-xs-12.col-md-4
+            //- .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-3-3.png")
               .benefits-text
                 |Depósitos en efectivo en OXXO.
       h2.accent.bold.align-center
-        |¡Tu eleges la opción que más te convenga!
+        |¡Tu eliges la opción que más te convenga!
   .section-container.section-4.right
     .section-description
       .container-fluid
@@ -498,9 +498,9 @@
     .bottom-line
     .description
       h1
-        |¿Eres desarrollador?
+        |Hemos logrado hacer todo más sencillo
       h2
-        |Con nuestra API puedes conectar cualquier sistema de ventas y proporcionar las mejores opciones de envíos a tus clientes. 
+        |Con nuestra API conectamos tu sistema con el nuestro. 
       .benefits 
         .container-fluid
           .row
@@ -519,6 +519,21 @@
                 img(data-ng-src="common/images/section-5-3.png")
               .benefits-text
                 |Línea de Crédito para empresas.
+        .container-fluid
+          .row
+            .col-xs-12.col-md-3
+              .e-commerce-image
+                img(data-ng-src="common/images/shopify.png")
+            .col-xs-12.col-md-3
+              .e-commerce-image
+                img(data-ng-src="common/images/shopify.png")
+            .col-xs-12.col-md-3
+              .e-commerce-image
+                img(data-ng-src="common/images/shopify.png")
+            .col-xs-12.col-md-3
+              .e-commerce-image
+                img(data-ng-src="common/images/shopify.png")
+              
       h2.accent.bold.align-center
         |¡Que la logística de envíos no frene tu negocio en línea!
   .section-container.section-6.right
@@ -577,13 +592,13 @@
               |¿Eres desarrolador?
             h2
               |Con nuestra API es muy fácil integrar PAQUETE.MX a tu sistema.
-            .more-info(data-ng-click="home.openSection(6)")
+            //- .more-info(data-ng-click="home.openSection(6)")
               i.fa.fa-plus-circle
               |Más información
           .col-xs-12.col-md-6
             .section-image.image-7.image-right
               img(data-ng-src="common/images/section-7.png")
-  .more-info-section.benefits-6
+  //- .more-info-section.benefits-6
     .close-button(data-ng-click="home.closeSection(6)")
       i.fa.fa-times-circle
     .top-line
@@ -595,7 +610,7 @@
         |Obtén descuentos desde tu 
         span.accent.bold
           |primer envío
-        |, pero entre mas envíes mejores tarifas obtendrás. Tenemos los mejores convenios con las paqueterías para darte las mejores opciones y al mejor precio. 
+        |, entre más envíes mejores tarifas obtendrás. Tenemos los mejores convenios con las paqueterías para darte las mejores opciones y al mejor precio. 
       .benefits 
         .container-fluid
           .row
@@ -603,17 +618,17 @@
               .benefits-image
                 img(data-ng-src="common/images/section-1-1.png")
               .benefits-text
-                |Descuentos desde tu primer envió.
+                |Descuentos desde tu primer envío.
             .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-1-2.png")
               .benefits-text
-                |Las mejores tarifas con más de X servicios.
+                |Las mejores tarifas con más de 20 servicios.
             .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-1-3.png")
               .benefits-text
-                |Entre mas envíos realices mejores tarifas obtienes.
+                |Entre más envíos realices mejores tarifas obtienes.
       h2.accent.bold.align-center
         |¡LAS MEJORES OPCIONES GARANTIZADO!
   

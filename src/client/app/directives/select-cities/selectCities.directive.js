@@ -67,15 +67,12 @@ function selectCities($http, $document){
           vm.clean =false;
           vm.loading = true;
           vm.options = [];
-          $http({
-            method: 'GET',
-            url: 'http://54.245.38.66:8081/'+country+'/'+search,
-          }).then(function(response) {
+          $http.post("https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/counties",{search:search,country:country})
+          .then(function(response) {
             if(response && response.data && response.data.length > 0)
               vm.options = response.data;
             else
               vm.options = [];
-            
           }, function(err) {
             vm.options = [];
           }).finally(function(){

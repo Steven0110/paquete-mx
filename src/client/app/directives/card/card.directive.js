@@ -21,9 +21,9 @@ function cardForm(conektaApi, Dialog){
       var card = this;
 
       card.info = {
-        name       : "Carlos Canizal",
-        number     : "4242424242424242",
-        cvc        : "123",
+        name       : null,
+        number     : null,
+        cvc        : null,
         exp_month  : 1,
         exp_year : 2018
       }

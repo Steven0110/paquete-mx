@@ -45,12 +45,12 @@
 
     home.initialize ={
       from:{
-        zip: "06600",
+        zip: null,
         data: {},
         country: "MX"
       },
       to:{
-        zip: "09770",
+        zip: null,
         data: {},
         country: "MX"
       },
@@ -58,10 +58,10 @@
       valueDeclared: null,
       insurance: false,
       packages:[{
-        weight: "1",
-        width: "25",
-        length: "25",
-        height: "25"
+        weight: null,
+        width: null,
+        length: null,
+        height: null
       }
       ]
     };

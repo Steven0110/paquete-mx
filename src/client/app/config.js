@@ -6,7 +6,7 @@ config.$inject = ['$locationProvider', '$urlRouterProvider','$stateProvider','$m
 
 function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingProvider,localStorageServiceProvider) {
 
-  $locationProvider.html5Mode(true);
+  // $locationProvider.html5Mode(true);
   localStorageServiceProvider.setPrefix('paquete_mx');
 
   $mdThemingProvider.definePalette('customPalette', {
@@ -57,12 +57,9 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controllerAs: 'home'
 
     })
-    .state('home2',{
-      url:'/alternativo',
-      templateUrl : 'app/home/home-2.template.html',
-      controller: 'Home2',
-      controllerAs: 'home'
-
+    .state('privacy',{
+      url:'/aviso-de-privacidad',
+      templateUrl : 'app/privacy/privacy.html'
     })
     .state('checkout',{
       url:'/checkout',

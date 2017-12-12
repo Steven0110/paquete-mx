@@ -25,10 +25,22 @@ function run($rootScope, $transitions,$state,$window, parseheaders, userApi, Res
 
   $transitions.onSuccess({}, function($transitions){
     $window.scrollTo(0, 0);
+    // var newToState = $transitions.$to();
+    // alert('login-here');
+    // if(newToState.parent && newToState.parent.data && newToState.parent.data.access){
+    //   alert('login');
+    //   if(!userApi.isAuth()){
+    //     event.preventDefault();
+    //     $state.go('login');
+    //   }
+    // }
+  });
+
+  $transitions.onStart({}, function($transitions){
     var newToState = $transitions.$to();
     if(newToState.parent && newToState.parent.data && newToState.parent.data.access){
       if(!userApi.isAuth()){
-        event.preventDefault();
+        // event.preventDefault();
         $state.go('login');
       }
     }
