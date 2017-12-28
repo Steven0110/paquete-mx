@@ -115,12 +115,6 @@
                                 .select-weight
                                   span
                                     |Tu sobre debe ser tamaño estandar y no pesar más de 0.5 Kg.
-                                  //- select(ng-model="package.weight" ng-options="n for n in home.weightList")
-                                  //- span.bold
-                                    |KG
-                              //- .col-xs-1
-                                i.fa.fa-plus(data-ng-show="$index+1 == home.documents.length", data-ng-click="home.addDocuments()")
-                                i.fa.fa-trash(data-ng-show="$index > 0", data-ng-click="home.removeDocument($index)")
                               .select-weiht(data-ng-show="home.shipping.insurance")
                                 .row
                                   .col-xs-4
@@ -148,15 +142,15 @@
                                       .col-xs-3
                                         .box-attr
                                           div
-                                            |ANCHO
-                                          div
-                                            input(name="width",placeholder="cms", data-ng-model="package.width", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'")
-                                      .col-xs-3
-                                        .box-attr
-                                          div
                                             |LARGO
                                           div
                                             input(name="length",placeholder="cms", data-ng-model="package.length", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'")
+                                      .col-xs-3
+                                        .box-attr
+                                          div
+                                            |ANCHO
+                                          div
+                                            input(name="width",placeholder="cms", data-ng-model="package.width", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'")
                                       .col-xs-3
                                         .box-attr
                                           div
@@ -213,7 +207,7 @@
                   |&nbsp;{{item.units}}
               div(data-ng-if="item.service == 'fedex'")
                 |{{item.delivery | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
-              div(data-ng-if="item.service == 'redpack'")
+              div(data-ng-if="item.service == 'redpack' || item.service == 'ups'")
                 |{{item.delivery | amDateFormat:'DD-MMM-YY'}}
             .table-box.service-logo
               div
@@ -523,16 +517,16 @@
           .row
             .col-xs-12.col-md-3
               .e-commerce-image
-                img(data-ng-src="common/images/shopify.png")
+                img(data-ng-src="common/images/woocomerce.png")
             .col-xs-12.col-md-3
               .e-commerce-image
                 img(data-ng-src="common/images/shopify.png")
             .col-xs-12.col-md-3
               .e-commerce-image
-                img(data-ng-src="common/images/shopify.png")
+                img(data-ng-src="common/images/magento.png")
             .col-xs-12.col-md-3
               .e-commerce-image
-                img(data-ng-src="common/images/shopify.png")
+                img(data-ng-src="common/images/prestashop.png")
               
       h2.accent.bold.align-center
         |¡Que la logística de envíos no frene tu negocio en línea!

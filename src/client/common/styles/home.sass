@@ -20,7 +20,7 @@ $menuNav : 77px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  overflow: hidden
+  // overflow: hidden
 .background-container
   position: relative
   z-index: 3
@@ -545,9 +545,10 @@ i.fa-cc-amex
   cursor: pointer
   height: 50px
   text-align: center
-  color: $primary-color
   font-size: 2rem
   line-height: 50px
+  background-color: $primary-color
+  color: #FFF
   i
     display: inline-block
     font-size: 3rem
@@ -555,7 +556,8 @@ i.fa-cc-amex
     top: 5px
     margin-right: 10px
   &.active
-    background-color: #FCFCF8
+    background-color: #FFF
+    color: $primary-color
     // background-color: $primary-color
     // color: #FFF
 .cotizador-document,.cotizador-box

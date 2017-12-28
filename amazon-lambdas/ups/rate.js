@@ -1,4 +1,5 @@
 var https = require("https");
+var moment = require("moment");
 
 
 const production =  true;
@@ -72,7 +73,6 @@ function currentService(result){
             currentService.orignalAmount = amount;
             currentService.currency = result.TotalCharges.CurrencyCode;
             if(currentService.currency && currentService.currency != "MXN"){
-                
                 currentService.total = (amount*exchange).toFixed(2);
                 currentService.total = parseFloat(currentService.total);
             }
@@ -95,7 +95,7 @@ function currentService(result){
     if(result.GuaranteedDelivery){
         if(result.GuaranteedDelivery.BusinessDaysInTransit){
             currentService.deliveryHours =  result.GuaranteedDelivery.BusinessDaysInTransit*24;
-            currentService.delivery      =  result.GuaranteedDelivery.BusinessDaysInTransit
+            currentService.delivery      =  moment().add(result.GuaranteedDelivery.BusinessDaysInTransit,'day').format("YYYY-MM-DD");
         }
     }
     
@@ -145,8 +145,10 @@ exports.handler = (event, context, callback) => {
         var data = event;
         var fromZip = false;
         var fromCountry =  false;
+        var fromStateCode = false;
         var toZip = false;
         var toCountry =  false;
+        var toStateCode = false;
         var packagingType = "02";
         var debugging = false;
         
@@ -176,6 +178,14 @@ exports.handler = (event, context, callback) => {
             fromCountry = data.from.country.toUpperCase(); 
         }else{
             context.fail(generateError(400,"country value is required in from attribute."));
+        }
+        
+        if(data.from && data.from.stateCode){
+            fromStateCode = data.from.stateCode.toUpperCase(); 
+        }
+        
+        if(data.to && data.to.stateCode){
+            toStateCode = data.to.stateCode.toUpperCase();
         }
         
         if(data.to && data.to.zip){
@@ -308,10 +318,16 @@ exports.handler = (event, context, callback) => {
                 }
               }
             };
-
+        if(fromStateCode){
+            body.RateRequest.Shipment.ShipFrom.Address.StateProvinceCode = fromStateCode;
+        }
         
+        if(toStateCode){
+            body.RateRequest.Shipment.ShipTo.Address.StateProvinceCode = toStateCode;
+        }
         
         rateUPS(body,function(result){
+            console.log(result);
             var json ={
                 services: [],
                 totalServices: 0

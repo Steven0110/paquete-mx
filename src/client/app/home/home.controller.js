@@ -371,11 +371,11 @@
                             }
 
                             if(deliveryHours){
-                              if(deliveryHours < 24){
-                                response.services[i].qty = deliveryHours;
-                                response.services[i].units = "HORAS";
-                              }
-                              else if(deliveryHours  == 24){
+                              // if(deliveryHours < 24){
+                                // response.services[i].qty = deliveryHours;
+                                // response.services[i].units = "HORAS";
+                              // }
+                              if(deliveryHours  <=24){
                                 response.services[i].qty = 1;
                                 response.services[i].units = "DÍA";
                               }else{
