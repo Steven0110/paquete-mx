@@ -96,7 +96,7 @@
                         i.fa.fa-circle
                         |&nbsp;
                         span.last4
-                          |{{checkout.card.last4}}
+                          |{{checkout.card.termination}}
                 .col-xs-12
                   .confirm-title.accent.margin-top-1
                     |Guia y Etiqueta
@@ -189,7 +189,7 @@
                           i.fa.fa-circle
                           |&nbsp;
                           span.last4
-                            |{{checkout.card.last4}}
+                            |{{checkout.card.termination}}
                       .align-right
                         .anchor-section(data-ng-click="checkout.changeSection('payment')")
                           |Modificar
@@ -246,7 +246,7 @@
                       i.fa.fa-circle
                       |&nbsp;
                       span.last4
-                        |{{item.last4}}
+                        |{{item.termination}}
                 .add-dashboard(data-ng-hide="checkout.cardForm")
                   i.fa.fa-plus-circle(data-ng-click="checkout.cardForm = true")
                   h2(data-ng-click="checkout.cardForm = true")

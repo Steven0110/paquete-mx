@@ -22,13 +22,15 @@ if(production){
   var domain = "sandbox0ac0a2a5c16246be98c97c0c2628f3fa.mailgun.org";
   Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-5e0f8c7de60172d4428cb1edbed23275'});
   // var conekta_key = 'Basic OmtleV81elE2NGZIcWhRZmYzSEthaUNWVDRn';
-  var t_pago_auth = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:Fg4czj5lWgbUc9rJ0bX3IcPmSVgTKCUU";
+  var tPagoPublic = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:Fg4czj5lWgbUc9rJ0bX3IcPmSVgTKCUU";
+  var tPagoPrivate = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:QOTBkZTHlz0SeNhLt6fDRJWGcloMEsI1";
   var appId = "OaKte4Imh3dk5JIhsJoLAcLaPYMb2mQUeqyHXrP1";
   var masterKey = "rZx1h8G9530G73xbzk5F1MLvGzb080KL2u55uC8S";
   var javascriptKey = "wcFLh2UROrO8fN9SbFbgbeOZTZOlPu3YkAMys1bL";
 }
 
 
+/*SAVE CARD T-PAGO*/
 Parse.Cloud.define("saveCard",function(request, response){
 
   var card = request.params;
@@ -40,7 +42,7 @@ Parse.Cloud.define("saveCard",function(request, response){
     method: method,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': t_pago_auth
+      'Authorization': tPagoPublic
     },
     url: url,
     body: card
@@ -70,6 +72,7 @@ Parse.Cloud.define("saveCard",function(request, response){
     });
 
 });
+/*SAVE CARD T-PAGO*/
 
 Parse.Cloud.define("sendCotizacion",function(request, response){
   var params = request.params;
@@ -250,73 +253,88 @@ function conektaUser(method,body, url){
 
 
 //CONEKTA 
-var chargeCard = function(conektaId, cardId, amount, isToken){
+// var chargeCard = function(conektaId, cardId, amount, isToken){
 
-  var charge = {};
-  var customerInfo = {};
+//   var charge = {};
+//   var customerInfo = {};
 
-  charge =  {
-              "payment_method": {
-                "type": "card"
-              }
-            };
+//   charge =  {
+//               "payment_method": {
+//                 "type": "card"
+//               }
+//             };
 
-  if(isToken){
-    charge.payment_method.token_id = cardId;
-  }else{
-    charge.payment_method.payment_source_id = cardId;
-  }
+//   if(isToken){
+//     charge.payment_method.token_id = cardId;
+//   }else{
+//     charge.payment_method.payment_source_id = cardId;
+//   }
 
-  if(conektaId){
-    customerInfo.customer_id =  conektaId;
-  }
+//   if(conektaId){
+//     customerInfo.customer_id =  conektaId;
+//   }
 
-    var referenceId = randomString(8);
+//     var referenceId = randomString(8);
 
-  var order = {
-    "currency": "MXN",
-    "metadata":{
-      "reference_id": referenceId
-    },
-    "customer_info" : customerInfo,
-    "line_items": [{
-      "name": "Servicio de envio" + referenceId,
-      "unit_price": amount,
-      "quantity": 1
-    }],
-    "charges": [
-      charge
-    ],
-    "shipping_lines":[
-      {
-        "amount"  : 10000,
-        "carrier" : 'fedex'
-      }
-    ],
-    "shipping_contact":{
-          "phone" : "5535068102",
-          "email": "carlos@canizal.com",
-          "receiver": "Carlos Canizal",
-          "address":{
-            "street1": "Rio Misisipi",
-            "city": "Iztapalapa",
-            "state": "Ciudad de Mexico",
-            "country": "Mexico",
-            "postal_code": "09770"
-          }
-        }
-  }
+//   var order = {
+//     "currency": "MXN",
+//     "metadata":{
+//       "reference_id": referenceId
+//     },
+//     "customer_info" : customerInfo,
+//     "line_items": [{
+//       "name": "Servicio de envio" + referenceId,
+//       "unit_price": amount,
+//       "quantity": 1
+//     }],
+//     "charges": [
+//       charge
+//     ],
+//     "shipping_lines":[
+//       {
+//         "amount"  : 10000,
+//         "carrier" : 'fedex'
+//       }
+//     ],
+//     "shipping_contact":{
+//           "phone" : "5535068102",
+//           "email": "carlos@canizal.com",
+//           "receiver": "Carlos Canizal",
+//           "address":{
+//             "street1": "Rio Misisipi",
+//             "city": "Iztapalapa",
+//             "state": "Ciudad de Mexico",
+//             "country": "Mexico",
+//             "postal_code": "09770"
+//           }
+//         }
+//   }
 
-  return order;
-}
+//   return order;
+// }
 //CONEKTA
 
 
-//CONEKTA CREATE ORDER
-var conektaCreateOrder = function(order, method){
+//CREATES ORDER T-PAGO
+var createOrder = function(cardId, amount){
+
+  var referenceId = randomString(8);
+  var order = {
+    "order_id": referenceId,
+    "token": cardId,
+    "amount": amount,
+    "detail": {}
+  }
+  return order;
+}
+//CREATES ORDER T-PAGO
+
+
+//CHARGE CARD T-PAGO
+var chargeCard = function(order, method){
 
   var parse_promise = new Parse.Promise();
-  var url = 'https://api.conekta.io/orders';
+  var url = "https://gateway.tevi.life/api/v1/transactions/auth/";
 
   if(!method)
     method = 'POST';
@@ -324,9 +342,8 @@ var conektaCreateOrder = function(order, method){
   Parse.Cloud.httpRequest({
   method: method,
   headers: {
-    'Accept':'application/vnd.conekta-v2.0.0+json',
     'Content-Type': 'application/json',
-    'Authorization': conekta_key
+    'Authorization': tPagoPrivate
   },
   url: url,
   body: order
@@ -352,6 +369,48 @@ var conektaCreateOrder = function(order, method){
 
   return parse_promise; 
 }
+//CHARGE CARD T-PAGO
+
+//CONEKTA CREATE ORDER
+// var conektaCreateOrder = function(order, method){
+
+//   var parse_promise = new Parse.Promise();
+//   var url = 'https://api.conekta.io/orders';
+
+//   if(!method)
+//     method = 'POST';
+
+//   Parse.Cloud.httpRequest({
+//   method: method,
+//   headers: {
+//     'Accept':'application/vnd.conekta-v2.0.0+json',
+//     'Content-Type': 'application/json',
+//     'Authorization': conekta_key
+//   },
+//   url: url,
+//   body: order
+//   }).then(function(response){
+//     var result = JSON.parse(response.text);
+//     parse_promise.resolve(result);
+//   },function(httpResponse){
+//     var result= {error: true, message:null, result: httpResponse};
+//     if(httpResponse.text){
+      
+//       var response = JSON.parse(httpResponse.text);
+//       result.result = response;
+//       if(response && response.details){
+//         if(response.details.length > 0 && response.details[0].message){
+//           result.message = response.details[0].message;
+//         }
+//       }
+//     }
+    
+//     parse_promise.reject(result);
+    
+//   });
+
+//   return parse_promise; 
+// }
 //CONEKTA CREATE ORDER
 
 /*SAVE CARD CONEKTA*/
@@ -401,56 +460,65 @@ function randomString(length)
 //CONEKTA CHARGE CARD
 Parse.Cloud.define("chargeCard",function(request, response){
 
-  var conektaId = request.params.conektaId;
-  if(!conektaId){
-    var user = request.user;
-    conektaId = user.get('conektaId');
-  }
+  var user = request.user;
+  // var conektaId = request.params.conektaId;
+  // if(!conektaId){
+    // conektaId = user.get('conektaId');
+  // }
 
   var paymentMethod = request.params.paymentMethod;
   var shipping = request.params.shipping;
   var amount = request.params.amount;
-  var isToken = request.params.isToken
+  // var amount = 50000;
+  // var isToken = request.params.isToken
   var requestResult = {};
   var paymentSave;
-  isToken = isToken ==true;
+  // isToken = isToken ==true;
 
-  var cardId = paymentMethod.card.id;
+  var cardId = paymentMethod.card.token;
 
-  var order = chargeCard(conektaId, cardId, amount, isToken);
-  conektaCreateOrder(order).then(function(result){
+  var order = createOrder(cardId, amount);
+  chargeCard(order).then(function(result){
     requestResult.payment = result;
     var Payment = Parse.Object.extend('Payment');
     var payment = new Payment();
 
     //TODO Agregar el user cuando solo envian el conektaId
     payment.set('user',user);
-    payment.set('response',result);
-    if(result && result.charges && result.charges.data){
-      var charge = result.charges.data;
-      if(charge[0] && charge[0].payment_method){
-        payment.set('charge',charge[0].payment_method);
-      }
-    }
+    payment.set('charge',result);
+    // if(result && result.charges && result.charges.data){
+      // var charge = result.charges.data;
+      // if(charge[0] && charge[0].payment_method){
+        // payment.set('charge',charge[0].payment_method);
+      // }
+    // }
 
-    if(result.payment_status){
-      payment.set('status', result.payment_status);
-      payment.set('amount', (result.amount/100));
+    if(result.message == "Aprobada" && result.auth_code){
+      payment.set('status', result.message);
+      payment.set('amount', result.amount);
+      payment.set('brand', result.brand);
+      payment.set('termination', result.termination);
+      payment.set('reference', result.order_id);
+      payment.set('authCode', result.auth_code);
+      return payment.save();
+    }else{
+      var parse_promise = new Parse.Promise();
+      parse_promise.reject(result);
+      return parse_promise;
     }
-    return payment.save();
   }).then(function(payment){
-    var status;
+    // var status;
     paymentSave = payment;
-    if(requestResult.payment && requestResult.payment.payment_status)
-      status =  requestResult.payment.payment_status;
+    // if(requestResult.payment && requestResult.payment.payment_status)
+      // status =  requestResult.payment.payment_status;
 
-    if(status == "paid"){
+    // if(payment.message == "Aprobada"){
       // var paymentObject ={
         // paymentStatus : requestResult.payment.payment_status,
         // paymentAmount : (requestResult.payment.amount/100)
       // };
       return sendShipOrder(user, shipping,requestResult.payment);
-    }
+    // }
 
   }).then(function(shipOrder){
 
@@ -584,15 +652,15 @@ function sendShipOrder(user, shipping, payment) {
     if(payment){
 
       if(payment.amount)
-        params.paymentAmount = (payment.amount/100);
-      if(payment.payment_status)
-        params.paymentStatus = payment.payment_status;
-      if(payment && payment.charges && payment.charges.data){
-        var charge = payment.charges.data;
-        if(charge[0] && charge[0].payment_method){
-          params.charge =charge[0].payment_method;
-        }
-      }
+        params.paymentAmount = payment.amount;
+      if(payment.message)
+        params.paymentStatus = payment.message;
+      // if(payment && payment.charges && payment.charges.data){
+        // var charge = payment.charges.data;
+        // if(charge[0] && charge[0].payment_method){
+      params.charge = payment;
+        // }
+      // }
     }
 
 

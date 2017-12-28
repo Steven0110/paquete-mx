@@ -5,9 +5,9 @@
     .module('app.core')
     .controller('Checkout',Checkout);
 
-  Checkout.$inject = ['$scope','$q','$state','$timeout','rateApi','conektaApi','shippingApi','Dialog'];
+  Checkout.$inject = ['$scope','$q','$state','$timeout','rateApi','userApi','shippingApi','Dialog'];
 
-  function Checkout($scope, $q, $state, $timeout, rateApi, conektaApi,shippingApi, Dialog){
+  function Checkout($scope, $q, $state, $timeout, rateApi, userApi,shippingApi, Dialog){
     // jshint validthis: true 
     var checkout = this;
     var shell = $scope.shell;
@@ -64,7 +64,7 @@
     }
 
     checkout.order = function(){
-      var total = (checkout.shipping.service.total * 100).toFixed(0);
+      var total = checkout.shipping.service.total;
       var order = {
         shipping:{
           packagingType : checkout.shipping.packagingType,
@@ -78,7 +78,6 @@
       }
 
       console.log('order-shipping',order);
-      // shell.showLoading();
       checkout.connecting = true;
       rateApi.ship(order).then(function(response){
         checkout.trackingNumber = response.shipOrder.trackingNumber;
@@ -88,7 +87,7 @@
       },function(err){
         console.log(err);
         checkout.step = 'payment';
-        if(err.error && err.message){
+        if(err.message){
           Dialog.showError(err.message, 'No se pudo cargar tu tarjeta.');
         }
       }).finally(function(){
@@ -132,7 +131,7 @@
 
     var getPaymentMethods = function(){
       shell.showLoading();
-      conektaApi.getCards().then(function(result){
+      userApi.getCards().then(function(result){
         checkout.cardForm = true;
         if(result && result.length > 0){
           checkout.paymentMethods = result;
