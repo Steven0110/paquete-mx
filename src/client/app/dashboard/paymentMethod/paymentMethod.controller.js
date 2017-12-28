@@ -5,10 +5,10 @@
     .module('app.core')
     .controller('PaymentMethod',PaymentMethod);
 
-  PaymentMethod.$inject = ['$scope','$state','$q', 'data', 'conektaApi'];
+  PaymentMethod.$inject = ['$scope','$state','$q','data'];
 
 
-  function PaymentMethod($scope,$state, $q, data, conektaApi){
+  function PaymentMethod($scope,$state, $q, data){
     // jshint validthis: true 
     var paymentMethod = this;
     paymentMethod.list = [];
@@ -19,7 +19,7 @@
     var shell = $scope.shell;
     paymentMethod.labels = shell.labels.paymentMethod;
     paymentMethod.send =function(card){
-      if(card && card.id)
+      if(card && card.token)
         paymentMethod.list.push(card)
       else
         console.error(card);

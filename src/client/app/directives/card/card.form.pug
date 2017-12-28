@@ -9,13 +9,13 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
           |Es requerido
     md-input-container.md-block
       label(for="cardNumber",data-ng-bind="card.labels.form.number")
-      input(name="cardNumber", data-ng-model="card.info.number", validate-card)
+      input(name="cardNumber", data-ng-model="card.info.card_number", required, validate-card)
       div(ng-messages="card.form.cardNumber.$error")
         div(ng-message="validateCard")
           |Número de tarjeta invalido.
     md-input-container.md-block
       label(for="cvc",data-ng-bind="card.labels.form.cvc")
-      input(name="cvc", data-ng-model="card.info.cvc", validate-cvc)
+      input(name="cvc", data-ng-model="card.info.cvc",required, validate-cvc)
       div(ng-messages="card.form.cvc.$error")
         div(ng-message="validateCvc")
           |Código de seguridad invalido.
@@ -34,6 +34,36 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
             md-select(name="month", data-ng-model="card.info.exp_year")
               md-option(data-ng-repeat="item in card.years", value="{{item}}")
                 |{{item}}
+    md-input-container.md-block
+      label(for="address_line_1",data-ng-bind="card.labels.form.address_line_1")
+      input(name="address_line_1", data-ng-model="card.info.address_line_1",required)
+      div(ng-messages="card.form.address_line_1.$error")
+        div(ng-message="required")
+          |Es requerido
+    md-input-container.md-block
+      label(for="address_line_2",data-ng-bind="card.labels.form.address_line_2")
+      input(name="address_line_2", data-ng-model="card.info.address_line_2",required)
+      div(ng-messages="card.form.address_line_2.$error")
+        div(ng-message="required")
+          |Es requerido
+    md-input-container.md-block
+      label(for="city",data-ng-bind="card.labels.form.city")
+      input(name="city", data-ng-model="card.info.city",required)
+      div(ng-messages="card.form.city.$error")
+        div(ng-message="required")
+          |Es requerido
+    md-input-container.md-block
+      label(for="state",data-ng-bind="card.labels.form.state")
+      input(name="state", data-ng-model="card.info.state",required)
+      div(ng-messages="card.form.state.$error")
+        div(ng-message="required")
+          |Es requerido
+    md-input-container.md-block
+      label(for="postal_code",data-ng-bind="card.labels.form.postal_code")
+      input(name="postal_code", data-ng-model="card.info.postal_code",required)
+      div(ng-messages="card.form.postal_code.$error")
+        div(ng-message="required")
+          |Es requerido
     .align-center.margin-top-2
       md-button.md-raised.md-primary(type="submit", data-ng-bind="card.labels.form.save", aria-label="card.labels.form.save")
       md-button.md-raised( data-ng-bind="card.labels.form.cancel", aria-label="card.labels.form.cancel", data-ng-click="card.cancel()")

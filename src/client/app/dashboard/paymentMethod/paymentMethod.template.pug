@@ -20,9 +20,9 @@
             .card-item
               h3
                 |{{item.name}}
-              i.big.fa.fa-cc-mastercard(data-ng-if="item.brand == 'MC'")
+              i.big.fa.fa-cc-mastercard(data-ng-if="item.brand == 'MASTERCARD'")
               i.big.fa.fa-cc-visa(data-ng-if="item.brand == 'VISA'")
-              i.big.fa.fa-cc-amex(data-ng-if="item.brand == 'AMERICAN_EXPRESS'")
+              i.big.fa.fa-cc-amex(data-ng-if="item.brand == 'AMEX'")
               i.fa.fa-circle
               i.fa.fa-circle
               i.fa.fa-circle
@@ -39,7 +39,7 @@
               i.fa.fa-circle
               |&nbsp;
               span
-                |{{item.last4}}
+                |{{item.termination}}
             .board-actions
               i.fa.fa-trash(confirm-message, data-ng-click="showModal()", data-question='¿Borrar Dirección?', data-confirm="paymentMethod.delete(item, $index)")
       .col-xs-6

@@ -21,6 +21,7 @@
       saveAddress       : saveAddress,
       getAddresses      : getAddresses,
       getAddress        : getAddress,
+      getCards          : getCards,
       getPayments       : getPayments ,
       getOrders         : getOrders,
       deleteAddress     : deleteAddress,
@@ -134,6 +135,25 @@
       var Address = parse.endpoint('Address');
       return Address.getAll(where,'createdAt');
     }
+
+    function getCards(userId){
+
+      if(!userId){
+        var user = currentUser();
+        if(user && user.objectId){
+          userId = user.objectId;
+        }else{
+          var deferred = $q.defer();
+          deferred.reject({noSession:true});
+          return deferred.promise;
+        }
+      }
+
+      var where = {"user":{"__type":"Pointer","className":"_User","objectId":userId}}
+      var Card = parse.endpoint('Card');
+      return Card.getAll(where,'-createdAt');
+    }
+
 
     function getPayments(userId){
 

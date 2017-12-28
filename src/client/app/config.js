@@ -6,7 +6,7 @@ config.$inject = ['$locationProvider', '$urlRouterProvider','$stateProvider','$m
 
 function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingProvider,localStorageServiceProvider) {
 
-  $locationProvider.html5Mode(true);
+  // $locationProvider.html5Mode(true);
   localStorageServiceProvider.setPrefix('paquete_mx');
 
   $mdThemingProvider.definePalette('customPalette', {
@@ -206,8 +206,8 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
         subtitle: "Agrega o edita tus métodos de pago"
       },
       resolve:{
-        data: function(conektaApi){
-          return conektaApi.getCards();
+        data: function(userApi){
+          return userApi.getCards();
         }
       }
     })

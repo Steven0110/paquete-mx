@@ -3,6 +3,7 @@
 3-Octubre-2017: Se crea la función para registrar el shipping
 18-Octubre-2017: Se crea la función para guardar tarjetas
 20-Octubre-2017: Se crea la función para cargar a las tarjetas
+27-Diciembre-2017: Se elimina conekta y se agrega t-pago
 change log*/
 
 var templates = require("./templates.js").templates;
@@ -20,11 +21,55 @@ if(production){
 }else{
   var domain = "sandbox0ac0a2a5c16246be98c97c0c2628f3fa.mailgun.org";
   Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-5e0f8c7de60172d4428cb1edbed23275'});
-  var conekta_key = 'Basic OmtleV81elE2NGZIcWhRZmYzSEthaUNWVDRn';
+  // var conekta_key = 'Basic OmtleV81elE2NGZIcWhRZmYzSEthaUNWVDRn';
+  var t_pago_auth = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:Fg4czj5lWgbUc9rJ0bX3IcPmSVgTKCUU";
   var appId = "OaKte4Imh3dk5JIhsJoLAcLaPYMb2mQUeqyHXrP1";
   var masterKey = "rZx1h8G9530G73xbzk5F1MLvGzb080KL2u55uC8S";
   var javascriptKey = "wcFLh2UROrO8fN9SbFbgbeOZTZOlPu3YkAMys1bL";
 }
+
+
+Parse.Cloud.define("saveCard",function(request, response){
+
+  var card = request.params;
+  var user = request.user;
+  var url = 'https://gateway.tevi.life/api/v1/vault/';
+  var method = 'POST';
+  var result;
+  Parse.Cloud.httpRequest({
+    method: method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': t_pago_auth
+    },
+    url: url,
+    body: card
+    }).then(function(httpResponse){
+      result = httpResponse;
+      if(result.text){
+        result = JSON.parse(result.text);
+        if(result.token){
+          var Card = Parse.Object.extend('Card');
+          var card = new Card();
+          card.set('token',result.token);
+          if(result.name)
+            card.set('name',result.name);
+          if(result.termination)
+            card.set('termination',result.termination);
+          if(result.brand)
+            card.set('brand',result.brand);
+          if(user)
+            card.set('user',user);
+          return card.save();
+        }
+      }
+    }).then(function(){
+      response.success(result);
+    },function(result){
+      response.error(result);
+    });
+
+});
 
 Parse.Cloud.define("sendCotizacion",function(request, response){
   var params = request.params;
@@ -310,36 +355,36 @@ var conektaCreateOrder = function(order, method){
 //CONEKTA CREATE ORDER
 
 /*SAVE CARD CONEKTA*/
-Parse.Cloud.define("saveCard", function(request, response){
-  var params = request.params;
-  var conektaId =  params.conektaId;
+// Parse.Cloud.define("saveCard", function(request, response){
+//   var params = request.params;
+//   var conektaId =  params.conektaId;
   
-  if(!conektaId){
-    var user = request.user;
-    conektaId = user.get('conektaId');
-  }
+//   if(!conektaId){
+//     var user = request.user;
+//     conektaId = user.get('conektaId');
+//   }
 
-  var token =  params.token;
+//   var token =  params.token;
 
-  var url = 'https://api.conekta.io/customers/'+conektaId+"/payment_sources";
-  var method = 'POST';
-  var result;
-  Parse.Cloud.httpRequest({
-    method: method,
-    headers: {
-      'Accept':'application/vnd.conekta-v2.0.0+json',
-      'Content-Type': 'application/json',
-      'Authorization': conekta_key
-    },
-    url: url,
-    body: {token_id:token, type:'card'}
-    }).then(function(httpResponse){
-      result = httpResponse;
-      response.success(result);
-    },function(result){
-      response.error(result);
-    });
-});
+//   var url = 'https://api.conekta.io/customers/'+conektaId+"/payment_sources";
+//   var method = 'POST';
+//   var result;
+//   Parse.Cloud.httpRequest({
+//     method: method,
+//     headers: {
+//       'Accept':'application/vnd.conekta-v2.0.0+json',
+//       'Content-Type': 'application/json',
+//       'Authorization': conekta_key
+//     },
+//     url: url,
+//     body: {token_id:token, type:'card'}
+//     }).then(function(httpResponse){
+//       result = httpResponse;
+//       response.success(result);
+//     },function(result){
+//       response.error(result);
+//     });
+// });
 /*SAVE CARD CONEKTA*/
 
 //GENERATES RANDOM STRING

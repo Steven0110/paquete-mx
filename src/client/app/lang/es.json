@@ -72,6 +72,12 @@
       "cvc":"Código de Seguridad",
       "save": "Continuar",
       "cancel": "Cancelar",
+      "address_line_1": "Calle y Número",
+      "address_line_2": "Colonia",
+      "city": "Ciudad",
+      "state": "Estado",
+      "country": "País",
+      "postal_code": "Código Postal",
       "errors":{
         "required": "Es requerido"
       }

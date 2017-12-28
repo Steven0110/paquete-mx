@@ -2,9 +2,9 @@ angular
   .module('app.core')
   .directive('cardForm',cardForm);
 
-cardForm.$inject = ['conektaApi','Dialog'];
+cardForm.$inject = ['paymentGateway','Dialog'];
 
-function cardForm(conektaApi, Dialog){
+function cardForm(paymentGateway, Dialog){
   return{
     restrict: 'EA',
     templateUrl: 'app/directives/card/card.form.html',
@@ -21,11 +21,17 @@ function cardForm(conektaApi, Dialog){
       var card = this;
 
       card.info = {
-        name       : null,
-        number     : null,
-        cvc        : null,
+        name       : "Carlos Canizal",
+        card_number: "4242424242424242",
+        cvc        : "123",
         exp_month  : 1,
-        exp_year : 2018
+        exp_year : 2019,
+        address_line_1: "Hamburgo 70",
+        address_line_2: "Col. Juarez",
+        city: "Cuauhtemoc",
+        state: "CDMX",
+        country: "México",
+        postal_code: "06600"
       }
 
       card.months = [];
@@ -44,26 +50,17 @@ function cardForm(conektaApi, Dialog){
 
       card.send = function(){
         if(card.form.$valid){
-          var conektaId =  false;
           card.showLoading();
-          conektaApi.update(card.info).then(function(newCard){
-            var response = newCard.text ? JSON.parse(newCard.text) : newCard;
-            card.sendForm({response:response});
-          },function(error){
-            console.log(error);
-            if(error && error.message_to_purchaser){
-              error = error.message_to_purchaser;
-            }else{
-              error = 'Hubo un error por favor recarga tu navegador e intenta de nuevo.';
-            }
-            Dialog.showError(error);
+          paymentGateway.update(card.info).then(function(res){
+            console.log(res);
+            card.sendForm({response:res});
+          },function(err){
+            console.log(err);
           }).finally(card.hideLoading);
         }else{
           Dialog.showMessage();
         }
       }
-
-     
     }
   };
 }
