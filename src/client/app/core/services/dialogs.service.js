@@ -9,6 +9,42 @@
 
   function Dialog($ngConfirm) {
 
+
+    this.showTooltip = function(title, content, buttons){
+
+      var title = title?title:'¡Atención!';
+
+      var buttonActions = {};
+
+      if(buttons.continue){
+        buttonActions.continue = {
+          text: buttons.continue,
+          action: function(scope, button){
+          }
+        }
+      }
+
+      if(buttons.close){
+        buttonActions.close = {
+          text: buttons.close,
+          action: function(scope, button){
+          }
+        }
+      }
+
+
+
+      $ngConfirm({
+          theme: 'supervan',
+          title: title,
+          content: content,
+          icon: 'fa fa-info-circle',
+          buttons: buttonActions
+      });
+    }
+
+
+
     this.showError = function(message, title){
       var title = title?title:'¡Ops, Hubo un error!';
 

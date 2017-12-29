@@ -578,13 +578,32 @@ i.fa-cc-amex
     margin-top: 16px
   span
     display: inline-block
-    margin-left: 10px
+    // margin-left: 10px
   font-size: 1.8rem
+  span.regular-text
+    color: $gray-disabled
+    font-weight: 400
+    font-size: 1.5rem
+    margin: 0
+  span.small-text
+    font-weight: 400
+    font-size: 1.4rem
+    &.tooltip-home
+      color: $primary-color
+      cursor: pointer
+      &:hover
+        text-decoration: underline
+  &.space-top
+    margin-top: 20px
+    padding-top: 20px
+    border-top: solid 1px $gray-disabled
+
 
 .box-attr
   padding: 5px
   input
     border: solid 1px $primary-color
+
 
 .box-attr-secondary
   input

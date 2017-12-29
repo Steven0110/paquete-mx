@@ -17,6 +17,7 @@
     home.countries = shell.countries;
     home.options = [];
     home.international = false;
+    // home.volumetric = false;
 
     // alert();
     // $('html').animate({scrollTop:"408px"},1000);
@@ -34,6 +35,41 @@
         home.packageOpen = false;
         home.documentOpen = !home.documentOpen;        
       }
+    }
+
+    home.updateWeight = function(packageInfo){
+      if(packageInfo.weight){
+        packageInfo.weight = parseFloat(packageInfo.weight).toFixed(2);
+      }else{
+        packageInfo.weight = packageInfo.weight;
+      }
+
+    }
+
+    home.calculateVW = function(packageInfo){
+
+      var height = 0;
+      var width = 0;
+      var length = 0;
+
+      if(packageInfo.height){
+        height = parseFloat(packageInfo.height);
+      }
+
+      if(packageInfo.width){
+        width = parseFloat(packageInfo.width);
+      }
+
+      if(packageInfo.length){
+        length = parseFloat(packageInfo.length);
+      }
+
+      if(height > 0 && width > 0 && length > 0){
+        packageInfo.volumetric = ((height*width*length)/5000).toFixed(2);
+      }else{
+        packageInfo.volumetric = false;
+      }
+
     }
 
     home.documents = [{
@@ -61,12 +97,18 @@
         weight: null,
         width: null,
         length: null,
-        height: null
+        height: null,
+        volumetric: false
       }
       ]
     };
 
     home.shipping = JSON.parse(JSON.stringify(home.initialize));
+
+
+    home.describeWeight = function(){
+      Dialog.showTooltip("¿Cómo se calcula el peso volumétrico?","El costo de un envío puede ser afectado por la cantidad de espacio que éste ocupa en el transporte, más que por su peso real. A esto se les llama el peso volumétrico (o dimensional).<br/></br/> El peso volumétrico se calcula multiplicando el alto, largo y ancho del paquete y diviendolo entre 5000: <br/><br/> PV= (alto x largo x ancho)/5000 <div style='text-align: center'><img style='width: 200px' src='common/images/pv.png' /></div>",{close:"Cerrar"});
+    }
 
     home.addPackage = function(){
       home.shipping.packages.push({

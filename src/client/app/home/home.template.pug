@@ -129,7 +129,7 @@
                               //- md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
                                   |ASEGURAR
                               .col-xs-12(data-ng-repeat="package in home.shipping.packages")
-                                .select-weight
+                                .select-weight(data-ng-class="{'space-top':$index > 0}")
                                   .row
                                     .select-weight
                                     .col-xs-11
@@ -138,25 +138,58 @@
                                           div
                                             |PESO
                                           div
-                                            input(name="weight", placeholder="Kg", data-ng-model="package.weight", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'")
-                                      .col-xs-3
+                                            input(name="weight", placeholder="Kg", data-ng-model="package.weight", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.updateWeight(package)")
+                                      .col-xs-9
                                         .box-attr
                                           div
-                                            |LARGO
+                                            |PESO VOLUMÉTRICO
+                                            span.small-text.tooltip-home(data-ng-click="home.describeWeight()")
+                                              |¿Qué es?
                                           div
-                                            input(name="length",placeholder="cms", data-ng-model="package.length", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'")
-                                      .col-xs-3
-                                        .box-attr
-                                          div
-                                            |ANCHO
-                                          div
-                                            input(name="width",placeholder="cms", data-ng-model="package.width", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'")
-                                      .col-xs-3
+                                            span.regular-text(data-ng-hide="package.volumetric")
+                                              |Ingresa las dimensiones para calcular el peso volumétrico.
+                                            span.regular-text(data-ng-show="package.volumetric && !package.weight")
+                                              |El peso volumetrico es de
+                                              span.accent
+                                                |&nbsp;{{package.volumetric}} Kg.
+                                            span.regular-text(data-ng-show="package.volumetric && package.weight")
+                                              span(data-ng-show="package.volumetric > package.weight")
+                                                |Se utilizara el peso VOLUMÉTRICO
+                                                span.accent
+                                                  |&nbsp;({{package.volumetric}} Kg.)
+                                                |&nbsp;ya que es mayor al peso REAL
+                                                span.accent
+                                                  |&nbsp;({{package.weight}} Kg.)
+                                              span(data-ng-show="package.weight > package.volumetric")
+                                                |Se utilizara el peso REAL
+                                                span.accent
+                                                  |&nbsp;({{package.weight}} Kg.)
+                                                |&nbsp;ya que es mayor al peso VOLUMÉTRICO
+                                                span.accent
+                                                  |&nbsp;({{package.volumetric}} Kg.)
+                                              span(data-ng-show="package.weight == package.volumetric")
+                                                |El peso REAL y el peso VOLUMÉTRICO es el mismo
+                                                span.accent
+                                                  |&nbsp;({{package.volumetric}} Kg.)
+                                    .col-xs-11
+                                      .col-xs-4
                                         .box-attr
                                           div
                                             |ALTO
                                           div
-                                            input(name="height",placeholder="cms", data-ng-model="package.height", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'")
+                                            input(name="height",placeholder="cms", data-ng-model="package.height", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)")
+                                      .col-xs-4
+                                        .box-attr
+                                          div
+                                            |LARGO
+                                          div
+                                            input(name="length",placeholder="cms", data-ng-model="package.length", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)")
+                                      .col-xs-4
+                                        .box-attr
+                                          div
+                                            |ANCHO
+                                          div
+                                            input(name="width",placeholder="cms", data-ng-model="package.width", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)")
                                     .col-xs-1
                                       .box-attr
                                         i.fa.fa-plus(data-ng-show="$index+1 == home.shipping.packages.length", data-ng-click="home.addPackage()")
