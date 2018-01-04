@@ -168,66 +168,66 @@ Parse.Cloud.define("removeCard",function(request, response){
 Parse.Cloud.beforeSave("_User", function(request, response){
   // var clientId = request.object.get('clientId');
 
-  var name = request.object.get('name');
-  var lastname = request.object.get('lastname');
-  var fullName = name+" "+lastname;
-  var email = request.object.get('username');
-  var mobile = request.object.get('mobile');
-  var body = {name:fullName,email:email};
-  var conektaId = null;
-  var url = 'https://api.conekta.io/customers';
-  conektaId = request.object.get('conektaId');
-  var method = "POST";
+  // var name = request.object.get('name');
+  // var lastname = request.object.get('lastname');
+  // var fullName = name+" "+lastname;
+  // var email = request.object.get('username');
+  // var mobile = request.object.get('mobile');
+  // var body = {name:fullName,email:email};
+  // var conektaId = null;
+  // var url = 'https://api.conekta.io/customers';
+  // conektaId = request.object.get('conektaId');
+  // var method = "POST";
 
-  if(conektaId){
-    url += "/"+conektaId;
-    method =  "PUT";
+  // if(conektaId){
+  //   url += "/"+conektaId;
+  //   method =  "PUT";
 
-    if(mobile && mobile.length == 10){
-      body.phone = "+52"+mobile;
-    }
+  //   if(mobile && mobile.length == 10){
+  //     body.phone = "+52"+mobile;
+  //   }
 
-    conektaUser(method,body,url).then(function(httpResponse){
-      response.success();
-    },function(error){
-      response.error(error);
-    });
-  }else{
+  //   conektaUser(method,body,url).then(function(httpResponse){
+  //     response.success();
+  //   },function(error){
+  //     response.error(error);
+  //   });
+  // }else{
     response.success();
-  }
+  // }
 });
 
 Parse.Cloud.afterSave("_User", function(request){
-  var conektaId = null;
-  conektaId = request.object.get('conektaId');
+  // var conektaId = null;
+  // conektaId = request.object.get('conektaId');
 
-  if(!conektaId){
-    var method = "POST";
-    var name = request.object.get('name');
-    var lastname = request.object.get('lastname');
-    var fullName = name+" "+lastname;
-    var email = request.object.get('username');
-    var mobile = request.object.get('mobile');
-    var body = {name:fullName,email:email,phone:mobile};
+  // if(!conektaId){
+  //   var method = "POST";
+  //   var name = request.object.get('name');
+  //   var lastname = request.object.get('lastname');
+  //   var fullName = name+" "+lastname;
+  //   var email = request.object.get('username');
+  //   var mobile = request.object.get('mobile');
+  //   var body = {name:fullName,email:email,phone:mobile};
 
 
-    conektaUser(method,body).then(function(httpResponse){
-      if(httpResponse.text){
-        conektaId = JSON.parse(httpResponse.text);
-        console.log('conektaId');
-        console.log(conektaId.id);
-        if(conektaId && conektaId.id){
-          conektaId =  conektaId.id;
-          request.object.set('conektaId',conektaId);
-          request.object.save(null,{useMasterKey:true});
-        }
-      }
-    },function(error){
-      request.object.errors = [];
-      request.object.errors.push(error);
-      resques.object.save();
-    });
-  }
+  //   conektaUser(method,body).then(function(httpResponse){
+  //     if(httpResponse.text){
+  //       conektaId = JSON.parse(httpResponse.text);
+  //       console.log('conektaId');
+  //       console.log(conektaId.id);
+  //       if(conektaId && conektaId.id){
+  //         conektaId =  conektaId.id;
+  //         request.object.set('conektaId',conektaId);
+  //         request.object.save(null,{useMasterKey:true});
+  //       }
+  //     }
+  //   },function(error){
+  //     request.object.errors = [];
+  //     request.object.errors.push(error);
+  //     resques.object.save();
+  //   });
+  // }
 });
 
 

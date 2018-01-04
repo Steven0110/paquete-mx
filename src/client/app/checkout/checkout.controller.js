@@ -5,9 +5,9 @@
     .module('app.core')
     .controller('Checkout',Checkout);
 
-  Checkout.$inject = ['$scope','$q','$state','$timeout','rateApi','userApi','shippingApi','Dialog'];
+  Checkout.$inject = ['$scope','$q','$state','$timeout','rateApi','userApi','shippingApi','Dialog','$ngConfirm'];
 
-  function Checkout($scope, $q, $state, $timeout, rateApi, userApi,shippingApi, Dialog){
+  function Checkout($scope, $q, $state, $timeout, rateApi, userApi,shippingApi, Dialog, $ngConfirm){
     // jshint validthis: true 
     var checkout = this;
     var shell = $scope.shell;
@@ -18,11 +18,83 @@
     checkout.response = false;
     checkout.connecting = false;
     checkout.paymentMethods = [];
-    console.log('shipping',checkout.shipping);
+    checkout.taxInfo = {};
+    // console.log('shipping',checkout.shipping);
     
     if(!checkout.shipping){
       shell.showMessage('Selecciona un servicio');
       $state.go('home');
+    }
+
+    var saveInvoice = function(){
+      
+      if(checkout.taxInfo.taxId)
+        checkout.taxInfo.taxId = checkout.taxInfo.taxId.toUpperCase();
+      if(checkout.taxInfo.taxName)
+        checkout.taxInfo.taxName = checkout.taxInfo.taxName.toUpperCase();
+
+      var user = checkout.user;
+      return userApi.updateTaxInfo(user,checkout.invoice, checkout.taxInfo).then(function(){
+        return userApi.getCurrentUser();
+      }).then(function(user){
+        return userApi.setCurrentUser(user);
+      });
+
+    }
+
+    checkout.taxUses = [{code:'G01',name:'Adquisición de mercancias'},{code:'G02',name:'Gastos en general'},{code:'P01',name:'Por definir'}];
+    checkout.taxInfo.taxUse = checkout.taxUses[1].code;
+    
+
+    checkout.invoiceRequired = function(){
+      if(checkout.invoice){
+        // alert('factura requerida');
+        $ngConfirm({
+            title: 'Datos Fiscales',
+            contentUrl: '/app/dashboard/invoice/invoice.form.html',
+            scope: $scope,
+            buttons: {
+                continue: {
+                    text: 'Continuar',
+                    btnClass: 'btn-blue',
+                    action: function(scope, button){
+                      shell.showLoading();
+                      saveInvoice().then(function(res){
+                        console.log(res);
+                      },function(err){
+                        console.log(err);
+                      }).finally(shell.hideLoading);
+                    }
+                },
+                close: {
+                  text : "Cancelar",
+                  action: function(scope, button){
+                    shell.showLoading();
+                    checkout.invoice = false;
+                    $scope.$apply();
+                    saveInvoice().then(function(res){
+                      console.log(res);
+                    },function(err){
+                      console.log(err);
+                    }).finally(function(){
+                      shell.hideLoading();
+                    });
+
+
+                  }
+                }
+            }
+            
+        });
+      }else{
+        // alert('factura no requerida');
+        shell.showLoading();
+        saveInvoice().then(function(res){
+          console.log(res);
+        },function(err){
+          console.log(err);
+        }).finally(shell.hideLoading);
+      }
     }
 
     checkout.step = "from";
@@ -131,6 +203,19 @@
 
     var getPaymentMethods = function(){
       shell.showLoading();
+
+      console.log(checkout.user.taxUse);
+      if(checkout.user){
+        if(checkout.user.taxUse)
+          checkout.taxInfo.taxUse = checkout.user.taxUse;
+        if(checkout.user.taxName)
+          checkout.taxInfo.taxName = checkout.user.taxName;
+        if(checkout.user.taxId)
+          checkout.taxInfo.taxId = checkout.user.taxId;
+        checkout.invoice = checkout.user.invoice;
+      }
+
+
       userApi.getCards().then(function(result){
         checkout.cardForm = true;
         if(result && result.length > 0){

@@ -213,8 +213,12 @@
                             |{{checkout.shipping.service.service}} {{checkout.shipping.service.name}}
                         |{{checkout.shipping.service}}
                 .align-center
-                  md-button.md-raised.md-primary(data-ng-click="checkout.order()")
-                    |Confirmar y pagar
+                  div
+                    md-switch(ng-model="checkout.invoice",aria-label="Requiero Factura", data-ng-change="checkout.invoiceRequired()")
+                      |Requiero Factura Fiscal
+                  div
+                    md-button.md-raised.md-primary(data-ng-click="checkout.order()")
+                      |Confirmar y pagar
             .form-container(data-ng-show="checkout.step=='payment'")
               div(data-ng-hide="checkout.cardForm")
                 h1.accent.align-center(data-ng-show="checkout.paymentMethods.length > 0")

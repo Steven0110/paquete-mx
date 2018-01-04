@@ -27,6 +27,7 @@
       deleteAddress     : deleteAddress,
       updateProfile     : updateProfile,
       updatePassword    : updatePassword,
+      updateTaxInfo     : updateTaxInfo,
       checkPassword     : checkPassword,
       setSessionByToken : setSessionByToken
     };
@@ -55,6 +56,20 @@
     function updateProfile(params){
       var User = parse.user(params.objectId);
       return User.one().customPUT(params);
+    }
+
+    function updateTaxInfo(user,invoice, taxInfo){
+      var User = parse.user(user.objectId);
+      var data = {};
+
+      console.log(invoice);
+      if(invoice){
+        data = {invoice: true, taxId: taxInfo.taxId, taxName: taxInfo.taxName, taxUse: taxInfo.taxUse};
+      }else{
+        data = {invoice: false};
+      }
+
+      return User.one().customPUT(data);
     }
 
     function checkPassword(params){

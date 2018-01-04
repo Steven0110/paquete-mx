@@ -1,0 +1,24 @@
+.card-wrapper
+  form(name="checkout.invoiceForm", novalidate, data-ng-submit="card.send()")
+    //- div(layout-xs-sm="row")
+    md-input-container.md-block
+      label(for="taxId")
+        |RFC
+      input(name="taxId", data-ng-model="checkout.taxInfo.taxId", required)
+      div(ng-messages="checkout.invoiceForm.taxId.$error")
+        div(ng-message="required")
+          |Es requerido
+    md-input-container.md-block
+      label(for="taxId")
+        |Razón Social
+      input(name="taxName", data-ng-model="checkout.taxInfo.taxName", required)
+      div(ng-messages="checkout.invoiceForm.taxName.$error")
+        div(ng-message="required")
+          |Es requerido
+    .md-block
+      label(for="taxUse")
+        |Uso de CFDI: 
+      select(data-ng-model="checkout.taxInfo.taxUse")
+        option(data-ng-repeat="item in checkout.taxUses", value="{{item.code}}")
+          |{{item.name}}
+    md-input-container.md-block
