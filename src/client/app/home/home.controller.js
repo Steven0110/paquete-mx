@@ -329,15 +329,15 @@
                   home.shipping.from.data.zip = home.shipping.from.zip;
                 }
 
-                var fromStateCode = false;
-                if(home.shipping.from.data && home.shipping.from.data.state_code){
-                  fromStateCode =  home.shipping.from.data.state_code;
-                }
+                // var fromStateCode = false;
+                // if(home.shipping.from.data && home.shipping.from.data.state_code){
+                //   fromStateCode =  home.shipping.from.data.state_code;
+                // }
 
-                var toStateCode = false;
-                if(home.shipping.to.data && home.shipping.to.data.state_code){
-                  toStateCode =  home.shipping.to.data.state_code;
-                }
+                // var toStateCode = false;
+                // if(home.shipping.to.data && home.shipping.to.data.state_code){
+                //   toStateCode =  home.shipping.to.data.state_code;
+                // }
 
                 var toZip;
                 if(home.shipping.to.data && home.shipping.to.data.zip){

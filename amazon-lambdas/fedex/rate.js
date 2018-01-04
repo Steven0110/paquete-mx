@@ -3,7 +3,7 @@ var convert = require('xml-to-json-promise');
 var moment = require ('moment');
 const production =  false;
 const exchange = 20;
-const currentDiscount = 0.10;
+const currentDiscount = 0.15;
 
 
 function generateError(code, message){
