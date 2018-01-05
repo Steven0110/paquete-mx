@@ -17,6 +17,7 @@
     home.countries = shell.countries;
     home.options = [];
     home.international = false;
+
     // home.volumetric = false;
 
     // alert();
@@ -83,12 +84,12 @@
       from:{
         zip: null,
         data: {},
-        country: "MX"
+        country: false
       },
       to:{
         zip: null,
         data: {},
-        country: "MX"
+        country: false
       },
       type: null,
       valueDeclared: null,
@@ -104,7 +105,6 @@
     };
 
     home.shipping = JSON.parse(JSON.stringify(home.initialize));
-
 
     home.describeWeight = function(){
       Dialog.showTooltip("¿Cómo se calcula el peso volumétrico?","El costo de un envío puede ser afectado por la cantidad de espacio que éste ocupa en el transporte, más que por su peso real. A esto se les llama el peso volumétrico (o dimensional).<br/></br/> El peso volumétrico se calcula multiplicando el alto, largo y ancho del paquete y diviendolo entre 5000: <br/><br/> PV= (alto x largo x ancho)/5000 <div style='text-align: center'><img style='width: 200px' src='common/images/pv.png' /></div>",{close:"Cerrar"});
@@ -137,26 +137,6 @@
     }
     /*nuevo diseño*/
 
-    // home.shipping ={
-    //   from:{
-    //     search: null,
-    //     data: {},
-    //     country: null
-    //   },
-    //   to:{
-    //     search: null,
-    //     data: {},
-    //     country: null
-    //   },
-    //   type: "document",
-    //   package:{
-    //     weight: "1",
-    //     width: "25",
-    //     length: "25",
-    //     height: "25"
-    //   }
-    // }
-
     home.setService = function(service){
 
       home.shipping.from.data.country = home.shipping.from.country;
@@ -173,34 +153,8 @@
       $state.go('checkout');
     }
 
-    // $timeout(function(){
-
-      
-      
-    // },500);
     home.fromSearch  = null;
     home.toSearch  = null;
-
-    home.changeFrom = function(){
-      home.shipping.from.search = home.fromSearch;
-    }
-
-    home.changeTo = function(){
-      home.shipping.to.search = home.toSearch;
-    }
-
-    home.fromClean = function(){
-      home.fromClean = true;
-    }
-
-    home.toClean = function(){
-      home.toClean = true;
-    }
-
-    home.selectItem = function(item){
-      home.shipping.from.zip = item;
-      home.options = [];
-    }
 
     home.active = false;
     home.sections = [
@@ -228,15 +182,7 @@
     ];
     home.rated = false;
     home.searching = false;
-    //
-    // home.searching = false;
-    // home.rated = true;
-    // home.services = [{service:"ups",deliveryHours:"24", name:"UPS SAVER", total:100, discountTotal: 80}];
     home.services = [];
-    // alert();
-    // angular.element(document).on('click', function () {
-      
-    // });
 
     var menu = $('#menu').innerHeight();
 
@@ -255,20 +201,6 @@
       }
     }
 
-    // function loadCities(country, section){
-    //   console.log(country);
-    //   if(citiesAllowed.indexOf(country) >= 0 ){
-    //     shell.showLoading();
-    //     template.get('app/countries/'+country+'.json').then(function(cities){
-    //       var snapshot = Defiant.getSnapshot(cities);
-    //       home[section] = snapshot;
-    //       shell.hideLoading();
-    //     },function(err){
-    //       console.log(err);
-    //     });
-    //   }
-    // }
-
     $scope.$watch('home.shipping.to.country',function(newVal, prevVal){
       if(prevVal != newVal){
         if(newVal && newVal.code){
@@ -282,6 +214,150 @@
       $('.benefits-'+index).slideUp(500);
     };
 
+
+    function getRates(fromCountry, toCountry){
+      home.services = [];
+      if(!fromCountry)
+        fromCountry = home.shipping.from.country.code;
+      if(!toCountry)
+        toCountry = home.shipping.to.country.code;
+      home.international =  shell.isInternational(fromCountry, toCountry);
+      home.rated =  true;
+      home.searching =  true;
+      var topContent = $('#float-section').position().top;
+      $('html').animate({scrollTop:topContent},1000);
+
+      home.documentOpen = false;
+      home.packageOpen = false;
+      
+      var services = [{code:"ups", international:true},{code:"fedex",international:true},{code:"redpack",international:false}];
+
+      var fromZip;
+      if(home.shipping.from.data && home.shipping.from.data.zip){
+        fromZip =  home.shipping.from.data.zip;
+        home.shipping.from.zip = home.shipping.from.data.zip;
+      }else{
+        fromZip =  home.shipping.from.zip;
+        home.shipping.from.data.zip = home.shipping.from.zip;
+      }
+
+      var toZip;
+      if(home.shipping.to.data && home.shipping.to.data.zip){
+        toZip =  home.shipping.to.data.zip;
+        home.shipping.to.zip = home.shipping.to.data.zip;
+      }else{
+        toZip =  home.shipping.to.zip;
+        home.shipping.to.data.zip = home.shipping.to.zip;
+      }
+
+      var rate = {
+        "type":home.shipping.type,
+        "from": {
+          "zip": fromZip,
+          "country": fromCountry
+        },
+        "to": {
+          "zip": toZip,
+          "country": toCountry
+        },
+        "packages": home.shipping.packages
+      };
+
+      console.log("rate", rate);
+      var promises = [];
+      angular.forEach(services,function(service){
+
+        var runRate = true; 
+        if(home.international && !service.international){
+          console.log('service no international'+service.code);
+          runRate = false;
+        }
+
+
+        if(runRate){
+          var params = {
+            "type":service.code,
+            "rate": rate
+          };
+
+          home.fastest = {
+            time: 1000,
+            code: false
+          };
+
+          home.cheapest = {
+            amount: 1000000,
+            code: false
+          };
+
+
+          promises.push(
+            rateApi.rate(service,params).then(function(response){
+              // console.log(response);
+              if(response.services){
+
+                for(var i= 0; i< response.services.length; i++){
+                  var deliveryHours =  response.services[i].deliveryHours;
+
+                  var discountTotal =  response.services[i].discountTotal;
+
+                  if(home.fastest.time > deliveryHours){
+                    home.fastest.time = deliveryHours;
+                    home.fastest.code = response.services[i].code;
+                  }
+
+                  if(home.cheapest.amount > discountTotal){
+                    home.cheapest.amount = discountTotal;
+                    home.cheapest.code = response.services[i].code;
+                  }
+
+                  if(deliveryHours){
+                    // if(deliveryHours < 24){
+                      // response.services[i].qty = deliveryHours;
+                      // response.services[i].units = "HORAS";
+                    // }
+                    if(deliveryHours  <=24){
+                      response.services[i].qty = 1;
+                      response.services[i].units = "DÍA";
+                    }else{
+                      deliveryHours =  Math.ceil(deliveryHours/24)
+                      response.services[i].qty = deliveryHours;
+                      response.services[i].units = "DÍAS";
+                    }
+                  }else{
+                    if(response.services[i].code == "08" || response.services[i].code == "11"){
+                      response.services[i].qty = 5;
+                      response.services[i].units = "DÍAS";
+                    }
+                  }
+
+
+                }
+
+                home.services = home.services.concat(response.services);
+              }
+              var deferred = $q.defer();
+
+              deferred.resolve(response);
+              return deferred.promise;
+            },function(err){
+              console.log(err);
+              var deferred = $q.defer();
+              deferred.reject(err);
+              return deferred.promise;
+            })
+          );
+        }
+      });
+      $q.all(promises).then(function(result){
+      },function(err){
+        console.log(err);
+      }).finally(function(){
+        console.log(home.services);
+        home.searching = false;
+      });
+    }
+
     home.send = function(){
       if(home.shippingForm.fromZip.$valid){
         if(home.shippingForm.toZip.$valid){
@@ -293,180 +369,31 @@
                   home.shipping.packages = home.documents;
                 }
 
-                console.log(home.shipping);
-
-                
-
-
-                home.services = [];
-                var fromCountry = home.shipping.from.country.code;
-                var toCountry = home.shipping.to.country.code;
-                home.international =  shell.isInternational(fromCountry, toCountry);
-                home.rated =  true;
-                home.searching =  true;
-                // var viewport = $('.image-space').innerHeight();
-                // var body = $('body').innerHeight();
-                var topContent = $('#float-section').position().top;
-                // alert(topContent);
-                // if(viewport <= body){
-                $('html').animate({scrollTop:topContent},1000);
-
-                home.documentOpen = false;
-                home.packageOpen = false;
-                // }else{
-                  // $('body,html').stop().animate({scrollTop:topContent/2},1000);
-                // }
-                
-                var services = [{code:"ups", international:true},{code:"fedex",international:true},{code:"redpack",international:false}];
-                // var services = [{code:"ups", international:true},{code:"fedex",international:true}];
-
                 var fromZip;
+                var toZip;
+                var fromCountry;
+                var toCountry;
+                
                 if(home.shipping.from.data && home.shipping.from.data.zip){
                   fromZip =  home.shipping.from.data.zip;
-                  home.shipping.from.zip = home.shipping.from.data.zip;
                 }else{
-                  fromZip =  home.shipping.from.zip;
-                  home.shipping.from.data.zip = home.shipping.from.zip;
+                  fromZip =  home.fromSearch;
                 }
 
-                // var fromStateCode = false;
-                // if(home.shipping.from.data && home.shipping.from.data.state_code){
-                //   fromStateCode =  home.shipping.from.data.state_code;
-                // }
-
-                // var toStateCode = false;
-                // if(home.shipping.to.data && home.shipping.to.data.state_code){
-                //   toStateCode =  home.shipping.to.data.state_code;
-                // }
-
-                var toZip;
                 if(home.shipping.to.data && home.shipping.to.data.zip){
                   toZip =  home.shipping.to.data.zip;
-                  home.shipping.to.zip = home.shipping.to.data.zip;
                 }else{
-                  toZip =  home.shipping.to.zip;
-                  home.shipping.to.data.zip = home.shipping.to.zip;
+                  toZip =  home.toSearch;
                 }
 
-                // return true;
-                var rate = {
-                  "type":home.shipping.type,
-                  "from": {
-                    "zip": fromZip,
-                    "country": fromCountry,
-                    "stateCode": fromStateCode
-                  },
-                  "to": {
-                    "zip": toZip,
-                    "country": toCountry,
-                    "stateCode": fromStateCode
-                  },
-                  "packages": home.shipping.packages
-                };
+                fromCountry = JSON.stringify(home.shipping.from.country);
+                toCountry = JSON.stringify(home.shipping.to.country);
 
-                console.log("rate", rate);
-                var promises = [];
-                angular.forEach(services,function(service){
-
-                  var runRate = true; 
-                  if(home.international && !service.international){
-                    console.log('service no international'+service.code);
-                    runRate = false;
-                  }
-
-
-                  if(runRate){
-                    var params = {
-                      "type":service.code,
-                      "rate": rate
-                    };
-
-                    home.fastest = {
-                      time: 1000,
-                      code: false
-                    };
-
-                    home.cheapest = {
-                      amount: 1000000,
-                      code: false
-                    };
-
-
-                    promises.push(
-                      rateApi.rate(service,params).then(function(response){
-                        // console.log(response);
-                        if(response.services){
-
-                          for(var i= 0; i< response.services.length; i++){
-                            var deliveryHours =  response.services[i].deliveryHours;
-
-                            var discountTotal =  response.services[i].discountTotal;
-
-                            if(home.fastest.time > deliveryHours){
-                              home.fastest.time = deliveryHours;
-                              home.fastest.code = response.services[i].code;
-                            }
-
-                            if(home.cheapest.amount > discountTotal){
-                              home.cheapest.amount = discountTotal;
-                              home.cheapest.code = response.services[i].code;
-                            }
-
-                            if(deliveryHours){
-                              // if(deliveryHours < 24){
-                                // response.services[i].qty = deliveryHours;
-                                // response.services[i].units = "HORAS";
-                              // }
-                              if(deliveryHours  <=24){
-                                response.services[i].qty = 1;
-                                response.services[i].units = "DÍA";
-                              }else{
-                                deliveryHours =  Math.ceil(deliveryHours/24)
-                                response.services[i].qty = deliveryHours;
-                                response.services[i].units = "DÍAS";
-                              }
-                            }else{
-                              if(response.services[i].code == "08" || response.services[i].code == "11"){
-                                response.services[i].qty = 5;
-                                response.services[i].units = "DÍAS";
-                              }
-                            }
-
-
-                          }
-
-                          home.services = home.services.concat(response.services);
-                        }
-                        var deferred = $q.defer();
-
-                        deferred.resolve(response);
-                        return deferred.promise;
-                      },function(err){
-                        console.log(err);
-                        var deferred = $q.defer();
-                        deferred.reject(err);
-                        return deferred.promise;
-                      })
-                    );
-                  }
-                });
-                $q.all(promises).then(function(result){
-                },function(err){
-                  console.log(err);
-                }).finally(function(){
-                  console.log(home.services);
-                  home.searching = false;
-                });
-
-                
-              // }
-            // }
-          // };
-
-
-
-
-                
+                var packages = JSON.stringify(home.shipping.packages);
+                getRates();
+                $state.go('home', {fromZip: fromZip, toZip:toZip, fromCountry:fromCountry, toCountry:toCountry,type:home.shipping.type,packages:packages}, {notify: false});
+                // alert();
+                // getRates();
               }else{
                 Dialog.showError('Verifica las dimensiones de los paquetes, recuerda que deben ser numéricos mayores a 0','Dimensiones de los paquetes');  
               }
@@ -485,6 +412,25 @@
       }
     };
 
+
+    if($state.params){
+      if($state.params.fromZip)
+        home.shipping.from.zip = $state.params.fromZip;
+      if($state.params.fromCountry){
+        home.shipping.from.country = JSON.parse($state.params.fromCountry);
+      }
+      if($state.params.toZip)
+        home.shipping.to.zip = $state.params.toZip;
+      if($state.params.toCountry)
+        home.shipping.to.country = JSON.parse($state.params.toCountry);
+      if($state.params.type)
+        home.shipping.type = $state.params.type;
+      if($state.params.packages)
+        home.shipping.packages = JSON.parse($state.params.packages)
+
+      if($state.params.fromZip && $state.params.toZip)
+        getRates();
+    }
 
     // home.send = function(){
 

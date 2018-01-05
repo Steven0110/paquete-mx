@@ -41,6 +41,7 @@ function selectCities($http, $document){
 
 
       $scope.$watch('vm.search', function(oldValue, newValue){
+        console.log(newValue);
         if(vm.search){
           if(vm.country && vm.country.listed){
             if(!vm.search.includes("-")){

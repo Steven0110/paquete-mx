@@ -22,7 +22,7 @@ function selectCountry($document){
       vm.list = [];
       vm.show = false;
       $scope.$watch('vm.countries',function(){
-        if(vm.countries && vm.countries[0]){
+        if(vm.countries && vm.countries[0] && !vm.country){
           vm.country = vm.countries[0];
         }
         vm.list = vm.countries;

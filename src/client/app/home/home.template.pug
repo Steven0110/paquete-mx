@@ -65,8 +65,8 @@
                               .input-container
                                 input(
                                   placeholder="C.P."
-                                  name="fromZip", data-ng-model="home.shipping.from.zip",required)
-                                select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.shipping.from.zip",data-country="home.shipping.from.country")
+                                  name="fromZip", data-ng-model="home.fromSearch",required)
+                                select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.fromSearch",data-country="home.shipping.from.country")
                             
 
                   .col-xs-12.col-sm-6.col-md-3
@@ -83,8 +83,8 @@
                           .col-xs-8
                             .input-cotizador
                               .input-container
-                                input(placeholder="C.P.",name="toZip", data-ng-model="home.shipping.to.zip",required)
-                                select-cities(data-cities="home.toCities", data-selected="home.shipping.to.data",data-clean = "home.toClean",data-search="home.shipping.to.zip", data-country="home.shipping.to.country")
+                                input(placeholder="C.P.",name="toZip", data-ng-model="home.toSearch",required)
+                                select-cities(data-cities="home.toCities", data-selected="home.shipping.to.data",data-clean = "home.toClean",data-search="home.toSearch", data-country="home.shipping.to.country")
                   .col-xs-12.col-sm-6.col-md-4
                     .cotizador-element
                       .padding-sides
@@ -224,9 +224,52 @@
       .line
         |las mejores opciones
       .line
-        |para tus envios:
+        |para tu envío:
       div(data-ng-show="home.searching")
         div(data-ng-include="'app/templates/spinner.white.template.html'")
+      .table-response.rate-params
+        .row.title-params.red
+          .col-xs-6
+            |ORIGEN
+          .col-xs-6
+            |DESTINO
+        .row.title-params.gray
+          .col-xs-6
+            div
+              span.flag-icon(class="flag-icon-{{home.shipping.from.country.code}}")
+              span.primary-color
+                |&nbsp;&nbsp;{{home.shipping.from.zip}}
+          .col-xs-6
+            div
+              span.flag-icon(class="flag-icon-{{home.shipping.to.country.code}}")
+              span.primary-color
+                |&nbsp;&nbsp;{{home.shipping.to.zip}}
+        .row.title-params.red
+          .col-xs-2
+            |Paquete #
+          .col-xs-2
+            |Peso Real
+          .col-xs-2
+            |Alto
+          .col-xs-2
+            |Largo
+          .col-xs-2
+            |Ancho
+          .col-xs-2
+            |Peso Volumetrico
+        .row.title-params.gray(data-ng-repeat="item in home.shipping.packages")
+          .col-xs-2
+            |{{$index+1}}
+          .col-xs-2
+            |{{item.weight}}
+          .col-xs-2
+            |{{item.length}}
+          .col-xs-2
+            |{{item.height}}
+          .col-xs-2
+            |{{item.width}}
+          .col-xs-2
+            |{{item.volumetric}}
       .table-response
         .container-fluid
           .table-container.clearfix.animated.bounceIn(data-ng-repeat="item in home.services")
