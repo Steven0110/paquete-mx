@@ -187,7 +187,12 @@
     var menu = $('#menu').innerHeight();
 
     home.openSection = function(index){
-      $('.benefits-'+index).slideDown(500);
+      var section = '.benefits-'+index;
+      $(section).slideDown(500,function(){
+          var topContent = $(section).offset().top;
+          $('html').animate({scrollTop:topContent},500);
+      });
+
     }
 
     home.cleanSearch = function(type){
@@ -213,6 +218,10 @@
     home.closeSection = function(index){
       $('.benefits-'+index).slideUp(500);
     };
+
+    home.createInvoice = function(){
+      rateApi.createInvoice();
+    }
 
 
     function getRates(fromCountry, toCountry){
@@ -431,124 +440,6 @@
       if($state.params.fromZip && $state.params.toZip)
         getRates();
     }
-
-    // home.send = function(){
-
-    //   if(home.shippingForm.$valid){
-    //     home.services = [];
-    //     var fromCountry = home.shipping.from.country.code;
-    //     var toCountry = home.shipping.to.country.code;
-    //     home.international =  shell.isInternational(fromCountry, toCountry);
-    //     console.log('international', home.international);
-    //     if(home.shipping.type == 'package' || home.shipping.type == 'documents'){
-    //       home.rated =  true;
-    //       home.searching =  true;
-    //       var viewport = $('.image-space').innerHeight();
-    //       var body = $('body').innerHeight();
-    //       var topContent = $('.image-space').innerHeight();
-    //       if(viewport <= body){
-    //         $('body,html').stop().animate({scrollTop:topContent/2},1000);
-    //       }else{
-    //         $('body,html').stop().animate({scrollTop:topContent/2},1000);
-    //       }
-          
-    //       var services = [{code:"ups", international:true},{code:"fedex",international:true},{code:"redpack",international:false}];
-
-    //       var fromZip;
-    //       if(home.shipping.from.data && home.shipping.from.data.zip){
-    //         fromZip =  home.shipping.from.data.zip;
-    //       }else{
-    //         fromZip =  home.shipping.from.search;
-    //       }
-
-    //       var toZip;
-    //       if(home.shipping.to.data && home.shipping.to.data.zip){
-    //         toZip =  home.shipping.to.data.zip;
-    //       }else{
-    //         toZip =  home.shipping.to.search;
-    //       }
-
-    //       var fromLatLng = {
-    //         lat: null,
-    //         lng: null
-    //       }
-
-    //       if(home.shipping.from.data && home.shipping.from.data.latitude && home.shipping.from.data.longitude){
-    //         fromLatLng.lat = home.shipping.from.data.latitude;
-    //         fromLatLng.lng = home.shipping.from.data.longitude;
-    //       }
-
-    //       var toLatLng = {
-    //         lat: null,
-    //         lng: null
-    //       }
-
-    //       if(home.shipping.to.data && home.shipping.to.data.latitude && home.shipping.to.data.longitude){
-    //         toLatLng.lat = home.shipping.to.data.latitude;
-    //         toLatLng.lng = home.shipping.to.data.longitude;
-    //       }          
-
-    //       var rate = {
-    //         "from": {
-    //           "zip": fromZip,
-    //           "country": fromCountry,
-    //           "geolocation":fromLatLng
-    //         },
-    //         "to": {
-    //           "zip": toZip,
-    //           "country": toCountry,
-    //           "geolocation": toLatLng
-    //         },
-    //         "packages":[home.shipping.package]
-    //       };
-    //       var promises = [];
-    //       angular.forEach(services,function(service){
-
-    //         var runRate = true; 
-    //         if(home.international && !service.international){
-    //           console.log('service no international'+service.code);
-    //           runRate = false;
-    //         }
-
-    //         if(runRate){
-    //           var params = {
-    //             "type":service.code,
-    //             "rate": rate
-    //           };
-
-    //           promises.push(
-    //             rateApi.rate(service,params).then(function(response){
-    //               // console.log(response);
-    //               if(response.services){
-    //                 home.services = home.services.concat(response.services);
-    //               }
-    //               var deferred = $q.defer();
-    //               deferred.resolve(response);
-    //               return deferred.promise;
-    //             },function(err){
-    //               console.log(err);
-    //               var deferred = $q.defer();
-    //               deferred.reject(err);
-    //               return deferred.promise;
-    //             })
-    //           );
-    //         }
-    //       });
-    //       $q.all(promises).then(function(result){
-    //       },function(err){
-    //         console.log(err);
-    //       }).finally(function(){
-    //         console.log(home.services);
-    //         home.searching = false;
-    //       });
-
-          
-    //     }
-    //   }
-    // };
-
-
-    // var floatSection = $('#float-section').offset().top;
 
     function setHomeState(status){
       home.active = status;

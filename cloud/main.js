@@ -4,14 +4,27 @@
 18-Octubre-2017: Se crea la función para guardar tarjetas
 20-Octubre-2017: Se crea la función para cargar a las tarjetas
 27-Diciembre-2017: Se elimina conekta y se agrega t-pago
+6-Enero-2018: Se agregan las funciones de facturacion
 change log*/
 
 var templates = require("./templates.js").templates;
 var production = false;
 var Mailgun = null;
+
+var emisor = {
+              "cedula":{
+                "RFC": null,
+                "razonSocial":"PAQUETE MX",
+                "regimenFiscal":"601"
+              },
+              "CP":"15510"
+            };
+
+
 //Production
 
 if(production){
+  // emisor.cedula.RFC = "KNE110317Q61";
   // var domain = "viaservicios.com.mx";
   // Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-207406cb7f186389bdbf6c20b4c82ce7'});
 
@@ -19,6 +32,7 @@ if(production){
   // var masterKey = "GDF6rB6TfdUzV14WjPTCpsC8bT4ki0lzf0KC4L0Q";
   // var javascriptKey = "IgkJ82CLUN4xIpiwD9UmFblPaUE650tRsw46Mbld";
 }else{
+  emisor.cedula.RFC = "MAG041126GT8";
   var domain = "sandbox0ac0a2a5c16246be98c97c0c2628f3fa.mailgun.org";
   Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-5e0f8c7de60172d4428cb1edbed23275'});
   // var conekta_key = 'Basic OmtleV81elE2NGZIcWhRZmYzSEthaUNWVDRn';
@@ -29,6 +43,125 @@ if(production){
   var javascriptKey = "wcFLh2UROrO8fN9SbFbgbeOZTZOlPu3YkAMys1bL";
 }
 
+
+/*CREATE INVOICE*/
+
+function createInvoice(user, amount){
+  var parse_promise = new Parse.Promise();
+
+  getInvoceTotal('ingreso').then(function(folio){
+
+    var RFC = "XAXX010101000";
+    var razonSocial = "PÚBLICO EN GENERAL";
+    var satResponse = false;
+
+    if(user.get('invoice')){
+      RFC =  user.get("taxId");
+      if(!RFC)
+        RFC = "XAXX010101000";
+
+      razonSocial = user.get("taxName");
+      if(!razonSocial)
+        razonSocial = "PÚBLICO EN GENERAL";
+    }
+
+    var receptor = {
+      'RFC'           : RFC,
+      'razonSocial'   : razonSocial
+    };
+
+    var totalE = amount
+    var valorUnitario = (amount/1.16).toFixed(2);
+
+    var items = [{
+                  "claveSAT":"81112100",
+                  "claveLocal": "B20",
+                  "cantidad": "1",
+                  "claveUnidad": "E48",
+                  "unidad":"Servicio",
+                  "descripcion":"Servicio de paqueteria",
+                  "valorUnitario": valorUnitario,
+                  "totalE": totalE
+                }];
+
+    var metodoPago = "PUE";
+    var serie =  "PQ";
+    // var folio = "1";
+    var newParams = {
+                      'serie'     : serie,
+                      'folio'     : folio,
+                      'receptor'  : receptor,
+                      'metodoPago': metodoPago,
+                      'formaPago' : '04',
+                      'items'     : items
+                    };
+
+    IngresoCFDI(newParams).then(function(params){
+      return makeCFDI(params);
+    }).then(function(res){
+
+      console.log('satResponse');
+      console.log(res);
+
+
+      var satResponse =  res;
+      var Invoice = Parse.Object.extend('Invoice');
+      var invoice = new Invoice();
+
+      if(res.UUID){
+        invoice.set("UUID",res.UUID);
+      }
+
+      invoice.set('amount', amount);
+      invoice.set('user', user);
+      invoice.set('payment', payment);
+      return invoice.save();
+
+    }).then(function(){
+      console.log('done!')
+      parse_promise.resolve(satResponse);
+    },function(err){
+      parse_promise.reject(err);
+    });
+  },function(err){
+    parse_promise.reject(err);
+  });
+
+  return parse_promise;
+}
+
+function getInvoceTotal(type){
+  var parse_promise = new Parse.Promise();
+  var InvoiceTotal = new Parse.Object.extend("InvoiceTotal");
+  var query = new Parse.Query(InvoiceTotal);
+  var index;
+  query.first().then(function(totals){
+    console.log('totals');
+    console.log(totals);
+    if(totals){
+      index = totals.get(type);
+      totals.set(type,index+1);
+      return totals.save();
+    }
+  }).then(function(){
+    parse_promise.resolve(index.toString());
+  },function(err){
+    parse_promise.reject(err);
+  });
+
+  return parse_promise;
+}
+
+
+// Parse.Cloud.define("createInvoice",function(request, response){
+//   var user =  request.user;
+//   createInvoice(user).then(function(res){
+//     response.success(res);
+//   },function(err){
+//     response.error(err);
+//   })
+// });
+/*CREATE INVOICE*/
 
 /*SAVE CARD T-PAGO*/
 Parse.Cloud.define("saveCard",function(request, response){
@@ -569,8 +702,8 @@ Parse.Cloud.define("chargeCard",function(request, response){
     });
 
   }).then(function(){
-    
     response.success(requestResult);
+    createInvoice(user, amount);
   },function(error){
     response.error(error);
   });
@@ -607,6 +740,108 @@ Parse.Cloud.define("getCustomer",function(request, response){
   });
 });
 /*GET CUSTOMER CARDS IN CONEKTA*/
+
+/*CREACION DE LA FACTURA FISCAL*/
+function makeCFDI(params){
+  var parse_promise = new Parse.Promise();
+
+  var url = 'http://54.244.218.15/development/index.php';
+
+  if(production){
+    url = 'http://54.244.218.15/endpoint/index.php';
+  }
+
+
+  
+  var method = 'POST';
+
+  Parse.Cloud.httpRequest({
+  method: method,
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  url: url,
+  body: params
+  }).then(function(response){
+    console.log("****** RESPONSE SAT OFICIAL 03 ******");
+    console.log(response.text);
+    console.log(params);
+    if(response && response.text){
+      if(response.text.error){
+        console.log("****** ERROR SAT OFICIAL ******");
+        console.log(response.text);
+        parse_promise.reject(response.text.error);
+      }else{
+        var result = JSON.parse(response.text);
+        parse_promise.resolve(result);
+      }
+    }else{
+      parse_promise.reject(response);
+    }
+  },function(err){
+    console.log('error');
+    console.log(err);
+    console.log('error-canizal');
+    // if(err.text)
+      // err = JSON.parse(err.text);
+    parse_promise.reject(err);
+  });
+
+  return parse_promise;
+}
+/*CREACION DE LA FACTURA FISCAL*/
+
+/*Generar objecto de ingreso para facturacion*/
+function IngresoCFDI(params){
+  var parse_promise = new Parse.Promise();
+  if(!params.serie)
+    parse_promise.reject({error:true,message:'serie is required'});
+  else if(!params.folio)
+    parse_promise.reject({error:true,message:'folio is required'});
+  else if(!params.receptor)
+    parse_promise.reject({error:true,message:'receptor is required'});
+  else if(!params.items)
+    parse_promise.reject({error:true,message:'items are required'});
+  else if(!params.metodoPago)
+    parse_promise.reject({error:true,message:'metodoPago is required'});
+  else if(!params.formaPago)
+    parse_promise.reject({error:true,message:'formaPago is required'});
+  else{
+
+    var lugarExpedicion = emisor.CP;
+    if(params.serviceZip){
+      lugarExpedicion = params.serviceZip;
+    }
+
+    var cfdi = {  
+              "serie": params.serie,
+              "folio": params.folio,
+              "formaPago": params.formaPago,
+              "metodoPago": params.metodoPago,
+              "lugarExpedicion": lugarExpedicion,
+              "tipoDeComprobante":"I",
+              "usoCFDI":"G03",
+              "trasladados":{
+                "iva":{
+                  "tasa":"0.160000",
+                  "factor":"Tasa",
+                  "impuesto":"002"
+                }
+              },
+              "receptor": params.receptor,
+              "emisor": emisor.cedula,
+              "items": params.items
+            };
+
+    if(params.relacionados){
+      cfdi.relacionados = params.relacionados;
+    }
+    
+    parse_promise.resolve(cfdi);
+  }
+  return parse_promise;
+}
+/*Generar objecto de ingreso para facturacion*/
 
 
 function sendShipOrder(user, shipping, payment) {

@@ -4,7 +4,8 @@
       .menu-bar.bar1
       .menu-bar.bar2
       .menu-bar.bar3
-  .login-home(data-ui-sref="login", data-ng-hide="shell.menuOpen")
+  //- .login-home(data-ui-sref="login", data-ng-hide="shell.menuOpen")
+  .login-home(data-ng-click="home.createInvoice()")
     i.fa.fa-home
     |Iniciar Sesión
   .tracking-home(ui-sref="dashboard.shippings", data-ng-hide="shell.menuOpen")
@@ -281,9 +282,9 @@
                   |{{item.qty}}
                 span.secondary-text
                   |&nbsp;{{item.units}}
-              div(data-ng-if="item.service == 'fedex'")
+              div(data-ng-if="item.service == 'fedex' || item.service == 'ups'")
                 |{{item.delivery | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
-              div(data-ng-if="item.service == 'redpack' || item.service == 'ups'")
+              div(data-ng-if="item.service == 'redpack'")
                 |{{item.delivery | amDateFormat:'DD-MMM-YY'}}
             .table-box.service-logo
               div
@@ -363,9 +364,9 @@
         .row
           .col-xs-12.col-md-6
             h1
-              |Obtén las mejores tarifas.
+              |Las mejores tarifas
             h2
-              |Obtén descuentos desde tu primer envío y cada vez obtendrás mejores tarifas.
+              |Desde tu primer envío, obtienes las mejores tarifas y entre más envías adquieres mayores beneficios.
             .more-info(data-ng-click="home.openSection(0)")
               i.fa.fa-plus-circle
               |Más información
@@ -381,10 +382,9 @@
       h1
         |Diversas opciones al mejor precio.
       h2
-        |Obtén descuentos desde tu 
-        span.accent.bold
+        |Nuestros convenios con las principales paqueterías nos permiten brindarte las mejores opciones y al mejor precio.
+        //- span.accent.bold
           |primer envío
-        |, pero entre mas envíes mejores tarifas obtendrás. Tenemos los mejores convenios con las paqueterías para darte las mejores opciones y al mejor precio. 
       .benefits 
         .container-fluid
           .row
@@ -397,23 +397,25 @@
               .benefits-image
                 img(data-ng-src="common/images/section-1-2.png")
               .benefits-text
-                |Las mejores tarifas con más de X servicios.
+                |Te mostramos diversas opciones de envío.
             .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-1-3.png")
               .benefits-text
-                |Entre mas envíos realices mejores tarifas obtienes.
+                |Entre más envíos realices mejores tarifas obtienes.
       h2.accent.bold.align-center
-        |¡LAS MEJORES OPCIONES GARANTIZADO!
+        |¡LAS MEJORES OPCIONES!
   .section-container.section-2.right
     .section-description
       .container-fluid
         .row
           .col-xs-12.col-md-6.pull-right
             h1
-              |Más de 20 servicios a elegir.
+              |Todas las opciones a tu alcance
             h2
-              |Una opción a la medida de tus necesidades con las mejores paqueterías locales, nacionales e internacionales.
+              |Las mejores empresas de mensajería y paquetería, con los mejores servicios y costos en un click.
+            h2
+              |¡Tú eliges!
             .more-info-right(data-ng-click="home.openSection(1)")
               i.fa.fa-plus-circle
               |Más información
@@ -427,9 +429,9 @@
     .bottom-line
     .description
       h1
-        |Más de 20 servicios a elegir.
+        |Distribuidor Autorizado
       h2
-        |Tenemos alianzas con las mejores mensajerías y paqueterías nacionales e internacionales. Tenemos una opción que se ajuste a las necesidades de tu envío, origen, destino y urgencia.
+        |Para brindarte un mejor servicio, contamos de aliados estratégicos a:
       .benefits 
         .container-fluid
           .row
@@ -449,8 +451,8 @@
               .benefits-text
                 |Las mejores paqueterías a nivel nacional e internacional.
       h2.accent.bold.align-center
-        |¡Cotiza ahora mismo! 
-      h2.accent.bold.align-center
+        |¡Envía con Paquete.MX tu mejor opción!
+      //- h2.accent.bold.align-center
         |Y conce la variedad de opciones que PAQUETE.MX te ofrece.
   .section-container.section-3.left
     .section-description

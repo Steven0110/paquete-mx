@@ -215,8 +215,11 @@
         checkout.invoice = checkout.user.invoice;
       }
 
+      console.log('here');
+
 
       userApi.getCards().then(function(result){
+        console.log(result);
         checkout.cardForm = true;
         if(result && result.length > 0){
           checkout.paymentMethods = result;

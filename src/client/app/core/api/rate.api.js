@@ -13,10 +13,21 @@
 
     var factory = {
       rate    : rate,
-      ship    : ship
+      ship    : ship,
+      createInvoice: createInvoice
     };
 
     return factory;
+
+
+    function createInvoice(){
+      var Shipping = parse.cloud('createInvoice');
+      Shipping.post().then(function(res){
+        console.log(res);
+      },function(err){
+        console.log(err);
+      })
+    }
         
     function rate(service,params){
       var deferred = $q.defer();
