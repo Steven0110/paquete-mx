@@ -188,9 +188,9 @@
 
     home.openSection = function(index){
       var section = '.benefits-'+index;
-      $(section).slideDown(500,function(){
-          var topContent = $(section).offset().top;
-          $('html').animate({scrollTop:topContent},500);
+      $(section).slideDown(300,function(){
+        var topContent = $(section).offset().top;
+        $('html').animate({scrollTop:topContent},500);
       });
 
     }

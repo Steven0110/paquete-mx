@@ -433,23 +433,55 @@
       h2
         |Para brindarte un mejor servicio, contamos de aliados estratégicos a:
       .benefits 
-        .container-fluid
-          .row
-            .col-xs-12.col-md-4
-              .benefits-image
-                img(data-ng-src="common/images/section-2-1.png")
-              .benefits-text
-                |Más de 20 opciones de servicios que se ajusten a tus necesidades.
-            .col-xs-12.col-md-4
-              .benefits-image
-                img(data-ng-src="common/images/section-2-2.png")
-              .benefits-text
-                |Programamos tu recolección o lo puedes dejar en mostrador ¡Tu decides!
-            .col-xs-12.col-md-4
-              .benefits-image
-                img(data-ng-src="common/images/section-2-3.png")
-              .benefits-text
-                |Las mejores paqueterías a nivel nacional e internacional.
+        .row
+          .ups-box
+            img(data-ng-src="common/images/ups-logo.png")
+          .fedex-box
+            img(data-ng-src="common/images/fedex-logo.png")
+          .redpack-box
+            img(data-ng-src="common/images/redpack-logo.png")
+          .dhl-box
+            img(data-ng-src="common/images/dhl-logo-bn.png")
+            md-tooltip(md-direction="bottom")
+              |Próximamente
+        .row
+          .aeroflash-box
+            img(data-ng-src="common/images/aeroflash-logo-bn.png")
+            md-tooltip(md-direction="bottom")
+              |Próximamente
+          .estafeta-box
+            img(data-ng-src="common/images/estafeta-logo-bn.png")
+            md-tooltip(md-direction="bottom")
+              |Próximamente
+          .ivoy-box
+            img(data-ng-src="common/images/ivoy-logo-bn.png")
+            md-tooltip(md-direction="bottom")
+              |Próximamente
+          .ampm-box
+            img(data-ng-src="common/images/ampm-logo-bn.png")
+            md-tooltip(md-direction="bottom")
+              |Próximamente
+        //- img(data-ng-src="common/images/aeroflash-logo-bn.png")
+        //- img(data-ng-src="common/images/estafeta-logo-bn.png")
+        //- img(data-ng-src="common/images/ivoy-logo-bn.png")
+        //- img(data-ng-src="common/images/ampm-logo-bn.png")
+        //- .container-fluid
+        //-   .row
+        //-     .col-xs-12.col-md-4
+        //-       .benefits-image
+        //-         img(data-ng-src="common/images/section-2-1.png")
+        //-       .benefits-text
+        //-         |Más de 20 opciones de servicios que se ajusten a tus necesidades.
+        //-     .col-xs-12.col-md-4
+        //-       .benefits-image
+        //-         img(data-ng-src="common/images/section-2-2.png")
+        //-       .benefits-text
+        //-         |Programamos tu recolección o lo puedes dejar en mostrador ¡Tu decides!
+        //-     .col-xs-12.col-md-4
+        //-       .benefits-image
+        //-         img(data-ng-src="common/images/section-2-3.png")
+        //-       .benefits-text
+        //-         |Las mejores paqueterías a nivel nacional e internacional.
       h2.accent.bold.align-center
         |¡Envía con Paquete.MX tu mejor opción!
       //- h2.accent.bold.align-center
@@ -460,9 +492,9 @@
         .row
           .col-xs-12.col-md-6
             h1
-              |No tienes que salir para hacer tus pagos
+              |Realiza tus pagos sin salir de casa
             h2
-              |Tarjeta de Crédito o Débito. <br/>¡Tu eliges!
+              |Tarjeta Bancarias de Crédito y Débito.<br/>¡Tú eliges!
             .more-info(data-ng-click="home.openSection(2)")
               i.fa.fa-plus-circle
               |Más información
@@ -476,28 +508,28 @@
     .bottom-line
     .description
       h1
-        |Paga desde la comodidad de tu hogar o negocio.
+        |Paga desde la comodidad de tu hogar o negocio
       h2
-        |Puedes pagar con tarjetas de crédito o debito. 
+        |Genera tu cuenta corporativa y asciende a mejores beneficios, como descuentos, crédito y nuestra política de lealtad.
       h2
-        |Contamos con un sistema seguro para las transacciónes el línea !No te preocupes! Nosotros te protegemos.
+        |Contamos con un sistema de pagos seguro. ¡No te preocupes!.
       .benefits 
         .container-fluid
           .row
-            .col-xs-12.col-md-4.center-block
+            .col-xs-12.col-sm-4
               .benefits-image
-                img(data-ng-src="common/images/section-3-1.png")
-              .benefits-text
-                |Aceptamos tarjetas de crédito Nacionales e Internacionales expedidas por VISA, MASTERCARD, AMERICAN EXPRESS.
-            //- .col-xs-12.col-md-4
+                img(data-ng-src="common/images/visa.png")
+              //- .benefits-text
+                //- |Aceptamos tarjetas de crédito Nacionales e Internacionales expedidas por VISA, MASTERCARD, AMERICAN EXPRESS.
+            .col-xs-12.col-sm-4
               .benefits-image
-                img(data-ng-src="common/images/cards.png")
-              .benefits-text
+                img(data-ng-src="common/images/mastercard.png")
+              //- .benefits-text
                 |Paga con tu cuenta de PAYPAL.
-            //- .col-xs-12.col-md-4
+            .col-xs-12.col-sm-4
               .benefits-image
-                img(data-ng-src="common/images/section-3-3.png")
-              .benefits-text
+                img(data-ng-src="common/images/amex.png")
+              //- .benefits-text
                 |Depósitos en efectivo en OXXO.
       h2.accent.bold.align-center
         |¡Tu eliges la opción que más te convenga!
@@ -507,9 +539,9 @@
         .row
           .col-xs-12.col-md-6.pull-right
             h1
-              |Te notificamos en tiempo real.
+              |Conoce en tiempo real el estatus de tus envíos
             h2
-              |Conoceras en todo momento del status de tus envíos.
+              |Recibe notificaciones constantes sobre la entrega de tus envíos.
             .more-info-right(data-ng-click="home.openSection(3)")
               i.fa.fa-plus-circle
               |Más información
@@ -523,11 +555,9 @@
     .bottom-line
     .description
       h1
-        |Mantenten informado en todo momento.
+        |¿Tuviste una incidencia?, te mantendremos informado y estaremos ayudandote a manejarlo.
       h2
-        |Con nuestro sistema de notificaciones y seguimiento conocerás el estado de tu envío en todo momento desde que es recolectado hasta que es entregado. 
-      h2
-        |¿Hubo incidencias? No te preocupes también te notificamos cuando alguna incidencia ocurra.
+        |Olvídate de llamadas, con un solo click realiza tus envíos.
       .benefits 
         .container-fluid
           .row
@@ -535,19 +565,19 @@
               .benefits-image
                 img(data-ng-src="common/images/section-4-1.png")
               .benefits-text
-                |Puedes verificar el status de tu envío en todo momento desde nuestro Panel de Control.
+                |Veri car el status de tu envío en todo momento desde nuestro Panel de Control.
             .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-4-2.png")
               .benefits-text
-                |Te enviamos notificaciones de recolección, entrega e incidencias. 
+                |Te enviamos noti caciones de recolección, entrega e incidencias. 
             .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-4-3.png")
               .benefits-text
-                |Puedes compartir estos datos con tus clientes.
+                |Puedes compartir los estatus de envío con tus clientes.
       h2.accent.bold.align-center
-        |¡LAS MEJORES OPCIONES GARANTIZADO!
+        |¡Nadie te mantiene mejor informado que Paquete.MX!
   .section-container.section-5.left
     .section-description
       .container-fluid
@@ -580,17 +610,17 @@
               .benefits-image
                 img(data-ng-src="common/images/section-5-1.png")
               .benefits-text
-                |Tenemos plugins para las plataformas más comunes de ventas en línea.
+                |Tenemos plugins para las plataformas más usadas de venta en línea.
             .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-5-2.png")
               .benefits-text
-                |Instálalas con un solo clic y empieza a disfrutar de los beneficios que paquete.mx tiene para ti.
+                |Con un solo click instalas y empieza a disfrutar de los beneficios que Paquete.MX tiene para ti.
             .col-xs-12.col-md-4
               .benefits-image
                 img(data-ng-src="common/images/section-5-3.png")
               .benefits-text
-                |Línea de Crédito para empresas.
+                |Y recuerda entre más envíes un mejor precio obtienes.
         .container-fluid
           .row
             .col-xs-12.col-md-3
@@ -607,7 +637,7 @@
                 img(data-ng-src="common/images/prestashop.png")
               
       h2.accent.bold.align-center
-        |¡Que la logística de envíos no frene tu negocio en línea!
+        |¡Que la logística no frene tu negocio!
   .section-container.section-6.right
     .section-description
       .container-fluid
@@ -661,7 +691,7 @@
         .row
           .col-xs-12.col-md-6
             h1
-              |¿Eres desarrolador?
+              |¿Eres desarrollador?
             h2
               |Con nuestra API es muy fácil integrar PAQUETE.MX a tu sistema.
             //- .more-info(data-ng-click="home.openSection(6)")
