@@ -4,8 +4,7 @@
       .menu-bar.bar1
       .menu-bar.bar2
       .menu-bar.bar3
-  //- .login-home(data-ui-sref="login", data-ng-hide="shell.menuOpen")
-  .login-home(data-ng-click="home.createInvoice()")
+  .login-home(data-ui-sref="login", data-ng-hide="shell.menuOpen")
     i.fa.fa-home
     |Iniciar Sesión
   .tracking-home(ui-sref="dashboard.shippings", data-ng-hide="shell.menuOpen")
@@ -247,7 +246,7 @@
                 |&nbsp;&nbsp;{{home.shipping.to.zip}}
         .row.title-params.red
           .col-xs-2
-            |Paquete #
+            |#
           .col-xs-2
             |Peso Real
           .col-xs-2
@@ -257,7 +256,7 @@
           .col-xs-2
             |Ancho
           .col-xs-2
-            |Peso Volumetrico
+            |Peso Vol.
         .row.title-params.gray(data-ng-repeat="item in home.shipping.packages")
           .col-xs-2
             |{{$index+1}}

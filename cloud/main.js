@@ -46,7 +46,7 @@ if(production){
 
 /*CREATE INVOICE*/
 
-function createInvoice(user, amount){
+function createInvoice(user, amount, payment){
   var parse_promise = new Parse.Promise();
 
   getInvoceTotal('ingreso').then(function(folio){
@@ -100,22 +100,26 @@ function createInvoice(user, amount){
       return makeCFDI(params);
     }).then(function(res){
 
-      console.log('satResponse');
-      console.log(res);
+      if(res && res.cfdi){
 
+        var satResponse =  res;
+        var Invoice = Parse.Object.extend('Invoice');
+        var invoice = new Invoice();
 
-      var satResponse =  res;
-      var Invoice = Parse.Object.extend('Invoice');
-      var invoice = new Invoice();
+        if(res.cfdi.UUID){
+          invoice.set("UUID",res.cfdi.UUID);
+        }
 
-      if(res.UUID){
-        invoice.set("UUID",res.UUID);
+        invoice.set("cfd",res.cfdi);
+        invoice.set('amount', amount);
+        invoice.set('user', user);
+        invoice.set('payment', payment);
+        return invoice.save();
+      }else{
+        var parse_promise2 = new Parse.Promise();
+        parse_promise2.reject();
+        return parse_promise2;
       }
-
-      invoice.set('amount', amount);
-      invoice.set('user', user);
-      invoice.set('payment', payment);
-      return invoice.save();
 
     }).then(function(){
       console.log('done!')
@@ -297,6 +301,24 @@ Parse.Cloud.define("removeCard",function(request, response){
 });
 //DELETES CARD FROM CONEKTA
 
+
+Parse.Cloud.beforeSave("Account", function(request, response){
+  var taxId =  request.object.get('taxId');
+  if(taxId){
+    taxId = taxId.toUpperCase();
+    request.object.set('taxId', taxId);
+  }
+
+  var taxName =  request.object.get('taxName');
+  if(taxName){
+    taxName = taxName.toUpperCase();
+    request.object.set('taxName', taxName);
+  }
+
+  response.success();
+
+});
+
 //CREATES & UPDATES CONKETA USER WHEN PARSE USER IS UPDATED
 Parse.Cloud.beforeSave("_User", function(request, response){
   // var clientId = request.object.get('clientId');
@@ -329,6 +351,77 @@ Parse.Cloud.beforeSave("_User", function(request, response){
     response.success();
   // }
 });
+
+// Parse.Cloud.afterSave("Invoice",function(request){
+//   if(request.object.existed() === false){
+//     var cfdi = request.object.get("cfdi");
+//     var data = {};
+//     request.object.get("client").fetch().then(function(client){
+//       if(client.get('clabe'))
+//         data.clabe = client.get('clabe');
+//       if(client.get('cuenta'))
+//         data.cuenta = client.get('cuenta'); 
+//       if(client.get('razonSocial'))
+//         data.razonSocial = client.get('razonSocial');
+//       if(request.object.get('invoiceNo'))
+//         data.invoiceNo = request.object.get('invoiceNo');
+
+
+//       var email = false;
+
+//       if(request.object.get("emails"))
+//         email = request.object.get("emails");
+//       else{
+//         email = client.get('email');
+//       }
+
+//       return sendInvoice(cfdi,"ingreso", data, email);
+//     }).then(function(response){
+
+//       if(request.object.get("applyAdvance")){
+//         var Outcome = Parse.Object.extend("Outcome");
+//         var outcome = new Outcome();
+
+//         var invoices = request.object.get("advancePayments");
+
+//         if(invoices && invoices.length > 0){
+//           asyncEach(invoices, function(invoice, i, next){
+//             var outcome = new Outcome();
+//             outcome.set("description", invoice.description);
+//             outcome.set("invoice", request.object);
+//             var amount = (invoice.amount).toFixed(2);
+//             outcome.set("amount", amount);
+//             outcome.set("client", request.object.get("client"));
+//             outcome.set("relationType", "anticipo");
+//             outcome.save().then(function(){
+//               var Advance = Parse.Object.extend("Advance");
+//               var query = new Parse.Query(Advance);
+//               console.log(invoice.objectId);
+//               query.equalTo('objectId', invoice.objectId);
+//               return query.first();
+//             }).then(function(advance){
+//               if(advance){
+//                 advance.set("applied", true);
+//                 return advance.save();
+//               }
+//             }).then(function(){
+//               next();
+//             },function(err){
+//               console.log(err);
+//               next();
+//             });
+//           });
+//         }
+
+//       }
+      
+//       console.log(response);
+//     },function(err){
+//       console.log(err);
+//     });
+//   }
+// });
+
 
 Parse.Cloud.afterSave("_User", function(request){
   // var conektaId = null;
@@ -667,6 +760,8 @@ Parse.Cloud.define("chargeCard",function(request, response){
     /*agregar el shipOrder a payment*/
   }).then(function(paymentSave){
 
+    paymentSave = paymentSave;
+
     var fromAddress = shipping.from.street+" "+shipping.from.number;
     if(shipping.from.apt)
       fromAddress += " "+shipping.from.apt;
@@ -703,7 +798,7 @@ Parse.Cloud.define("chargeCard",function(request, response){
 
   }).then(function(){
     response.success(requestResult);
-    createInvoice(user, amount);
+    createInvoice(user, amount, paymentSave);
   },function(error){
     response.error(error);
   });

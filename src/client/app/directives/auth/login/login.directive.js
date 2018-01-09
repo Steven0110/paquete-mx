@@ -23,7 +23,7 @@ function loginForm(userApi, Dialog){
           userApi.login(scope.user).then(function(user){
             scope.setUser(user);
             shell.showMessage(shell.labels.login.form.welcome);            
-            scope.loginSuccess();
+            // scope.loginSuccess();
           },function(error){
             console.log(error);
             Dialog.showError("Verifica tu correo electrónico y contraseña",shell.labels.login.form.unauth);  

@@ -5,10 +5,10 @@
   .module('app.core')
   .factory('userApi', userApi);
 
-  userApi.$inject = ['$q', 'parse','parseheaders', 'storage'];
+  userApi.$inject = ['$q', 'parse','parseheaders', 'storage','accountApi'];
 
   /* @ngInject */
-  function userApi($q, parse, parseheaders ,storage ) {
+  function userApi($q, parse, parseheaders ,storage, accountApi) {
 
     var factory = {
       login             : login,
@@ -88,11 +88,27 @@
       parseheaders.restKeys['X-Parse-Session-Token'] = token;
     }
 
-    function register(params) {
+    function register(accountType,account,params) {
       var deferred = $q.defer();
+      logout();
+      delete parseheaders.restKeys['X-Parse-Session-Token'];
+      account.type = accountType;
+      // alert(account.type);
+    
       var User = parse.user();
+      var currentUser;
       User.post(params).then(function(user){
+        currentUser = user;
         setSessionByToken(user.sessionToken);
+        return accountApi.update(account);
+
+      }).then(function(account){
+        var params = {
+          objectId: currentUser.objectId
+        }
+        params.account = {"__type":"Pointer","className":"Account","objectId":account.objectId};
+        return updateProfile(params);
+      }).then(function(){
         return factory.getCurrentUser();
       }).then(function(user){
         var timestamp = Math.floor(Date.now() / 1000);
@@ -100,9 +116,8 @@
         storage.set('timestamp',timestamp);
         deferred.resolve(user);
       },function(error){
-        console.log(error);
         deferred.reject(error);
-      });
+      }); 
 
       return deferred.promise
     }

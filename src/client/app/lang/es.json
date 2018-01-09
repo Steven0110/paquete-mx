@@ -32,7 +32,8 @@
       "confirm": "Confirmar Contraseña",
       "register": "Registrarme",
       "welcome": "¡Bienvenido!",
-
+      "taxId" : "RFC",
+      "taxName" : "Razón Social",
       "errors":{
         "mismatch": "Contraseña no coincide",
         "email": "Correo Electrónico invalido",

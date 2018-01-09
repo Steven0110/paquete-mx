@@ -1,5 +1,13 @@
 md-content(layout-padding)
-  form(name="registerForm", novalidate, data-ng-submit="register()")
+  h4
+    |¿Quieres abrir una cuenta de tipo?
+  md-radio-group(ng-model="accountType")
+    md-radio-button(value="personal",class="md-primary")
+      |Personal o Persona Física
+    md-radio-button(value="enterprise",class="md-primary")
+      |Empresarial
+
+  form(name="registerForm", novalidate, data-ng-submit="register()", data-ng-show="accountType=='personal'")
     md-input-container.md-block
       label(for="name", data-ng-bind="shell.labels.register.form.name")
       input(name="name", data-ng-model="user.name", required="")
@@ -33,6 +41,31 @@ md-content(layout-padding)
       input(name="confirmPassword",type="password", required="",data-ng-model="passwordMatch")
       div(ng-messages="registerForm.confirmPassword.$error")
         div(ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+    md-input-container.md-block.no-margin
+      label
+        |Requiero Factura Fiscal
+      md-switch.md-primary.margin-top-2(ng-model="account.invoice",aria-label="Requiero Factura")
+        span(data-ng-if="account.invoice")
+          |Sí
+        span(data-ng-if="!account.invoice")
+          |No
+    div(data-ng-show="account.invoice")
+      md-input-container.md-block
+        label(for="taxId", data-ng-bind="shell.labels.register.form.taxId")
+        input(name="taxId", data-ng-model="account.taxId",required)
+        div(data-ng-messages="registerForm.taxId.$error")
+          div(data-ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+      md-input-container.md-block
+        label(for="taxName", data-ng-bind="shell.labels.register.form.taxName")
+        input(name="taxName", data-ng-model="account.taxName",required)
+        div(data-ng-messages="registerForm.taxName.$error")
+          div(data-ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+      md-input-container.md-block.margin-bottom-2
+        label(for="taxUse")
+          |Uso de CFDI:
+        md-select(data-ng-model="account.taxUse")
+          md-option(data-ng-repeat="item in taxUses track by item.code", value="{{item.code}}")
+            |{{item.name}}
     //- .privacy
       span(data-ng-bind="shell.labels.privacyParagraph1")
       span.accent(data-ng-bind="shell.labels.readIt")
