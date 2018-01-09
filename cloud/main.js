@@ -303,6 +303,11 @@ Parse.Cloud.define("removeCard",function(request, response){
 
 
 Parse.Cloud.beforeSave("Account", function(request, response){
+
+  if(request.object.existed() === false){
+    request.object.set('verified', false);
+  }
+
   var taxId =  request.object.get('taxId');
   if(taxId){
     taxId = taxId.toUpperCase();

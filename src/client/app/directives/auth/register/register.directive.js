@@ -25,6 +25,14 @@ function registerForm(userApi, Dialog){
 
       scope.taxUses = [{code:'G01',name:'Adquisición de mercancias'},{code:'G02',name:'Gastos en general'},{code:'P01',name:'Por definir'}];
       scope.account.taxUse = scope.taxUses[1].code;
+
+      scope.$watch('accountType',function(newValue, oldValue){
+        if(newValue == 'enterprise'){
+          scope.account.invoice =  true;
+        }else if(newValue == 'personal'){
+          scope.account.invoice =  false;
+        }
+      });
       
       scope.register = function(){
         if(scope.registerForm.$valid){
