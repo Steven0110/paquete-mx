@@ -2,6 +2,12 @@
   .dashboard-header-content
     .dash-section-title(data-ng-bind="shell.dashboard.title")
     .dash-section-subtitle(data-ng-bind="shell.dashboard.subtitle")
+.dash-name-section
+  .big-text-welcome
+    |¡Hola {{shell.currentUser.name}}!
+  .small-text-welcome
+    a(ui-sref="logout")
+      |Cerrar Sesión
 .dashboard-content
   .container-fluid
     .row

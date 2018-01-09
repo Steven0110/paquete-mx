@@ -23,13 +23,30 @@
       subtitle: "Subtitle"
     }
 
+    shell.loginSuccess =function(){
+      var currentUser = userApi.currentUser();
+      shell.currentUser = currentUser;
+    }
+
+    function loginSuccess(){
+      var currentUser = userApi.currentUser();
+      shell.currentUser = currentUser; 
+    }
+
+    loginSuccess();
+
+    // var currentUser = userApi.currentUser();
+    // if(currentUser){
+      // shell.currentUser = currentUser;
+    // }
+
     shell.dashMenu = [
       {name:'shippings',label:"MIS ENVIOS",uiref:"dashboard.shippings",icon:"fa-truck"},
       {name:'payments',label:"MIS PAGOS", uiref:"dashboard.payment",icon:"fa-usd"},
       {name:'contacts',label:"MI AGENDA",uiref:"dashboard.address",icon:"fa-address-book"},
       {name:'contacts',label:"MIS TARJETAS",uiref:"dashboard.paymentMethod",icon:"fa-credit-card"},
-      {name:'account',label:"MI CUENTA",uiref:"dashboard.account",icon:"fa-truck"},
-      {name:'logout',label:"SALIR", uiref:"logout",icon:"fa-sign-out"}
+      {name:'account',label:"MI CUENTA",uiref:"dashboard.account",icon:"fa-truck"}
+      // {name:'logout',label:"SALIR", uiref:"logout",icon:"fa-sign-out"}
     ];
 
     shell.regex = {

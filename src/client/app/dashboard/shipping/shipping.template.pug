@@ -12,6 +12,12 @@
         |&nbsp;-&nbsp;{{shipping.data.trackingNumber}}
       span
         |&nbsp;-&nbsp;{{shipping.labels[shipping.data.status]}}
+.dash-name-section
+  .big-text-welcome
+    |¡Hola {{shell.currentUser.name}}!
+  .small-text-welcome
+    a(ui-sref="logout")
+      |Cerrar Sesión
 .dashboard-content
   h1.accent.align-center
       |&nbsp;{{shipping.data.trackingNumber}}
