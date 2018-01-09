@@ -32,6 +32,7 @@ function registerForm(userApi, Dialog){
 
           if(scope.accountType == 'personal' && !scope.account.invoice){
             scope.account.taxId = null;
+            scope.account.invoice = false;
             scope.account.taxName = null;
           }
 

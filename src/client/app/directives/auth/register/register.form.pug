@@ -52,12 +52,12 @@ md-content(layout-padding)
     div(data-ng-show="account.invoice")
       md-input-container.md-block
         label(for="taxId", data-ng-bind="shell.labels.register.form.taxId")
-        input(name="taxId", data-ng-model="account.taxId",required)
+        input(name="taxId", data-ng-model="account.taxId",ng-required="account.invoice")
         div(data-ng-messages="registerForm.taxId.$error")
           div(data-ng-message="required", data-ng-bind="shell.labels.form.errors.required")
       md-input-container.md-block
         label(for="taxName", data-ng-bind="shell.labels.register.form.taxName")
-        input(name="taxName", data-ng-model="account.taxName",required)
+        input(name="taxName", data-ng-model="account.taxName",ng-required="account.invoice")
         div(data-ng-messages="registerForm.taxName.$error")
           div(data-ng-message="required", data-ng-bind="shell.labels.form.errors.required")
       md-input-container.md-block.margin-bottom-2
