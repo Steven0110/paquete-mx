@@ -165,8 +165,6 @@
         order.paymentMethod = 'account';
       }
 
-
-
       console.log('order-shipping',order);
       checkout.connecting = true;
       rateApi.ship(order).then(function(response){
