@@ -5,6 +5,7 @@
 20-Octubre-2017: Se crea la función para cargar a las tarjetas
 27-Diciembre-2017: Se elimina conekta y se agrega t-pago
 6-Enero-2018: Se agregan las funciones de facturacion
+9-Enero-2018: Se egrega procesamiento para cuenta enterprise
 change log*/
 
 var templates = require("./templates.js").templates;
@@ -561,6 +562,75 @@ var createOrder = function(cardId, amount){
 //CREATES ORDER T-PAGO
 
 
+var submitOrder = function(type, order, user){
+  if(type == 'card' && order){
+    return chargeCard(order);
+  }else if(type=='account'){
+    var parse_promise = new Parse.Promise();
+    user.get('account').fetch().then(function(account){
+      if(account && account.get('type') == 'enterprise'){
+        if(account.get('verified') == true){
+          var amount = parseFloat(order.amount);
+          if(amount && amount > 0){
+
+            var available = account.get('creditAvailable');
+            var limit = account.get('creditLimit');
+
+            if(available > amount){
+              var auth = randomString(8);
+              var params = {
+                message : 'Aprobada',
+                brand   : 'PQT',
+                termination : '0000',
+                reference   : auth,
+                auth_code   : auth,
+                amount      : amount,
+                order_id    : auth
+              }
+
+              var newBalance = (available - amount).toFixed(2)
+              newBalance = parseFloat(newBalance);
+              account.set('creditAvailable', newBalance);
+              account.save().then(function(){
+                var EnterpriseLog = Parse.Object.extend('EnterpriseLog');
+                var enterpriseLog = new EnterpriseLog();
+
+                enterpriseLog.set('limit', limit);
+                enterpriseLog.set('available', available);
+                enterpriseLog.set('newBalance', newBalance);
+                enterpriseLog.set('account', account);
+                enterpriseLog.set('amount', amount);
+                enterpriseLog.set('user', user);
+                return enterpriseLog.save();
+              }).then(function(){
+                parse_promise.resolve(params);
+              },function(err){
+                parse_promise.reject(err);
+              });
+
+            }else{
+              parse_promise.reject({message:"Se ha alcanzado el limite de crédito de la cuenta. Contactanos en hola@paquete.mx"});
+            }
+          }else{
+            parse_promise.reject({message:"Invalid amount, must be greather than 0"});
+          }
+        }else{
+          parse_promise.reject({message:"Invalid Account, need to verify"});
+        }
+      }else{
+        parse_promise.reject({message:"Invalid Account Privileges"});
+      }
+    },function(err){
+      parse_promise.reject(err);
+    });
+    return parse_promise;
+  }else{
+    var parse_promise = new Parse.Promise();
+    parse_promise.reject({message:"Invalid account Type"});
+    return parse_promise
+  }
+}
+
 //CHARGE CARD T-PAGO
 var chargeCard = function(order, method){
 
@@ -692,10 +762,6 @@ function randomString(length)
 Parse.Cloud.define("chargeCard",function(request, response){
 
   var user = request.user;
-  // var conektaId = request.params.conektaId;
-  // if(!conektaId){
-    // conektaId = user.get('conektaId');
-  // }
 
   var paymentMethod = request.params.paymentMethod;
   var shipping = request.params.shipping;
@@ -705,32 +771,36 @@ Parse.Cloud.define("chargeCard",function(request, response){
   var requestResult = {};
   var paymentSave;
   // isToken = isToken ==true;
+  var order =  {amount: amount};
+  var paymentType = false;
 
-  var cardId = paymentMethod.card.token;
+  if(paymentMethod && paymentMethod.card){
+    var cardId = paymentMethod.card.token;
+    order = createOrder(cardId, amount);
+    paymentType = 'card';
+  }else if(paymentMethod == 'account'){
+    paymentType = 'account';
+  }
 
-  var order = createOrder(cardId, amount);
-  chargeCard(order).then(function(result){
+  submitOrder(paymentType ,order, user).then(function(result){
     requestResult.payment = result;
-    var Payment = Parse.Object.extend('Payment');
-    var payment = new Payment();
-
-    //TODO Agregar el user cuando solo envian el conektaId
-    payment.set('user',user);
-    payment.set('charge',result);
-    // if(result && result.charges && result.charges.data){
-      // var charge = result.charges.data;
-      // if(charge[0] && charge[0].payment_method){
-        // payment.set('charge',charge[0].payment_method);
-      // }
-    // }
 
     if(result.message == "Aprobada" && result.auth_code){
+      var Payment = Parse.Object.extend('Payment');
+      var payment = new Payment();
+      payment.set('user',user);
+      payment.set('charge',result);
       payment.set('status', result.message);
       payment.set('amount', result.amount);
       payment.set('brand', result.brand);
       payment.set('termination', result.termination);
       payment.set('reference', result.order_id);
       payment.set('authCode', result.auth_code);
+
+      if(paymentType == 'account')
+        payment.set('paid', false);
+      else if(paymentType == 'card')
+        payment.set('paid', true);
       return payment.save();
     }else{
       var parse_promise = new Parse.Promise();

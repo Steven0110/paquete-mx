@@ -107,8 +107,6 @@
     }
 
     checkout.step = "from";
-    // checkout.from = false;
-    // checkout.to = false;
     checkout.user = false;
 
     $scope.setUser = function(user){
@@ -173,10 +171,12 @@
         checkout.response = true;
         checkout.labels = response.shipOrder.packages;
       },function(err){
-        console.log(err);
-        checkout.step = 'payment';
+        if(checkout.payment == 'account')
+          checkout.step = 'selectPayment';
+        else if(checkout.payment == 'card')
+          checkout.step = 'payment';
         if(err.message){
-          Dialog.showError(err.message, 'No se pudo cargar tu tarjeta.');
+          Dialog.showError(err.message, 'No se pudo pagar la orden.');
         }
       }).finally(function(){
         checkout.connecting = false;
@@ -230,8 +230,6 @@
       //     checkout.taxInfo.taxId = checkout.user.taxId;
       //   checkout.invoice = checkout.user.invoice;
       // }
-
-      
       accountApi.getByUser(checkout.user).then(function(account){
         if(account){
           checkout.account = account;
