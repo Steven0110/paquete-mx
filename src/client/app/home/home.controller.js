@@ -41,8 +41,11 @@
     home.updateWeight = function(packageInfo){
       if(packageInfo.weight){
         packageInfo.weight = parseFloat(packageInfo.weight).toFixed(2);
+        packageInfo.real = parseFloat(packageInfo.weight);
+        // packageInfo.weight = parseFloat(packageInfo.weight);
       }else{
         packageInfo.weight = packageInfo.weight;
+        packageInfo.real = false;
       }
 
     }
@@ -67,6 +70,9 @@
 
       if(height > 0 && width > 0 && length > 0){
         packageInfo.volumetric = ((height*width*length)/5000).toFixed(2);
+        packageInfo.volumetric = parseFloat(packageInfo.volumetric);
+        if(packageInfo.weight)
+          packageInfo.real = parseFloat(packageInfo.weight);
       }else{
         packageInfo.volumetric = false;
       }
@@ -393,29 +399,31 @@
                   home.shipping.packages = home.documents;
                 }
 
-                var fromZip;
-                var toZip;
-                var fromCountry;
-                var toCountry;
+                // var fromZip;
+                // var toZip;
+                // var fromCountry;
+                // var toCountry;
                 
-                if(home.shipping.from.data && home.shipping.from.data.zip){
-                  fromZip =  home.shipping.from.data.zip;
-                }else{
-                  fromZip =  home.fromSearch;
-                }
+                // if(home.shipping.from.data && home.shipping.from.data.zip){
+                //   fromZip =  home.shipping.from.data.zip;
+                // }else{
+                //   fromZip =  home.fromSearch;
+                // }
 
-                if(home.shipping.to.data && home.shipping.to.data.zip){
-                  toZip =  home.shipping.to.data.zip;
-                }else{
-                  toZip =  home.toSearch;
-                }
+                // if(home.shipping.to.data && home.shipping.to.data.zip){
+                //   toZip =  home.shipping.to.data.zip;
+                // }else{
+                //   toZip =  home.toSearch;
+                // }
 
-                fromCountry = JSON.stringify(home.shipping.from.country);
-                toCountry = JSON.stringify(home.shipping.to.country);
+                // fromCountry = JSON.stringify(home.shipping.from.country);
+                // toCountry = JSON.stringify(home.shipping.to.country);
 
-                var packages = JSON.stringify(home.shipping.packages);
+                // from = JSON.stringify(home.shipping.from);
+                // to = JSON.stringify(home.shipping.to);
+                var shipping = JSON.stringify(home.shipping);
                 getRates();
-                $state.go('home', {fromZip: fromZip, toZip:toZip, fromCountry:fromCountry, toCountry:toCountry,type:home.shipping.type,packages:packages}, {notify: false});
+                $state.go('home', {shipping: shipping}, {notify: false});
                 // alert();
                 // getRates();
               }else{
@@ -438,22 +446,11 @@
 
 
     if($state.params){
-      if($state.params.fromZip)
-        home.shipping.from.zip = $state.params.fromZip;
-      if($state.params.fromCountry){
-        home.shipping.from.country = JSON.parse($state.params.fromCountry);
-      }
-      if($state.params.toZip)
-        home.shipping.to.zip = $state.params.toZip;
-      if($state.params.toCountry)
-        home.shipping.to.country = JSON.parse($state.params.toCountry);
-      if($state.params.type)
-        home.shipping.type = $state.params.type;
-      if($state.params.packages)
-        home.shipping.packages = JSON.parse($state.params.packages)
-
-      if($state.params.fromZip && $state.params.toZip)
+      if($state.params.shipping){
+        home.shipping = JSON.parse($state.params.shipping);
         getRates();
+      }
+        
     }
 
     function setHomeState(status){

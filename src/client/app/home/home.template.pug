@@ -148,26 +148,26 @@
                                           div
                                             span.regular-text(data-ng-hide="package.volumetric")
                                               |Ingresa las dimensiones para calcular el peso volumétrico.
-                                            span.regular-text(data-ng-show="package.volumetric && !package.weight")
+                                            span.regular-text(data-ng-show="package.volumetric && !package.real")
                                               |El peso volumetrico es de
                                               span.accent
                                                 |&nbsp;{{package.volumetric}} Kg.
-                                            span.regular-text(data-ng-show="package.volumetric && package.weight")
-                                              span(data-ng-show="package.volumetric > package.weight")
+                                            span.regular-text(data-ng-show="package.volumetric && package.real")
+                                              span(data-ng-show="package.volumetric > package.real")
                                                 |Se utilizara el peso VOLUMÉTRICO
                                                 span.accent
                                                   |&nbsp;({{package.volumetric}} Kg.)
                                                 |&nbsp;ya que es mayor al peso REAL
                                                 span.accent
                                                   |&nbsp;({{package.weight}} Kg.)
-                                              span(data-ng-show="package.weight > package.volumetric")
+                                              span(data-ng-show="package.real > package.volumetric")
                                                 |Se utilizara el peso REAL
                                                 span.accent
                                                   |&nbsp;({{package.weight}} Kg.)
                                                 |&nbsp;ya que es mayor al peso VOLUMÉTRICO
                                                 span.accent
                                                   |&nbsp;({{package.volumetric}} Kg.)
-                                              span(data-ng-show="package.weight == package.volumetric")
+                                              span(data-ng-show="package.real == package.volumetric")
                                                 |El peso REAL y el peso VOLUMÉTRICO es el mismo
                                                 span.accent
                                                   |&nbsp;({{package.volumetric}} Kg.)

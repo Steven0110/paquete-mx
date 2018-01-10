@@ -51,7 +51,7 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
   
   $stateProvider
     .state('home',{
-      url:'/?fromCountry&fromZip&toCountry&toZip&type&packages',
+      url:'/?shipping',
       templateUrl : 'app/home/home.template.html',
       controller: 'Home',
       reloadOnSearch: false,
