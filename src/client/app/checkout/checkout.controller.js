@@ -5,9 +5,9 @@
     .module('app.core')
     .controller('Checkout',Checkout);
 
-  Checkout.$inject = ['$scope','$q','$state','$timeout','rateApi','userApi','shippingApi','Dialog','$ngConfirm'];
+  Checkout.$inject = ['$scope','$q','$state','$timeout','rateApi','userApi','accountApi','shippingApi','Dialog','$ngConfirm'];
 
-  function Checkout($scope, $q, $state, $timeout, rateApi, userApi,shippingApi, Dialog, $ngConfirm){
+  function Checkout($scope, $q, $state, $timeout, rateApi, userApi,accountApi,shippingApi, Dialog, $ngConfirm){
     // jshint validthis: true 
     var checkout = this;
     var shell = $scope.shell;
@@ -24,6 +24,15 @@
     if(!checkout.shipping){
       shell.showMessage('Selecciona un servicio');
       $state.go('home');
+    }
+
+    checkout.goToPayment = function(){
+      checkout.step = 'payment';
+    }
+    checkout.goToConfirm = function(){
+      checkout.card = false;
+      checkout.payment = 'account';
+      checkout.step = 'confirm';
     }
 
     var saveInvoice = function(){
@@ -132,6 +141,7 @@
 
     checkout.paymentMethod = function(card){
       checkout.card = card;
+      checkout.payment = 'card';
       checkout.step = 'confirm';
     }
 
@@ -148,6 +158,14 @@
         paymentMethod : {card: checkout.card},
         amount        : total
       }
+
+      if(checkout.payment == 'card'){
+        order.paymentMethod = {card: checkout.card};
+      }else if(checkout.payment == 'account'){
+        order.paymentMethod = 'account';
+      }
+
+
 
       console.log('order-shipping',order);
       checkout.connecting = true;
@@ -204,21 +222,27 @@
     var getPaymentMethods = function(){
       shell.showLoading();
 
-      console.log(checkout.user.taxUse);
-      if(checkout.user){
-        if(checkout.user.taxUse)
-          checkout.taxInfo.taxUse = checkout.user.taxUse;
-        if(checkout.user.taxName)
-          checkout.taxInfo.taxName = checkout.user.taxName;
-        if(checkout.user.taxId)
-          checkout.taxInfo.taxId = checkout.user.taxId;
-        checkout.invoice = checkout.user.invoice;
-      }
+      // console.log(checkout.user.taxUse);
+      // if(checkout.user){
+      //   if(checkout.user.taxUse)
+      //     checkout.taxInfo.taxUse = checkout.user.taxUse;
+      //   if(checkout.user.taxName)
+      //     checkout.taxInfo.taxName = checkout.user.taxName;
+      //   if(checkout.user.taxId)
+      //     checkout.taxInfo.taxId = checkout.user.taxId;
+      //   checkout.invoice = checkout.user.invoice;
+      // }
 
-      console.log('here');
-
-
-      userApi.getCards().then(function(result){
+      
+      accountApi.getByUser(checkout.user).then(function(account){
+        if(account){
+          checkout.account = account;
+          return userApi.getCards();
+        }
+        else{
+          alert("Invalid account");
+        }
+      }).then(function(result){
         console.log(result);
         checkout.cardForm = true;
         if(result && result.length > 0){
@@ -227,7 +251,15 @@
         }
         shell.hideLoading();
         $timeout(function(){
-          checkout.step = 'payment';
+          if(checkout.account.type == 'personal'){
+            checkout.step = 'payment';
+          }else if(checkout.account.type == 'enterprise'){
+            if(checkout.account.verified){
+              checkout.step = 'selectPayment';
+            }else{
+              checkout.step = 'payment';
+            }
+          }
         },300);
       },function(err){
         console.log(err);

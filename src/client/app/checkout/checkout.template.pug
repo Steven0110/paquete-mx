@@ -72,6 +72,8 @@
                   .confirm-title.accent.margin-top-1
                     |Método de Pago
                   div
+                    .card-item(data-ng-if="checkout.payment == 'account'")
+                      |Cargo a cuenta empresarial
                     .card-item(data-ng-if="checkout.card")
                       div
                         .payment-name
@@ -165,6 +167,9 @@
                     .col-xs-12
                       .confirm-title.accent
                         |Método de Pago
+                      .card-item(data-ng-if="checkout.payment == 'account'")
+                        .board-list
+                          |Cargo a cuenta empresarial
                       .card-item(data-ng-if="checkout.card")
                         div
                           .payment-name
@@ -219,6 +224,23 @@
                   div
                     md-button.md-raised.md-primary(data-ng-click="checkout.order()")
                       |Confirmar y pagar
+            .form-container(data-ng-show="checkout.step=='selectPayment'")
+              h1.accent.align-center
+                |¿Como deseas pagar?
+              .align-center
+                h3
+                  |Quiero que el monto se cargue a mi cuenta Empresarial
+                i.fa.fa-upload.big-icon
+              .align-center
+                md-button.md-raised.md-primary(data-ng-click="checkout.goToConfirm()")
+                  |Cargar a mi cuenta
+              .align-center
+                h3
+                  |Quiero pagar con Tarjeta de Crédito o Débito
+                i.fa.fa-credit-card.big-icon
+              .align-center
+                md-button.md-raised.md-primary(data-ng-click="checkout.goToPayment()")
+                  |Tarjeta Crédito o Débito
             .form-container(data-ng-show="checkout.step=='payment'")
               div(data-ng-hide="checkout.cardForm")
                 h1.accent.align-center(data-ng-show="checkout.paymentMethods.length > 0")

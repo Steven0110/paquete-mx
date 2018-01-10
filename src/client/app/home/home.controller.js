@@ -259,15 +259,28 @@
         home.shipping.to.data.zip = home.shipping.to.zip;
       }
 
+      var fromStateCode = false;
+      console.log(home.shipping.from.data);
+      if(home.shipping.from.data && home.shipping.from.data.stateCode){
+        fromStateCode =  home.shipping.from.data.stateCode;
+      }
+
+      var toStateCode = false;
+      if(home.shipping.to.data && home.shipping.to.data.stateCode){
+        toStateCode =  home.shipping.to.data.stateCode;
+      }
+
       var rate = {
         "type":home.shipping.type,
         "from": {
           "zip": fromZip,
-          "country": fromCountry
+          "country": fromCountry,
+          "stateCode": fromStateCode
         },
         "to": {
           "zip": toZip,
-          "country": toCountry
+          "country": toCountry,
+          "stateCode": toStateCode
         },
         "packages": home.shipping.packages
       };
@@ -299,8 +312,10 @@
             code: false
           };
 
+          console.log('params',params);
 
           promises.push(
+
             rateApi.rate(service,params).then(function(response){
               // console.log(response);
               if(response.services){

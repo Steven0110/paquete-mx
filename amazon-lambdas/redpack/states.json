@@ -1,0 +1,144 @@
+{
+  "AGU":{
+    "1": {
+      "original": 210.31,
+      "paquete": 205.05
+    },
+    "2": {
+      "original": 236.41,
+      "paquete": 230.5
+    },
+    "3": {
+      "original": 262.51,
+      "paquete": 255.95
+    },
+    "4": {
+      "original": 288.61,
+      "paquete": 281.39
+    },
+    "5": {
+      "original": 314.71,
+      "paquete": 306.84
+    },
+    "6": {
+      "original": 340.81,
+      "paquete": 332.29
+    },
+    "7": {
+      "original": 366.91,
+      "paquete": 357.74
+    },
+    "8": {
+      "original": 393.01,
+      "paquete": 383.18
+    },
+    "9": {
+      "original": 419.11,
+      "paquete": 408.63
+    },
+    "10": {
+      "original": 445.21,
+      "paquete": 434.08
+    },
+    "11": {
+      "original": 471.31,
+      "paquete": 459.53
+    },
+    "12": {
+      "original": 497.41,
+      "paquete": 484.97
+    },
+    "13": {
+      "original": 523.51,
+      "paquete": 510.42
+    },
+    "14": {
+      "original": 549.61,
+      "paquete": 535.87
+    },
+    "15": {
+      "original": 575.71,
+      "paquete": 561.32
+    },
+    "16": {
+      "original": 601.81,
+      "paquete": 586.76
+    },
+    "17": {
+      "original": 627.91,
+      "paquete": 612.21
+    },
+    "18": {
+      "original": 654.01,
+      "paquete": 637.66
+    },
+    "19": {
+      "original": 680.11,
+      "paquete": 663.11
+    },
+    "20": {
+      "original": 706.21,
+      "paquete": 688.55
+    },
+    "21": {
+      "original": 732.31,
+      "paquete": 714
+    },
+    "22": {
+      "original": 758.41,
+      "paquete": 739.45
+    },
+    "23": {
+      "original": 784.51,
+      "paquete": 764.9
+    },
+    "24": {
+      "original": 810.61,
+      "paquete": 790.34
+    },
+    "25": {
+      "original": 836.71,
+      "paquete": 815.79
+    },
+    "26": {
+      "original": 862.81,
+      "paquete": 841.24
+    },
+    "27": {
+      "original": 888.91,
+      "paquete": 866.69
+    },
+    "28": {
+      "original": 915.01,
+      "paquete": 892.13
+    },
+    "29": {
+      "original": 941.11,
+      "paquete": 917.58
+    },
+    "30": {
+      "original": 967.21,
+      "paquete": 943.03
+    },
+    "31": {
+      "original": 993.31,
+      "paquete": 968.48
+    },
+    "32": {
+      "original": 1019.41,
+      "paquete": 993.92
+    },
+    "33": {
+      "original": 1045.51,
+      "paquete": 1019.37
+    },
+    "34": {
+      "original": 1071.61,
+      "paquete": 1044.82
+    },
+    "35": {
+      "original": 1097.71,
+      "paquete": 1070.27
+    }
+  }
+}
