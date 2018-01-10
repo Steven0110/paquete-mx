@@ -24,6 +24,15 @@
           res = res.result
         deferred.resolve(res);
       },function(err){
+        if(err.data){
+          err  = err.data;
+          if(err.error){
+            err = err.error;
+            if(err.text){
+              err = JSON.parse(err.text);
+            }
+          }
+        }
         deferred.reject(err);
       });
       return deferred.promise;

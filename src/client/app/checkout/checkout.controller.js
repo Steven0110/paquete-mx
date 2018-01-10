@@ -43,7 +43,7 @@
         checkout.taxInfo.taxName = checkout.taxInfo.taxName.toUpperCase();
 
       var user = checkout.user;
-      return userApi.updateTaxInfo(user,checkout.invoice, checkout.taxInfo).then(function(){
+      return userApi.updateTaxInfo(checkout.invoice, checkout.taxInfo).then(function(){
         return userApi.getCurrentUser();
       }).then(function(user){
         return userApi.setCurrentUser(user);
@@ -218,7 +218,6 @@
     }
 
     var getPaymentMethods = function(){
-      alert();
       shell.showLoading();
 
       // console.log(checkout.user.taxUse);

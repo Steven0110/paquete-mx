@@ -58,18 +58,29 @@
       return User.one().customPUT(params);
     }
 
-    function updateTaxInfo(user,invoice, taxInfo){
-      var User = parse.user(user.objectId);
-      var data = {};
-
-      console.log(invoice);
-      if(invoice){
-        data = {invoice: true, taxId: taxInfo.taxId, taxName: taxInfo.taxName, taxUse: taxInfo.taxUse};
-      }else{
-        data = {invoice: false};
-      }
-
-      return User.one().customPUT(data);
+    function updateTaxInfo(invoice, taxInfo){
+      return factory.getCurrentUser().then(function(user){
+        if(user){
+          return accountApi.getByUser(user);
+        }else{
+          var deferred = $q.defer();
+          deferred.reject({session: false,message:"Invalid session"});
+          return deferred.promise;
+        }
+      }).then(function(account){
+        if(account){
+          account.invoice = true;
+          account.taxId = taxInfo.taxId;
+          account.taxName = taxInfo.taxName;
+          account.taxUse = taxInfo.taxUse;
+          return accountApi.update(account);
+        }
+        else{
+          var deferred = $q.defer();
+          deferred.reject({message:"Invalid account"});
+          return deferred.promise;
+        }
+      });
     }
 
     function checkPassword(params){

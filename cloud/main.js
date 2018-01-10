@@ -15,7 +15,7 @@ var Mailgun = null;
 var emisor = {
               "cedula":{
                 "RFC": null,
-                "razonSocial":"PAQUETE MX",
+                "razonSocial":"CVG TRADING S.A. DE C.V.",
                 "regimenFiscal":"601"
               },
               "CP":"15510"
@@ -157,15 +157,6 @@ function getInvoceTotal(type){
   return parse_promise;
 }
 
-
-// Parse.Cloud.define("createInvoice",function(request, response){
-//   var user =  request.user;
-//   createInvoice(user).then(function(res){
-//     response.success(res);
-//   },function(err){
-//     response.error(err);
-//   })
-// });
 /*CREATE INVOICE*/
 
 /*SAVE CARD T-PAGO*/
@@ -785,7 +776,7 @@ Parse.Cloud.define("chargeCard",function(request, response){
   submitOrder(paymentType ,order, user).then(function(result){
     requestResult.payment = result;
 
-    if(result.message == "Aprobada" && result.auth_code){
+    if((result.message == "Aprobada" || result.message == "Approved") && result.auth_code){
       var Payment = Parse.Object.extend('Payment');
       var payment = new Payment();
       payment.set('user',user);
@@ -873,7 +864,10 @@ Parse.Cloud.define("chargeCard",function(request, response){
 
   }).then(function(){
     response.success(requestResult);
-    createInvoice(user, amount, paymentSave);
+    // if(paymentType == 'card'){
+
+      // createInvoice(user, amount, paymentSave);
+    // }
   },function(error){
     response.error(error);
   });

@@ -47,7 +47,11 @@ function registerForm(userApi, Dialog){
           userApi.register(scope.accountType,scope.account,scope.user).then(function(user){
             scope.setUser(user);
             shell.showMessage(shell.labels.register.form.welcome);
-            shell.loginSuccess();
+            if (typeof scope.loginSuccess === "function") { 
+              scope.loginSuccess();
+            }else{
+              shell.loginSuccess();
+            }
           },function(error){
             console.log(error);
             if(error && error.data && error.data.error){
