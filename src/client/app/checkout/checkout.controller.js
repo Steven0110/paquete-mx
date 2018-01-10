@@ -218,6 +218,7 @@
     }
 
     var getPaymentMethods = function(){
+      alert();
       shell.showLoading();
 
       // console.log(checkout.user.taxUse);
@@ -230,7 +231,10 @@
       //     checkout.taxInfo.taxId = checkout.user.taxId;
       //   checkout.invoice = checkout.user.invoice;
       // }
+
+      console.log(checkout.user);
       accountApi.getByUser(checkout.user).then(function(account){
+        console.log(account);
         if(account){
           checkout.account = account;
           return userApi.getCards();

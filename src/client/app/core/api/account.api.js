@@ -9,7 +9,7 @@
 
   /* @ngInject */
   function accountApi($q, parse) {
-    var Account = parse.endpoint("Account");
+    
     var factory = {
       update : update,
       getByUser: getByUser
@@ -18,10 +18,12 @@
     return factory;
 
     function update(params){
+      var Account = parse.endpoint("Account");
       return Account.update(params);
     }
 
     function getByUser(user){
+      var Account = parse.endpoint("Account");
       if(user){
         var objectId = user.account.objectId;
         return Account.get(objectId);
