@@ -119,11 +119,11 @@
             th
               |Peso
             th
-              |Alto
+              |Largo
             th
               |Ancho
             th
-              |Largo
+              |Alto
         tbody(data-ng-repeat="item in shipping.packages")
           tr
             td
@@ -131,11 +131,11 @@
             td
               |{{item.weight}} Kgs.
             td
-              |{{item.height}} cms.
+              |{{item.length}} cms.
             td
               |{{item.width}} cms.
             td
-              |{{item.length}} cms.
+              |{{item.height}} cms.
     .shipping-info
       h1
         span.accent
@@ -145,10 +145,13 @@
       h3
         span.accent
           |Pagado con:
-      .card-item
-        i.big.fa.fa-cc-mastercard(data-ng-if="shipping.data.charge.brand == 'mc'")
-        i.big.fa.fa-cc-visa(data-ng-if="shipping.data.charge.brand == 'visa'")
-        i.big.fa.fa-cc-amex(data-ng-if="shipping.data.charge.brand == 'american_express'")
+      .card-item(data-ng-if="shipping.data.charge.brand == 'PQT'")
+        h3.disabled-color
+          |Cuenta Empresarial
+      .card-item(data-ng-if="shipping.data.charge.brand !== 'PQT'")
+        i.big.fa.fa-cc-mastercard(data-ng-if="shipping.data.charge.brand == 'MASTERCARD'")
+        i.big.fa.fa-cc-visa(data-ng-if="shipping.data.charge.brand == 'VISA'")
+        i.big.fa.fa-cc-amex(data-ng-if="shipping.data.charge.brand == 'AMEX'")
         i.fa.fa-circle
         i.fa.fa-circle
         i.fa.fa-circle
@@ -164,8 +167,8 @@
         i.fa.fa-circle
         i.fa.fa-circle
         |&nbsp;
-        span
-          |{{shipping.data.charge.last4}}
+        span.termination-font
+          |{{shipping.data.charge.termination}}
       h3
         span.accent
           |Cargos de Sobrepeso

@@ -5,9 +5,9 @@
       .row
         .col-sm-4.footer-separator
           .padding-footer
-            .footer-title
+            //- .footer-title
               |PAQUETE.MX
-            .footer-item
+            //- .footer-item
               |Calle Norte 176 681, Pensador Mexicano, 15510 Ciudad de México, CDMX
             .footer-title
               |Mi cuenta
@@ -35,29 +35,29 @@
             .footer-title
               |Servicios
             .footer-item
-              a(ui-sref="#")
+              a(ui-sref="home")
                 |Cotizar mi envio
             .footer-item
-              a(ui-sref="#")
+              a(ui-sref="dashboard.shippings")
                 |Rastrear mi paquete.
-            .footer-item
+            //- .footer-item
               a(ui-sref="#")
                 |¿Comó funciona?
-            .footer-item
+            //- .footer-item
               a(ui-sref="#")
                 |Preguntas Frecuentes
             .footer-title
               |Soluciones
             .footer-item
-              a(ui-sref="#")
+              a(ui-sref="home-section({section:'eCommerce'})",ui-sref-opts="{reload: true}")
                 |¿Tienes un eCommerce?
             .footer-title
               |Pagos
             .footer-item
-              a(ui-sref="#")
+              //- a(ui-sref="#")
                 |Seguridad en pagos
             .footer-item
-              a(ui-sref="#")
+              a(ui-sref="home-section({section:'payments'})",ui-sref-opts="{reload: true}")
                 |¿Comó puedo pagar?
         .col-sm-4.footer-separator
           .padding-footer

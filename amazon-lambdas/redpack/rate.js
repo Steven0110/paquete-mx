@@ -90,10 +90,6 @@ exports.handler = (event, context, callback) => {
 
         fromState = data.from.stateCode;
         toState = data.to.stateCode;
-
-        console.log(fromState);
-        console.log(toState);
-        
         
         if(data.packages && data.packages.length > 0){
             var packages = "";
@@ -154,10 +150,11 @@ exports.handler = (event, context, callback) => {
         
         
         var pin = "QA j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=";
-        if(production){
-            "PROD j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=";
-        }
         var idUsuario = "785";
+        if(production){
+            pin = "PROD j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=";
+            idUsuario = "785";
+        }
         body ='<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><cotizacionNacional xmlns="http://ws.redpack.com"><PIN>'+pin+'</PIN><idUsuario>'+idUsuario+'</idUsuario><guias><ns1:consignatario xmlns:ns1="http://vo.redpack.com/xsd"><ns1:codigoPostal>'+fromZip+'</ns1:codigoPostal></ns1:consignatario><ns2:remitente xmlns:ns2="http://vo.redpack.com/xsd"><ns2:codigoPostal>'+toZip+'</ns2:codigoPostal></ns2:remitente><ns3:tipoEntrega xmlns:ns3="http://vo.redpack.com/xsd"><ns3:id>1</ns3:id></ns3:tipoEntrega>'+packages+'</guias></cotizacionNacional></soapenv:Body></soapenv:Envelope>';
         
         rate(body,function(result){

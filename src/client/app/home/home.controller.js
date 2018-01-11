@@ -18,7 +18,6 @@
     home.options = [];
     home.international = false;
 
-      
     $scope.$watch('home.shipping.from.country',function(newVal, oldVal){
       home.shipping.from.data = {};
       home.fromSearch  = null;
@@ -153,16 +152,16 @@
 
     home.setService = function(service){
 
-      home.shipping.from.data.country = home.shipping.from.country;
-      home.shipping.to.data.country = home.shipping.to.country;
-
       var shipping ={
         packagingType: home.shipping.type,
         service     : service,
-        from        : home.shipping.from.data,
-        to          : home.shipping.to.data,
-        packages    : home.shipping.packages
+        from        : home.rate.from.data,
+        to          : home.rate.to.data,
+        packages    : home.rate.packages
       }
+
+      // console.log(shipping);
+
       shell.setShipping(shipping);
       $state.go('checkout');
     }
@@ -200,11 +199,15 @@
 
     var menu = $('#menu').innerHeight();
 
-    home.openSection = function(index){
+    home.openSection = function(index, timing){
+      shell.menuOpen = false;
+      var speed = 500;
+      if(timing && timing > 500)
+        speed = timing;
       var section = '.benefits-'+index;
       $(section).slideDown(300,function(){
         var topContent = $(section).offset().top;
-        $('html').animate({scrollTop:topContent},500);
+        $('html').animate({scrollTop:topContent},timing);
       });
 
     }
@@ -220,14 +223,14 @@
       }
     }
 
-    $scope.$watch('home.shipping.to.country',function(newVal, prevVal){
-      if(prevVal != newVal){
-        if(newVal && newVal.code){
-          // home.shipping.to.search = null;
-          // loadCities(newVal.code,'toCities');
-        }
-      }
-    });
+    // $scope.$watch('home.shipping.to.country',function(newVal, prevVal){
+    //   if(prevVal != newVal){
+    //     if(newVal && newVal.code){
+    //       // home.shipping.to.search = null;
+    //       // loadCities(newVal.code,'toCities');
+    //     }
+    //   }
+    // });
 
     home.closeSection = function(index){
       $('.benefits-'+index).slideUp(500);
@@ -262,8 +265,9 @@
         fromZip =  home.shipping.from.data.zip;
         home.shipping.from.zip = home.shipping.from.data.zip;
       }else{
-        fromZip =  home.shipping.from.zip;
-        home.shipping.from.data.zip = home.shipping.from.zip;
+        fromZip =  home.fromSearch;
+        home.shipping.from.data.zip = home.fromSearch;
+        home.shipping.from.zip = home.fromSearch;
       }
 
       var toZip;
@@ -271,8 +275,9 @@
         toZip =  home.shipping.to.data.zip;
         home.shipping.to.zip = home.shipping.to.data.zip;
       }else{
-        toZip =  home.shipping.to.zip;
-        home.shipping.to.data.zip = home.shipping.to.zip;
+        toZip =  home.toSearch;
+        home.shipping.to.data.zip = home.toSearch;
+        home.shipping.to.zip = home.toSearch;
       }
 
       var fromStateCode = false;
@@ -285,15 +290,19 @@
       if(home.shipping.to.data && home.shipping.to.data.stateCode){
         toStateCode =  home.shipping.to.data.stateCode;
       }
+      home.shipping.from.data.country = JSON.parse(JSON.stringify(home.shipping.from.country));
+      home.shipping.to.data.country = JSON.parse(JSON.stringify(home.shipping.to.country));
 
-      var rate = {
+      home.rate = {
         "type":home.shipping.type,
         "from": {
+          "data": home.shipping.from.data,
           "zip": fromZip,
           "country": fromCountry,
           "stateCode": fromStateCode
         },
         "to": {
+          "data": home.shipping.to.data,
           "zip": toZip,
           "country": toCountry,
           "stateCode": toStateCode
@@ -301,7 +310,7 @@
         "packages": home.shipping.packages
       };
 
-      console.log('rate',rate);
+      // console.log('rate',home.rate);
 
       var promises = [];
       angular.forEach(services,function(service){
@@ -316,7 +325,7 @@
         if(runRate){
           var params = {
             "type":service.code,
-            "rate": rate
+            "rate": home.rate
           };
 
           home.fastest = {
@@ -391,10 +400,18 @@
         }
       });
       $q.all(promises).then(function(result){
+
+        home.shipping.from.data = {};
+        home.shipping.from.zip = null;
+        home.shipping.to.data = {};
+        home.shipping.to.zip = null;
+        home.fromSearch  = null;
+        home.toSearch  = null;
+
       },function(err){
         console.log(err);
       }).finally(function(){
-        console.log(home.services);
+        // console.log(home.services);
         home.searching = false;
       });
     }
@@ -444,11 +461,20 @@
 
 
     if($state.params){
-      if($state.params.shipping){
-        home.shipping = JSON.parse($state.params.shipping);
-        getRates();
-      }
-        
+      $timeout(function(){
+        if($state.params.shipping){
+          home.shipping = JSON.parse($state.params.shipping);
+          getRates();
+        }else if($state.params.section){
+          var section = $state.params.section;
+          var index = 0;
+          if(section == 'payments')
+            index = 2;
+          if(section == 'eCommerce')
+            index = 4;
+          home.openSection(index, 1500);
+        }
+      },500)
     }
 
     function setHomeState(status){

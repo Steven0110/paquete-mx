@@ -22,13 +22,26 @@
           |Fecha de pago
         th
           |Método de Pago
+        th
+          |Pagado
     thbody
       tr(data-ng-repeat="item in payments.list")
         td
-          |{{item.trackingNumber}}
-        td
+          a.accent.medium-font.bold(ui-sref="dashboard.shipping({trackId: item.trackingNumber})")
+            |{{item.trackingNumber}}
+        td.bold
           |{{item.amount | currency}}
         td
           |{{item.createdAt | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
+        td(data-ng-if="item.charge.brand == 'PQT'")
+          |Cargo a cuenta Empresarial
+        td(data-ng-if="item.charge.brand != 'PQT'")
+          i.medium-font.fa.fa-cc-mastercard(data-ng-if="item.charge.brand == 'MASTERCARD'")
+          i.medium-font.fa.fa-cc-visa(data-ng-if="item.charge.brand == 'VISA'")
+          i.medium-font.fa.fa-cc-amex(data-ng-if="item.charge.brand == 'AMEX'")
+          |&nbsp;**** **** **** {{item.charge.termination}}
         td
-          |{{item.charge.brand}} **** **** **** {{item.charge.last4}}
+          span.success(data-ng-if="item.paid")
+            |SI
+          span.error(data-ng-if="!item.paid")
+            |NO

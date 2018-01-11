@@ -15,31 +15,34 @@
     .padding-top-bottom
       .logo-complete-link.margin-auto
     nav
-      a(href="#")
+      a(ui-sref="home")
         |INICIO
     nav
-      a(href="#")
+      a(ui-sref="home")
         |COTIZAR
     nav
-      a(href="#")
+      a(ui-sref="dashboard.shippings")
         |RASTREAR
     nav
-      a(href="#")
+      a(data-ng-click="home.openSection(4,2000)")
         |eCOMMERCE
     nav
-      a(href="#")
+      a(data-ng-click="home.openSection(2,2000)")
         |MÉTODOS DE PAGO
     nav
+      a(data-ng-click="home.openSection(1,2000)")
+        |PARTNERS
+    //- nav
       a(href="#")
         |PREGUNTAS FRECUENTES
-    nav
+    //- nav
       a(href="#")
         |SEGURIDAD
-    nav
+    //- nav
       a(href="#")
         |¿COMÓ FUNCIONA?
     nav
-      a(href="#")
+      a(ui-sref="login")
         |MI CUENTA
   .container-center
     .container-fluid
@@ -65,7 +68,7 @@
                               .input-container
                                 input(
                                   placeholder="C.P."
-                                  name="fromZip", data-ng-model="home.fromSearch",required)
+                                  name="fromZip", data-ng-model="home.fromSearch", data-ng-blur="home.cleanInput()",required)
                                 select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.fromSearch",data-country="home.shipping.from.country")
                             
 
@@ -219,12 +222,24 @@
   #content.section-container
     .rated-text(data-ng-class="{'active':home.active}", data-ng-show="home.rated")
       .logo-color(data-ng-class="{'active':!home.active}")
-      .line.margin-top-1
-        |Estamos buscando 
-      .line
-        |las mejores opciones
-      .line
-        |para tu envío:
+      div(data-ng-show="!home.searching")
+        div(data-ng-if="home.services.length > 0")
+          .line.margin-top-1
+            |Tenemos las siguientes
+          .line
+            |opciones para ti:
+        div(data-ng-if="home.services.length < 1")
+          .line.margin-top-1
+            |¡Ups! No encontramos opciones
+          .line
+            | para tu origen / destino
+      div(data-ng-show="home.searching") 
+        .line.margin-top-1
+          |Estamos buscando 
+        .line
+          |las mejores opciones
+        .line
+          |para tu envío:
       div(data-ng-show="home.searching")
         div(data-ng-include="'app/templates/spinner.white.template.html'")
       .table-response.rate-params
@@ -236,14 +251,14 @@
         .row.title-params.gray
           .col-xs-6
             div
-              span.flag-icon(class="flag-icon-{{home.shipping.from.country.code}}")
+              span.flag-icon(class="flag-icon-{{home.rate.from.country}}")
               span.primary-color
-                |&nbsp;&nbsp;{{home.shipping.from.zip}}
+                |&nbsp;&nbsp;{{home.rate.from.zip}}
           .col-xs-6
             div
-              span.flag-icon(class="flag-icon-{{home.shipping.to.country.code}}")
+              span.flag-icon(class="flag-icon-{{home.rate.to.country}}")
               span.primary-color
-                |&nbsp;&nbsp;{{home.shipping.to.zip}}
+                |&nbsp;&nbsp;{{home.rate.to.zip}}
         .row.title-params.red
           .col-xs-2
             |#
@@ -257,7 +272,7 @@
             |Ancho
           .col-xs-2
             |Peso Vol.
-        .row.title-params.gray(data-ng-repeat="item in home.shipping.packages")
+        .row.title-params.gray(data-ng-repeat="item in home.rate.packages")
           .col-xs-2
             |{{$index+1}}
           .col-xs-2
@@ -270,6 +285,16 @@
             |{{item.width}}
           .col-xs-2
             |{{item.volumetric}}
+      div(data-ng-show="!home.searching")
+        div(data-ng-if="home.services.length < 1")
+          .line.margin-top-1
+            i.fa.fa-globe.big-globe
+          .line.margin-top-1
+            |Estamos trabajando para
+          .line
+            |&nbsp;para brindarte más opciones
+          .line
+            |&nbsp;y conectar al mundo.
       .table-response
         .container-fluid
           .table-container.clearfix.animated.bounceIn(data-ng-repeat="item in home.services")

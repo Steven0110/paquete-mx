@@ -20,8 +20,6 @@ var emisor = {
               },
               "CP":"15510"
             };
-
-
 //Production
 
 if(production){

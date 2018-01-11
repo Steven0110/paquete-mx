@@ -184,6 +184,7 @@
       // $(window).scrollTop(0);
       // $(document).scrollTop(0);
       // alert();
+      shell.menuOpen = false;
       shell.showLoading();
     });
 

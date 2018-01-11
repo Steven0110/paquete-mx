@@ -56,7 +56,13 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controller: 'Home',
       reloadOnSearch: false,
       controllerAs: 'home'
-
+    })
+    .state('home-section',{
+      url:'/:section',
+      templateUrl : 'app/home/home.template.html',
+      controller: 'Home',
+      reloadOnSearch: false,
+      controllerAs: 'home'
     })
     .state('privacy',{
       url:'/aviso-de-privacidad',
