@@ -25,7 +25,7 @@
     });
 
     $scope.$watch('home.shipping.to.country',function(newVal, oldVal){
-      home.shipping.from.data = {};
+      home.shipping.to.data = {};
       home.toSearch  = null;
     });
 
@@ -244,6 +244,8 @@
         fromCountry = home.shipping.from.country.code;
       if(!toCountry)
         toCountry = home.shipping.to.country.code;
+
+
       home.international =  shell.isInternational(fromCountry, toCountry);
       home.rated =  true;
       home.searching =  true;
@@ -299,12 +301,14 @@
         "packages": home.shipping.packages
       };
 
+      console.log('rate',rate);
+
       var promises = [];
       angular.forEach(services,function(service){
 
         var runRate = true; 
         if(home.international && !service.international){
-          console.log('service no international'+service.code);
+          // console.log('service no international'+service.code);
           runRate = false;
         }
 
@@ -325,7 +329,7 @@
             code: false
           };
 
-          console.log('params',params);
+          // console.log('params',params);
 
           promises.push(
 

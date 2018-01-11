@@ -9,11 +9,6 @@
     a(ui-sref="logout")
       |Cerrar Sesión
 .dashboard-content
-  .dash-submenu.clearfix
-    nav
-      |Datos Personales
-    nav
-      |Datos Facturación
   .container-fluid
     .row
       .col-xs-6
@@ -74,3 +69,37 @@
                       |Es requerido
               .align-center
                 md-button.md-raised.md-primary(type="submit",data-ng-bind="account.labels.form.update",aria-label="account.labels.form.update")
+    .row
+      .col-xs-6
+        .section-space-right
+          .form-container.margin-top-2
+            h1.accent.align-center
+              |Mis datos de Facturación
+            form(name="account.taxForm", novalidate="", data-ng-submit="account.updateTaxes()")
+              div(layout-xs-sm="row")
+                md-input-container.md-block.no-margin
+                  label
+                    |Requiero Factura Fiscal
+                  md-switch.md-primary.margin-top-2(ng-model="account.taxes.invoice",aria-label="Requiero Factura")
+                    span(data-ng-if="account.taxes.invoice")
+                      |Sí
+                    span(data-ng-if="!account.taxes.invoice")
+                      |No
+                md-input-container.md-block
+                  label(for="taxId", data-ng-bind="account.labels.form.taxId")
+                  input(name="taxId", data-ng-model="account.taxes.taxId", required="")
+                  div(ng-messages="account.taxForm.name.$error")
+                    div(ng-message="required",data-ng-bind="account.labels.errors.required")
+                md-input-container.md-block
+                  label(for="taxName", data-ng-bind="account.labels.form.taxName")
+                  input(name="taxName", data-ng-model="account.taxes.taxName", required="")
+                  div(ng-messages="account.taxForm.taxName.$error")
+                    div(ng-message="required",data-ng-bind="account.labels.errors.required")
+                md-input-container.md-block.margin-bottom-2
+                  label(for="taxUse")
+                    |Uso de CFDI:
+                  md-select(data-ng-model="account.taxes.taxUse")
+                    md-option(data-ng-repeat="item in account.taxUses track by item.code", value="{{item.code}}")
+                      |{{item.name}}
+              .align-center
+                md-button.md-raised.md-primary(type="submit",data-ng-bind="account.labels.form.save",aria-label="account.labels.form.save")

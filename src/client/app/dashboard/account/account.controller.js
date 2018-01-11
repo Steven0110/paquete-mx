@@ -5,10 +5,10 @@
     .module('app.core')
     .controller('Account',Account);
 
-  Account.$inject = ['$scope','userApi','Dialog'];
+  Account.$inject = ['$scope','userApi','accountApi','Dialog'];
 
 
-  function Account($scope, userApi, Dialog){
+  function Account($scope, userApi,accountApi, Dialog){
     // jshint validthis: true 
     var account = this;
     var shell = $scope.shell;
@@ -19,6 +19,28 @@
     account.labels = shell.labels.account;
 
     var currentUser = shell.getCurrentUser();
+    account.taxes = {};
+    account.taxUses = [{code:'G01',name:'Adquisición de mercancias'},{code:'G02',name:'Gastos en general'},{code:'P01',name:'Por definir'}];
+    account.taxes.taxUse = account.taxUses[1].code;
+
+    if(currentUser){
+      accountApi.getByUser(currentUser).then(function(result){
+        if(result){
+          if(result.objectId)
+            account.taxes.objectId = result.objectId;
+          if(result.taxId)
+            account.taxes.taxId = result.taxId;
+          if(result.taxName)
+            account.taxes.taxName = result.taxName;
+          if(result.taxUse)
+            account.taxes.taxUse = result.taxUse;
+          account.taxes.invoice = result.invoice;
+        }
+      },function(err){
+        console.log(err);
+      })
+    }
+
     account.user = {
       objectId  : currentUser.objectId,
       name      : currentUser.name,
@@ -43,6 +65,20 @@
         Dialog.showMessage();
       }
     };
+
+    account.updateTaxes = function(){
+      if(account.taxForm.$valid){
+        shell.showLoading();
+        console.log(account.taxes);
+        accountApi.update(account.taxes).then(function(res){
+          shell.showMessage();
+        },function(err){
+          console.log(err);
+        }).finally(shell.hideLoading);
+      }else{
+        Dialog.showMessage();
+      }
+    }
 
     account.updatePassword = function(){
       if(account.password.$valid){

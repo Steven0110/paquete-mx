@@ -94,6 +94,8 @@
       "oldPassword":"Contraseña Actual",
       "newPassword":"Contraseña Nueva",
       "confirmPassword":"Confirmar Contraseña",
+      "taxId":"RFC",
+      "taxName":"Razón Social",
       "save":"Guardar",
       "update":"Actualizar",
       "errors":{
