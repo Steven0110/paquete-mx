@@ -53,13 +53,13 @@ function ship(data, items){
     requestedShip.RequestedPackageLineItems = currentItem;
 
     var fedex = new fedexAPI({
-      environment: 'sandbox', // or live 
+      environment: 'live', // or live 
       debug: false,
       key: 't1uSywQP78fogZx4',
       password: 'PGptLQ6OQHFjYkdKhDhoZjV15',
       account_number: '510087860',
       meter_number: '118841995',
-      imperial: true // set to false for metric 
+      imperial: false // set to false for metric 
     });
 
     fedex.ship({

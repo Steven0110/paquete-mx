@@ -18,10 +18,18 @@
     home.options = [];
     home.international = false;
 
-    // home.volumetric = false;
+      
+    $scope.$watch('home.shipping.from.country',function(newVal, oldVal){
+      home.shipping.from.data = {};
+      home.fromSearch  = null;
+    });
 
-    // alert();
-    // $('html').animate({scrollTop:"408px"},1000);
+    $scope.$watch('home.shipping.to.country',function(newVal, oldVal){
+      home.shipping.from.data = {};
+      home.toSearch  = null;
+    });
+
+
 
     /*nuevo diseño*/
     home.weightList = ["1","2","3","4","5","6","7","8","9","10"];
@@ -266,7 +274,7 @@
       }
 
       var fromStateCode = false;
-      console.log(home.shipping.from.data);
+      
       if(home.shipping.from.data && home.shipping.from.data.stateCode){
         fromStateCode =  home.shipping.from.data.stateCode;
       }
@@ -291,7 +299,6 @@
         "packages": home.shipping.packages
       };
 
-      console.log("rate", rate);
       var promises = [];
       angular.forEach(services,function(service){
 
@@ -399,33 +406,20 @@
                   home.shipping.packages = home.documents;
                 }
 
-                // var fromZip;
-                // var toZip;
-                // var fromCountry;
-                // var toCountry;
-                
-                // if(home.shipping.from.data && home.shipping.from.data.zip){
-                //   fromZip =  home.shipping.from.data.zip;
-                // }else{
-                //   fromZip =  home.fromSearch;
-                // }
-
-                // if(home.shipping.to.data && home.shipping.to.data.zip){
-                //   toZip =  home.shipping.to.data.zip;
-                // }else{
-                //   toZip =  home.toSearch;
-                // }
-
-                // fromCountry = JSON.stringify(home.shipping.from.country);
-                // toCountry = JSON.stringify(home.shipping.to.country);
-
-                // from = JSON.stringify(home.shipping.from);
-                // to = JSON.stringify(home.shipping.to);
                 var shipping = JSON.stringify(home.shipping);
-                getRates();
-                $state.go('home', {shipping: shipping}, {notify: false});
-                // alert();
-                // getRates();
+
+                var fromCountry = home.shipping.from.country;
+                var toCountry = home.shipping.to.country;
+
+                if(fromCountry.listed == true && !home.shipping.from.data.state){
+                  Dialog.showError('Selecciona un valor de origen de la lista que se despliega al escribir tu código postal o colonia.','Selecciona el origen.'); 
+                }else if(toCountry.listed == true && !home.shipping.to.data.state){
+                  Dialog.showError('Selecciona un valor de destino de la lista que se despliega al escribir tu código postal o colonia.','Selecciona el destino.'); 
+                }
+                else{
+                  getRates();
+                  $state.go('home', {shipping: shipping}, {notify: false});
+                }
               }else{
                 Dialog.showError('Verifica las dimensiones de los paquetes, recuerda que deben ser numéricos mayores a 0','Dimensiones de los paquetes');  
               }

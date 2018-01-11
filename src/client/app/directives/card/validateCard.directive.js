@@ -28,28 +28,30 @@ function validateCvc(){
     require: 'ngModel',
     link:function(scope,element,attr,ngModel){
       ngModel.$validators.validateCvc = function(modelValue) {
-        var brand =Conekta.card.getBrand(scope.card.info.card_number);
-        if(brand == 'amex'){
-          var validation = Conekta.card.validateCVC(modelValue);
-          if(validation){
-            if(modelValue.length == 4){
-              return true;
+        if(scope.card && scope.card.info && scope.card.info.card_number){
+          var brand =Conekta.card.getBrand(scope.card.info.card_number);
+          if(brand == 'amex'){
+            var validation = Conekta.card.validateCVC(modelValue);
+            if(validation){
+              if(modelValue.length == 4){
+                return true;
+              }else{
+                return false;
+              }
             }else{
-              return false;
+              return validation;
             }
           }else{
-            return validation;
-          }
-        }else{
-          var validation = Conekta.card.validateCVC(modelValue);
-          if(validation){
-            if(modelValue.length == 3){
-              return true;
+            var validation = Conekta.card.validateCVC(modelValue);
+            if(validation){
+              if(modelValue.length == 3){
+                return true;
+              }else{
+                return false;
+              }
             }else{
-              return false;
+              return validation;
             }
-          }else{
-            return validation;
           }
         }
       };

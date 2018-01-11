@@ -28,6 +28,7 @@
 
     checkout.goToPayment = function(){
       checkout.step = 'payment';
+      checkout.payment = 'card';
     }
     checkout.goToConfirm = function(){
       checkout.card = false;
@@ -213,6 +214,7 @@
     }
 
     checkout.selectCard = function(card){
+      checkout.payment = 'card'
       checkout.card = card;
       checkout.step = 'confirm';
     }

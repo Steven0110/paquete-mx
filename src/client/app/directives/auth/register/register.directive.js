@@ -16,11 +16,11 @@ function registerForm(userApi, Dialog){
       scope.accountType = 'personal';
       scope.account = {};
       scope.user = {
-        name: "Carlos",
-        lastname: "Canizal",
-        phone: "5535068102",
-        username: "carlos@canizal.com",
-        password: "canizal"
+        name: null,
+        lastname: null,
+        phone: null,
+        username: null,
+        password: null
       }
 
       scope.taxUses = [{code:'G01',name:'Adquisición de mercancias'},{code:'G02',name:'Gastos en general'},{code:'P01',name:'Por definir'}];

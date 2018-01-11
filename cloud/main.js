@@ -34,7 +34,13 @@ if(production){
   // var javascriptKey = "IgkJ82CLUN4xIpiwD9UmFblPaUE650tRsw46Mbld";
 }else{
   emisor.cedula.RFC = "MAG041126GT8";
-  var domain = "sandbox0ac0a2a5c16246be98c97c0c2628f3fa.mailgun.org";
+  //localhot
+  // var domain = "sandbox0ac0a2a5c16246be98c97c0c2628f3fa.mailgun.org";
+  //beta.paquete.mx
+  var domain = 'beta.paquete.mx';
+  //localhost
+  // Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-5e0f8c7de60172d4428cb1edbed23275'});
+  //beta.paquete.mx
   Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-5e0f8c7de60172d4428cb1edbed23275'});
   // var conekta_key = 'Basic OmtleV81elE2NGZIcWhRZmYzSEthaUNWVDRn';
   var tPagoPublic = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:Fg4czj5lWgbUc9rJ0bX3IcPmSVgTKCUU";
@@ -1025,11 +1031,11 @@ function sendShipOrder(user, shipping, payment) {
     headers: {
       'Content-Type': 'application/json'
     },
-    url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/rate/ship',
+    url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/ship',
     body: body
   }).then(function(result){
     console.log('result-shipping');
-    console.log(result);
+    console.log(result.text);
     var Shipping = Parse.Object.extend('Shipping');
     var shipping = new Shipping();
     shipping.set("user",user);

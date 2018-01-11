@@ -41,9 +41,8 @@ function selectCountry($document){
         if(vm.list.length > 0){
           if(element.target && element.target.className){
             var item = element.target.className;
-            // console.log(item);
             if(!item.includes('country-name') && !item.includes('country-search') && !item.includes('fa-angle-down')){
-              vm.search ="";
+              vm.search = "";
               vm.show = false;
               $scope.$apply();
             }

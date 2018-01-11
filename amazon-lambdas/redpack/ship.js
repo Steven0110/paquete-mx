@@ -1,15 +1,16 @@
 var https = require("http");
 var convert = require('xml-to-json-promise');
 var Parse = require('parse/node').Parse;
-const production = false;
+
 
 function getGuia(service){
-  
+  var production = false;
   if(production){
     console.log('We are in production!');
-    masterKey = "baplcn89UZ3uyJq0AflqtXjnFV2wRmo81SaWg7wd";
-    appId = "OwwqTBzf9Tj618RyQqYmx3eJOhxaS8qolcojD3IA";
-    javascriptKey = "gCi0VgG0NVmtZA7lKsAAVVAvk9IwECg2GMJHwWdQ";
+    conekta.api_key = "key_7y3X6oJJQW1wjycN11oVuQ"
+    masterKey = "UcnWpyvMN91TkKDx98uVOVAXFLyYNFemSrUePRXQ";
+    appId = "evDT2lYItdWafYh4i6QeGqXuGjcmliKZ3aYy8HJC";
+    javascriptKey = "nhEaWrCi2AlnoUYBUHsG3NFAUZVqAh1YAG1gPlhe";
   }else{
     console.log('We are in development!');
     masterKey = "rZx1h8G9530G73xbzk5F1MLvGzb080KL2u55uC8S";
@@ -85,6 +86,7 @@ function IterateOver(list, iterator, callBack) {
 }
 
 var ship = function(data,success,error){
+    var production =  false;
     var headers = {
       'Content-Type': 'text/xml',
     }
@@ -92,7 +94,7 @@ var ship = function(data,success,error){
     var hostname = "ws.redpack.com.mx";
     var path = '/RedpackAPI_WS/services/RedpackWS?wsdl'
     if(production){
-      hostname =  "ws.redpack.com.mx";
+      hostname =  "";
       path = '/RedpackAPI_WS/services/RedpackWS?wsdl'
     }
 
@@ -122,6 +124,55 @@ var ship = function(data,success,error){
 
 
 exports.handler = (event, context, callback) => {
+    // var event = {
+    //       "debugging": true,
+    //       "packagingType": "package",
+    //       "from": {
+    //         "name": "Carlos Canizal",
+    //         "phone": "5535068102",
+    //         "street": "Rio Misisipi",
+    //         "number": "Mz 45",
+    //         "apt": "Lt 42",
+    //         "county": "Puente Blanco",
+    //         "city": "Iztapalapa",
+    //         "state": "Ciudad de México",
+    //         "country": {
+    //           "code": "MX"
+    //         },
+    //         "zip": "09770"
+    //       },
+    //       "to": {
+    //         "name": "Carlos Canizal",
+    //         "phone": "5535068102",
+    //         "street": "Hamburgo",
+    //         "number": "70",
+    //         "apt": "201",
+    //         "county": "Juarez",
+    //         "city": "Cuauhtemoc",
+    //         "state": "Ciudad de México",
+    //         "country": {
+    //           "code": "MX"
+    //         },
+    //         "zip": "06600"
+    //       },
+    //       "service": {
+    //         "code": "2"
+    //       },
+    //       "packages": [
+    //         {
+    //           "width": "25",
+    //           "weight": "1",
+    //           "length": "25",
+    //           "height": "25"
+    //         },
+    //         {
+    //           "width": "25",
+    //           "weight": "1",
+    //           "length": "25",
+    //           "height": "25"
+    //         }
+    //       ]
+    //     };
     var body ="";
     if(event){
         var data = event;
@@ -241,11 +292,10 @@ exports.handler = (event, context, callback) => {
             callback(generateError(400,"We need at least 1 package dimensions."),null);
         }
         
-      
+        
+        // console.log('canizal');
+        // body = '<?xmln version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><cotizacionNacional xmlns="http://ws.redpack.com"><PIN>QA j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=</PIN><idUsuario>785</idUsuario><guias><ns1:consignatario xmlns:ns1="http://vo.redpack.com/xsd"><ns1:codigoPostal>7270</ns1:codigoPostal></ns1:consignatario><ns2:paquetes xmlns:ns2="http://vo.redpack.com/xsd"><ns2:alto>0</ns2:alto>'+packages+'<ns'+(limit+start)+':remitente xmlns:ns'+(limit+start)+'="http://vo.redpack.com/xsd"><ns'+(limit+start)+':codigoPostal>1120</ns'+(limit+start)+':codigoPostal></ns'+(limit+start)+':remitente><ns'+(limit+start+1)+':tipoEntrega xmlns:ns'+(limit+start+1)+'="http://vo.redpack.com/xsd"><ns'+(limit+start+1)+':id>1</ns'+(limit+start+1)+':id></ns'+(limit+start+1)+':tipoEntrega></guias></cotizacionNacional></soapenv:Body></soapenv:Envelope>';
         var pin = "QA j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=";
-        if(production){
-          pin = "PROD j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=";
-        }
         var idUsuario = "785";
 
         getGuia(data.service.name).then(function(res){

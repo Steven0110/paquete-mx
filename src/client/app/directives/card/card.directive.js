@@ -21,17 +21,17 @@ function cardForm(paymentGateway, Dialog){
       var card = this;
 
       card.info = {
-        name       : "Carlos Canizal",
-        card_number: "4242424242424242",
-        cvc        : "123",
+        name       : null,
+        card_number: null,
+        cvc        : null,
         exp_month  : 1,
         exp_year : 2019,
-        address_line_1: "Hamburgo 70",
-        address_line_2: "Col. Juarez",
-        city: "Cuauhtemoc",
-        state: "CDMX",
+        address_line_1: null,
+        address_line_2: null,
+        city: null,
+        state: null,
         country: "México",
-        postal_code: "06600"
+        postal_code: null
       }
 
       card.months = [];

@@ -63,11 +63,12 @@ function selectCities($http, $document){
 
       var delayTimer;
       function delaySearch(search, country) {
-        console.log(search);
         if(search && search.length > 2){
           vm.clean =false;
           vm.loading = true;
           vm.options = [];
+          search = search.trim();
+          search = encodeURI(search);
           $http.post("https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/counties",{search:search,country:country})
           .then(function(response) {
             if(response && response.data && response.data.length > 0)

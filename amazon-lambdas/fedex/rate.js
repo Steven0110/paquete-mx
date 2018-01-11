@@ -1,7 +1,7 @@
 var https = require("https");
 var convert = require('xml-to-json-promise');
 var moment = require ('moment');
-const production =  false;
+const production =  true;
 const exchange = 20;
 const currentDiscount = 0.15;
 
@@ -60,28 +60,6 @@ var rate = function(data,success,error){
 
 
 exports.handler = (event, context, callback) => {
-    // var event = {
-    //   "debugging": false,
-    //   "type": "package",
-    //   "from": {
-    //     "zip": "06600",
-    //     "country": "MX"
-    //   },
-    //   "to": {
-    //     "zip": "94014",
-    //     "country": "US"
-    //   },
-    //   "packages": [
-    //     {
-    //       "weight": "4",
-    //       "width": "20",
-    //       "height": "20",
-    //       "length": "30",
-    //       "valueDeclared": "10000"
-    //     }
-    //   ]
-    // };
-
     var body ={};
     if(event){
         var data = event;
@@ -188,12 +166,11 @@ exports.handler = (event, context, callback) => {
           meterNumber = "118841995";
         }
         
-        body = '<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://fedex.com/ws/rate/v13"><SOAP-ENV:Body><ns1:RateRequest><ns1:WebAuthenticationDetail><ns1:UserCredential><ns1:Key>'+key+'</ns1:Key><ns1:Password>'+password+'</ns1:Password></ns1:UserCredential></ns1:WebAuthenticationDetail><ns1:ClientDetail><ns1:AccountNumber>'+accountNumber+'</ns1:AccountNumber><ns1:MeterNumber>'+meterNumber+'</ns1:MeterNumber></ns1:ClientDetail><ns1:TransactionDetail><ns1:CustomerTransactionId> *** Rate Request v13 using PHP ***</ns1:CustomerTransactionId></ns1:TransactionDetail><ns1:Version><ns1:ServiceId>crs</ns1:ServiceId><ns1:Major>13</ns1:Major><ns1:Intermediate>0</ns1:Intermediate><ns1:Minor>0</ns1:Minor></ns1:Version><ns1:ReturnTransitAndCommit>true</ns1:ReturnTransitAndCommit><ns1:RequestedShipment><ns1:DropoffType>REGULAR_PICKUP</ns1:DropoffType><ns1:PackagingType>'+ packagingType+'</ns1:PackagingType><ns1:PreferredCurrency>MXN</ns1:PreferredCurrency><ns1:Shipper><ns1:Contact><ns1:PersonName>Sender Name</ns1:PersonName><ns1:CompanyName>Sender Company Name</ns1:CompanyName><ns1:PhoneNumber></ns1:PhoneNumber></ns1:Contact><ns1:Address><ns1:StreetLines></ns1:StreetLines><ns1:City></ns1:City><ns1:StateOrProvinceCode></ns1:StateOrProvinceCode><ns1:PostalCode>'+fromZip+'</ns1:PostalCode><ns1:CountryCode>'+fromCountry+'</ns1:CountryCode></ns1:Address></ns1:Shipper><ns1:Recipient><ns1:Contact><ns1:PersonName>Recipient Name</ns1:PersonName><ns1:CompanyName>Company Name</ns1:CompanyName><ns1:PhoneNumber></ns1:PhoneNumber></ns1:Contact><ns1:Address><ns1:StreetLines></ns1:StreetLines><ns1:City></ns1:City><ns1:StateOrProvinceCode></ns1:StateOrProvinceCode><ns1:PostalCode>'+toZip+'</ns1:PostalCode><ns1:CountryCode>'+toCountry+'</ns1:CountryCode><ns1:Residential>false</ns1:Residential></ns1:Address></ns1:Recipient><ns1:ShippingChargesPayment><ns1:PaymentType>SENDER</ns1:PaymentType><ns1:Payor><ns1:ResponsibleParty><ns1:AccountNumber>510087860</ns1:AccountNumber></ns1:ResponsibleParty></ns1:Payor></ns1:ShippingChargesPayment><ns1:RateRequestTypes>ACCOUNT</ns1:RateRequestTypes><ns1:PackageCount>'+totalPackages+'</ns1:PackageCount>'+packages+'</ns1:RequestedShipment></ns1:RateRequest></SOAP-ENV:Body></SOAP-ENV:Envelope>';
+        body = '<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://fedex.com/ws/rate/v13"><SOAP-ENV:Body><ns1:RateRequest><ns1:WebAuthenticationDetail><ns1:UserCredential><ns1:Key>'+key+'</ns1:Key><ns1:Password>'+password+'</ns1:Password></ns1:UserCredential></ns1:WebAuthenticationDetail><ns1:ClientDetail><ns1:AccountNumber>'+accountNumber+'</ns1:AccountNumber><ns1:MeterNumber>'+meterNumber+'</ns1:MeterNumber></ns1:ClientDetail><ns1:TransactionDetail><ns1:CustomerTransactionId> *** Rate Request v13 using PHP ***</ns1:CustomerTransactionId></ns1:TransactionDetail><ns1:Version><ns1:ServiceId>crs</ns1:ServiceId><ns1:Major>13</ns1:Major><ns1:Intermediate>0</ns1:Intermediate><ns1:Minor>0</ns1:Minor></ns1:Version><ns1:ReturnTransitAndCommit>true</ns1:ReturnTransitAndCommit><ns1:RequestedShipment><ns1:DropoffType>REGULAR_PICKUP</ns1:DropoffType><ns1:PackagingType>'+ packagingType+'</ns1:PackagingType><ns1:PreferredCurrency>MXN</ns1:PreferredCurrency><ns1:Shipper><ns1:Contact><ns1:PersonName>Sender Name</ns1:PersonName><ns1:CompanyName>Sender Company Name</ns1:CompanyName><ns1:PhoneNumber></ns1:PhoneNumber></ns1:Contact><ns1:Address><ns1:StreetLines></ns1:StreetLines><ns1:City></ns1:City><ns1:StateOrProvinceCode></ns1:StateOrProvinceCode><ns1:PostalCode>'+fromZip+'</ns1:PostalCode><ns1:CountryCode>'+fromCountry+'</ns1:CountryCode></ns1:Address></ns1:Shipper><ns1:Recipient><ns1:Contact><ns1:PersonName>Recipient Name</ns1:PersonName><ns1:CompanyName>Company Name</ns1:CompanyName><ns1:PhoneNumber></ns1:PhoneNumber></ns1:Contact><ns1:Address><ns1:StreetLines></ns1:StreetLines><ns1:City></ns1:City><ns1:StateOrProvinceCode></ns1:StateOrProvinceCode><ns1:PostalCode>'+toZip+'</ns1:PostalCode><ns1:CountryCode>'+toCountry+'</ns1:CountryCode><ns1:Residential>false</ns1:Residential></ns1:Address></ns1:Recipient><ns1:ShippingChargesPayment><ns1:PaymentType>SENDER</ns1:PaymentType><ns1:Payor><ns1:ResponsibleParty><ns1:AccountNumber>'+accountNumber+'</ns1:AccountNumber></ns1:ResponsibleParty></ns1:Payor></ns1:ShippingChargesPayment><ns1:RateRequestTypes>ACCOUNT</ns1:RateRequestTypes><ns1:PackageCount>'+totalPackages+'</ns1:PackageCount>'+packages+'</ns1:RequestedShipment></ns1:RateRequest></SOAP-ENV:Body></SOAP-ENV:Envelope>';
         
         
         rate(body,function(result){
             // result = JSON.parse(result);
-            // console.log(result);
             convert.xmlDataToJSON(result).then(function (data) {
                 if(data["SOAP-ENV:Envelope"]){
                     data =  data["SOAP-ENV:Envelope"];
