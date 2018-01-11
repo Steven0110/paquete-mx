@@ -420,7 +420,7 @@
       if(home.shippingForm.fromZip.$valid){
         if(home.shippingForm.toZip.$valid){
           if(home.shipping.type == 'package' || home.shipping.type == 'document'){
-            // if(!home.shipping.insurance || (home.shipping.insurance && home.shipping.valueDeclared && home.shipping.valueDeclared > 0)){
+            $timeout(function(){
               if(home.shippingForm.$valid){
 
                 if(home.shipping.type == "document"){
@@ -444,11 +444,8 @@
               }else{
                 Dialog.showError('Verifica las dimensiones de los paquetes, recuerda que deben ser numéricos mayores a 0','Dimensiones de los paquetes');  
               }
-            // }else{
-              // Dialog.showError('El valor declarado debe ser mayor a 0 si deseas asegurar.','¿Cuál es el valor declarado?');
-            // }
+            },500);
           }else{
-            // alert('Selecciona si tu envio son documentos o paquetes.');
             Dialog.showError('Selecciona si tu envío son documentos o paquetes.','¿Qué envías?');
           }
         }else{

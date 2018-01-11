@@ -178,15 +178,15 @@
                                       .col-xs-4
                                         .box-attr
                                           div
-                                            |ALTO
-                                          div
-                                            input(name="height",placeholder="cms", data-ng-model="package.height", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)")
-                                      .col-xs-4
-                                        .box-attr
-                                          div
                                             |LARGO
                                           div
                                             input(name="length",placeholder="cms", data-ng-model="package.length", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)")
+                                      .col-xs-4
+                                        .box-attr
+                                          div
+                                            |ALTO
+                                          div
+                                            input(name="height",placeholder="cms", data-ng-model="package.height", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)")
                                       .col-xs-4
                                         .box-attr
                                           div
@@ -254,11 +254,19 @@
               span.flag-icon(class="flag-icon-{{home.rate.from.country}}")
               span.primary-color
                 |&nbsp;&nbsp;{{home.rate.from.zip}}
+            div(data-ng-if="home.rate.from.data.county")
+              |{{home.rate.from.data.county}}, {{home.rate.from.data.city}}
+            div(data-ng-if="home.rate.from.data.state")
+              |{{home.rate.from.data.state}}
           .col-xs-6
             div
               span.flag-icon(class="flag-icon-{{home.rate.to.country}}")
               span.primary-color
                 |&nbsp;&nbsp;{{home.rate.to.zip}}
+            div(data-ng-if="home.rate.to.data.county")
+              |{{home.rate.to.data.county}}, {{home.rate.to.data.city}}
+            div(data-ng-if="home.rate.to.data.state")
+              |{{home.rate.to.data.state}}
         .row.title-params.red
           .col-xs-2
             |#
@@ -275,16 +283,16 @@
         .row.title-params.gray(data-ng-repeat="item in home.rate.packages")
           .col-xs-2
             |{{$index+1}}
+          .col-xs-2(data-ng-class="{'accent':item.weight >= item.volumetric}")
+            |{{item.weight}} Kg.
           .col-xs-2
-            |{{item.weight}}
+            |{{item.length}} cm.
           .col-xs-2
-            |{{item.length}}
+            |{{item.height}} cm.
           .col-xs-2
-            |{{item.height}}
-          .col-xs-2
-            |{{item.width}}
-          .col-xs-2
-            |{{item.volumetric}}
+            |{{item.width}} cm.
+          .col-xs-2(data-ng-class="{'accent':item.weight < item.volumetric}")
+            |{{item.volumetric}} Kg.
       div(data-ng-show="!home.searching")
         div(data-ng-if="home.services.length < 1")
           .line.margin-top-1
@@ -294,7 +302,7 @@
           .line
             |&nbsp;para brindarte más opciones
           .line
-            |&nbsp;y conectar al mundo.
+            |&nbsp;y conectarte con el mundo.
       .table-response
         .container-fluid
           .table-container.clearfix.animated.bounceIn(data-ng-repeat="item in home.services")
