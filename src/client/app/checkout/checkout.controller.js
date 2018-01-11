@@ -140,6 +140,7 @@
 
     checkout.paymentMethod = function(card){
       checkout.card = card;
+      checkout.paymentMethods.push(card);
       checkout.payment = 'card';
       checkout.step = 'confirm';
     }
@@ -174,10 +175,17 @@
       },function(err){
         if(checkout.payment == 'account')
           checkout.step = 'selectPayment';
-        else if(checkout.payment == 'card')
+        else if(checkout.payment == 'card'){
           checkout.step = 'payment';
+          checkout.cardForm = false;
+        }
         if(err.message){
-          Dialog.showError(err.message, 'No se pudo pagar la orden.');
+          var title = 'No se pudo pagar la orden.';
+          if(err.message == 'Deny' || err.message == 'Denegado'){
+            title = "Tarjeta Declianda";
+            err.message = "Lo sentimos no se pudo completar la orden ya que tu tarjeta fue declinada, ponte en contacto con tu banco."
+          }
+          Dialog.showError(err.message, title);
         }
       }).finally(function(){
         checkout.connecting = false;

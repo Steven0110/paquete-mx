@@ -9,7 +9,7 @@
 change log*/
 
 var templates = require("./templates.js").templates;
-var production = false;
+var production = true;
 var Mailgun = null;
 
 var emisor = {
@@ -25,13 +25,15 @@ var emisor = {
 //Production
 
 if(production){
-  // emisor.cedula.RFC = "KNE110317Q61";
-  // var domain = "viaservicios.com.mx";
-  // Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-207406cb7f186389bdbf6c20b4c82ce7'});
+  emisor.cedula.RFC = "MAG041126GT8";
+  var domain = "paquete.mx";
+  Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-5e0f8c7de60172d4428cb1edbed23275'});
+  var tPagoPublic = "u2oiwgTFEHht04tqeYq0MT06Np8ixXdU:eEXLhTxBiYo6fmFnWupvaeN7lyxuEAot";
+  var tPagoPrivate = "u2oiwgTFEHht04tqeYq0MT06Np8ixXdU:ylBRVVpuwDBbg0joIeyRwgQeY3U7KHNr";
+  var appId = "OwwqTBzf9Tj618RyQqYmx3eJOhxaS8qolcojD3IA";
+  var masterKey = "baplcn89UZ3uyJq0AflqtXjnFV2wRmo81SaWg7wd";
+  var javascriptKey = "gCi0VgG0NVmtZA7lKsAAVVAvk9IwECg2GMJHwWdQ";
 
-  // var appId = "qJlZJ7Kjoxp4LSkiYzC2T34Mkea4ZMqHmavrcyQN";
-  // var masterKey = "GDF6rB6TfdUzV14WjPTCpsC8bT4ki0lzf0KC4L0Q";
-  // var javascriptKey = "IgkJ82CLUN4xIpiwD9UmFblPaUE650tRsw46Mbld";
 }else{
   emisor.cedula.RFC = "MAG041126GT8";
   //localhot
@@ -854,7 +856,7 @@ Parse.Cloud.define("chargeCard",function(request, response){
     packages += "</tbody></table>";
 
 
-    var html = templates.getOrderTemplate(fromAddress, toAddress, trackingNumber, (amount/100), packages, requestResult.shipOrder.carrier, shipping.service.name);
+    var html = templates.getOrderTemplate(fromAddress, toAddress, trackingNumber,amount, packages, requestResult.shipOrder.carrier, shipping.service.name);
     //jccz send-email
 
     var file = "http://54.245.38.66/?trackingNumber="+trackingNumber; 
