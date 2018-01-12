@@ -1,5 +1,5 @@
 var https = require("https");
-const production = false;
+const production = true;
 
 function generateError(code, message){
     return JSON.stringify({"status":code,"error":message});
@@ -25,7 +25,7 @@ var ship = function(data,success,error){
     var hostname = "wwwcie.ups.com";
     var path = '/rest/Ship'
     if(production){
-      hostname =  "onlinetools.ups.com/rest/Ship";
+      hostname =  "onlinetools.ups.com";
       path = '/rest/Ship'
     }
 
@@ -37,16 +37,17 @@ var ship = function(data,success,error){
       headers: headers
     };
     var req =   https.request(options, function(res) {
-                    res.setEncoding('utf8');
-                    var body ="";
-                    res.on('data', function (result) {
-                        body+=result;
-                    });
-                    res.on('end',function(){
-                        success(body);
-                    });
+                      res.setEncoding('utf8');
+                      var body ="";
+                      res.on('data', function (result) {
+                          body+=result;
+                      });
+                      res.on('end',function(){
+                          success(body);
+                      });
                     }).on('error', function(err) {
-                        error(err);
+                      console.log(err);
+                      error(err);
                     });
     data = JSON.stringify(data);
     req.write(data);
@@ -98,9 +99,9 @@ exports.handler = (event, context, callback) => {
           if(!data.from.number){
             context.fail(generateError(400,"number value is required in from attribute."));
           }
-          if(!data.from.apt){
-            context.fail(generateError(400,"apt value is required in from attribute."));
-          }
+          // if(!data.from.apt){
+            // context.fail(generateError(400,"apt value is required in from attribute."));
+          // }
           if(!data.from.county){
             context.fail(generateError(400,"county value is required in from attribute."));
           }
@@ -124,9 +125,9 @@ exports.handler = (event, context, callback) => {
           if(!data.to.number){
             context.fail(generateError(400,"number value is required in to attribute."));
           }
-          if(!data.to.apt){
-            context.fail(generateError(400,"apt value is required in to attribute."));
-          }
+          // if(!data.to.apt){
+            // context.fail(generateError(400,"apt value is required in to attribute."));
+          // }
           if(!data.to.county){
             context.fail(generateError(400,"county value is required in to attribute."));
           }
@@ -354,6 +355,8 @@ exports.handler = (event, context, callback) => {
             
             context.succeed(json);
             
+        },function(err){
+          context.fail(err);
         });
     }else{
         var err =  JSON.stringify({"error":"Invalid JSON is required"});

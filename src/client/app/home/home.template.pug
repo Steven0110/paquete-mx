@@ -14,24 +14,18 @@
   .menu-mobile(data-ng-class="{'active':shell.menuOpen}")
     .padding-top-bottom
       .logo-complete-link.margin-auto
-    nav
-      a(ui-sref="home")
-        |INICIO
-    nav
-      a(ui-sref="home")
-        |COTIZAR
-    nav
-      a(ui-sref="dashboard.shippings")
-        |RASTREAR
-    nav
-      a(data-ng-click="home.openSection(4,2000)")
-        |eCOMMERCE
-    nav
-      a(data-ng-click="home.openSection(2,2000)")
-        |MÉTODOS DE PAGO
-    nav
-      a(data-ng-click="home.openSection(1,2000)")
-        |PARTNERS
+    nav(ui-sref="home")
+      |INICIO
+    nav(ui-sref="home")
+      |COTIZAR
+    nav(ui-sref="dashboard.shippings")
+      |RASTREAR
+    nav(data-ng-click="home.openSection(4,2000)")
+      |eCOMMERCE
+    nav(data-ng-click="home.openSection(2,2000)")
+      |MÉTODOS DE PAGO
+    nav(data-ng-click="home.openSection(1,2000)")
+      |PARTNERS
     //- nav
       a(href="#")
         |PREGUNTAS FRECUENTES
@@ -41,14 +35,13 @@
     //- nav
       a(href="#")
         |¿COMÓ FUNCIONA?
-    nav
-      a(ui-sref="login")
-        |MI CUENTA
+    nav(ui-sref="login")
+      |MI CUENTA
   .container-center
     .container-fluid
       .row
         .col-xs-12.center-block
-            .logo-color.logo-home
+            .logo-color.logo-home(data-ng-click="home.reload()")
             form(name="home.shippingForm",data-ng-submit="home.send()", novalidate)
               .container-fluid.opacity-box
                 .row
@@ -61,15 +54,16 @@
                           span.bold
                             |&nbsp;ORIGEN
                         .cotizador-element-box
-                          .col-xs-4
-                            select-country(data-countries="shell.countries", data-country="home.shipping.from.country")
-                          .col-xs-8
-                            .input-cotizador
-                              .input-container
-                                input(
-                                  placeholder="C.P."
-                                  name="fromZip", data-ng-model="home.fromSearch", data-ng-blur="home.cleanInput()",required)
-                                select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.fromSearch",data-country="home.shipping.from.country")
+                          .row
+                            .col-xs-4
+                              select-country(data-countries="shell.countries", data-country="home.shipping.from.country")
+                            .col-xs-8
+                              .input-cotizador
+                                .input-container
+                                  input(
+                                    placeholder="C.P."
+                                    name="fromZip", data-ng-model="home.fromSearch", data-ng-blur="home.cleanInput()",required)
+                                  select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.fromSearch",data-country="home.shipping.from.country")
                             
 
                   .col-xs-12.col-sm-6.col-md-3
@@ -184,15 +178,15 @@
                                       .col-xs-4
                                         .box-attr
                                           div
-                                            |ALTO
-                                          div
-                                            input(name="height",placeholder="cms", data-ng-model="package.height", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)")
-                                      .col-xs-4
-                                        .box-attr
-                                          div
                                             |ANCHO
                                           div
                                             input(name="width",placeholder="cms", data-ng-model="package.width", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)")
+                                      .col-xs-4
+                                        .box-attr
+                                          div
+                                            |ALTO
+                                          div
+                                            input(name="height",placeholder="cms", data-ng-model="package.height", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)")
                                     .col-xs-1
                                       .box-attr
                                         i.fa.fa-plus(data-ng-show="$index+1 == home.shipping.packages.length", data-ng-click="home.addPackage()")
@@ -275,9 +269,9 @@
           .col-xs-2
             |Largo
           .col-xs-2
-            |Alto
-          .col-xs-2
             |Ancho
+          .col-xs-2
+            |Alto
           .col-xs-2
             |Peso Vol.
         .row.title-params.gray(data-ng-repeat="item in home.rate.packages")
@@ -288,9 +282,9 @@
           .col-xs-2
             |{{item.length}} cm.
           .col-xs-2
-            |{{item.height}} cm.
-          .col-xs-2
             |{{item.width}} cm.
+          .col-xs-2
+            |{{item.height}} cm.
           .col-xs-2(data-ng-class="{'accent':item.weight < item.volumetric}")
             |{{item.volumetric}} Kg.
       div(data-ng-show="!home.searching")

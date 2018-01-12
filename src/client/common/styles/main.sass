@@ -118,19 +118,18 @@ a.accent
 .select-box
   background-color: rgba(0,0,0,0.8)
   color: #FFF
-  // min-width: 300px
-  // width: 400%
   width: 300%
   max-height: 300px
   overflow: auto
   position: absolute
   left: 0
+  top: 50px
   display: inline-block
-  z-index: 2
+  z-index: 10
   border-bottom-left-radius: 5px
   border-bottom-right-radius: 5px
   &.left
-    margin-top: 5px
+    // margin-top: 5px
     width: 150%
     left: -50%
   ul
@@ -169,8 +168,9 @@ a.accent
   font-family: 'Roboto'
   font-size: 1.8rem
   font-weight: 700
-  padding: 10px 10px 5px 10px
+  padding: 13px 10px 5px 10px
   cursor: pointer
+  height: 50px
   i
     color: $primary-color
   &:hover
@@ -238,9 +238,9 @@ span.country-name
     color: green
     font-size: 14rem
 
-iframe
-  position: absolute
-  top: -100px
+// iframe
+  // position: absolute
+  // top: -100px
 
 .md-primary
   font-size: 1.5rem
@@ -318,3 +318,6 @@ table.info-table
   color: #CCC
   &:hover
     color: $primary-color
+
+.container-padding
+  padding: 100px 0

@@ -14,6 +14,7 @@
       "email": "Correo Electrónico",
       "password": "Contraseña",
       "login": "Iniciar Sesión",
+      "recovery": "Recuperar Contraseña",
       "unauth": "Correo Electrónico y/o Contraseña incorrectos.",
       "forgot": "¿Olvidaste tu Contraseña?",
       "welcome": "¡Bienvenido!",

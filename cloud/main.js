@@ -165,6 +165,88 @@ function getInvoceTotal(type){
 
 /*CREATE INVOICE*/
 
+Parse.Cloud.define("setPassword",function(request, response){
+
+  var recoveryKey = request.params.recoveryKey;
+  var password = request.params.password;
+
+  var User = Parse.Object.extend('_User');
+  var query = new Parse.Query(User);
+  query.equalTo('recoveryKey', recoveryKey);
+  query.first().then(function(user){
+    if(user && password){
+      user.set('recoveryKey',"");
+      user.set('password',password);
+      user.save(null,{useMasterKey:true}).then(function(){
+        response.success();
+      },function(err){
+        response.error(err);
+      })
+    }else{
+      response.error({message: 'Invalid Password'});
+    }
+  },function(err){
+    response.error(err);
+  })
+})
+
+
+Parse.Cloud.define("validateKey",function(request, response){
+  var recoveryKey = request.params.key;
+  if(!recoveryKey){
+    response.error({message: "Invalid Key"});
+  }
+
+  var User = Parse.Object.extend('_User');
+  var query = new Parse.Query(User);
+  query.equalTo('recoveryKey', recoveryKey);
+
+  query.first().then(function(user){
+    if(user){
+      response.success();
+    }else{
+      response.error();
+    }
+  },function(err){
+    response.error();
+  });
+
+});
+
+
+Parse.Cloud.define("recoveryPassword",function(request, response){
+  var email = request.params.email;
+
+  if(!email){
+    response.error({message: "Invalid Email"});
+  }
+
+  var User = Parse.Object.extend('_User');
+  var query = new Parse.Query(User);
+  query.equalTo('username', email);
+  query.first().then(function(user){
+    if(user){
+      var key = randomStringLower(15);
+      user.set('recoveryKey',key);
+      user.save(null,{useMasterKey:true}).then(function(user){
+
+        var html = templates.recoveryTemplate(key);
+        return sendEmail(email, "¡Recuperar Contraseña Paquete.MX!", html, false);
+      }).then(function(){
+        response.success({recovery:true});
+      },function(err){
+        response.error(err);
+      })
+    }else{
+      response.error({registered: false,message: "Correo Electrónico no registrado."});
+    }
+  },function(err){
+    response.error(err);
+  })
+  // response.success({email:email});
+});
+
+
 /*SAVE CARD T-PAGO*/
 Parse.Cloud.define("saveCard",function(request, response){
 
@@ -749,6 +831,15 @@ function randomString(length)
 {
   var text = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  for( var i=0; i < length; i++ )
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  return text;
+}
+
+function randomStringLower(length)
+{
+  var text = "";
+  var possible = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   for( var i=0; i < length; i++ )
       text += possible.charAt(Math.floor(Math.random() * possible.length));
   return text;

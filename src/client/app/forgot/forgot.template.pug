@@ -1,5 +1,33 @@
-.menu.menu-tabs.clearfix
-  div(data-ng-include="'app/templates/menu.template.html'")
-.pages-image
-  img(data-ng-src="common/images/metodos-pago.png")
+.menu-container
+  .menu.menu-tabs.clearfix
+    div(data-ng-include="'app/templates/menu.template.html'")
+.pages-section
+  .container-fluid
+    .row(data-ng-show="forgot.success")
+      .col-xs-10.col-xs-6.center-block
+        .container-padding
+          h2.disabled-color.align-center
+            |Se ha enviado un correo electronico a
+            span.accent
+              |&nbsp;{{forgot.username}}
+            |, recuerda verficar tu carpeta de SPAM.
+          .align-center
+            md-button.md-raised.md-primary(ui-sref="login")
+              |Iniciar Sesión
+    .row(data-ng-hide="forgot.success")
+      .col-xs-10.col-xs-6.center-block
+        h1.align-center
+          |Recuperar Contraseña
+        .padding-left
+          md-content(layout-padding)
+            form(name="recoveryForm", novalidate, data-ng-submit="forgot.send()")
+              div(layout-xs-sm="row")
+                md-input-container.md-block
+                  label(for="username", data-ng-bind="shell.labels.login.form.email")
+                  input(name="username", type="email", data-ng-model="forgot.username", required="", autofocus)
+                  div(ng-messages="recoveryForm.username.$error")
+                    div(ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+                    div(ng-message="email", data-ng-bind="shell.labels.login.form.errors.email")
+              .align-center
+                md-button.md-raised.md-primary(type="submit",data-ng-bind="shell.labels.login.form.recovery",aria-label="shell.labels.login.form.recovery")
 div(data-ng-include="'app/templates/footer.template.html'")

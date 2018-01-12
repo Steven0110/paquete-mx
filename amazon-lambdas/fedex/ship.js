@@ -31,7 +31,7 @@ function ship(data, items){
           PaymentType: 'SENDER',
           Payor: {
             ResponsibleParty: {
-              AccountNumber: "510087860"
+              AccountNumber: "912197689"
             }
           }
         },
@@ -53,12 +53,12 @@ function ship(data, items){
     requestedShip.RequestedPackageLineItems = currentItem;
 
     var fedex = new fedexAPI({
-      environment: 'live', // or live 
+      environment: 'live', // or live
       debug: false,
-      key: 't1uSywQP78fogZx4',
-      password: 'PGptLQ6OQHFjYkdKhDhoZjV15',
-      account_number: '510087860',
-      meter_number: '118841995',
+      key: 'raF7pWAdOFqh7RWp',
+      password: 'IpYuI9OM9zUIbTOZKg7mylyqo',
+      account_number: '912197689',
+      meter_number: '111951423',
       imperial: false // set to false for metric 
     });
 
@@ -136,9 +136,9 @@ exports.handler = (event, context, callback) => {
           if(!data.from.number){
             context.fail(generateError(400,"number value is required in from attribute."));
           }
-          if(!data.from.apt){
-            context.fail(generateError(400,"apt value is required in from attribute."));
-          }
+          // if(!data.from.apt){
+          //   context.fail(generateError(400,"apt value is required in from attribute."));
+          // }
           if(!data.from.county){
             context.fail(generateError(400,"county value is required in from attribute."));
           }
@@ -162,9 +162,9 @@ exports.handler = (event, context, callback) => {
           if(!data.to.number){
             context.fail(generateError(400,"number value is required in to attribute."));
           }
-          if(!data.to.apt){
-            context.fail(generateError(400,"apt value is required in to attribute."));
-          }
+          // if(!data.to.apt){
+            // context.fail(generateError(400,"apt value is required in to attribute."));
+          // }
           if(!data.to.county){
             context.fail(generateError(400,"county value is required in to attribute."));
           }

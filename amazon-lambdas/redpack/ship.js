@@ -4,13 +4,12 @@ var Parse = require('parse/node').Parse;
 
 
 function getGuia(service){
-  var production = false;
+  var production = true;
   if(production){
     console.log('We are in production!');
-    conekta.api_key = "key_7y3X6oJJQW1wjycN11oVuQ"
-    masterKey = "UcnWpyvMN91TkKDx98uVOVAXFLyYNFemSrUePRXQ";
-    appId = "evDT2lYItdWafYh4i6QeGqXuGjcmliKZ3aYy8HJC";
-    javascriptKey = "nhEaWrCi2AlnoUYBUHsG3NFAUZVqAh1YAG1gPlhe";
+    masterKey = "baplcn89UZ3uyJq0AflqtXjnFV2wRmo81SaWg7wd";
+    appId = "OwwqTBzf9Tj618RyQqYmx3eJOhxaS8qolcojD3IA";
+    javascriptKey = "gCi0VgG0NVmtZA7lKsAAVVAvk9IwECg2GMJHwWdQ";
   }else{
     console.log('We are in development!');
     masterKey = "rZx1h8G9530G73xbzk5F1MLvGzb080KL2u55uC8S";
@@ -205,9 +204,9 @@ exports.handler = (event, context, callback) => {
           if(!data.from.number){
             context.fail(generateError(400,"number value is required in from attribute."));
           }
-          if(!data.from.apt){
-            context.fail(generateError(400,"apt value is required in from attribute."));
-          }
+          // if(!data.from.apt){
+            // context.fail(generateError(400,"apt value is required in from attribute."));
+          // }
           if(!data.from.county){
             context.fail(generateError(400,"county value is required in from attribute."));
           }
@@ -231,9 +230,9 @@ exports.handler = (event, context, callback) => {
           if(!data.to.number){
             context.fail(generateError(400,"number value is required in to attribute."));
           }
-          if(!data.to.apt){
-            context.fail(generateError(400,"apt value is required in to attribute."));
-          }
+          // if(!data.to.apt){
+            // context.fail(generateError(400,"apt value is required in to attribute."));
+          // }
           if(!data.to.county){
             context.fail(generateError(400,"county value is required in to attribute."));
           }
@@ -295,7 +294,7 @@ exports.handler = (event, context, callback) => {
         
         // console.log('canizal');
         // body = '<?xmln version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><cotizacionNacional xmlns="http://ws.redpack.com"><PIN>QA j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=</PIN><idUsuario>785</idUsuario><guias><ns1:consignatario xmlns:ns1="http://vo.redpack.com/xsd"><ns1:codigoPostal>7270</ns1:codigoPostal></ns1:consignatario><ns2:paquetes xmlns:ns2="http://vo.redpack.com/xsd"><ns2:alto>0</ns2:alto>'+packages+'<ns'+(limit+start)+':remitente xmlns:ns'+(limit+start)+'="http://vo.redpack.com/xsd"><ns'+(limit+start)+':codigoPostal>1120</ns'+(limit+start)+':codigoPostal></ns'+(limit+start)+':remitente><ns'+(limit+start+1)+':tipoEntrega xmlns:ns'+(limit+start+1)+'="http://vo.redpack.com/xsd"><ns'+(limit+start+1)+':id>1</ns'+(limit+start+1)+':id></ns'+(limit+start+1)+':tipoEntrega></guias></cotizacionNacional></soapenv:Body></soapenv:Envelope>';
-        var pin = "QA j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=";
+        var pin = "PROD j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=";
         var idUsuario = "785";
 
         getGuia(data.service.name).then(function(res){

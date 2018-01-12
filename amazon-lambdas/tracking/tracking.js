@@ -7,7 +7,7 @@ var convert = require('xml-to-json-promise');
 var Parse = require('parse/node').Parse;
 
 
-const production = false;
+const production = true;
 if(production){
   console.log('We are in production!');
   masterKey = "baplcn89UZ3uyJq0AflqtXjnFV2wRmo81SaWg7wd";

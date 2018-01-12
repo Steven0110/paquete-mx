@@ -127,7 +127,7 @@ function addressForm(userApi,$state,$ngConfirm,Dialog){
           if(scope.type == 'save'){
             scope.loading();
             userApi.saveAddress(scope.newAddress).then(function(data){
-              console.log(data)
+              // console.log(data)
               scope.sendForm({response:{result:true, data:data}});
             },function(err){
               console.log(err);

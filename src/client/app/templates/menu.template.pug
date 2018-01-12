@@ -34,8 +34,8 @@
     a(href="#")
       |MI CUENTA
 .navs.desktop
-  nav
-    a(ui-sref="dashboard.shippings")
+  nav.active(ui-sref="dashboard.shippings")
+    a
       |MI CUENTA
   //- nav
     a(href="#")
@@ -46,6 +46,5 @@
   //- nav
     a(href="#")
       |COTIZAR
-  nav.active
-    a(href="#")
-      |INICIO
+  nav(ui-sref="home")
+    |INICIO

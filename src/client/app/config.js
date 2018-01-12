@@ -6,7 +6,7 @@ config.$inject = ['$locationProvider', '$urlRouterProvider','$stateProvider','$m
 
 function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingProvider,localStorageServiceProvider) {
 
-  // $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode(true);
   localStorageServiceProvider.setPrefix('paquete_mx');
 
   $mdThemingProvider.definePalette('customPalette', {
@@ -93,6 +93,12 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       templateUrl : 'app/forgot/forgot.template.html',
       controller: 'Forgot',
       controllerAs: 'forgot'
+    })
+    .state('recovery',{
+      url:'/recovery-password/:recoveryKey',
+      templateUrl : 'app/recovery/recovery.template.html',
+      controller: 'Recovery',
+      controllerAs: 'recovery'
     })
     .state('payment-method',{
       url:'/metodos-de-pago',

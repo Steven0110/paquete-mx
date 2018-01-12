@@ -29,10 +29,59 @@
       updatePassword    : updatePassword,
       updateTaxInfo     : updateTaxInfo,
       checkPassword     : checkPassword,
-      setSessionByToken : setSessionByToken
+      setSessionByToken : setSessionByToken,
+      recovery          : recovery,
+      getKey            : getKey,
+      setPassword       : setPassword
     };
 
     return factory;
+
+    function setPassword(params){
+      var deferred = $q.defer();
+      var Cloud = parse.cloud('setPassword');
+      Cloud.post(params).then(function(res){
+        if(res.result)
+          deferred.resolve(res.result);
+        else
+          deferred.resolve(res);
+      },function(err){
+        deferred.reject(err);
+      });
+
+      return deferred.promise;
+    }
+
+    function getKey(recoveryKey){
+      var deferred = $q.defer();
+      var Cloud = parse.cloud('validateKey');
+      Cloud.post({key:recoveryKey}).then(function(res){
+        if(res.result)
+          deferred.resolve(res.result);
+        else
+          deferred.resolve(res);
+      },function(err){
+        deferred.reject(err);
+      });
+
+      return deferred.promise;
+    }
+
+
+    function recovery(email){
+      var deferred = $q.defer();
+      var Cloud = parse.cloud('recoveryPassword');
+      Cloud.post({email:email}).then(function(res){
+        if(res.result)
+          deferred.resolve(res.result);
+        else
+          deferred.resolve(res);
+      },function(err){
+        deferred.reject(err);
+      });
+
+      return deferred.promise;
+    }
 
     function login(params) {
       var deferred = $q.defer();

@@ -1,0 +1,48 @@
+.menu-container
+  .menu.menu-tabs.clearfix
+    div(data-ng-include="'app/templates/menu.template.html'")
+.pages-section
+  .container-fluid
+    .row(data-ng-show="recovery.success")
+      .col-xs-10.col-xs-6.center-block
+        .container-padding
+          h2.disabled-color.align-center
+            |Tu contraseña se actualizo con éxito. Inicia sesión para continuar.
+          .align-center
+            md-button.md-raised.md-primary(ui-sref="login")
+              |Iniciar Sesión
+    .row(data-ng-show="recovery.verified && !recovery.state && !recovery.success")
+      .col-xs-10.col-xs-6.center-block
+        .container-padding
+          h2.disabled-color.align-center
+            |LLave Incorrecta verifica tu correo electrónico.
+          .align-center
+            md-button.md-raised.md-primary(ui-sref="login")
+              |Iniciar Sesión
+    .row(data-ng-show="recovery.verified && recovery.state && !recovery.success")
+      .col-xs-10.col-xs-6.center-block
+        h1.align-center
+          |Ingresa tu contraseña
+        .padding-left
+          form(name="passwordForm", data-ng-submit="recovery.updatePassword()", novalidate="")
+            div(layout-xs-sm="row")
+              md-input-container.md-block
+                label(for="password")
+                  |Contraseña
+                input.pure-input-1#password(name="password", type="password" data-ng-model="recovery.newPassword", required="", password-match="passwordMatch")
+                div(ng-messages="passwordForm.password.$error")
+                  div(ng-message="required")
+                    |Es requerido
+                  div(ng-message="match")
+                    |La contraseña no coincide
+              md-input-container.md-block
+                label(for="confirmPassword")
+                  |Confirmar Contraseña
+                input.pure-input-1(name="confirmPassword", type="password", data-ng-model="passwordMatch", required="")
+                div(ng-messages="passwordForm.password.$error")
+                  div(ng-message="required")     
+                    |Es requerido
+            .align-center
+              md-button.md-raised.md-primary(type="submit")
+                |Actualizar
+div(data-ng-include="'app/templates/footer.template.html'")

@@ -166,6 +166,10 @@
       $state.go('checkout');
     }
 
+    home.reload = function(){      
+      $state.go('home',{shipping:null},{reload:true});
+    }
+
     home.fromSearch  = null;
     home.toSearch  = null;
 

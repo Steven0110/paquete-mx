@@ -117,6 +117,7 @@
 
     $scope.loginSuccess = function(){
       checkout.user = shell.getCurrentUser();
+      shell.currentUser = checkout.user;
       if(checkout.user){
         shell.moveToTop();
         getPaymentMethods();
