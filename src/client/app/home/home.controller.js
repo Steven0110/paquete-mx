@@ -201,7 +201,7 @@
     home.searching = false;
     home.services = [];
 
-    var menu = $('#menu').innerHeight();
+    // var menu = $('#menu').innerHeight();
 
     home.openSection = function(index, timing){
       shell.menuOpen = false;
@@ -211,7 +211,7 @@
       var section = '.benefits-'+index;
       $(section).slideDown(300,function(){
         var topContent = $(section).offset().top;
-        $('html').animate({scrollTop:topContent},timing);
+        $('html,body').animate({scrollTop:topContent},timing);
       });
 
     }
@@ -257,7 +257,7 @@
       home.rated =  true;
       home.searching =  true;
       var topContent = $('#float-section').position().top;
-      $('html').animate({scrollTop:topContent},1000);
+      $('html, body').animate({scrollTop:topContent},1000);
 
       home.documentOpen = false;
       home.packageOpen = false;
