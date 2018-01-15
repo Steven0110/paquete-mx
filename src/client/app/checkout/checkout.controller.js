@@ -147,7 +147,7 @@
     }
 
     checkout.order = function(){
-      var total = checkout.shipping.service.total;
+      var total = checkout.shipping.service.discountTotal;
       var order = {
         shipping:{
           packagingType : checkout.shipping.packagingType,

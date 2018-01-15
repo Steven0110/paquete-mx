@@ -28,6 +28,13 @@
       home.toSearch  = null;
     });
 
+    $scope.$watch('home.shipping.from.data',function(newVal, oldVal){
+      if(newVal && newVal.state){
+        $('#toSearch').focus();
+      }
+        
+    });
+
 
 
     /*nuevo diseño*/
@@ -151,6 +158,9 @@
     /*nuevo diseño*/
 
     home.setService = function(service){
+
+      console.log(service);
+
 
       var shipping ={
         packagingType: home.shipping.type,

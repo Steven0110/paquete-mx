@@ -62,7 +62,7 @@
                                 .input-container
                                   input(
                                     placeholder="C.P."
-                                    name="fromZip", data-ng-model="home.fromSearch", data-ng-blur="home.cleanInput()",required)
+                                    name="fromZip", data-ng-model="home.fromSearch", data-ng-focus="home.cleanSearch('from')",required)
                                   select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.fromSearch",data-country="home.shipping.from.country")
                             
 
@@ -80,7 +80,7 @@
                           .col-xs-8
                             .input-cotizador
                               .input-container
-                                input(placeholder="C.P.",name="toZip", data-ng-model="home.toSearch",required)
+                                input(id="toSearch", placeholder="C.P.",name="toZip", data-ng-model="home.toSearch", data-ng-focus="home.cleanSearch('to')", required)
                                 select-cities(data-cities="home.toCities", data-selected="home.shipping.to.data",data-clean = "home.toClean",data-search="home.toSearch", data-country="home.shipping.to.country")
                   .col-xs-12.col-sm-6.col-md-4
                     .cotizador-element
