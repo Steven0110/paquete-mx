@@ -26,3 +26,165 @@
             |Disponible
           h2.align-center.error
             |{{enterprise.account.creditAvailable | currency}}
+  h2
+    |Activar tu linea de crédito
+  p
+    |Para activar tu cuenta empresarial necesitamos verificar los siguientes documentos.
+  ul
+    li
+      |Acta constitutiva y/o poder notarial.
+    li
+      |I.D. de representante legal (INE o PASAPORTE).
+    li
+      |CURP y RFC del representante legal.
+    li
+      |Comprobante de domicilio.
+    li
+      |Constancia de situación fiscal.
+    li
+      |Caratula de estado de cuenta bancario.
+    li
+      |Autotización consulta de buro de crédito.
+  h2
+    |Subir documentos.
+
+  .row
+    .col-xs-3
+      .padding-sides
+        .align-center(data-ng-show="enterprise.account.actaConstitutiva != 'false'")
+          i.medium-icon.fa.fa-check-circle.success
+        .align-center(data-ng-show="enterprise.account.actaConstitutiva == 'false'")
+          i.medium-icon.fa.fa-upload.disabled-color
+        div(ngf-select="enterprise.upload($file, 'actaConstitutiva')", ngf-drop="enterprise.upload($file, 'actaConstitutiva')",class="drop-box",
+          ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'")
+          .drag-title
+            |Acta Constitutiva
+          .align-center
+            |Haz clic o arrastra aqui el PDF de tu acta constitutiva.
+        md-progress-linear(class="md-warn",md-mode="buffer",value="{{enterprise.loading.actaConstitutiva}}",md-buffer-value="100",ng-disabled="enterprise.loading.actaConstitutiva == 0")
+        h4.align-center.disabled-color(data-ng-if="enterprise.loading.actaConstitutiva > 0 && enterprise.loading.actaConstitutiva <= 100")
+          |Cargando Acta.
+        h4.align-center.success(data-ng-if="enterprise.loading.actaConstitutiva == 101")
+          |El archivo se cargo con éxito.
+        div(ngf-no-file-drop)
+          |Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome
+        .align-center(data-ng-show="enterprise.account.actaConstitutiva != 'false'")
+          .align-center
+            a(href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.actaConstitutiva}}" target="_blank")
+              |Ver Acta cargada previamente.
+    .col-xs-3
+      .padding-sides
+        .align-center(data-ng-show="enterprise.account.actaConstitutiva != 'false'")
+          i.medium-icon.fa.fa-check-circle.success
+        .align-center(data-ng-show="enterprise.account.actaConstitutiva == 'false'")
+          i.medium-icon.fa.fa-upload.disabled-color
+        div(ngf-select="enterprise.upload($file, 'INE')", ngf-drop="enterprise.upload($file, 'INE')",class="drop-box",
+          ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'")
+          .drag-title
+            |INE
+          .align-center
+            |Haz clic o arrastra aqui el PDF de tu INE por ambos lados.
+        md-progress-linear(class="md-warn",md-mode="buffer",value="{{enterprise.loading.INE}}",md-buffer-value="100",ng-disabled="enterprise.loading.INE == 0")
+        h4.align-center.disabled-color(data-ng-if="enterprise.loading.INE > 0 && enterprise.loading.INE <= 100")
+          |Cargando INE.
+        h4.align-center.success(data-ng-if="enterprise.loading.INE == 101")
+          |El archivo se cargo con éxito.
+        div(ngf-no-file-drop)
+          |Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome
+        .align-center(data-ng-show="enterprise.account.INE != 'false'")
+          .align-center
+            a(href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.INE}}" target="_blank")
+              |Ver INE cargada previamente.
+    .col-xs-3
+      .padding-sides
+        .align-center(data-ng-show="enterprise.account.comprobanteDomicilio != 'false'")
+          i.medium-icon.fa.fa-check-circle.success
+        .align-center(data-ng-show="enterprise.account.comprobanteDomicilio == 'false'")
+          i.medium-icon.fa.fa-upload.disabled-color
+        div(ngf-select="enterprise.upload($file, 'comprobanteDomicilio')", ngf-drop="enterprise.upload($file, 'comprobanteDomicilio')",class="drop-box",
+          ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'")
+          .drag-title
+            |Comprobante Domicilio
+          .align-center
+            |Haz clic o arrastra aqui el PDF de tu comprobante de domicilio.
+        md-progress-linear(class="md-warn",md-mode="buffer",value="{{enterprise.loading.comprobanteDomicilio}}",md-buffer-value="100",ng-disabled="enterprise.loading.comprobanteDomicilio == 0")
+        h4.align-center.disabled-color(data-ng-if="enterprise.loading.comprobanteDomicilio > 0 && enterprise.loading.comprobanteDomicilio <= 100")
+          |Cargando Comprobante.
+        h4.align-center.success(data-ng-if="enterprise.loading.comprobanteDomicilio == 101")
+          |El archivo se cargo con éxito.
+        div(ngf-no-file-drop)
+          |Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome
+        .align-center(data-ng-show="enterprise.account.comprobanteDomicilio != 'false'")
+          .align-center
+            a(href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.comprobanteDomicilio}}" target="_blank")
+              |Ver Comprobante cargado previamente.
+    .col-xs-3
+      .padding-sides
+        .align-center(data-ng-show="enterprise.account.constanciaFiscal != 'false'")
+          i.medium-icon.fa.fa-check-circle.success
+        .align-center(data-ng-show="enterprise.account.constanciaFiscal == 'false'")
+          i.medium-icon.fa.fa-upload.disabled-color
+        div(ngf-select="enterprise.upload($file, 'constanciaFiscal')", ngf-drop="enterprise.upload($file, 'constanciaFiscal')",class="drop-box",
+          ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'")
+          .drag-title
+            |Constancia Fiscal SAT
+          .align-center
+            |Haz clic o arrastra aqui el PDF de tu Constancia Fiscal del SAT.
+        md-progress-linear(class="md-warn",md-mode="buffer",value="{{enterprise.loading.constanciaFiscal}}",md-buffer-value="100",ng-disabled="enterprise.loading.constanciaFiscal == 0")
+        h4.align-center.disabled-color(data-ng-if="enterprise.loading.constanciaFiscal > 0 && enterprise.loading.constanciaFiscal <= 100")
+          |Cargando Constacia.
+        h4.align-center.success(data-ng-if="enterprise.loading.constanciaFiscal == 101")
+          |El archivo se cargo con éxito.
+        div(ngf-no-file-drop)
+          |Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome
+        .align-center(data-ng-show="enterprise.account.constanciaFiscal != 'false'")
+          .align-center
+            a(href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.constanciaFiscal}}" target="_blank")
+              |Ver Constancia cargada previamente.
+  .row
+    .col-xs-3
+      .padding-sides
+        .align-center(data-ng-show="enterprise.account.caratulaBancaria != 'false'")
+          i.medium-icon.fa.fa-check-circle.success
+        .align-center(data-ng-show="enterprise.account.caratulaBancaria == 'false'")
+          i.medium-icon.fa.fa-upload.disabled-color
+        div(ngf-select="enterprise.upload($file, 'caratulaBancaria')", ngf-drop="enterprise.upload($file, 'caratulaBancaria')",class="drop-box",
+          ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'")
+          .drag-title
+            |Caratula Estado Cuenta Bancario
+          .align-center
+            |Haz clic o arrastra aqui el PDF de tu caratula bancaria.
+        md-progress-linear(class="md-warn",md-mode="buffer",value="{{enterprise.loading.caratulaBancaria}}",md-buffer-value="100",ng-disabled="enterprise.loading.caratulaBancaria == 0")
+        h4.align-center.disabled-color(data-ng-if="enterprise.loading.caratulaBancaria > 0 && enterprise.loading.caratulaBancaria <= 100")
+          |Cargando Caratula.
+        h4.align-center.success(data-ng-if="enterprise.loading.caratulaBancaria == 101")
+          |El archivo se cargo con éxito.
+        div(ngf-no-file-drop)
+          |Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome
+        .align-center(data-ng-show="enterprise.account.caratulaBancaria != 'false'")
+          .align-center
+            a(href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.caratulaBancaria}}" target="_blank")
+              |Ver Caratula cargada previamente.
+    .col-xs-3
+      .padding-sides
+        .align-center(data-ng-show="enterprise.account.autorizacionBuro != 'false'")
+          i.medium-icon.fa.fa-check-circle.success
+        .align-center(data-ng-show="enterprise.account.autorizacionBuro == 'false'")
+          i.medium-icon.fa.fa-upload.disabled-color
+        div(ngf-select="enterprise.upload($file, 'autorizacionBuro')", ngf-drop="enterprise.upload($file, 'autorizacionBuro')",class="drop-box",
+          ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'")
+          .drag-title
+            |Autorización Buro de Crédito
+          .align-center
+            |Haz clic o arrastra aqui el PDF de tu autorización.
+        md-progress-linear(class="md-warn",md-mode="buffer",value="{{enterprise.loading.autorizacionBuro}}",md-buffer-value="100",ng-disabled="enterprise.loading.autorizacionBuro == 0")
+        h4.align-center.disabled-color(data-ng-if="enterprise.loading.autorizacionBuro > 0 && enterprise.loading.autorizacionBuro <= 100")
+          |Cargando Autorización.
+        h4.align-center.success(data-ng-if="enterprise.loading.autorizacionBuro == 101")
+          |El archivo se cargo con éxito.
+        div(ngf-no-file-drop)
+          |Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome
+        .align-center(data-ng-show="enterprise.account.autorizacionBuro != 'false'")
+          .align-center
+            a(href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.autorizacionBuro}}" target="_blank")
+              |Ver Autorización cargada previamente.

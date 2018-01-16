@@ -7,6 +7,7 @@
     'ngMaterial',
     'ngMessages',
     'restangular',
-    'cp.ngConfirm'
+    'cp.ngConfirm',
+    'ngFileUpload'
   ]);
 })();
