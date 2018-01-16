@@ -243,7 +243,7 @@
       // }
 
       console.log(checkout.user);
-      accountApi.getByUser(checkout.user).then(function(account){
+      userApi.getByUser(checkout.user).then(function(account){
         console.log(account);
         if(account){
           checkout.account = account;

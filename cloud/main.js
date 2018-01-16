@@ -385,19 +385,60 @@ Parse.Cloud.define("removeCard",function(request, response){
 Parse.Cloud.beforeSave("Account", function(request, response){
 
   if(request.object.existed() === false){
+    var accountNo = randomString(7);
     request.object.set('verified',false);
+    request.object.set('accountNo', accountNo);
+    request.object.set('actaConstitutiva',"false");
+    request.object.set('INE',"false");
+    request.object.set('comprobanteDomicilio',"false");
+    request.object.set('constanciaFiscal',"false");
+    request.object.set('caratulaBancaria',"false");
+    request.object.set('autorizacionBuro',"false");
+
+    var type = request.object.get('type');
+    var name;
+    if(type && type == 'enterprise'){
+      name = request.object.get('companyName');
+      name = name.toUpperCase();
+    }
+    else if(type && type == 'personal'){
+      if(request.object.get('taxName')){
+        name =  request.object.get('taxName');
+        name = name.trim();
+        name = name.toUpperCase();
+      }
+      else if(request.object.get('name')){
+        name =  request.object.get('name');
+        name = name.trim();
+        name = name.toUpperCase();
+      }
+      else{
+        name = accountNo;
+      }
+    }
+    request.object.set('name', name);
+
   }
 
   var taxId =  request.object.get('taxId');
   if(taxId){
+    taxId =  taxId.trim();
     taxId = taxId.toUpperCase();
     request.object.set('taxId', taxId);
   }
 
   var taxName =  request.object.get('taxName');
   if(taxName){
+    taxName =  taxName.trim();
     taxName = taxName.toUpperCase();
     request.object.set('taxName', taxName);
+  }
+
+  var companyName =  request.object.get('companyName');
+  if(companyName){
+    companyName =  companyName.trim();
+    companyName = companyName.toUpperCase();
+    request.object.set('companyName', companyName);
   }
 
   response.success();
@@ -664,7 +705,8 @@ var submitOrder = function(type, order, user){
                 reference   : auth,
                 auth_code   : auth,
                 amount      : amount,
-                order_id    : auth
+                order_id    : auth,
+                type        : type
               }
 
               var newBalance = (available - amount).toFixed(2)
@@ -884,6 +926,7 @@ Parse.Cloud.define("chargeCard",function(request, response){
       payment.set('termination', result.termination);
       payment.set('reference', result.order_id);
       payment.set('authCode', result.auth_code);
+      payment.set('type', result.type);
 
       if(paymentType == 'account')
         payment.set('paid', false);
@@ -1114,8 +1157,6 @@ function sendShipOrder(user, shipping, payment) {
     type      : shipping.service.service,
     shipping  : shipping
   }
-  console.log('payment-response0');
-  console.log(payment);
 
   Parse.Cloud.httpRequest({
     method: 'POST',
@@ -1129,6 +1170,18 @@ function sendShipOrder(user, shipping, payment) {
     console.log(result.text);
     var Shipping = Parse.Object.extend('Shipping');
     var shipping = new Shipping();
+
+    var Account = Parse.Object.extend('Account');
+    var account = new Account();
+
+    account.id = user.get('account').id;
+    if(account.id)
+      shipping.set("account",account);
+
+    if(payment.type){
+      shipping.set("paymentType",payment.type);
+    }
+
     shipping.set("user",user);
 
     if(result.text){

@@ -184,8 +184,15 @@
       var User = parse.user();
       var currentUser;
       User.post(params).then(function(user){
-        currentUser = user;
         setSessionByToken(user.sessionToken);
+        return getCurrentUser();
+      }).then(function(user){
+
+        currentUser = user;
+
+        if(currentUser && currentUser.name && currentUser.lastname)
+          account.name = currentUser.name+' '+currentUser.lastname;
+
         return accountApi.update(account);
 
       }).then(function(account){
