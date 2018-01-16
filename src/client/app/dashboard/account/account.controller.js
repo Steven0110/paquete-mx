@@ -24,7 +24,7 @@
     account.taxes.taxUse = account.taxUses[1].code;
 
     if(currentUser){
-      accountApi.getByUser(currentUser).then(function(result){
+      userApi.getByUser(currentUser).then(function(result){
         if(result){
           if(result.objectId)
             account.taxes.objectId = result.objectId;

@@ -1195,3 +1195,37 @@ var sendEmail = function(to, subject, html, bcc, attch){
   });
   return parse_promise;
 }
+
+
+var loopItems = function(skip, limit, element, startDate, endDate, result){
+  var Element = Parse.Object.extend(element);
+  var query = new Parse.Query(Element);
+  query.skip(skip);
+  query.limit(limit);
+  query.greaterThanOrEqualTo('createdAt',startDate);
+  query.lessThanOrEqualTo('createdAt',endDate);
+  var deferred = new Parse.Promise();
+  query.find().then(function(items){
+
+    console.log(items.length);
+    if(items && items.length > 0){
+      skip += limit;
+
+      asyncEach(items, function(item, i, next){
+        
+
+        
+      },function(){
+        console.log('all items in batch');
+        loopItems(skip, limit,element, startDate, endDate, result).then(function(res){
+          deferred.resolve(result);
+        });
+      })
+    }else{
+      deferred.resolve('done');
+      console.log(result);
+    }
+  });
+
+  return deferred;
+}

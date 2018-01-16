@@ -32,7 +32,8 @@
       setSessionByToken : setSessionByToken,
       recovery          : recovery,
       getKey            : getKey,
-      setPassword       : setPassword
+      setPassword       : setPassword,
+      getByUser         : getByUser
     };
 
     return factory;
@@ -107,10 +108,35 @@
       return User.one().customPUT(params);
     }
 
+    function getByUser(user){
+      var Account = parse.endpoint("Account");
+      if(user && user.account && user.account.objectId){
+        var objectId = user.account.objectId;
+        return Account.get(objectId);
+      }
+      else{
+        return this.getCurrentUser().then(function(user){
+          if(user && user.account && user.account.objectId){
+            var objectId = user.account.objectId;
+            return Account.get(objectId);
+          }else{
+            var deferred = $q.defer();
+            deferred.reject({session: false,message:"Invalid session"});
+            return deferred.promise;
+          }
+
+        },function(err){
+          var deferred = $q.defer();
+          deferred.reject(err);
+          return deferred.promise;
+        })
+      }
+    }
+
     function updateTaxInfo(invoice, taxInfo){
       return factory.getCurrentUser().then(function(user){
         if(user){
-          return accountApi.getByUser(user);
+          return this.getByUser(user);
         }else{
           var deferred = $q.defer();
           deferred.reject({session: false,message:"Invalid session"});

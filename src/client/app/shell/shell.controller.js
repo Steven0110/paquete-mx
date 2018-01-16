@@ -45,7 +45,8 @@
       {name:'payments',label:"MIS PAGOS", uiref:"dashboard.payment",icon:"fa-usd"},
       // {name:'contacts',label:"MI AGENDA",uiref:"dashboard.address",icon:"fa-address-book"},
       {name:'contacts',label:"MIS TARJETAS",uiref:"dashboard.paymentMethod",icon:"fa-credit-card"},
-      {name:'account',label:"MI CUENTA",uiref:"dashboard.account",icon:"fa-truck"}
+      {name:'account',label:"MI CUENTA",uiref:"dashboard.account",icon:"fa-truck"},
+      {name:'enterprise',label:"EMPRESARIAL",uiref:"dashboard.enterprise",icon:"fa-building"}
       // {name:'logout',label:"SALIR", uiref:"logout",icon:"fa-sign-out"}
     ];
 

@@ -164,6 +164,34 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
         }
       }
     })
+    .state('dashboard.enterprise',{
+      url:'/enterprise',
+      templateUrl: 'app/dashboard/enterprise/enterprise.template.html',
+      controller: 'Enterprise',
+      controllerAs: 'enterprise',
+      data:{
+        title: "Mi cuenta Empresarial",
+        subtitle: "Verifica los limites y documentos de tu cuenta empresarial."
+      },
+      resolve:{
+        data: function(userApi, $q){
+          var response = {
+            delivered :[],
+            inTransit :[]
+          };
+          var deferred = $q.defer();
+          userApi.getOrders(true).then(function(deliveredList){
+            response.delivered = deliveredList;
+            return userApi.getOrders(false).then(function(inTransitList){
+              response.inTransit = inTransitList;
+              deferred.resolve(response);
+            })
+          });
+
+          return deferred.promise;
+        }
+      }
+    })
     .state('dashboard.shipping',{
       url:'/shipping/:trackId',
       templateUrl: 'app/dashboard/shipping/shipping.template.html',

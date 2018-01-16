@@ -1,0 +1,28 @@
+.dashboard-header
+  .dashboard-header-content
+    .dash-section-title(data-ng-bind="shell.dashboard.title")
+    .dash-section-subtitle(data-ng-bind="shell.dashboard.subtitle")
+.dash-name-section
+  .big-text-welcome
+    |¡Hola {{shell.currentUser.name}}!
+  .small-text-welcome
+    a(ui-sref="logout")
+      |Cerrar Sesión
+.dashboard-content
+  h2.align-center.disabled-color
+    |{{enterprise.account.taxName}}
+  h3.align-center.disabled-color
+    |{{enterprise.account.taxId}}
+  .row
+    .col-xs-6.center-block
+      .row
+        .col-xs-6
+          h4.align-center
+            |Limite de Crédito
+          h2.align-center.success
+            |{{enterprise.account.creditLimit |currency}}
+        .col-xs-6
+          h4.align-center
+            |Disponible
+          h2.align-center.error
+            |{{enterprise.account.creditAvailable | currency}}
