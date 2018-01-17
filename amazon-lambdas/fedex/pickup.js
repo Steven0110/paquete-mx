@@ -120,6 +120,14 @@ exports.handler = (event, context, callback) => {
             var err= generateError(400,"end time is required HH:mm");
             context.fail(err);
         }
+
+        var serviceCode = false;
+        if(data.serviceCode){
+            serviceCode = data.serviceCode;
+        }else{
+            var err= generateError(400,"seviceCode is required");
+            context.fail(err);
+        }
         
         var packages = [];
         var PackageCount;

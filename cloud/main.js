@@ -234,7 +234,10 @@ Parse.Cloud.define("sendPickUp",function(request, response){
         if(service.to){
           body.to = service.to;
         }
-      }
+
+        if(service.service && service.service.code)
+          body.serviceCode = service.service.code;
+        }
 
       console.log(body);
 
