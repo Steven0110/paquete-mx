@@ -47,8 +47,10 @@
   "address":{
     "form":{
       "alias": "Alias",
-      "name": "Nombre/Empresa",
+      "name": "Nombre",
+      "company": "Empresa",
       "phone": "Telefóno",
+      "email": "Correo Electrónico",
       "country": "País",
       "street": "Calle",
       "number":"Numero Exterior",

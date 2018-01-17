@@ -218,8 +218,26 @@ Parse.Cloud.define("sendPickUp",function(request, response){
   var query = new Parse.Query(Shipping);
   query.equalTo('trackingNumber',params.trackingNumber);
   query.first().then(function(res){
+
     if(res){
       shipping =  res;
+
+      var service = shipping.get("service");
+      if(service){
+        if(service.packages)
+          body.packages = service.packages;
+
+        if(service.from){
+          body.from = service.from;
+        }
+
+        if(service.to){
+          body.to = service.to;
+        }
+      }
+
+      console.log(body);
+
       Parse.Cloud.httpRequest({
         method: 'POST',
         headers: {

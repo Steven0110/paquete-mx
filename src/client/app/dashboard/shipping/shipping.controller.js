@@ -5,10 +5,10 @@
     .module('app.core')
     .controller('Shipping',Shipping);
 
-  Shipping.$inject = ['$scope','data','shippingApi'];
+  Shipping.$inject = ['$scope','data','shippingApi','Dialog'];
 
 
-  function Shipping($scope, data, shippingApi){
+  function Shipping($scope, data, shippingApi, Dialog){
     // jshint validthis: true 
     var shipping = this;
     shipping.updates = [];
@@ -33,7 +33,7 @@
         this.myDate.getDate()
       )
 
-    shipping.pickup.schedule = "09:00-19:00";
+    shipping.pickup.schedule = "08:00-19:00";
     shipping.pickup.date = new Date();
     shipping.today = new Date(
         this.myDate.getFullYear(),
@@ -55,10 +55,14 @@
         shippingApi.sendPickUp(params).then(function(res){
           console.log(res);
           if(res.confirmation){
+            Dialog.showTooltip('Recolección solicitada','Tu recolección se solicito con éxito, confirmación: '+res.confirmation,{close:"Cerrar"});
             shipping.data.pickupConfirmation = res.confirmation;
           }
         },function(err){
           console.log(err);
+          if(err.message){
+            Dialog.showError(err.message,'No se pudo solicitar la recolección');
+          }
         }).finally(shell.hideLoading);
       }else{
         Dialog.showMessage();

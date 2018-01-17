@@ -62,27 +62,96 @@ exports.handler = (event, context, callback) => {
     var debugging = false;
     if(event){
         var data = event;
-
-        var pickUpDate = "2018001";
-        var startDay = "0800";
-        var endDay = "1600";
-        var packages =  [{
-                           "HazMatIndicator":"",
-                           "PackagingType":{
-                              "Code":"BOX",
-                              "Description":"Rate"
-                           },
-                           "NumberOfPieces":"1",
-                           "DescriptionOfCommodity":"Description",
-                           "Weight":{
-                              "UnitOfMeasurement":{
-                                 "Code":"Kgs",
-                                 "Description":"Kilogramos"
-                              },
-                              "Value":"100"
-                           }
-                        }];
+        console.log(data);
+        var pickUpDate = "";
+        if(data.date){
+            var date = data.date.split('-');
+            if(date[0]){
+                pickUpDate += date[0];
+            }else{
+                var err= generateError(400,"Invalid date format YYYY-MM-DD Year");
+                context.fail(err);
+            }
+            
+            if(date[1]){
+                pickUpDate += date[1];
+            }else{
+                var err= generateError(400,"Invalid date format YYYY-MM-DD Month");
+                context.fail(err);
+            }
+            
+            if(date[2]){
+                pickUpDate += date[2];
+            }else{
+                var err= generateError(400,"Invalid date format YYYY-MM-DD Day");
+                context.fail(err);
+            }
+        }else{
+            var err= generateError(400,"Invalid date format YYYY-MM-DD");
+            context.fail(err);
+        }
         
+        var startDay;
+        if(data.start){
+            startDay = data.start.replace(":","");
+        }else{
+            var err= generateError(400,"start time is required HH:mm");
+            context.fail(err);
+        }
+        
+        var endDay;
+        if(data.end){
+            endDay = data.end.replace(":","");
+        }else{
+            var err= generateError(400,"end time is required HH:mm");
+            context.fail(err);
+        }
+        
+        var packages = [];
+        
+        if(data.packages){
+            for(var i=0; i< data.packages.length; i++){
+                var item = data.packages[i];
+                // var NumberOfPieces = (data.packages.length).toString();
+                var weight = item.weight.toString();
+                var packageItem =  {
+                                       "HazMatIndicator":"",
+                                       "PackagingType":{
+                                          "Code":"BOX",
+                                          "Description":""
+                                       },
+                                       "NumberOfPieces": "1",
+                                       "DescriptionOfCommodity":"Description",
+                                       "Weight":{
+                                          "UnitOfMeasurement":{
+                                             "Code":"Kgs",
+                                             "Description":"Kilogramos"
+                                          },
+                                          "Value": weight
+                                       }
+                                    };
+                packages.push(packageItem);
+            }
+        }else{
+            var err= generateError(400,"packages are required");
+            context.fail(err);
+        }
+        
+        var from= {};
+        if(data.from){
+            from = data.from;
+        }else{
+            var err= generateError(400,"from object is required");
+            context.fail(err);
+        }
+        
+        var to = {};
+        if(data.to){
+            to = data.to;
+        }else{
+            var err= generateError(400,"to object is required");
+            context.fail(err);
+        }
         
         body = {
                  "Security":{
@@ -100,29 +169,29 @@ exports.handler = (event, context, callback) => {
                           "CustomerContext":""
                        }
                     },
-                    "AdditionalComments":"AdditionalComments",
-                    "DestinationPostalCode":"09770",
-                    "DestinationCountryCode":"MX",
+                    "AdditionalComments":"",
+                    "DestinationPostalCode": to.zip,
+                    "DestinationCountryCode": to.country.code,
                     "Requester":{
-                       "AttentionName":"Carlos Canizal",
-                       "EMailAddress":"jc.canizal@gmail.com",
-                       "Name":"Carlos Canizal",
+                       "AttentionName": to.name,
+                       "EMailAddress":to.email,
+                       "Name": to.name,
                        "Phone":{
-                          "Number":"5535068102"
+                          "Number": to.phone
                        }
                     },
                     "ShipFrom":{
-                       "AttentionName":"Jose Carnizal",
-                       "Name":"Jose Canizal",
+                       "AttentionName": from.name,
+                       "Name": from.name,
                        "Address":{
-                          "AddressLine":"Rio Misisipi Mz 45 Lt 43",
-                          "City":"Iztapalapa",
-                          "StateProvinceCode":"DF",
-                          "PostalCode":"0970",
-                          "CountryCode":"MX"
+                          "AddressLine": from.street+" "+from.number+" "+from.apt,
+                          "City": from.city,
+                          "StateProvinceCode": from.state,
+                          "PostalCode": from.zip,
+                          "CountryCode":from.country.code
                        },
                        "Phone":{
-                          "Number":"5535068102"
+                          "Number": from.phone
                        }
                     },
                     "ShipmentDetail": packages,
@@ -133,6 +202,7 @@ exports.handler = (event, context, callback) => {
               };
         
         pickup(body,function(result){
+            console.log(result);
             var json = {};
             result = JSON.parse(result);
 
@@ -144,21 +214,28 @@ exports.handler = (event, context, callback) => {
               if(result.FreightPickupResponse){
                 if(result.FreightPickupResponse.PickupRequestConfirmationNumber){
                   json.confirmation = result.FreightPickupResponse.PickupRequestConfirmationNumber;
-
+                  context.succeed(json);
                 }
               }
             }else{
               if(result.Fault && result.Fault.detail){
                 if(result.Fault.detail && result.Fault.detail.Errors){
-                  if(result.Fault.detail.Errors.ErrorDetail && result.Fault.detail.Errors.ErrorDetail.PrimaryErrorCode && result.Fault.detail.Errors.ErrorDetail.PrimaryErrorCode.Description)
-                  json.error = true;
-                  json.message = result.Fault.detail.Errors.ErrorDetail.PrimaryErrorCode.Description;
+                  if(result.Fault.detail.Errors.ErrorDetail && result.Fault.detail.Errors.ErrorDetail.PrimaryErrorCode && result.Fault.detail.Errors.ErrorDetail.PrimaryErrorCode.Description){
+                    json.error = true;
+                    json.message = result.Fault.detail.Errors.ErrorDetail.PrimaryErrorCode.Description;
+                    var err= generateError(400,json.message);
+                    context.fail(err);
+                  }
                 }
               }
             }
 
-            context.succeed(json);
+            // context.fail(json);
             
+        },function(err){
+            console.log(err);
+            var err =  JSON.stringify({"error":"Invalid JSON is required"});
+            callback(err, null); 
         });
     }else{
         var err =  JSON.stringify({"error":"Invalid JSON is required"});

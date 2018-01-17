@@ -55,7 +55,9 @@ function addressForm(userApi,$state,$ngConfirm,Dialog){
         scope.newAddress = {
           objectId: scope.currentAddress.objectId,
           name: scope.currentAddress.name,
+          company: scope.currentAddress.company,
           phone: scope.currentAddress.phone,
+          email: scope.currentAddress.email,
           country:scope.currentAddress.country,
           street:scope.currentAddress.street,
           number: scope.currentAddress.number,
@@ -67,14 +69,14 @@ function addressForm(userApi,$state,$ngConfirm,Dialog){
         };
       }else{
         scope.newAddress = {
-          alias: "Nueva dirección",
+          alias: null,
           country:{},
-          street:"Hamburgo",
-          number: "70",
-          apt:"201",
-          county:"Juarez",
-          city: "Cuauhtemoc",
-          state:"Ciudad de México",
+          street: null,
+          number: null,
+          apt: null,
+          county: null,
+          city: null,
+          state: null,
           zip: null
         };
       }

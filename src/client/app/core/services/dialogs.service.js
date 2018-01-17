@@ -43,6 +43,23 @@
       });
     }
 
+    this.successDialog =  function(title,content,buttons,actions){
+      $ngConfirm({
+          title: title.main,
+          content: content.main,
+          escapeKey: true,
+          theme: 'supervan',
+          buttons: {
+              close:{
+                text: buttons.main.cancel,
+                action: function(scope, button){
+                  actions();
+                }
+              }
+          }
+      });
+    }
+
 
 
     this.showError = function(message, title){

@@ -83,7 +83,8 @@
       div(data-ng-if="shipping.data.status == 'label_created'")
         md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{shipping.data.trackingNumber}}", download)
           |Imprimir Etiqueta
-        div(data-ng-if="!shipping.data.pickupConfirmation ")
+        //- div(data-ng-if="!shipping.data.pickupConfirmation ")
+        div
           h2.disabled-color
             |Agendar recolección en domicilio
           h4
@@ -93,14 +94,16 @@
             h4
               |Horario
             md-radio-group(name="pickupSchedule",ng-model="shipping.pickup.schedule")
+              md-radio-button.md-primary(value="08:00-19:00")
+                |8:00 horas - 19:00 horas (Horario Abierto)
               md-radio-button.md-primary(value="09:00-19:00")
-                |9:00 horas - 19:00 horas (Horario Abierto)
-              md-radio-button.md-primary(value="09:00-12:00")
-                |09:00 horas - 12:00 horas
-              md-radio-button.md-primary(value="12:00-16:00")
-                |12:00 horas - 16:00 horas
-              md-radio-button.md-primary(value="16:00-19:00")
-                |16:00 horas - 19:00 horas
+                |09:00 horas - 19:00 horas (Horario Abierto)
+              md-radio-button.md-primary(value="10:00-19:00")
+                |10:00 horas - 19:00 horas (Horario Abierto)
+              md-radio-button.md-primary(value="11:00-19:00")
+                |11:00 horas - 19:00 horas (Horario Abierto)
+              md-radio-button.md-primary(value="12:00-19:00")
+                |12:00 horas - 19:00 horas (Horario Abierto)
             md-button.md-raised.md-primary(type='submit')
               |Solicitar Recolección
     .shipping-info(data-ng-if="shipping.data.pickupConfirmation")
@@ -166,7 +169,7 @@
         span.accent
           |Monto: 
         span.success
-          |&nbsp;{{shipping.data.paymentAmount | currency}}
+          |&nbsp;{{shipping.data.paymentAmount | currency}} MXN
       h3
         span.accent
           |Pagado con:

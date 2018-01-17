@@ -170,7 +170,7 @@ exports.handler = (event, context, callback) => {
                 }else{
                     callback(generateError(400,"No weight value in package "+index+"."),null);
                 }
-                console.log(data.to);
+                
                 var json = {
                     "Packaging": { 
                       "Code": packagingType,
@@ -290,6 +290,15 @@ exports.handler = (event, context, callback) => {
                   }
                 };
 
+                if(data.from.company){
+                  body.ShipmentRequest.Shipment.ShipFrom.Name = data.from.company;
+                  body.ShipmentRequest.Shipment.ShipFrom.AttentionName = data.from.name;
+                }
+
+                if(data.to.company){
+                  body.ShipmentRequest.Shipment.ShipTo.Name = data.to.company;
+                  body.ShipmentRequest.Shipment.ShipTo.AttentionName = data.to.name;
+                }
         
         
         ship(body,function(result){
