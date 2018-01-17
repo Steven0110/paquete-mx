@@ -7,7 +7,7 @@
 6-Enero-2018: Se agregan las funciones de facturacion
 9-Enero-2018: Se egrega procesamiento para cuenta enterprise
 change log*/
-
+var moment = require("./moment");
 var templates = require("./templates.js").templates;
 var production = true;
 var Mailgun = null;
@@ -190,6 +190,68 @@ Parse.Cloud.define("setPassword",function(request, response){
   })
 })
 
+
+Parse.Cloud.define("sendPickUp",function(request, response){
+
+  var params = request.params;
+  var body ={
+  }
+
+  if(params.carrier)
+    body.type = params.carrier.toLowerCase();
+
+  if(params.date)
+    body.date = moment(params.date).format("YYYY-MM-DD");
+
+  if(params.schedule){
+    var schedule = params.schedule.split("-");
+    if(schedule[0])
+      body.start = schedule[0];
+    if(schedule[1])
+      body.end = schedule[1];
+  }
+
+  if(params.trackingNumber)
+    body.trackingNumber = params.trackingNumber;
+
+  var Shipping = Parse.Object.extend('Shipping');
+  var query = new Parse.Query(Shipping);
+  query.equalTo('trackingNumber',params.trackingNumber);
+  query.first().then(function(res){
+    if(res){
+      shipping =  res;
+      Parse.Cloud.httpRequest({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/pickup',
+        body: body
+      }).then(function(res){
+        if(res.text){
+          res =  JSON.parse(res.text);
+          if(res.confirmation){
+            shipping.set('pickupConfirmation',res.confirmation);
+            shipping.save().then(function(){
+              response.success(res);
+            })
+          }
+        }else{
+          response.error({error:true, message:"Imposible agendar recolección, intenta de nuevo por favor."});
+        }
+      },function(err){
+        if(err && err.data && err.data.error){
+          err = err.data.error;
+        }
+        response.error(err);
+      });
+    }else{
+      response.error({error:true, message:"Invalid trackingNumber"});
+    }
+  },function(err){
+    response.error(err);
+  })
+});
 
 Parse.Cloud.define("validateKey",function(request, response){
   var recoveryKey = request.params.key;
@@ -383,7 +445,7 @@ Parse.Cloud.define("removeCard",function(request, response){
 
 
 Parse.Cloud.beforeSave("Account", function(request, response){
-
+  var type = request.object.get('type');
   if(request.object.existed() === false){
     var accountNo = randomString(7);
     request.object.set('verified',false);
@@ -394,8 +456,8 @@ Parse.Cloud.beforeSave("Account", function(request, response){
     request.object.set('constanciaFiscal',"false");
     request.object.set('caratulaBancaria',"false");
     request.object.set('autorizacionBuro',"false");
+    request.object.set('status',"submitDocs");
 
-    var type = request.object.get('type');
     var name;
     if(type && type == 'enterprise'){
       name = request.object.get('companyName');
@@ -417,7 +479,6 @@ Parse.Cloud.beforeSave("Account", function(request, response){
       }
     }
     request.object.set('name', name);
-
   }
 
   var taxId =  request.object.get('taxId');
@@ -440,6 +501,24 @@ Parse.Cloud.beforeSave("Account", function(request, response){
     companyName = companyName.toUpperCase();
     request.object.set('companyName', companyName);
   }
+
+
+  /*documentos*/
+  if(type == 'enterprise' && !request.object.get('verified')){
+    console.log('ready to beApproved 0');
+    var INE = request.object.get('INE');
+    var comprobanteDomicilio = request.object.get('comprobanteDomicilio');
+    var constanciaFiscal = request.object.get('constanciaFiscal');
+    var caratulaBancaria =  request.object.get('caratulaBancaria');
+    var autorizacionBuro =  request.object.get('autorizacionBuro');
+
+    console.log('ready to beApproved');
+    if(INE != "false" && comprobanteDomicilio != "false" && constanciaFiscal != "false" && caratulaBancaria != "false" && autorizacionBuro != "false"){
+      request.object.set('status','waitingApproval');
+    }
+
+  }
+  /*documentos*/
 
   response.success();
 
@@ -694,9 +773,11 @@ var submitOrder = function(type, order, user){
           if(amount && amount > 0){
 
             var available = account.get('creditAvailable');
+            var status = account.get('status');
+            var verified = account.get('verified');
             var limit = account.get('creditLimit');
 
-            if(available > amount){
+            if(verified && status == 'active' && available > amount){
               var auth = randomString(8);
               var params = {
                 message : 'Aprobada',

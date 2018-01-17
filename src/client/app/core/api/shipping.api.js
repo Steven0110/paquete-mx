@@ -14,11 +14,29 @@
     var factory = {
       setShipping  : setShipping,
       getShipping  : getShipping,
-      getOrder     : getOrder
+      getOrder     : getOrder,
+      sendPickUp   : sendPickUp
     };
 
     return factory;
 
+    function sendPickUp(params){
+      var deferred = $q.defer();
+      var Cloud = parse.cloud('sendPickUp');
+      Cloud.post(params).then(function(res){
+        if(res.result);
+          res = res.result;
+        deferred.resolve(res);
+      },function(err){
+        console.log(err);
+        if(err.data && err.data.error){
+          err = {error:true, message:err.data.error};
+        }
+        deferred.reject(err);
+      });
+
+      return deferred.promise;
+    }
 
     function setShipping(shipping){
       return storage.set('shipping', shipping);

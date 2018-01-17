@@ -85,6 +85,31 @@
       div(data-ng-if="shipping.data.status == 'label_created'")
         md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{shipping.data.trackingNumber}}", download)
           |Imprimir Etiqueta
+        div(data-ng-if="shipping.data.pickupConfirmation")
+          h4
+            |Confirmación de recoleccíon
+          h2.disabled-color
+            |{{shipping.data.pickupConfirmation}}
+        div(data-ng-if="!shipping.data.pickupConfirmation ")
+          md-button.md-raised.md-primary()
+            |Solicitar Recolección
+          h4
+            |Fecha
+          form(name="shipping.pickupForm", novalidate="", data-ng-submit="shipping.sendPickUp()")
+            md-datepicker(name="pickupDate",md-open-on-focus, ng-model="shipping.pickup.date", md-placeholder="Día", md-min-date="shipping.today", required)
+            h4
+              |Horario
+            md-radio-group(name="pickupSchedule",ng-model="shipping.pickup.schedule")
+              md-radio-button.md-primary(value="09:00-19:00")
+                |9:00 horas - 19:00 horas (Horario Abierto)
+              md-radio-button.md-primary(value="09:00-12:00")
+                |09:00 horas - 12:00 horas
+              md-radio-button.md-primary(value="12:00-16:00")
+                |12:00 horas - 16:00 horas
+              md-radio-button.md-primary(value="16:00-19:00")
+                |16:00 horas - 19:00 horas
+            md-button.md-raised.md-primary(type='submit')
+              |Solicitar Recolección
     .shipping-info
       h1.accent
         |Actualizaciones
