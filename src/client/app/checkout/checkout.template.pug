@@ -1,6 +1,12 @@
 .menu-container
   .menu.menu-tabs.clearfix
     div(data-ng-include="'app/templates/menu.template.html'")
+//- .resume-content
+  //- div
+    img(data-ng-src="common/images/logo-blanco.png")
+  //- div
+    a(ui-sref="home")
+      |¡Cotizar de nuevo!
 .pages
   .checkout-content
     .container-fluid
@@ -199,17 +205,17 @@
                       .align-right
                         .anchor-section(data-ng-click="checkout.changeSection('payment')")
                           |Modificar
-                    .col-xs-12
+                    //- .col-xs-12
                       .confirm-title.accent
                         |Servicio Seleccionado
                       .service-name-checkout.uppercase
                         |{{checkout.shipping.service.service}} / {{checkout.shipping.service.name}}
-                    .col-xs-12
+                    //- .col-xs-12
                       .board-list.align-center.margin-top2
                         h1
                           |Total a Pagar:
                           span.secondary-accent
-                            |&nbsp;{{checkout.shipping.service.discountTotal | currency}} MXN
+                            |&nbsp;{{checkout.shipping.service.total | currency}} MXN
 
                       //- div
                         .board-list
@@ -306,6 +312,89 @@
               .margin-top-4
                 address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.toAddress(response)",data-current-address="checkout.shipping.to")
         .col-xs-12.col-sm-6
+          .logo-color-small
+          .row
+            .col-xs-12.col-sm-8.center-block
+              .checkout-header.hvr-bounce-to-right.active
+                h3.align-center
+                  |Resumen de mi Orden
+              table.confirm-order
+                tr
+                  td
+                    h3.disabled-color
+                      |Origen
+                  td.disabled-color
+                    h2.accent
+                      span.flag-icon(class="flag-icon-{{checkout.shipping.from.country.code}}")
+                      span
+                        |{{checkout.shipping.from.zip}}
+                    div
+                      |{{checkout.shipping.from.county}}
+                    div
+                      |{{checkout.shipping.from.city}}
+
+                tr
+                  td
+                    h3.disabled-color
+                      |Destino
+                  td.disabled-color
+                    h2.accent
+                      span.flag-icon(class="flag-icon-{{checkout.shipping.to.country.code}}")
+                      span
+                        |{{checkout.shipping.to.zip}}
+                    div
+                      |{{checkout.shipping.to.county}}
+                    div
+                      |{{checkout.shipping.to.state}}
+                tr
+                  td
+                    img(data-ng-src="common/images/{{checkout.shipping.service.service}}.png", data-ng-class="{'ups':checkout.shipping.service.service == 'ups', 'fedex':checkout.shipping.service.service == 'fedex'}")
+                  td
+                    h2.accent
+                      |{{checkout.shipping.service.name}}
+                tr
+                  td(colspan="2")
+                    h4
+                      |Entrega estimada: {{checkout.shipping.service.delivery  | amDateFormat:'DD-MMM-YY, HH:mm:ss'}} 
+                    |*Fecha y hora aproximada depende de factores como fecha de envío, condiciones climaticas. 
+                tr.border-top
+                  td.align-right
+                    h4.disabled-color
+                      |Subtotal
+                  td.align-right
+                    h3
+                      |{{checkout.shipping.service.subtotal |currency}} MXN
+                tr
+                  td.align-right
+                    h4.disabled-color
+                      |IVA(16%)
+                  td.align-right
+                    h3
+                      |{{checkout.shipping.service.iva |currency}} MXN
+                tr(data-ng-show="checkout.shipping.service.cardComision")
+                  td.align-right
+                    h4.disabled-color
+                      |Comisión
+                      span
+                        |&nbsp;{{checkout.card.brand}}
+                  td.align-right
+                    h3
+                      |{{checkout.shipping.service.cardComision |currency}} MXN 
+                tr
+                  td.align-right
+                    h3
+                      |Total a pagar
+                  td.align-right
+                    h2.secondary-accent
+                      |{{checkout.shipping.service.total |currency}} MXN
+              .align-center(data-ng-show="checkout.step == 'confirm'")
+                div
+                  md-switch(ng-model="checkout.invoice",aria-label="Requiero Factura", data-ng-change="checkout.invoiceRequired()")
+                    |Requiero Factura Fiscal
+                div
+                  md-button.md-raised.md-primary(data-ng-click="checkout.order()")
+                    |Confirmar y pagar
+        //- .col-xs-12.col-sm-6
           .logo-color-small
           .checkout-header.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='from'}")
             h3

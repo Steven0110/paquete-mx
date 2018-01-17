@@ -21,7 +21,17 @@
     checkout.taxInfo = {};
     // console.log('shipping',checkout.shipping);
     
-    if(!checkout.shipping){
+    if(checkout.shipping){
+      var subtotal = checkout.shipping.service.discountTotal;
+      var iva = checkout.shipping.service.discountTotal;
+      subtotal = parseFloat((subtotal/1.16).toFixed(2));
+      iva -= subtotal;
+      checkout.shipping.service.subtotal =  subtotal;
+      checkout.shipping.service.iva =  iva;
+      checkout.shipping.service.cardComision =  false;
+      checkout.shipping.service.total = checkout.shipping.service.discountTotal;
+
+    }else{
       shell.showMessage('Selecciona un servicio');
       $state.go('home');
     }
@@ -144,10 +154,15 @@
       checkout.paymentMethods.push(card);
       checkout.payment = 'card';
       checkout.step = 'confirm';
+
+      if(card && card.brand){
+        var brand = card.brand;
+        calculateComision(brand);
+      }
     }
 
     checkout.order = function(){
-      var total = checkout.shipping.service.discountTotal;
+      var total = checkout.shipping.service.total;
       var order = {
         shipping:{
           packagingType : checkout.shipping.packagingType,
@@ -164,6 +179,8 @@
         order.paymentMethod = {card: checkout.card};
       }else if(checkout.payment == 'account'){
         order.paymentMethod = 'account';
+        checkout.shipping.service.cardComision = false;
+        checkout.shipping.service.total += checkout.shipping.service.discountTotal;
       }
 
       console.log('order-shipping',order);
@@ -226,7 +243,29 @@
       checkout.payment = 'card'
       checkout.card = card;
       checkout.step = 'confirm';
+
+      if(card && card.brand){
+        var brand = card.brand;
+        calculateComision(brand);
+      }
     }
+
+    function calculateComision(brand){
+      var amex = 0.036;
+      var visa = 0.032;
+      if(brand == "AMEX"){
+        var comission = checkout.shipping.service.total*amex;
+        comission = parseFloat(comission.toFixed(2));
+        checkout.shipping.service.cardComision = comission
+        checkout.shipping.service.total += comission;
+      }else{
+        var comission = checkout.shipping.service.total*visa;
+        comission = parseFloat(comission.toFixed(2));
+        checkout.shipping.service.cardComision = comission
+        checkout.shipping.service.total += comission;
+      }
+    }
+
 
     var getPaymentMethods = function(){
       shell.showLoading();
