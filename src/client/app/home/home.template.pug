@@ -9,8 +9,12 @@
       .menu-bar.bar2
       .menu-bar.bar3
   .login-home(data-ui-sref="login", data-ng-hide="shell.menuOpen")
-    i.fa.fa-home
-    |Iniciar Sesión
+    span(data-ng-if="!shell.currentUser")
+      i.fa.fa-home
+      |Iniciar Sesión
+    span(data-ng-if="shell.currentUser")
+      i.fa.fa-home
+      |¡Hola {{shell.currentUser.name}}!
   .tracking-home(ui-sref="dashboard.shippings", data-ng-hide="shell.menuOpen")
     i.fa.fa-location-arrow
     |Rastrear Envío

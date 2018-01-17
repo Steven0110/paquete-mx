@@ -60,8 +60,6 @@
             div(data-ng-if="shipping.data.status == 'label_created'")
               md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{shipping.data.trackingNumber}}", download)
                 |Imprimir Etiqueta
-              md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{shipping.data.trackingNumber}}", download)
-                |Solicitar Recolección
         .col-xs-4
           h2.accent
             |Destino
@@ -85,14 +83,9 @@
       div(data-ng-if="shipping.data.status == 'label_created'")
         md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{shipping.data.trackingNumber}}", download)
           |Imprimir Etiqueta
-        div(data-ng-if="shipping.data.pickupConfirmation")
-          h4
-            |Confirmación de recoleccíon
-          h2.disabled-color
-            |{{shipping.data.pickupConfirmation}}
         div(data-ng-if="!shipping.data.pickupConfirmation ")
-          md-button.md-raised.md-primary()
-            |Solicitar Recolección
+          h2.disabled-color
+            |Agendar recolección en domicilio
           h4
             |Fecha
           form(name="shipping.pickupForm", novalidate="", data-ng-submit="shipping.sendPickUp()")
@@ -110,6 +103,11 @@
                 |16:00 horas - 19:00 horas
             md-button.md-raised.md-primary(type='submit')
               |Solicitar Recolección
+    .shipping-info(data-ng-if="shipping.data.pickupConfirmation")
+      h1.accent
+        |Recolección
+      h3.disabled-color
+        |Confirmación: {{shipping.data.pickupConfirmation}}
     .shipping-info
       h1.accent
         |Actualizaciones
