@@ -96,14 +96,28 @@
                           .row
                             .col-xs-6
                               .cotizador-type(data-ng-class="{'active': home.shipping.type == 'document'}", data-ng-click="home.selectType('document')")
-                                i.fa.fa-angle-down(data-ng-hide="home.documentOpen")
-                                i.fa.fa-angle-up(data-ng-show="home.documentOpen")
-                                |DOCUMENTO
+                                //- i.fa.fa-angle-down(data-ng-hide="home.documentOpen")
+                                //- i.fa.fa-angle-up(data-ng-show="home.documentOpen")
+                                .row
+                                  .col-xs-2
+                                    .padding-sides
+                                      md-radio-group(ng-model="home.shipping.type")
+                                        md-radio-button.md-primary(value='document')
+                                  .col-xs-10
+                                    span
+                                      |DOCUMENTO
                             .col-xs-6
                               .cotizador-type(data-ng-class="{'active': home.shipping.type == 'package'}", data-ng-click="home.selectType('package')")
-                                i.fa.fa-angle-down(data-ng-hide="home.packageOpen")
-                                i.fa.fa-angle-up(data-ng-show="home.packageOpen")
-                                |PAQUETE
+                                //- i.fa.fa-angle-down(data-ng-hide="home.packageOpen")
+                                //- i.fa.fa-angle-up(data-ng-show="home.packageOpen")
+                                .row
+                                  .col-xs-2
+                                    .padding-sides
+                                      md-radio-group(ng-model="home.shipping.type")
+                                        md-radio-button.md-primary(value='package')
+                                  .col-xs-10
+                                    span
+                                      |PAQUETE
 
                           .cotizador-document(data-ng-if="home.documentOpen")
                             //- .row
