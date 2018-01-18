@@ -190,16 +190,69 @@ Parse.Cloud.define("setPassword",function(request, response){
   })
 })
 
+Parse.Cloud.define("cancelPickup",function(request, response){
+  var params = request.params;
+  var body ={};
+
+  if(params.trackingNumber){
+    body.trackingNumber = params.trackingNumber;
+  }
+
+  if(params.carrier)
+    body.type = params.carrier.toLowerCase();
+
+  var Shipping = Parse.Object.extend('Shipping');
+  var query = new Parse.Query(Shipping);
+  query.equalTo('trackingNumber',params.trackingNumber);
+  query.first().then(function(res){
+
+    if(res){
+      shipping =  res;
+
+      var pickupConfirmation = shipping.get("pickupConfirmation");
+      if(pickupConfirmation)
+        body.pickupConfirmation = pickupConfirmation
+
+      console.log(body);
+
+      Parse.Cloud.httpRequest({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/cancelpickup',
+        body: body
+      }).then(function(res){
+        console.log('heeeeee');
+        console.log(res.text);
+        if(res.text){
+          res =  JSON.parse(res.text);
+          console.log(res);
+          if(res.confirmation){
+            shipping.set('pickupConfirmation', null);
+            shipping.save().then(function(){
+              response.success(res);
+            });
+          }
+        }else{
+          response.error({error:true, message:"Imposible cancelar recolección, intenta de nuevo por favor."});
+        }
+      },function(err){
+        if(err && err.data && err.data.error){
+          err = err.data.error;
+        }
+        response.error(err);
+      });
+    }else{
+      response.error({error:true, message:"Invalid trackingNumber"});
+    }
+  },function(err){
+    response.error(err);
+  })
+});
+
 
 Parse.Cloud.define("sendPickUp",function(request, response){
-
-  // var attch = [new Mailgun.Attachment(pdfBuffer)];
-  // html = htmlTemplate("");
-  // sendEmail("jc.canizal@gmail.com", "¡Gracias por usar Paquete.MX!", html, false, false);
-
-  // response.success();
-
-  //
   var params = request.params;
   var body ={
   }

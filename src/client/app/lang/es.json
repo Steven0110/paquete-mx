@@ -44,6 +44,56 @@
       }
     }
   },
+  "from":{
+    "address":{
+      "form":{
+        "alias": "Alias",
+        "name": "Nombre de quien envía",
+        "company": "Empresa quien envía",
+        "phone": "Telefóno de quien envía",
+        "email": "Correo Electrónico",
+        "country": "País (origen)",
+        "street": "Calle (origen)",
+        "number":"Numero Exterior (origen)",
+        "apt":"Numero interior (origen)",
+        "zip":"Codigo Postal",
+        "county": "Colonia (origen)",
+        "city": "Ciudad (origen)",
+        "state": "Estado (origen)",
+        "save" : "Guardar",
+        "continue" : "Continuar",
+        "cancel": "Cancelar"
+      },
+      "errors":{
+        "pattern": "Telefóno invalido, requerido a 10 digitos"
+      }
+    }
+  },
+  "to":{
+    "address":{
+      "form":{
+        "alias": "Alias",
+        "name": "Nombre de quien recibe",
+        "company": "Empresa que recibe",
+        "phone": "Telefóno de quien recibe",
+        "email": "Correo Electrónico",
+        "country": "País (destino)",
+        "street": "Calle (destino)",
+        "number":"Numero Exterior (destino)",
+        "apt":"Numero interior (destino)",
+        "zip":"Codigo Postal",
+        "county": "Colonia (destino)",
+        "city": "Ciudad (destino)",
+        "state": "Estado (destino)",
+        "save" : "Guardar",
+        "continue" : "Continuar",
+        "cancel": "Cancelar"
+      },
+      "errors":{
+        "pattern": "Telefóno invalido, requerido a 10 digitos"
+      }
+    }
+  },
   "address":{
     "form":{
       "alias": "Alias",

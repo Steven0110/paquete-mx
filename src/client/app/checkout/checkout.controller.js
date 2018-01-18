@@ -19,6 +19,7 @@
     checkout.connecting = false;
     checkout.paymentMethods = [];
     checkout.taxInfo = {};
+    checkout.pickupConfirmation = false;
     // console.log('shipping',checkout.shipping);
     
     if(checkout.shipping){
@@ -37,6 +38,7 @@
     }
 
     $scope.$watch('checkout.step',function(newValue, oldValue){
+      shell.moveToTop();
       if(newValue == 'selectPayment' || newValue =='payment'){
         var subtotal = checkout.shipping.service.discountTotal;
           var iva = checkout.shipping.service.discountTotal;
@@ -130,6 +132,8 @@
       }
     }
 
+
+    //regresar a from
     checkout.step = "from";
     checkout.user = false;
 
@@ -142,7 +146,7 @@
       checkout.user = shell.getCurrentUser();
       shell.currentUser = checkout.user;
       if(checkout.user){
-        shell.moveToTop();
+        
         getPaymentMethods();
       }else{
         checkout.step = 'login';  
@@ -154,11 +158,12 @@
         getPaymentMethods();
         checkout.cardForm = false;
       }
-      shell.moveToTop();
+      // shell.moveToTop();
       checkout.step = section;
     }
 
     checkout.cancelPayment =function(){
+      shell.moveToTop();
       checkout.cardForm = false;
     }
 
@@ -175,8 +180,8 @@
     }
 
     checkout.order = function(){
+      shell.moveToTop();
       var title ={main:"Términos y Condiciones",secondary:"He verificado mi información."};
-        // var content ={main:"He Leído, entiendo y ACEPTO los terminos y condiciones.",secondary:"¡PAGAR y crear la etiqueta de tu envió"};
         var content ={main:"He Leído, entiendo y ACEPTO los <a class='underline' ui-sref='privacy' target='_blank'>Términos y Condiciones</a>. Así como las <a class='underline' ui-sref='privacy' target='blank'>Políticas de Privacidad</a>."};
         var buttons ={main:{continue:"ACEPTO, crear etiqueta",cancel:"NO Acepto"},secondary:{continue:"Crear Etiqueta",cancel:"No, cancelar"}};
       Dialog.confirmDialog(title,content,buttons, function(){
@@ -233,7 +238,7 @@
       if(response.result && response.data){
         checkout.shipping.from = response.data;
         shippingApi.setShipping(checkout.shipping);
-        shell.moveToTop();
+        // shell.moveToTop();
         $timeout(function(){
           checkout.step = 'to';
           console.log('to');
@@ -249,7 +254,7 @@
         checkout.user = shell.getCurrentUser();
 
         if(checkout.user){
-          shell.moveToTop();
+          // shell.moveToTop();
           getPaymentMethods();
         }else{
           // alert('login');
@@ -339,6 +344,46 @@
       var user = shell.getCurrentUser();
       deferre.resolve(user);
       return deferred.promise;
+    }
+
+    checkout.pickup = {};
+    this.myDate = new Date();
+
+    checkout.pickup.schedule = "08:00-19:00";
+    checkout.pickup.date = new Date();
+    checkout.today = new Date(
+        this.myDate.getFullYear(),
+        this.myDate.getMonth(),
+        this.myDate.getDate()
+      )
+
+
+    checkout.sendPickUp = function(){
+      if(checkout.pickupForm.$valid){
+        shell.showLoading();
+        var params = {
+          date: checkout.pickup.date,
+          schedule: checkout.pickup.schedule,
+          trackingNumber: checkout.trackingNumber,
+          packages : checkout.shipping.packages,
+          carrier  : checkout.shipping.service.service
+        };
+
+        shippingApi.sendPickUp(params).then(function(res){
+          console.log(res);
+          if(res.confirmation){
+            Dialog.showTooltip('Recolección solicitada','Tu recolección se solicito con éxito, confirmación: '+res.confirmation,{close:"Cerrar"});
+            checkout.pickupConfirmation = res.confirmation;
+          }
+        },function(err){
+          console.log(err);
+          if(err.message){
+            Dialog.showError(err.message,'No se pudo solicitar la recolección');
+          }
+        }).finally(shell.hideLoading);
+      }else{
+        Dialog.showMessage();
+      }
     }
 
   

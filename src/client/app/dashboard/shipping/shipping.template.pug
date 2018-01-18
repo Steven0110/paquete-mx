@@ -81,11 +81,38 @@
       h1.accent
         |Etiqueta y Recolección
       div(data-ng-if="shipping.data.status == 'label_created'")
+        ul
+          li
+            |Descarga e imprime tu etiqueta 
+            span.accent.bold
+              |2 veces 
+            |&nbsp;( por cada paquete ).
+          li
+            |Pega una de las copias en tu paquete o paquetes.
+          li
+            |Si llevas tus paquetes a mostrador una copia sera sellada como acuse de recepción.
         md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{shipping.data.trackingNumber}}", download)
           |Imprimir Etiqueta
         div(data-ng-if="!shipping.data.pickupConfirmation ")
           h2.disabled-color
-            |Agendar recolección en domicilio
+            span.bold
+              |Entrega 
+            |&nbsp;tu paquete en mostrador
+          span
+            |¿Donde entregar?
+          a.accent.underline(href="https://www.ups.com/dropoff?loc=es_MX", target="_blank", data-ng-if="shipping.data.service.service.service == 'ups'")
+            |&nbsp;Buscar puntos de entrega 
+            span.uppercase.bold.accent
+              |{{shipping.data.service.service.service}}
+          a.accent.underline(href="http://www.fedex.com/locate/index.html?locale=es_MX", target="_blank", data-ng-if="shipping.data.service.service.service == 'fedex'")
+            |&nbsp;Buscar puntos de entrega 
+            span.uppercase.bold.accent
+              |{{shipping.data.service.service.service}}
+          h2.disabled-color
+            |o
+            span.bold
+              |&nbsp;Agenda
+            |&nbsp;recolección en domicilio
           h4
             |Fecha
           form(name="shipping.pickupForm", novalidate="", data-ng-submit="shipping.sendPickUp()")
@@ -110,8 +137,8 @@
         |Recolección
       h3.disabled-color
         |Confirmación: {{shipping.data.pickupConfirmation}}
-      //- md-button.md-raised.md-primary(type='submit')
-        |Solicitar Recolección
+      md-button.md-raised.md-primary(data-ng-click="shipping.cancelPickup()")
+        |Cancelar Recolección
     .shipping-info
       h1.accent
         |Actualizaciones

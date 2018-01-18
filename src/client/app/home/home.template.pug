@@ -1,6 +1,6 @@
 .resume-content
   div
-    a(ui-sref="home")
+    a(data-ng-click="shell.moveToTop(true)")
       |¡Cotizar Ahora!
 .home-menu-container
   .home-menu(data-ng-class="{'active':shell.menuOpen}")
@@ -53,7 +53,8 @@
             form(name="home.shippingForm",data-ng-submit="home.send()", novalidate)
               .container-fluid.opacity-box
                 .row
-                  .col-xs-12.col-sm-6.col-md-3
+                  .col-xs-12.col-sm-6.col-md-3(data-balloon="What about something really big? This may surpass your window dimensions. Imagine you're on that boring class with that boring teacher and you didn't slept so well last night. Suddenly you're sleeping in class. Can you believe it?!" data-balloon-pos="up", data-balloon-length="fit")
+
                     .cotizador-element
                       .padding-sides
                         h3
@@ -74,7 +75,7 @@
                                   select-cities(data-cities="home.fromCities",data-selected="home.shipping.from.data", data-search="home.fromSearch",data-country="home.shipping.from.country")
                             
 
-                  .col-xs-12.col-sm-6.col-md-3
+                  .col-xs-12.col-sm-6.col-md-3(data-balloon="What about something really big? This may surpass your window dimensions. Imagine you're on that boring class with that boring teacher and you didn't slept so well last night. Suddenly you're sleeping in class. Can you believe it?!" data-balloon-pos="up", data-balloon-length="fit")
                     .cotizador-element
                       .padding-sides
                         h3
@@ -90,7 +91,7 @@
                               .input-container
                                 input(id="toSearch", placeholder="C.P.",name="toZip", data-ng-model="home.toSearch", data-ng-focus="home.cleanSearch('to')", required)
                                 select-cities(data-cities="home.toCities", data-selected="home.shipping.to.data",data-clean = "home.toClean",data-search="home.toSearch", data-country="home.shipping.to.country")
-                  .col-xs-12.col-sm-6.col-md-4
+                  .col-xs-12.col-sm-6.col-md-4(data-balloon="What about something really big? This may surpass your window dimensions. Imagine you're on that boring class with that boring teacher and you didn't slept so well last night. Suddenly you're sleeping in class. Can you believe it?!" data-balloon-pos="up", data-balloon-length="fit")
                     .cotizador-element
                       .padding-sides
                         h3

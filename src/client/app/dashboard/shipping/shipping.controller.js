@@ -27,11 +27,6 @@
     }
 
     this.myDate = new Date();
-    shipping.today = new Date(
-        this.myDate.getFullYear(),
-        this.myDate.getMonth(),
-        this.myDate.getDate()
-      )
 
     shipping.pickup.schedule = "08:00-19:00";
     shipping.pickup.date = new Date();
@@ -40,6 +35,27 @@
         this.myDate.getMonth(),
         this.myDate.getDate()
       )
+
+
+    shipping.cancelPickup = function(){
+      shell.showLoading();
+      var params = {
+        trackingNumber: shipping.data.trackingNumber,
+        carrier  : shipping.data.carrier
+      }
+      shippingApi.cancelPickup(params).then(function(res){
+        console.log(res);
+        if(res.confirmation){
+          Dialog.showTooltip('Recolección cancelada','Tu recolección se cancelo con éxito',{close:"Cerrar"});
+          shipping.data.pickupConfirmation = res.confirmation;
+        }
+      },function(err){
+        console.log(err);
+        if(err.message){
+          Dialog.showError(err.message,'No se pudo solicitar la recolección');
+        }
+      }).finally(shell.hideLoading);
+    }
 
     shipping.sendPickUp = function(){
       if(shipping.pickupForm.$valid){

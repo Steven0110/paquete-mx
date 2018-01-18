@@ -7,18 +7,27 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
       div(ng-messages="card.form.cardName.$error")
         div(ng-message="required")
           |Es requerido
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
     md-input-container.md-block
       label(for="cardNumber",data-ng-bind="card.labels.form.number")
       input(name="cardNumber", data-ng-model="card.info.card_number", required, validate-card)
       div(ng-messages="card.form.cardNumber.$error")
         div(ng-message="validateCard")
           |Número de tarjeta invalido.
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
     md-input-container.md-block
       label(for="cvc",data-ng-bind="card.labels.form.cvc")
       input(name="cvc", data-ng-model="card.info.cvc",required, validate-cvc)
       div(ng-messages="card.form.cvc.$error")
         div(ng-message="validateCvc")
           |Código de seguridad invalido.
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
     div
       .row
         .col-xs-12.col-sm-5
@@ -40,30 +49,45 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
       div(ng-messages="card.form.address_line_1.$error")
         div(ng-message="required")
           |Es requerido
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
     md-input-container.md-block
       label(for="address_line_2",data-ng-bind="card.labels.form.address_line_2")
       input(name="address_line_2", data-ng-model="card.info.address_line_2",required)
       div(ng-messages="card.form.address_line_2.$error")
         div(ng-message="required")
           |Es requerido
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
     md-input-container.md-block
       label(for="city",data-ng-bind="card.labels.form.city")
       input(name="city", data-ng-model="card.info.city",required)
       div(ng-messages="card.form.city.$error")
         div(ng-message="required")
           |Es requerido
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
     md-input-container.md-block
       label(for="state",data-ng-bind="card.labels.form.state")
       input(name="state", data-ng-model="card.info.state",required)
       div(ng-messages="card.form.state.$error")
         div(ng-message="required")
           |Es requerido
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
     md-input-container.md-block
       label(for="postal_code",data-ng-bind="card.labels.form.postal_code")
       input(name="postal_code", data-ng-model="card.info.postal_code",required)
       div(ng-messages="card.form.postal_code.$error")
         div(ng-message="required")
           |Es requerido
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
     .align-center.margin-top-2
       md-button.md-raised.md-primary(type="submit", data-ng-bind="card.labels.form.save", aria-label="card.labels.form.save")
       md-button.md-raised( data-ng-bind="card.labels.form.cancel", aria-label="card.labels.form.cancel", data-ng-click="card.cancel()")

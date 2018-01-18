@@ -2,19 +2,21 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
   div(layout-xs-sm="row")
     md-input-container.md-block
       label(for="name",data-ng-bind="labels.address.form.name")
-      md-icon
-        i.fa.fa-user
       input(name="name", data-ng-model="newAddress.name", required)
       div(ng-messages="addressForm.name.$error")
         div(ng-message="required",data-ng-bind="labels.form.errors.required")
       md-icon
-        i.fa.fa-info-circle
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
       label(for="company",data-ng-bind="labels.address.form.company")
       input(name="company", data-ng-model="newAddress.company")
       div(ng-messages="addressForm.company.$error")
         div(ng-message="required",data-ng-bind="labels.form.errors.required")
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
       label(for="phone",data-ng-bind="labels.address.form.phone")
@@ -22,31 +24,46 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
       div(ng-messages="addressForm.phone.$error")
         div(ng-message="required",data-ng-bind="labels.form.errors.required")
         div(ng-message="pattern",data-ng-bind="labels.address.errors.pattern")
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
       label(for="email",data-ng-bind="labels.address.form.email")
-      input(name="email", data-ng-model="newAddress.email", required, type="email")
+      input(name="email", data-ng-model="newAddress.email", type="email")
       div(ng-messages="addressForm.email.$error")
         div(ng-message="required",data-ng-bind="labels.form.errors.required")
-        div(ng-message="pattern",data-ng-bind="labels.address.errors.pattern")
+        div(ng-message="invalid",data-ng-bind="labels.address.errors.pattern")
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
       label(for="street",data-ng-bind="labels.address.form.street")
       input(name="street", data-ng-model="newAddress.street", required)
       div(ng-messages="addressForm.street.$error")
         div(ng-message="required",data-ng-bind="labels.form.errors.required")
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
       label(for="number",data-ng-bind="labels.address.form.number")
       input(name="number", data-ng-model="newAddress.number", required="")
       div(ng-messages="addressForm.number.$error")
         div(ng-message="required",data-ng-bind="labels.form.errors.required")
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
       label(for="apt",data-ng-bind="labels.address.form.apt")
       input(name="apt", data-ng-model="newAddress.apt")
       div(ng-messages="addressForm.apt.$error")
         div(ng-message="required",data-ng-bind="labels.form.errors.required")
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
   .country-zip(layout-xs-sm="row",data-ng-if="type == 'checkout' ")
     .row
       .col-xs-6
@@ -83,18 +100,27 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
       input(name="county", data-ng-model="newAddress.county", required="")
       div(ng-messages="addressForm.county.$error")
         div(ng-message="required",data-ng-bind="labels.form.errors.required")
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
       label(for="city",data-ng-bind="labels.address.form.city")
       input(name="city", data-ng-model="newAddress.city", required="")
       div(ng-messages="addressForm.city.$error")
         div(ng-message="required",data-ng-bind="labels.form.errors.required")
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
       label(for="state",data-ng-bind="labels.address.form.state")
       input(name="state", data-ng-model="newAddress.state", required="")
       div(ng-messages="addressForm.state.$error")
         div(ng-message="required",data-ng-bind="labels.form.errors.required")
+      md-icon
+        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+          i.fa.fa-info-circle
   .align-center(data-ng-if="type =='checkout'")
     md-button.md-raised.md-primary(type="submit",data-ng-bind="labels.address.form.continue",aria-label="labels.address.form.continue")
   .align-center(data-ng-if="type =='save'")

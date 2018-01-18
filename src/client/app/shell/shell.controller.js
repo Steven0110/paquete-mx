@@ -81,7 +81,10 @@
     }
 
     shell.moveToTop = function(delay){
-      $window.scrollTo(0, 0);          
+      // if(delay)
+        $('html,body').animate({scrollTop:0},500);
+      // else
+        // $window.scrollTo(0, 0);          
     }
 
     shell.showMessage = function(message){

@@ -1,3 +1,7 @@
+.resume-content
+  div
+    a(ui-sref="home")
+      |¡Cotizar de nuevo!
 .menu-container
   .menu.menu-tabs.clearfix
     div(data-ng-include="'app/templates/menu.template.html'")
@@ -23,16 +27,72 @@
             .logo-color
             h1.align-center.accent
               |¡Gracias por usar Paquete.MX!
-            h3.secondary-accent.align-center
-              |Recuerda que entre mas envies mas descuentos obtienes.
+            h2.disabled-color.align-center
+              |¿Cómo hago mi envío?
+            div
+              ul
+                li
+                  |Descarga e imprime tu etiqueta 
+                  span.accent.bold
+                    |2 veces 
+                  |&nbsp;( por cada paquete ).
+                li
+                  |Pega una de las copias en tu paquete o paquetes.
+                li
+                  |Si llevas tus paquetes a mostrador una copia sera sellada como acuse de recepción.
+                li
+                  |Puedes dar seguimiento a tu envío desde nuestro
+                  a.accent.bold(ui-sref="dashboard.shippings")
+                    |&nbsp;administrador.
+              
             .align-center.margin-bottom-2
               md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{checkout.trackingNumber}}", download)
                 |Descargar Etiqueta
-              md-button.md-raised(ui-sref="dashboard.shippings")
-                |Rastrear Paquete
-            //- .align-center
-              md-button.md-raised
-                |Programar Recolección
+            h2.disabled-color
+              |¿Dónde 
+              span.bold
+                |entregar
+              |?
+            a.accent.underline(href="https://www.ups.com/dropoff?loc=es_MX", target="_blank", data-ng-show="checkout.shipping.service.service == 'ups' ")
+              |&nbsp;Buscar puntos de entrega 
+              span.uppercase.bold.accent
+                |{{checkout.shipping.service.service}}
+            a.accent.underline(href="http://www.fedex.com/locate/index.html?locale=es_MX", target="_blank", data-ng-if="shipping.data.service.service.service == 'fedex'")
+              |&nbsp;Buscar puntos de entrega 
+              span.uppercase.bold.accent
+                |{{checkout.shipping.service.service}}
+            h2.disabled-color
+              |o
+              span.bold
+                |&nbsp;Agenda
+              |&nbsp;recolección en domicilio
+            .align-center(data-ng-if="checkout.pickupConfirmation")
+              h3.accent
+                |Tu recolección fue solicitada.
+              h3.disabled-color
+                |Confirmación: {{checkout.pickupConfirmation}}
+              md-button.md-raised.md-primary(ui-sref="home")
+                |HACER OTRO ENVÍO
+            div(data-ng-if="!checkout.pickupConfirmation")
+              h4
+                |Fecha
+              form(name="checkout.pickupForm", novalidate="", data-ng-submit="checkout.sendPickUp()")
+                md-datepicker(name="pickupDate",md-open-on-focus, ng-model="checkout.pickup.date", md-placeholder="Día", md-min-date="checkout.today", required)
+                h4
+                  |Horario
+                md-radio-group(name="pickupSchedule",ng-model="checkout.pickup.schedule")
+                  md-radio-button.md-primary(value="08:00-19:00")
+                    |8:00 horas - 19:00 horas (Horario Abierto)
+                  md-radio-button.md-primary(value="09:00-19:00")
+                    |09:00 horas - 19:00 horas (Horario Abierto)
+                  md-radio-button.md-primary(value="10:00-19:00")
+                    |10:00 horas - 19:00 horas (Horario Abierto)
+                  md-radio-button.md-primary(value="11:00-19:00")
+                    |11:00 horas - 19:00 horas (Horario Abierto)
+                  md-radio-button.md-primary(value="12:00-19:00")
+                    |12:00 horas - 19:00 horas (Horario Abierto)
+                md-button.md-raised.md-primary(type='submit')
+                  |Solicitar Recolección
         .col-xs-12.col-sm-6
             .form-container
               .success-checkout
@@ -116,8 +176,8 @@
                     .board-list.align-center.margin-top-2
                       md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{checkout.trackingNumber}}", download)
                         |Descargar Etiqueta
-                      md-button.md-raised(ui-sref="dashboard.shippings")
-                        |Rastrear Paquete
+                      md-button.md-raised(ui-sref="home")
+                        |Ir a mi cuenta
       .row(data-ng-hide="checkout.response || checkout.connecting")
         .col-xs-12.col-sm-6
           .section-space-right
@@ -228,6 +288,8 @@
                   div
                     md-switch(ng-model="checkout.invoice",aria-label="Requiero Factura", data-ng-change="checkout.invoiceRequired()")
                       |Requiero Factura Fiscal
+                      //- span(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="up")
+                        i.fa.fa-info-circle
                   div
                     md-button.md-raised.md-primary(data-ng-click="checkout.order()")
                       |Confirmar y pagar
@@ -303,14 +365,16 @@
               register-form
             .form-container(data-ng-show="checkout.step=='from'")
               h1.accent.align-center
+                i.fa.fa-map-marker.margin-right-1
                 |Dirección de Origen
               .margin-top-4
-                address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.fromAddress(response)", data-current-address="checkout.shipping.from")
+                address-form(data-type="checkout",data-labels="shell.labels.from",data-countries="shell.countries",data-send-form="checkout.fromAddress(response)", data-current-address="checkout.shipping.from")
             .form-container(data-ng-show="checkout.step=='to'")
               h1.accent.align-center
                 |Dirección de Destino
+                i.fa.fa-flag-checkered.margin-left-1
               .margin-top-4
-                address-form(data-type="checkout",data-labels="shell.labels", data-countries="shell.countries",data-send-form="checkout.toAddress(response)",data-current-address="checkout.shipping.to")
+                address-form(data-type="checkout",data-labels="shell.labels.to", data-countries="shell.countries",data-send-form="checkout.toAddress(response)",data-current-address="checkout.shipping.to")
         .col-xs-12.col-sm-6
           .logo-color-small
           .row
@@ -394,132 +458,4 @@
                 div
                   md-button.md-raised.md-primary(data-ng-click="checkout.order()")
                     |Confirmar y pagar
-        //- .col-xs-12.col-sm-6
-          .logo-color-small
-          .checkout-header.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='from'}")
-            h3
-              |Selecciona el origen.
-          .checkout-info(data-ng-show="checkout.step =='from'")
-            .container-fluid
-              .row
-                .col-xs-3
-                  img(data-ng-src="common/images/origen.png")
-                .col-xs-9
-                  .padding-side
-                    h4.disabled-color
-                      |Selecciona la dirección de envió, recuerda que si ya tienes cuenta puedes guardarlas para fácil acceso.
-                    h3.secondary-accent
-                      |¡Al final podrás solicitar tu recolección!
-          .checkout-header.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='to'}")
-            h3
-              |Selecciona el destino.
-          .checkout-info(data-ng-show="checkout.step =='to'")
-            .container-fluid
-              .row
-                .col-xs-9
-                  .padding-side
-                    h4.disabled-color
-                      |Selecciona la dirección de destino y quien es el destinatario.
-                    h3.secondary-accent
-                      |¡Guarda tus direcciones y destinatarios frecuentes desde tu cuenta!
-                .col-xs-3
-                  img(data-ng-src="common/images/destino.png")
-          .checkout-header.hvr-bounce-to-right.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='payment'}")
-            h3
-              |Selecciona el método de Pago.
-          .checkout-info(data-ng-show="checkout.step =='payment'")
-            .card-icons
-              i.fa.fa-cc-visa
-              i.fa.fa-cc-amex
-              i.fa.fa-cc-mastercard
-            .padding-side
-              h3.secondary-accent
-                |¡Aceptamos tarjetas de Crédito y Débito!
-              h4.disabled-color
-                |Tarjetas de crédito nacionales e internacionales, expedidas por 
-                span.secondary-accent
-                  |VISA
-                |,&nbsp;
-                span.secondary-accent
-                  |AMERICAN EXPRESS
-                |&nbsp;o&nbsp;
-                span.secondary-accent
-                  |MASTERCARD.
-              h4.disabled-color
-                |Tarjetas de debido de 
-                span.secondary-accent
-                  |Banamex
-                |,&nbsp;
-                span
-                  |HSBC
-                |,&nbsp;
-                span.secondary-accent
-                  |Inbursa 
-                |&nbsp;y&nbsp; 
-                span.secondary-accent
-                  |Santander
-                |.
-          .checkout-header.hvr-bounce-to-right.hvr-bounce-to-right(data-ng-class="{'active':checkout.step =='confirm'}")
-            h3
-              |Confirma y ¡Envia!
-          //- .section-space-left
-            .form-container
-              h1.accent
-                |Servicio Seleccionado
-              div
-                .container-fluid
-                  .row
-                    //- .col-xs-6
-                      .section-space-right
-                        h2
-                          |Origen
-                        div(data-ng-if="!checkout.from")
-                          |Debes ingresar la dirección de origen.
-                        div(data-ng-if="checkout.from")
-                          .board-list
-                            |{{checkout.from.street}}, {{checkout.from.number}}&nbsp;
-                            span(data-ng-if="checkout.from.apt")
-                              | - {{checkout.from.apt}}
-                          .board-list
-                            |{{checkout.from.county}}
-                            span(data-ng-if="checkout.from.city")
-                              |, {{checkout.from.city}}
-                            span
-                              |, {{checkout.from.zip}}
-                          .board-list
-                            |{{checkout.from.state}}
-                            span.uppercase
-                              |, {{checkout.from.country.name}}
-                    //- .col-xs-6
-                      .section-space-left
-                        h2
-                          |Destino
-                        div(data-ng-if="!checkout.to")
-                          |Debes ingresar la dirección de destino.
-                        div(data-ng-if="checkout.to")
-                          .board-list
-                            |{{checkout.to.street}}, {{checkout.to.number}}&nbsp;
-                            span(data-ng-if="checkout.to.apt")
-                              | - {{checkout.to.apt}}
-                          .board-list
-                            |{{checkout.to.county}}
-                            span(data-ng-if="checkout.to.city")
-                              |, {{checkout.to.city}}
-                            span
-                              |, {{checkout.to.zip}}
-                          .board-list
-                            |{{checkout.to.state}}
-                            span.uppercase
-                              |, {{checkout.to.country.name}}
-                    //- .col-xs-12
-                      h2
-                        |Método de Pago
-                      div(data-ng-if="!checkout.card")
-                        |Selecciona una tarjeta para realizar tu pago.
-                      div(data-ng-if="checkout.card")
-                        .board-list
-                          |{{checkout.card.name}} 
-                        .board-list
-                          |{{checkout.card.brand}}
-                        .board-list
-                          |{{checkout.card.last4}}
+div(data-ng-include="'app/templates/footer.template.html'")

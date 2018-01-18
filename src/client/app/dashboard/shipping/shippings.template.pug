@@ -30,18 +30,17 @@
           |Ultima Actualización
     tbody
       tr(data-ng-repeat="item in shippings.inTransit")
-        td.accent.bold.medium-font.pointer
-          a(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
-            |{{item.trackingNumber}}
-        td.pointer
+        td.accent.bold.medium-font.pointera(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
+          |{{item.trackingNumber}}
+        td.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{item.carrier}}
-        td.pointer
+        td.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{item.service.service.name}}
-        td.success.pointer
+        td.success.pointera(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{shell.labels.shipping[item.status]}}
-        td.uppercase.pointer
+        td.uppercase.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{item.createdAt | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
-        td.uppercase.pointer
+        td.uppercase.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{item.updatedAt | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
   h1.accent
     |Envios finalizados

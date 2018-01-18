@@ -15,10 +15,29 @@
       setShipping  : setShipping,
       getShipping  : getShipping,
       getOrder     : getOrder,
-      sendPickUp   : sendPickUp
+      sendPickUp   : sendPickUp,
+      cancelPickup : cancelPickup
     };
 
     return factory;
+
+    function cancelPickup(params){
+      var deferred = $q.defer();
+      var Cloud = parse.cloud('cancelPickup');
+      Cloud.post(params).then(function(res){
+        if(res.result);
+          res = res.result;
+        deferred.resolve(res);
+      },function(err){
+        console.log(err);
+        if(err.data && err.data.error){
+          err = {error:true, message:err.data.error};
+        }
+        deferred.reject(err);
+      });
+
+      return deferred.promise;
+    }
 
     function sendPickUp(params){
       var deferred = $q.defer();
