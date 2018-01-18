@@ -36,6 +36,19 @@
       $state.go('home');
     }
 
+    $scope.$watch('checkout.step',function(newValue, oldValue){
+      if(newValue == 'selectPayment' || newValue =='payment'){
+        var subtotal = checkout.shipping.service.discountTotal;
+          var iva = checkout.shipping.service.discountTotal;
+          subtotal = parseFloat((subtotal/1.16).toFixed(2));
+          iva -= subtotal;
+          checkout.shipping.service.subtotal =  subtotal;
+          checkout.shipping.service.iva =  iva;
+          checkout.shipping.service.cardComision =  false;
+          checkout.shipping.service.total = checkout.shipping.service.discountTotal;
+      }
+    });
+
     checkout.goToPayment = function(){
       checkout.step = 'payment';
       checkout.payment = 'card';
@@ -185,7 +198,7 @@
         }else if(checkout.payment == 'account'){
           order.paymentMethod = 'account';
           checkout.shipping.service.cardComision = false;
-          checkout.shipping.service.total += checkout.shipping.service.discountTotal;
+          // checkout.shipping.service.total = checkout.shipping.service.discountTotal;
         }
 
         console.log('order-shipping',order);
