@@ -9,6 +9,53 @@
 
   function Dialog($ngConfirm) {
 
+    this.confirmDialog = function(title,content,buttons,actions, cancel){
+      $ngConfirm({
+            title: title.main,
+            content: content.main,
+            theme: 'supervan',
+            buttons: {
+                continue: {
+                    text: buttons.main.continue,
+                    btnClass: 'btn-blue',
+                    action: function(scope, button){
+                      // invoice.info.amount = parseFloat(invoice.info.amount);
+                      if(content.secondary){
+                        $ngConfirm({
+                          content: content.secondary,
+                          title: title.secondary,
+                          buttons: {
+                            continue: {
+                              text: buttons.secondary.continue,
+                              btnClass: 'btn-blue',
+                              action: function(scope,button){
+                                actions();
+                              }
+                            },
+                            close:{
+                              text: buttons.secondary.cancel,
+                              action: function(scope, button){
+                                // closes the modal
+                                cancel();
+                              }
+                            }
+                          }
+                        });
+                      }else{
+                        actions();
+                      }
+                    }
+                },
+                close:{
+                  text: buttons.main.cancel,
+                  action: function(scope, button){
+                    cancel();
+                  }
+                }
+            }
+        });
+    }
+
 
     this.showTooltip = function(title, content, buttons){
 

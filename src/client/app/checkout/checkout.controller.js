@@ -162,52 +162,58 @@
     }
 
     checkout.order = function(){
-      var total = checkout.shipping.service.total;
-      var order = {
-        shipping:{
-          packagingType : checkout.shipping.packagingType,
-          service       : checkout.shipping.service,
-          from          : checkout.shipping.from,
-          to            : checkout.shipping.to,
-          packages      : checkout.shipping.packages
-        },
-        paymentMethod : {card: checkout.card},
-        amount        : total
-      }
-
-      if(checkout.payment == 'card'){
-        order.paymentMethod = {card: checkout.card};
-      }else if(checkout.payment == 'account'){
-        order.paymentMethod = 'account';
-        checkout.shipping.service.cardComision = false;
-        checkout.shipping.service.total += checkout.shipping.service.discountTotal;
-      }
-
-      console.log('order-shipping',order);
-      checkout.connecting = true;
-      rateApi.ship(order).then(function(response){
-        checkout.trackingNumber = response.shipOrder.trackingNumber;
-        console.log(response);
-        checkout.response = true;
-        checkout.labels = response.shipOrder.packages;
-      },function(err){
-        if(checkout.payment == 'account')
-          checkout.step = 'selectPayment';
-        else if(checkout.payment == 'card'){
-          checkout.step = 'payment';
-          checkout.cardForm = false;
+      var title ={main:"Términos y Condiciones",secondary:"He verificado mi información."};
+        // var content ={main:"He Leído, entiendo y ACEPTO los terminos y condiciones.",secondary:"¡PAGAR y crear la etiqueta de tu envió"};
+        var content ={main:"He Leído, entiendo y ACEPTO los <a class='underline' ui-sref='privacy' target='_blank'>Términos y Condiciones</a>. Así como las <a class='underline' ui-sref='privacy' target='blank'>Políticas de Privacidad</a>."};
+        var buttons ={main:{continue:"ACEPTO, crear etiqueta",cancel:"NO Acepto"},secondary:{continue:"Crear Etiqueta",cancel:"No, cancelar"}};
+      Dialog.confirmDialog(title,content,buttons, function(){
+        var total = checkout.shipping.service.total;
+        var order = {
+          shipping:{
+            packagingType : checkout.shipping.packagingType,
+            service       : checkout.shipping.service,
+            from          : checkout.shipping.from,
+            to            : checkout.shipping.to,
+            packages      : checkout.shipping.packages
+          },
+          paymentMethod : {card: checkout.card},
+          amount        : total
         }
-        if(err.message){
-          var title = 'No se pudo pagar la orden.';
-          if(err.message == 'Deny' || err.message == 'Denegado'){
-            title = "Tarjeta Declianda";
-            err.message = "Lo sentimos no se pudo completar la orden ya que tu tarjeta fue declinada, ponte en contacto con tu banco."
+
+        if(checkout.payment == 'card'){
+          order.paymentMethod = {card: checkout.card};
+        }else if(checkout.payment == 'account'){
+          order.paymentMethod = 'account';
+          checkout.shipping.service.cardComision = false;
+          checkout.shipping.service.total += checkout.shipping.service.discountTotal;
+        }
+
+        console.log('order-shipping',order);
+        checkout.connecting = true;
+        rateApi.ship(order).then(function(response){
+          checkout.trackingNumber = response.shipOrder.trackingNumber;
+          console.log(response);
+          checkout.response = true;
+          checkout.labels = response.shipOrder.packages;
+        },function(err){
+          if(checkout.payment == 'account')
+            checkout.step = 'selectPayment';
+          else if(checkout.payment == 'card'){
+            checkout.step = 'payment';
+            checkout.cardForm = false;
           }
-          Dialog.showError(err.message, title);
-        }
-      }).finally(function(){
-        checkout.connecting = false;
-      });
+          if(err.message){
+            var title = 'No se pudo pagar la orden.';
+            if(err.message == 'Deny' || err.message == 'Denegado'){
+              title = "Tarjeta Declianda";
+              err.message = "Lo sentimos no se pudo completar la orden ya que tu tarjeta fue declinada, ponte en contacto con tu banco."
+            }
+            Dialog.showError(err.message, title);
+          }
+        }).finally(function(){
+          checkout.connecting = false;
+        });
+      },function(){});
     }
 
     checkout.fromAddress = function(response){

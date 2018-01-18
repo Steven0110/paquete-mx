@@ -36,34 +36,40 @@ function registerForm(userApi, Dialog){
       
       scope.register = function(){
         if(scope.registerForm.$valid){
-          shell.showLoading();
 
-          if(scope.accountType == 'personal' && !scope.account.invoice){
-            scope.account.taxId = null;
-            scope.account.invoice = false;
-            scope.account.taxName = null;
-          }
+          var title ={main:"Términos y Condiciones",secondary:"He verificado mi información."};
+          var content ={main:"He Leído, entiendo y ACEPTO los <a class='underline' ui-sref='privacy' target='_blank'>Términos y Condiciones</a>. Así como las <a class='underline' ui-sref='privacy' target='blank'>Políticas de Privacidad</a>."};
+          var buttons ={main:{continue:"ACEPTO",cancel:"NO Acepto"},secondary:{continue:"Crear Etiqueta",cancel:"No, cancelar"}};
+          Dialog.confirmDialog(title,content,buttons, function(){
+            shell.showLoading();
 
-          userApi.register(scope.accountType,scope.account,scope.user).then(function(user){
-            scope.setUser(user);
-            shell.showMessage(shell.labels.register.form.welcome);
-            if (typeof scope.loginSuccess === "function") { 
-              scope.loginSuccess();
-            }else{
-              shell.loginSuccess();
+            if(scope.accountType == 'personal' && !scope.account.invoice){
+              scope.account.taxId = null;
+              scope.account.invoice = false;
+              scope.account.taxName = null;
             }
-          },function(error){
-            console.log(error);
-            if(error && error.data && error.data.error){
-              // scope.response.register = error.data.error;
-              if(error.data.code == 202){
-                var error = scope.user.username+" "+shell.labels.register.form.errors.already;
+
+            userApi.register(scope.accountType,scope.account,scope.user).then(function(user){
+              scope.setUser(user);
+              shell.showMessage(shell.labels.register.form.welcome);
+              if (typeof scope.loginSuccess === "function") { 
+                scope.loginSuccess();
+              }else{
+                shell.loginSuccess();
+              }
+            },function(error){
+              console.log(error);
+              if(error && error.data && error.data.error){
+                // scope.response.register = error.data.error;
+                if(error.data.code == 202){
+                  var error = scope.user.username+" "+shell.labels.register.form.errors.already;
+                  Dialog.showError('No se pudo registrar el usuario',error);  
+                }
+              }else{
                 Dialog.showError('No se pudo registrar el usuario',error);  
               }
-            }else{
-              Dialog.showError('No se pudo registrar el usuario',error);  
-            }
-          }).finally(shell.hideLoading);
+            }).finally(shell.hideLoading);
+          },function(){})
         }else{
           Dialog.showMessage();
           // shell.showError('Verifica los campos requeridos.');
