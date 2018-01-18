@@ -194,10 +194,10 @@ Parse.Cloud.define("setPassword",function(request, response){
 Parse.Cloud.define("sendPickUp",function(request, response){
 
   // var attch = [new Mailgun.Attachment(pdfBuffer)];
-  html = htmlTemplate("");
-  sendEmail("jc.canizal@gmail.com", "¡Gracias por usar Paquete.MX!", html, false, false);
+  // html = htmlTemplate("");
+  // sendEmail("jc.canizal@gmail.com", "¡Gracias por usar Paquete.MX!", html, false, false);
 
-  response.success();
+  // response.success();
 
   //
   var params = request.params;
@@ -321,6 +321,7 @@ Parse.Cloud.define("recoveryPassword",function(request, response){
       user.save(null,{useMasterKey:true}).then(function(user){
 
         var html = templates.recoveryTemplate(key);
+        html = htmlTemplate(html);
         return sendEmail(email, "¡Recuperar Contraseña Paquete.MX!", html, false);
       }).then(function(){
         response.success({recovery:true});

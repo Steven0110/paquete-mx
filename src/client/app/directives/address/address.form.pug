@@ -2,9 +2,13 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
   div(layout-xs-sm="row")
     md-input-container.md-block
       label(for="name",data-ng-bind="labels.address.form.name")
+      md-icon
+        i.fa.fa-user
       input(name="name", data-ng-model="newAddress.name", required)
       div(ng-messages="addressForm.name.$error")
         div(ng-message="required",data-ng-bind="labels.form.errors.required")
+      md-icon
+        i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
       label(for="company",data-ng-bind="labels.address.form.company")

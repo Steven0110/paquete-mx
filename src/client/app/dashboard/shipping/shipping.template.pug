@@ -83,8 +83,7 @@
       div(data-ng-if="shipping.data.status == 'label_created'")
         md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{shipping.data.trackingNumber}}", download)
           |Imprimir Etiqueta
-        //- div(data-ng-if="!shipping.data.pickupConfirmation ")
-        div
+        div(data-ng-if="!shipping.data.pickupConfirmation ")
           h2.disabled-color
             |Agendar recolección en domicilio
           h4
@@ -111,6 +110,8 @@
         |Recolección
       h3.disabled-color
         |Confirmación: {{shipping.data.pickupConfirmation}}
+      //- md-button.md-raised.md-primary(type='submit')
+        |Solicitar Recolección
     .shipping-info
       h1.accent
         |Actualizaciones
