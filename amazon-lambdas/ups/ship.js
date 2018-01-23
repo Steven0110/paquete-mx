@@ -200,14 +200,14 @@ exports.handler = (event, context, callback) => {
             callback(generateError(400,"We need at least 1 package dimensions."),null);
         }
         
-        var fromAddress = data.from.street+" "+data.from.number;
+        var fromNumber = data.from.number;
         if(data.from.apt){
-          fromAddress += " "+data.from.apt;
+          fromNumber += " "+data.from.apt;
         }
 
-        var toAddress = data.to.street+" "+data.to.number;
+        var toNumber = data.to.number;
         if(data.to.apt){
-          toAddress += " "+data.to.apt;
+          toNumber += " "+data.to.apt;
         }
         
         body = {
@@ -236,7 +236,7 @@ exports.handler = (event, context, callback) => {
                       },
                       "ShipperNumber": "979WR5",
                       "Address": {
-                        "AddressLine": fromAddress,
+                        "AddressLine": [fromNumber, data.from.street],
                         "City": data.from.city,
                         "PostalCode": data.from.zip,
                         "CountryCode": data.from.country.code
@@ -248,7 +248,7 @@ exports.handler = (event, context, callback) => {
                         "Number": data.to.phone
                       },
                       "Address": {
-                        "AddressLine": toAddress,
+                        "AddressLine": [toNumber, data.to.street],
                         "City": data.to.city,
                         "PostalCode": data.to.zip,
                         "CountryCode": data.to.country.code
@@ -260,7 +260,7 @@ exports.handler = (event, context, callback) => {
                         "Number": data.from.phone
                       },
                       "Address": {
-                        "AddressLine": fromAddress,
+                        "AddressLine": data.from.street+" "+fromNumber,
                         "City": data.from.city,
                         "PostalCode": data.from.zip,
                         "CountryCode": data.from.country.code
@@ -302,6 +302,7 @@ exports.handler = (event, context, callback) => {
         
         
         ship(body,function(result){
+            console.log(result)
             var json = {};
             result = JSON.parse(result);
             if(debugging){

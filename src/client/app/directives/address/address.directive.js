@@ -118,29 +118,42 @@ function addressForm(userApi,$state,$ngConfirm,Dialog){
       scope.send = function(){
         if(scope.addressForm.$valid){
 
-            if(!scope.newAddress.zip){
-              scope.newAddress.zip = scope.search;
-            }
-            var country ={
-              code  : scope.newAddress.country.code,
-              name  : scope.newAddress.country.name
-            }
-            scope.newAddress.country = country;
-          if(scope.type == 'save'){
-            scope.loading();
-            userApi.saveAddress(scope.newAddress).then(function(data){
-              // console.log(data)
-              scope.sendForm({response:{result:true, data:data}});
-            },function(err){
-              console.log(err);
-              if(err.noSession == true){
-                scope.sendForm({response:{noSession:true}});
-              }else{
-                scope.sendForm({response:err});
+            var street= scope.newAddress.street.trim().length;
+            var number = scope.newAddress.number.trim().length;
+            var apt = 0;
+            if(scope.newAddress.apt)
+              apt = scope.newAddress.apt.trim().length;
+
+            if(street+number+apt <= 30){
+
+
+
+              if(!scope.newAddress.zip){
+                scope.newAddress.zip = scope.search;
               }
-            });
+              var country ={
+                code  : scope.newAddress.country.code,
+                name  : scope.newAddress.country.name
+              }
+              scope.newAddress.country = country;
+              if(scope.type == 'save'){
+                scope.loading();
+                userApi.saveAddress(scope.newAddress).then(function(data){
+                  // console.log(data)
+                  scope.sendForm({response:{result:true, data:data}});
+                },function(err){
+                  console.log(err);
+                  if(err.noSession == true){
+                    scope.sendForm({response:{noSession:true}});
+                  }else{
+                    scope.sendForm({response:err});
+                  }
+                });
+            }else{
+              scope.sendForm({response:{result:true,data:scope.newAddress}});
+            }
           }else{
-            scope.sendForm({response:{result:true,data:scope.newAddress}});
+            Dialog.showError("El número de caracteres de la calle, número y número interior no debe ser mayor a 30","Dirección excede limite");
           }
         }else{
           Dialog.showMessage();

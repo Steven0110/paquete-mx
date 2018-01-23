@@ -79,7 +79,7 @@ var buildTrack = function(trackingNumber, carrier){
 
 
         var response =[];
-        if(track.TrackingNumber)
+        if(track && track.TrackingNumber)
             trackingNumber = track.TrackingNumber;
         for(var i =0; i< activity.length; i++){
             var activityItem = activity[i];
@@ -119,11 +119,17 @@ var buildTrack = function(trackingNumber, carrier){
             }
             
             if(activityItem.Date){
-               item.dateTime +=  activityItem.Date;
-            }
+              activityItem.Date = activityItem.Date.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3");
+              item.dateTime +=  activityItem.Date;
+            }[]
             
             if(activityItem.Time){
-               item.dateTime +=  "Z"+activityItem.Time;
+                activityItem.Time =  activityItem.Time.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3");
+               item.dateTime +=  "T"+activityItem.Time+"Z";
+            }
+
+            if(item.status.description == "Order Processed: Ready for UPS"){
+              item.status.type = "L";
             }
             
             response.push(item);
@@ -135,13 +141,13 @@ var buildTrack = function(trackingNumber, carrier){
     var response =[];
 
     var options = {
-      environment: 'sandbox', // or live 
+      environment: 'live', // or live 
       debug: false,
-      key: 't1uSywQP78fogZx4',
-      password: 'PGptLQ6OQHFjYkdKhDhoZjV15',
-      account_number: '510087860',
-      meter_number: '118841995',
-      imperial: true // set to false for metric 
+      key: 'raF7pWAdOFqh7RWp',
+      password: 'IpYuI9OM9zUIbTOZKg7mylyqo',
+      account_number: '912197689',
+      meter_number: '111951423',
+      imperial: false // set to false for metric 
     }
 
     if(production){
@@ -162,29 +168,36 @@ var buildTrack = function(trackingNumber, carrier){
       if(err) {
         return console.log(err);
       }
+
+      // console.log(res);
       var json ={
         location:{},
         status:{}
       };
 
-      
-      json.trackingNumber = res.CompletedTrackDetails[0].TrackDetails[0]['TrackingNumber'];
       json.status.description = res.CompletedTrackDetails[0].TrackDetails[0].Events[0].EventDescription;
-      json.dateTime = res.CompletedTrackDetails[0].TrackDetails[0].Events[0].Timestamp;
-      json.location.city = res.CompletedTrackDetails[0].TrackDetails[0].Events[0].Address.City;
-      json.location.countryCode = res.CompletedTrackDetails[0].TrackDetails[0].Events[0].Address.CountryCode;
-      json.location.description = res.CompletedTrackDetails[0].TrackDetails[0].Events[0].Address.countryCode;
-      if(json.status.description == "Delivered"){
-        json.status.type = "D";
-        if(res.CompletedTrackDetails[0].TrackDetails[0].DeliverySignatureName){
-          json.location.signedForByName = res.CompletedTrackDetails[0].TrackDetails[0].DeliverySignatureName;
+
+      // if(json.status.description && json.status.description != 'Shipment information sent to FedEx'){
+        json.trackingNumber = res.CompletedTrackDetails[0].TrackDetails[0]['TrackingNumber'];
+        
+        json.dateTime = (res.CompletedTrackDetails[0].TrackDetails[0].Events[0].Timestamp).toString();
+        json.location.city = res.CompletedTrackDetails[0].TrackDetails[0].Events[0].Address.City;
+        json.location.countryCode = res.CompletedTrackDetails[0].TrackDetails[0].Events[0].Address.CountryCode;
+        json.location.description = res.CompletedTrackDetails[0].TrackDetails[0].Events[0].Address.countryCode;
+        if(json.status.description == "Delivered"){
+          json.status.type = "D";
+          if(res.CompletedTrackDetails[0].TrackDetails[0].DeliverySignatureName){
+            json.location.signedForByName = res.CompletedTrackDetails[0].TrackDetails[0].DeliverySignatureName;
+          }
+        }else if(json.status.description == "Picked up"){
+          json.status.type = "P";
+        }else if(json.status.description == "Shipment information sent to FedEx"){
+          json.status.type = "L";
+        }else{
+          json.status.type = "I";
         }
-      }else if(json.status.description == "Picked up"){
-        json.status.type = "P";
-      }else{
-        json.status.type = "I";
-      }
-      response.push(json);
+        response.push(json);
+      // }
       deferred.resolve(response);
     });
 
@@ -382,7 +395,6 @@ exports.handler = (event, context, callback) => {
             }
 
             for(var i=0; i<res.length; i++){
-
               if(lastActivity.dateTime != res[res.length-1].dateTime){
                 validated = true;
                 shipping.set('procceded',true);
@@ -391,7 +403,7 @@ exports.handler = (event, context, callback) => {
 
                 if(res[i].status && res[i].status.type){
                   if(res[i].trackingNumber == trackingNumber){
-                    console.log(res[i].status.type);
+
                     if(res[i].status.type == "D"){
                       shipping.set('delivered', true);
                       shipping.set('status', "delivered");
@@ -415,6 +427,10 @@ exports.handler = (event, context, callback) => {
                     else if(res[i].status.type == "I"){
                       shipping.set('delivered', false);
                       shipping.set('status', "in_transit"); 
+                    } 
+                    else if(res[i].status.type == "L"){
+                      shipping.set('delivered', false);
+                      shipping.set('status', "label_created"); 
                     }else{
                       shipping.set('delivered', false);
                       shipping.set('status', "in_transit"); 

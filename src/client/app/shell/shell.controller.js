@@ -31,6 +31,7 @@
     function loginSuccess(){
       var currentUser = userApi.currentUser();
       shell.currentUser = currentUser; 
+      setName();
     }
 
     loginSuccess();
@@ -111,6 +112,15 @@
     shell.setCurrentUser = function(user){
       userApi.setCurrentUser(user);
     };
+
+    function setName(){
+      if(shell.currentUser.name){
+        shell.setName = shell.currentUser.name;
+        var name =  shell.currentUser.name.split(' ');
+        if(name[0])
+          shell.setName = name[0];
+      }
+    }
 
     shell.getCurrentUser = function(){
       return userApi.currentUser();

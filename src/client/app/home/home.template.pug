@@ -8,16 +8,16 @@
       .menu-bar.bar1
       .menu-bar.bar2
       .menu-bar.bar3
+  .tracking-home(ui-sref="dashboard.shippings", data-ng-hide="shell.menuOpen")
+    i.fa.fa-location-arrow
+    |Rastrear Envío
   .login-home(data-ui-sref="login", data-ng-hide="shell.menuOpen")
     span(data-ng-if="!shell.currentUser")
       i.fa.fa-home
       |Iniciar Sesión
     span(data-ng-if="shell.currentUser")
       i.fa.fa-home
-      |¡Hola {{shell.currentUser.name}}!
-  .tracking-home(ui-sref="dashboard.shippings", data-ng-hide="shell.menuOpen")
-    i.fa.fa-location-arrow
-    |Rastrear Envío
+      |¡Hola {{shell.setName}}!
 .image-space
   .menu-mobile(data-ng-class="{'active':shell.menuOpen}")
     .padding-top-bottom

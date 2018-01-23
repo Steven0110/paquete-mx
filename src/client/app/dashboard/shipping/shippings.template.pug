@@ -13,7 +13,7 @@
     |Envios en curso
   h2(data-ng-if="shippings.inTransit.length < 1")
     |No hay envios en curso.
-  table.dashboard-table(data-ng-if="shippings.inTransit.length > 0")
+  table.table.table-responsive.table-striped(data-ng-if="shippings.inTransit.length > 0")
     thead
       tr
         th
@@ -30,13 +30,13 @@
           |Ultima Actualización
     tbody
       tr(data-ng-repeat="item in shippings.inTransit")
-        td.accent.bold.medium-font.pointera(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
+        td.accent.bold.medium-font.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{item.trackingNumber}}
         td.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{item.carrier}}
         td.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{item.service.service.name}}
-        td.success.pointera(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
+        td.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{shell.labels.shipping[item.status]}}
         td.uppercase.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{item.createdAt | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}

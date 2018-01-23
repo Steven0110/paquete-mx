@@ -144,7 +144,7 @@
         |Actualizaciones
       h3.disabled-color(data-ng-if="!shipping.data.activity || shipping.data.activity.length < 1")
         |No hay actualizaciones disponibles
-      .container-fluid(data-ng-if="shipping.data.activity && shipping.data.activity.length > 1")
+      .container-fluid(data-ng-if="shipping.data.activity && shipping.data.activity.length > 0")
         .row
           .col-xs-3
             |Fecha
@@ -154,12 +154,12 @@
             |Status
         .row(data-ng-repeat="item in shipping.data.activity| orderBy:'-'")
           .col-xs-3.uppercase
-            |{{item.dateTime| amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
+            |{{item.dateTime | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
           .col-xs-3.uppercase
             span(data-ng-if="item.location.description")
               |{{item.location.description}}
-            span(data-ng-if="item.location.city")
-              |{{item.location.city}} - {{item.location.countryCode}}
+            span(data-ng-if="item.location.city || item.location.countryCode")
+              |{{item.location.city}} {{item.location.countryCode}}
           .col-xs-3
             |{{item.status.description}}
     .shipping-info

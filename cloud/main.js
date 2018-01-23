@@ -1058,7 +1058,8 @@ Parse.Cloud.define("chargeCard",function(request, response){
 
   var paymentMethod = request.params.paymentMethod;
   var shipping = request.params.shipping;
-  var amount = request.params.amount;
+  var amount = request.params.amount.toFixed(2);
+  amount = parseFloat(amount);
   // var amount = 50000;
   // var isToken = request.params.isToken
   var requestResult = {};

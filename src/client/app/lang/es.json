@@ -65,6 +65,7 @@
         "cancel": "Cancelar"
       },
       "errors":{
+        "required" : "Es requerido",
         "pattern": "Telefóno invalido, requerido a 10 digitos"
       }
     }
@@ -90,6 +91,7 @@
         "cancel": "Cancelar"
       },
       "errors":{
+        "required" : "Es requerido",
         "pattern": "Telefóno invalido, requerido a 10 digitos"
       }
     }
@@ -114,6 +116,7 @@
       "cancel": "Cancelar"
     },
     "errors":{
+      "required" : "Es requerido",
       "pattern": "Telefóno invalido, requerido a 10 digitos"
     }
 

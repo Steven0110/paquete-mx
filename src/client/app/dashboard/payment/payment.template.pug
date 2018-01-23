@@ -11,7 +11,7 @@
 .dashboard-content
   h1(data-ng-if="payments.list.length < 1")
     |No hay pagos registrados.
-  table.dashboard-table(data-ng-if="payments.list.length  > 0")
+  table.table.table-responsive.table-striped(data-ng-if="payments.list.length  > 0")
     thead
       tr
         th
