@@ -404,10 +404,10 @@ exports.handler = (event, context, callback) => {
                 if(res[i].status && res[i].status.type){
                   if(res[i].trackingNumber == trackingNumber){
 
-                    if(res[i].status.type == "D"){
-                      shipping.set('delivered', true);
-                      shipping.set('status', "delivered");
-                    }
+                    // if(res[i].status.type == "D"){
+                    //   shipping.set('delivered', true);
+                    //   shipping.set('status', "delivered");
+                    // }
                     if(res[i].status.type == "D"){
                       shipping.set('delivered', true);
                       shipping.set('status', "delivered");

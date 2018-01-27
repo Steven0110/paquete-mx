@@ -1092,6 +1092,14 @@ Parse.Cloud.define("chargeCard",function(request, response){
       payment.set('authCode', result.auth_code);
       payment.set('type', result.type);
 
+      if(user){
+        var Account = Parse.Object.extend('Account');
+        var account = new Account();
+        account.id = user.get('account').id;
+        if(account.id)
+          payment.set("account",account);
+      }
+
       if(paymentType == 'account')
         payment.set('paid', false);
       else if(paymentType == 'card')
@@ -1346,6 +1354,12 @@ function sendShipOrder(user, shipping, payment) {
 
     if(payment.type){
       shipping.set("paymentType",payment.type);
+
+      if(payment.type == 'card'){
+        shipping.set("paid", true);
+      }else if(payment.type == 'account'){
+        shipping.set("paid", false);
+      }
     }
 
     shipping.set("user",user);

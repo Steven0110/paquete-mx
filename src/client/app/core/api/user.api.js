@@ -178,8 +178,9 @@
       var deferred = $q.defer();
       logout();
       delete parseheaders.restKeys['X-Parse-Session-Token'];
+
+
       account.type = accountType;
-      // alert(account.type);
     
       var User = parse.user();
       var currentUser;
@@ -200,6 +201,7 @@
           objectId: currentUser.objectId
         }
         params.account = {"__type":"Pointer","className":"Account","objectId":account.objectId};
+        params.accountType = accountType;
         return updateProfile(params);
       }).then(function(){
         return factory.getCurrentUser();

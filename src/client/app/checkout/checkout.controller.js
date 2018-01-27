@@ -146,7 +146,7 @@
       checkout.user = shell.getCurrentUser();
       shell.currentUser = checkout.user;
       if(checkout.user){
-        
+        shell.loginSuccess();
         getPaymentMethods();
       }else{
         checkout.step = 'login';  

@@ -23,33 +23,54 @@
       subtitle: "Subtitle"
     }
 
-    shell.loginSuccess =function(){
-      var currentUser = userApi.currentUser();
-      shell.currentUser = currentUser;
+    shell.dashMenu = [
+      {name:'shippings',label:"MIS ENVIOS",uiref:"dashboard.shippings",icon:"fa-truck"},
+      {name:'payments',label:"MIS PAGOS", uiref:"dashboard.payment",icon:"fa-usd"},
+      // {name:'contacts',label:"MI AGENDA",uiref:"dashboard.address",icon:"fa-address-book"},
+      {name:'contacts',label:"MIS TARJETAS",uiref:"dashboard.paymentMethod",icon:"fa-credit-card"},
+      {name:'account',label:"MI CUENTA",uiref:"dashboard.account",icon:"fa-truck"}
+    ];
+
+    
+    function setName(){
+      if(shell.currentUser.name){
+        shell.setName = shell.currentUser.name;
+        var name =  shell.currentUser.name.split(' ');
+        if(name[0])
+          shell.setName = name[0];
+      }
+    }
+
+    function setMenu(){
+      shell.dashMenu = [
+        {name:'shippings',label:"MIS ENVIOS",uiref:"dashboard.shippings",icon:"fa-truck"},
+        {name:'payments',label:"MIS PAGOS", uiref:"dashboard.payment",icon:"fa-usd"},
+        // {name:'contacts',label:"MI AGENDA",uiref:"dashboard.address",icon:"fa-address-book"},
+        {name:'contacts',label:"MIS TARJETAS",uiref:"dashboard.paymentMethod",icon:"fa-credit-card"},
+        {name:'account',label:"MI CUENTA",uiref:"dashboard.account",icon:"fa-truck"}
+      ];
+      if(shell.currentUser && shell.currentUser.accountType == "enterprise"){
+        shell.dashMenu.push({name:'enterprise',label:"EMPRESARIAL",uiref:"dashboard.enterprise",icon:"fa-building"});
+      }
     }
 
     function loginSuccess(){
       var currentUser = userApi.currentUser();
       shell.currentUser = currentUser; 
       setName();
+      setMenu();
     }
 
     loginSuccess();
 
-    // var currentUser = userApi.currentUser();
-    // if(currentUser){
-      // shell.currentUser = currentUser;
-    // }
+    shell.loginSuccess =function(){
+      loginSuccess();
+    }
 
-    shell.dashMenu = [
-      {name:'shippings',label:"MIS ENVIOS",uiref:"dashboard.shippings",icon:"fa-truck"},
-      {name:'payments',label:"MIS PAGOS", uiref:"dashboard.payment",icon:"fa-usd"},
-      // {name:'contacts',label:"MI AGENDA",uiref:"dashboard.address",icon:"fa-address-book"},
-      {name:'contacts',label:"MIS TARJETAS",uiref:"dashboard.paymentMethod",icon:"fa-credit-card"},
-      {name:'account',label:"MI CUENTA",uiref:"dashboard.account",icon:"fa-truck"},
-      {name:'enterprise',label:"EMPRESARIAL",uiref:"dashboard.enterprise",icon:"fa-building"}
-      // {name:'logout',label:"SALIR", uiref:"logout",icon:"fa-sign-out"}
-    ];
+    shell.setMenu =function(){
+      setName();
+      setMenu();
+    }
 
     shell.regex = {
       zip       : /^\d{5}$/,
@@ -112,15 +133,6 @@
     shell.setCurrentUser = function(user){
       userApi.setCurrentUser(user);
     };
-
-    function setName(){
-      if(shell.currentUser.name){
-        shell.setName = shell.currentUser.name;
-        var name =  shell.currentUser.name.split(' ');
-        if(name[0])
-          shell.setName = name[0];
-      }
-    }
 
     shell.getCurrentUser = function(){
       return userApi.currentUser();
