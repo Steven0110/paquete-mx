@@ -16,7 +16,8 @@
       getShipping  : getShipping,
       getOrder     : getOrder,
       sendPickUp   : sendPickUp,
-      cancelPickup : cancelPickup
+      cancelPickup : cancelPickup,
+      getInvoices : getInvoices
     };
 
     return factory;
@@ -67,6 +68,12 @@
         return shipping;
       else
         return false;
+    }
+
+    function getInvoices(shippingId){
+      var Invoice = parse.endpoint('Invoice');
+      var where = {"shipping":{"__type":"Pointer","className":"Shipping","objectId":shippingId}};
+      return Invoice.getAll(where);
     }
 
     function getOrder(trackId){

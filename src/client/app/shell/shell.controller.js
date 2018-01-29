@@ -23,9 +23,15 @@
       subtitle: "Subtitle"
     }
 
+    shell.downloadUrl = "http://54.244.218.15/endpoint/download.php";
+    shell.download = function(uuid, type){
+      return shell.downloadUrl+"?uuid="+uuid+"&type="+type;
+    }
+
+
     shell.dashMenu = [
       {name:'shippings',label:"MIS ENVIOS",uiref:"dashboard.shippings",icon:"fa-truck"},
-      {name:'payments',label:"MIS PAGOS", uiref:"dashboard.payment",icon:"fa-usd"},
+      {name:'payments',label:"MIS FACTURAS", uiref:"dashboard.payment",icon:"fa-usd"},
       // {name:'contacts',label:"MI AGENDA",uiref:"dashboard.address",icon:"fa-address-book"},
       {name:'contacts',label:"MIS TARJETAS",uiref:"dashboard.paymentMethod",icon:"fa-credit-card"},
       {name:'account',label:"MI CUENTA",uiref:"dashboard.account",icon:"fa-truck"}
@@ -44,7 +50,7 @@
     function setMenu(){
       shell.dashMenu = [
         {name:'shippings',label:"MIS ENVIOS",uiref:"dashboard.shippings",icon:"fa-truck"},
-        {name:'payments',label:"MIS PAGOS", uiref:"dashboard.payment",icon:"fa-usd"},
+        {name:'payments',label:"MIS FACTURAS", uiref:"dashboard.payment",icon:"fa-usd"},
         // {name:'contacts',label:"MI AGENDA",uiref:"dashboard.address",icon:"fa-address-book"},
         {name:'contacts',label:"MIS TARJETAS",uiref:"dashboard.paymentMethod",icon:"fa-credit-card"},
         {name:'account',label:"MI CUENTA",uiref:"dashboard.account",icon:"fa-truck"}

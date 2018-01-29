@@ -117,8 +117,17 @@ function createInvoice(user, amount, payment, shipping){
           invoice.set("UUID",res.cfdi.UUID);
         }
 
+        var paid = payment.get('paid');
+        paid = paid ==true?true:false;
+        var dueAmount = amount;
+        if(paid)
+          dueAmount = 0;
+
         invoice.set("cfdi",res.cfdi);
         invoice.set('amount', amount);
+        invoice.set('paid', paid);
+        invoice.set('dueAmount', dueAmount);
+        invoice.set('cancelled', false);
         invoice.set('user', user);
         invoice.set('payment', payment);
         invoice.set('folio', res.cfdi.folio);
@@ -1106,6 +1115,7 @@ Parse.Cloud.define("chargeCard",function(request, response){
   // isToken = isToken ==true;
   var order =  {amount: amount};
   var paymentType = false;
+  var paid = false;
 
   if(paymentMethod && paymentMethod.card){
     var cardId = paymentMethod.card.token;
@@ -1129,7 +1139,7 @@ Parse.Cloud.define("chargeCard",function(request, response){
       payment.set('termination', result.termination);
       payment.set('reference', result.order_id);
       payment.set('authCode', result.auth_code);
-      payment.set('type', result.type);
+      payment.set('type', paymentType);
 
       if(user){
         var Account = Parse.Object.extend('Account');
@@ -1139,10 +1149,14 @@ Parse.Cloud.define("chargeCard",function(request, response){
           payment.set("account",account);
       }
 
-      if(paymentType == 'account')
+      if(paymentType == 'account'){
         payment.set('paid', false);
-      else if(paymentType == 'card')
+        paid = false;
+      }
+      else if(paymentType == 'card'){
         payment.set('paid', true);
+        paid = true;
+      }
       return payment.save();
     }else{
       var parse_promise = new Parse.Promise();

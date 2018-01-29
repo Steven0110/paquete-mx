@@ -321,7 +321,7 @@
         where.delivered = false
       }
       var Shipping = parse.endpoint('Shipping');
-      return Shipping.getAll(where,'-createdAt');
+      return Shipping.getAll(where,'-createdAt',false,1000,0);
     }
 
     function getAddress(objectId){

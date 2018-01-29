@@ -95,9 +95,9 @@
 
     home.documents = [{
       weight: "0.5",
-      width: "25",
-      length: "25",
-      height: "1"
+      width: "38",
+      length: "24",
+      height: "5"
     }]
 
     home.initialize ={

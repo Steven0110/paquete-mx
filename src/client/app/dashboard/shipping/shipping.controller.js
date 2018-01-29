@@ -18,12 +18,23 @@
     var dashMenu = $('#dash-menu').innerWidth();
     $('.dashboard-menu').width(Math.floor(dashMenu-2));
 
+    shipping.invoices = [];
+
 
     shipping.labels = shell.labels.shipping;
 
     if(data){
       shipping.data = data;
       shipping.packages = data.service.packages;
+
+      console.log(data.objectId);
+      shippingApi.getInvoices(data.objectId).then(function(res){
+        if(res && res.length > 0){
+          shipping.invoices = res;
+        }
+      },function(err){
+        console.log(err);
+      });
     }
 
     this.myDate = new Date();

@@ -11,11 +11,11 @@
   .tracking-home(ui-sref="dashboard.shippings", data-ng-hide="shell.menuOpen")
     i.fa.fa-location-arrow
     |Rastrear Envío
-  .login-home(data-ui-sref="login", data-ng-hide="shell.menuOpen")
-    span(data-ng-if="!shell.currentUser")
+  .login-home(data-ng-hide="shell.menuOpen")
+    span(data-ng-if="!shell.currentUser", data-ui-sref="login")
       i.fa.fa-home
       |Iniciar Sesión
-    span(data-ng-if="shell.currentUser")
+    span(data-ng-if="shell.currentUser", data-ui-sref="dashboard.shippings")
       i.fa.fa-home
       |¡Hola {{shell.setName}}!
 .image-space

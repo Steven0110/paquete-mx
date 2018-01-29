@@ -130,15 +130,28 @@
                 |11:00 horas - 19:00 horas (Horario Abierto)
               md-radio-button.md-primary(value="12:00-19:00")
                 |12:00 horas - 19:00 horas (Horario Abierto)
+              h3.disabled-color
+                span
+                  |{{shipping.pickup.date | amDateFormat:'ddd LL'}}
+                span(data-ng-if="shipping.pickup.schedule == '08:00-19:00'")
+                  |&nbsp; entre 8:00 y 19:00 Horas.
+                span(data-ng-if="shipping.pickup.schedule == '09:00-19:00'")
+                  |&nbsp; entre 9:00 y 19:00 Horas.
+                span(data-ng-if="shipping.pickup.schedule == '10:00-19:00'")
+                  |&nbsp; entre 10:00 y 19:00 Horas.
+                span(data-ng-if="shipping.pickup.schedule == '11:00-19:00'")
+                  |&nbsp; entre 11:00 y 19:00 Horas.
+                span(data-ng-if="shipping.pickup.schedule == '12:00-19:00'")
+                  |&nbsp; entre 12:00 y 19:00 Horas.
             md-button.md-raised.md-primary(type='submit')
               |Solicitar Recolección
-    .shipping-info(data-ng-if="shipping.data.pickupConfirmation")
-      h1.accent
-        |Recolección
-      h3.disabled-color
-        |Confirmación: {{shipping.data.pickupConfirmation}}
-      md-button.md-raised.md-primary(data-ng-click="shipping.cancelPickup()")
-        |Cancelar Recolección
+      .shipping-info(data-ng-if="shipping.data.pickupConfirmation")
+        h1.accent
+          |Recolección
+        h3.disabled-color
+          |Confirmación: {{shipping.data.pickupConfirmation}}
+        md-button.md-raised.md-primary(data-ng-click="shipping.cancelPickup()")
+          |Cancelar Recolección
     .shipping-info
       h1.accent
         |Actualizaciones
@@ -195,9 +208,53 @@
     .shipping-info
       h1
         span.accent
-          |Monto: 
+          |Pago y Facturación: 
+      h1
+        span.disabled-color
+          |Monto:
         span.success
           |&nbsp;{{shipping.data.paymentAmount | currency}} MXN
+      h3
+        span.accent
+          |Comprobante Fiscal:
+      .row
+        .col-xs-6
+          table.table.table-responsive
+            thead
+              th
+                |Folio
+              th
+                |UUID
+              th
+                |Status
+              th
+                |Liquidada
+              th
+                |Archivos
+            tbody(data-ng-repeat="item in shipping.invoices")
+              td.bold.accent
+                |{{item.invoiceNo}}
+              td
+                |{{item.UUID}}
+              td
+                span.error(data-ng-if="item.cancelled")
+                  |CANCELADA
+                span.success(data-ng-if="!item.cancelled")
+                  |ACTIVA
+              td
+                span.success(data-ng-if="item.paid")
+                  |SI
+                span.error(data-ng-if="!item.paid")
+                  |NO
+              td
+                div
+                  a.hover-accent(ng-href="{{shell.download(item.UUID, 'pdf')}}")
+                    i.fa.fa-download
+                    |PDF
+                div
+                  a.hover-accent(ng-href="{{shell.download(item.UUID, 'xml')}}")
+                    i.fa.fa-download
+                    |XML
       h3
         span.accent
           |Pagado con:
