@@ -53,7 +53,7 @@ if(production){
 
 /*CREATE INVOICE*/
 
-function createInvoice(user, amount, payment){
+function createInvoice(user, amount, payment, shipping){
   var parse_promise = new Parse.Promise();
 
   getInvoceTotal('ingreso').then(function(folio){
@@ -81,7 +81,7 @@ function createInvoice(user, amount, payment){
     var valorUnitario = (amount/1.16).toFixed(2);
 
     var items = [{
-                  "claveSAT":"81112100",
+                  "claveSAT":"78102200",
                   "claveLocal": "B20",
                   "cantidad": "1",
                   "claveUnidad": "E48",
@@ -117,10 +117,25 @@ function createInvoice(user, amount, payment){
           invoice.set("UUID",res.cfdi.UUID);
         }
 
-        invoice.set("cfd",res.cfdi);
+        invoice.set("cfdi",res.cfdi);
         invoice.set('amount', amount);
         invoice.set('user', user);
         invoice.set('payment', payment);
+        invoice.set('folio', res.cfdi.folio);
+        invoice.set('serie', res.cfdi.serie);
+        invoice.set('invoiceNo', res.cfdi.serie+res.cfdi.folio);
+
+        if(shipping){
+          invoice.set('shipping', shipping);
+          invoice.set('trackingNumber', shipping.get("trackingNumber"));
+        }
+        if(user){
+          var Account = Parse.Object.extend('Account');
+          var account = new Account();
+          account.id = user.get('account').id;
+          if(account.id)
+            invoice.set("account",account);
+        }
         return invoice.save();
       }else{
         var parse_promise2 = new Parse.Promise();
@@ -639,108 +654,132 @@ Parse.Cloud.beforeSave("_User", function(request, response){
   // }
 });
 
-// Parse.Cloud.afterSave("Invoice",function(request){
-//   if(request.object.existed() === false){
-//     var cfdi = request.object.get("cfdi");
-//     var data = {};
-//     request.object.get("client").fetch().then(function(client){
-//       if(client.get('clabe'))
-//         data.clabe = client.get('clabe');
-//       if(client.get('cuenta'))
-//         data.cuenta = client.get('cuenta'); 
-//       if(client.get('razonSocial'))
-//         data.razonSocial = client.get('razonSocial');
-//       if(request.object.get('invoiceNo'))
-//         data.invoiceNo = request.object.get('invoiceNo');
+function sendInvoice(cfdi, type, dataInfo, email, trackingNumber, name){
+  console.log('send-email-3.2');
+  if(!cfdi || !cfdi.UUID){
+    // return false;
+    var parse_promise = new Parse.Promise();
+    parse_promise.reject(false);
+    return parse_promise;
+    //regresar promsesa
+  }
 
+  var file = "https://s3-us-west-2.amazonaws.com/paquetemx/invoices/"+cfdi.UUID; 
+  var pdfPath = file+".pdf";
+  var xmlPath = file+".xml";
+  var pdfBuffer;
+  var xmlBuffer;
+  return Parse.Cloud.httpRequest({
+    method: 'GET',
+    headers:{},
+    url: pdfPath
+  }).then(function(data){
+    pdfBuffer = {data: data.buffer, filename: "factura.pdf"};
+    return Parse.Cloud.httpRequest({
+      method: 'GET',
+      headers:{},
+      url: xmlPath
+    });
+  }).then(function(data){
+    console.log('send-email-3.3');
+    xmlBuffer = {data: data.buffer, filename: "factura.xml"};
+    var attch = [new Mailgun.Attachment(pdfBuffer), new Mailgun.Attachment(xmlBuffer)];
+    var html = htmlTemplate(templates.newInvoice(type,name, dataInfo, trackingNumber));
 
-//       var email = false;
+    console.log('send-email-3.4');
+    var subject = "¡Se ha generado una nueva factura!";
+    if(dataInfo.invoiceNo){
+      if(type ==  'pago')
+        subject = 'Complemento de Pago';
+      else
+        subject = '¡Tu factura '+dataInfo.invoiceNo+' está lista para descargarse!';
+    }
 
-//       if(request.object.get("emails"))
-//         email = request.object.get("emails");
-//       else{
-//         email = client.get('email');
-//       }
+    return sendEmail(email, subject, html, true, attch);
+  });
+}
 
-//       return sendInvoice(cfdi,"ingreso", data, email);
-//     }).then(function(response){
+Parse.Cloud.afterSave("Invoice",function(request){
+  if(request.object.existed() === false){
+    var cfdi = request.object.get("cfdi");
+    console.log(cfdi.UUID);
+    var data = {};
+    var account;
+    var user;
+    var trackingNumber;
+    request.object.get("account").fetch().then(function(res){
+      account = res;
+      return request.object.get("user").fetch();
+    }).then(function(res){
+      user = res;
+      if(account && account.get('taxName'))
+        data.razonSocial = account.get('taxName');
+      if(request.object.get('invoiceNo'))
+        data.invoiceNo = request.object.get('invoiceNo');
 
-//       if(request.object.get("applyAdvance")){
-//         var Outcome = Parse.Object.extend("Outcome");
-//         var outcome = new Outcome();
+      if(request.object.get('trackingNumber'))
+        trackingNumber = request.object.get('trackingNumber'); 
 
-//         var invoices = request.object.get("advancePayments");
+      var email = false;
+      if(user.get('username'))
+        email = user.get('username');
 
-//         if(invoices && invoices.length > 0){
-//           asyncEach(invoices, function(invoice, i, next){
-//             var outcome = new Outcome();
-//             outcome.set("description", invoice.description);
-//             outcome.set("invoice", request.object);
-//             var amount = (invoice.amount).toFixed(2);
-//             outcome.set("amount", amount);
-//             outcome.set("client", request.object.get("client"));
-//             outcome.set("relationType", "anticipo");
-//             outcome.save().then(function(){
-//               var Advance = Parse.Object.extend("Advance");
-//               var query = new Parse.Query(Advance);
-//               console.log(invoice.objectId);
-//               query.equalTo('objectId', invoice.objectId);
-//               return query.first();
-//             }).then(function(advance){
-//               if(advance){
-//                 advance.set("applied", true);
-//                 return advance.save();
-//               }
-//             }).then(function(){
-//               next();
-//             },function(err){
-//               console.log(err);
-//               next();
-//             });
-//           });
-//         }
+      var name = false;
+      if(user.get('name'))
+        name = user.get('name');
 
-//       }
-      
-//       console.log(response);
-//     },function(err){
-//       console.log(err);
-//     });
-//   }
-// });
+      if(email && account.get("invoice")){
+        return sendInvoice(cfdi,"ingreso", data, email, trackingNumber, name);
+      }
+    },function(err){
+      console.log(err);
+    });
+  }
+});
 
 
 Parse.Cloud.afterSave("_User", function(request){
-  // var conektaId = null;
-  // conektaId = request.object.get('conektaId');
+  var user = request.object;
+  if(!user.get('verifyKey')){
+    console.log('inside-user-save');
+    if(user.get('accountType') == 'personal'){
+      // pdfBuffer = {data: data.buffer, filename: trackingNumber+".pdf"};
+      var name =  user.get('name');
+      var html = templates.personalWelcome(name);
+      html = htmlTemplate(html);
+      // var attch = [new Mailgun.Attachment(pdfBuffer)];
+      sendEmail(user.get('username'), "¡Bienvenido a PAQUETE.MX!", html, false, false).then(function(){
+        var verifyKey = randomString(15);
+        user.set("verifyKey", verifyKey);
+        user.save(null,{useMasterKey:true});
+      });
+    }
+    else if(user.get('accountType') == 'enterprise'){
 
-  // if(!conektaId){
-  //   var method = "POST";
-  //   var name = request.object.get('name');
-  //   var lastname = request.object.get('lastname');
-  //   var fullName = name+" "+lastname;
-  //   var email = request.object.get('username');
-  //   var mobile = request.object.get('mobile');
-  //   var body = {name:fullName,email:email,phone:mobile};
+      var file = "https://s3-us-west-2.amazonaws.com/paquetemx/general/autorizacion_buro.pdf";
+      return Parse.Cloud.httpRequest({
+        method: 'GET',
+        headers:{},
+        url: file
+      }).then(function(data){
+        pdfBuffer = {data: data.buffer, filename: "autorizacion_buro.pdf"};
+        var name =  user.get('name');
+        var html = templates.enterpriseWelcome(name);
+        html = htmlTemplate(html);
+        var attch = [new Mailgun.Attachment(pdfBuffer)];
+        sendEmail(user.get('username'), "¡Bienvenido a PAQUETE.MX!", html, false, attch).then(function(){
+          var verifyKey = randomString(15);
+          user.set("verifyKey", verifyKey);
+          user.save(null,{useMasterKey:true});
+        });
+      });
+    }
 
+    // var verifyKey = randomString(15);
+    // user.set("verifyKey", verifyKey);
+    // user.save(null,{useMasterKey:true});
 
-  //   conektaUser(method,body).then(function(httpResponse){
-  //     if(httpResponse.text){
-  //       conektaId = JSON.parse(httpResponse.text);
-  //       console.log('conektaId');
-  //       console.log(conektaId.id);
-  //       if(conektaId && conektaId.id){
-  //         conektaId =  conektaId.id;
-  //         request.object.set('conektaId',conektaId);
-  //         request.object.save(null,{useMasterKey:true});
-  //       }
-  //     }
-  //   },function(error){
-  //     request.object.errors = [];
-  //     request.object.errors.push(error);
-  //     resques.object.save();
-  //   });
-  // }
+  }
 });
 
 
@@ -1125,7 +1164,7 @@ Parse.Cloud.define("chargeCard",function(request, response){
     // }
 
   }).then(function(shipOrder){
-
+    requestResult.shipping = shipOrder.shipping;
     requestResult.shipOrder = shipOrder.params;
     /*agregar el shipOrder a payment*/
     // var Payment = Parse.Object.extend('Payment');
@@ -1177,11 +1216,8 @@ Parse.Cloud.define("chargeCard",function(request, response){
     });
 
   }).then(function(){
+    createInvoice(user, amount, paymentSave, requestResult.shipping);
     response.success(requestResult);
-    // if(paymentType == 'card'){
-
-      // createInvoice(user, amount, paymentSave);
-    // }
   },function(error){
     response.error(error);
   });

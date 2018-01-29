@@ -43,6 +43,8 @@ function registerForm(userApi, Dialog){
           Dialog.confirmDialog(title,content,buttons, function(){
             shell.showLoading();
 
+            scope.user.accountType = scope.accountType;
+
             if(scope.accountType == 'personal' && !scope.account.invoice){
               scope.account.taxId = null;
               scope.account.invoice = false;

@@ -294,22 +294,20 @@
     var getPaymentMethods = function(){
       shell.showLoading();
 
-      // console.log(checkout.user.taxUse);
-      // if(checkout.user){
-      //   if(checkout.user.taxUse)
-      //     checkout.taxInfo.taxUse = checkout.user.taxUse;
-      //   if(checkout.user.taxName)
-      //     checkout.taxInfo.taxName = checkout.user.taxName;
-      //   if(checkout.user.taxId)
-      //     checkout.taxInfo.taxId = checkout.user.taxId;
-      //   checkout.invoice = checkout.user.invoice;
-      // }
-
       console.log(checkout.user);
       userApi.getByUser(checkout.user).then(function(account){
-        console.log(account);
+        
         if(account){
           checkout.account = account;
+          checkout.invoice = checkout.account.invoice;
+
+          if(checkout.account.taxId)
+            checkout.taxInfo.taxId = checkout.account.taxId;
+          if(checkout.account.taxName)
+            checkout.taxInfo.taxName = checkout.account.taxName;
+          if(checkout.account.taxUse)
+            checkout.taxInfo.taxUse = checkout.account.taxUse;
+
           return userApi.getCards();
         }
         else{

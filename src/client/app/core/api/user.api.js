@@ -136,7 +136,7 @@
     function updateTaxInfo(invoice, taxInfo){
       return factory.getCurrentUser().then(function(user){
         if(user){
-          return this.getByUser(user);
+          return getByUser(user);
         }else{
           var deferred = $q.defer();
           deferred.reject({session: false,message:"Invalid session"});
@@ -144,10 +144,13 @@
         }
       }).then(function(account){
         if(account){
-          account.invoice = true;
-          account.taxId = taxInfo.taxId;
-          account.taxName = taxInfo.taxName;
-          account.taxUse = taxInfo.taxUse;
+          account.invoice = invoice;
+          if(taxInfo.taxId)
+            account.taxId = taxInfo.taxId;
+          if(taxInfo.taxName)
+            account.taxName = taxInfo.taxName;
+          if(taxInfo.taxUse)
+            account.taxUse = taxInfo.taxUse;
           return accountApi.update(account);
         }
         else{
@@ -201,7 +204,7 @@
           objectId: currentUser.objectId
         }
         params.account = {"__type":"Pointer","className":"Account","objectId":account.objectId};
-        params.accountType = accountType;
+        // params.accountType = accountType;
         return updateProfile(params);
       }).then(function(){
         return factory.getCurrentUser();
