@@ -17,7 +17,9 @@
       getOrder     : getOrder,
       sendPickUp   : sendPickUp,
       cancelPickup : cancelPickup,
-      getInvoices : getInvoices
+      getInvoices : getInvoices,
+      getPayments : getPayments,
+      getOutcomes : getOutcomes
     };
 
     return factory;
@@ -74,6 +76,18 @@
       var Invoice = parse.endpoint('Invoice');
       var where = {"shipping":{"__type":"Pointer","className":"Shipping","objectId":shippingId}};
       return Invoice.getAll(where);
+    }
+
+    function getPayments(shippingId){
+      var Payment = parse.endpoint('Payment');
+      var where = {"shipping":{"__type":"Pointer","className":"Shipping","objectId":shippingId}};
+      return Payment.getAll(where);
+    }
+
+    function getOutcomes(shippingId){
+      var Outcome = parse.endpoint('Outcome');
+      var where = {"shipping":{"__type":"Pointer","className":"Shipping","objectId":shippingId}};
+      return Outcome.getAll(where);
     }
 
     function getOrder(trackId){

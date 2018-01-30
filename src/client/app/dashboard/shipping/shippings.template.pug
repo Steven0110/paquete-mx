@@ -25,6 +25,8 @@
         th
           |Status
         th
+          |Pagada
+        th
           |Fecha de creación
         th
           |Ultima Actualización
@@ -38,6 +40,11 @@
           |{{item.service.service.name}}
         td.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{shell.labels.shipping[item.status]}}
+        td.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
+          span.success(data-ng-if="item.paid")
+            |SI
+          span.error(data-ng-if="!item.paid")
+            |NO
         td.uppercase.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{item.createdAt | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
         td.uppercase.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")

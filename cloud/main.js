@@ -26,8 +26,10 @@ if(production){
   emisor.cedula.RFC = "MAG041126GT8";
   var domain = "paquete.mx";
   Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-5e0f8c7de60172d4428cb1edbed23275'});
-  var tPagoPublic = "u2oiwgTFEHht04tqeYq0MT06Np8ixXdU:eEXLhTxBiYo6fmFnWupvaeN7lyxuEAot";
-  var tPagoPrivate = "u2oiwgTFEHht04tqeYq0MT06Np8ixXdU:ylBRVVpuwDBbg0joIeyRwgQeY3U7KHNr";
+  // var tPagoPublic = "u2oiwgTFEHht04tqeYq0MT06Np8ixXdU:eEXLhTxBiYo6fmFnWupvaeN7lyxuEAot";
+  // var tPagoPrivate = "u2oiwgTFEHht04tqeYq0MT06Np8ixXdU:ylBRVVpuwDBbg0joIeyRwgQeY3U7KHNr";
+  var tPagoPublic = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:Fg4czj5lWgbUc9rJ0bX3IcPmSVgTKCUU";
+  var tPagoPrivate = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:QOTBkZTHlz0SeNhLt6fDRJWGcloMEsI1";
   var appId = "OwwqTBzf9Tj618RyQqYmx3eJOhxaS8qolcojD3IA";
   var masterKey = "baplcn89UZ3uyJq0AflqtXjnFV2wRmo81SaWg7wd";
   var javascriptKey = "gCi0VgG0NVmtZA7lKsAAVVAvk9IwECg2GMJHwWdQ";
@@ -53,7 +55,7 @@ if(production){
 
 /*CREATE INVOICE*/
 
-function createInvoice(user, amount, payment, shipping){
+function createInvoice(user, amount, paid, payment, shipping){
   var parse_promise = new Parse.Promise();
 
   getInvoceTotal('ingreso').then(function(folio){
@@ -117,7 +119,7 @@ function createInvoice(user, amount, payment, shipping){
           invoice.set("UUID",res.cfdi.UUID);
         }
 
-        var paid = payment.get('paid');
+        // var paid = payment.get('paid');
         paid = paid ==true?true:false;
         var dueAmount = amount;
         if(paid)
@@ -129,7 +131,7 @@ function createInvoice(user, amount, payment, shipping){
         invoice.set('dueAmount', dueAmount);
         invoice.set('cancelled', false);
         invoice.set('user', user);
-        invoice.set('payment', payment);
+        // invoice.set('payment', payment);
         invoice.set('folio', res.cfdi.folio);
         invoice.set('serie', res.cfdi.serie);
         invoice.set('invoiceNo', res.cfdi.serie+res.cfdi.folio);
@@ -152,9 +154,16 @@ function createInvoice(user, amount, payment, shipping){
         return parse_promise2;
       }
 
+    }).then(function(invoice){
+
+      if(invoice && payment){
+        payment.set('invoice', invoice)
+        return payment.save();
+      }else{
+        parse_promise.resolve(satResponse);
+      }
     }).then(function(){
-      console.log('done!')
-      parse_promise.resolve(satResponse);
+        parse_promise.resolve(satResponse);
     },function(err){
       parse_promise.reject(err);
     });
@@ -711,7 +720,7 @@ function sendInvoice(cfdi, type, dataInfo, email, trackingNumber, name){
 Parse.Cloud.afterSave("Invoice",function(request){
   if(request.object.existed() === false){
     var cfdi = request.object.get("cfdi");
-    console.log(cfdi.UUID);
+    // console.log(cfdi.UUID);
     var data = {};
     var account;
     var user;
@@ -1140,6 +1149,8 @@ Parse.Cloud.define("chargeCard",function(request, response){
       payment.set('reference', result.order_id);
       payment.set('authCode', result.auth_code);
       payment.set('type', paymentType);
+      if(requestResult && requestResult.payment)
+        requestResult.payment.type = paymentType;
 
       if(user){
         var Account = Parse.Object.extend('Account');
@@ -1150,21 +1161,21 @@ Parse.Cloud.define("chargeCard",function(request, response){
       }
 
       if(paymentType == 'account'){
-        payment.set('paid', false);
-        paid = false;
+        var parse_promise = new Parse.Promise();
+        parse_promise.resolve(false);
+        return parse_promise;
       }
       else if(paymentType == 'card'){
         payment.set('paid', true);
         paid = true;
+        return payment.save();
       }
-      return payment.save();
     }else{
       var parse_promise = new Parse.Promise();
       parse_promise.reject(result);
       return parse_promise;
     }
   }).then(function(payment){
-    // var status;
     paymentSave = payment;
     // if(requestResult.payment && requestResult.payment.payment_status)
       // status =  requestResult.payment.payment_status;
@@ -1183,15 +1194,17 @@ Parse.Cloud.define("chargeCard",function(request, response){
     /*agregar el shipOrder a payment*/
     // var Payment = Parse.Object.extend('Payment');
     // var payment = new Payment();
-    
-    paymentSave.set("order",shipOrder.shipping);
-    paymentSave.set("trackingNumber",shipOrder.params.trackingNumber);
+    if(paymentSave ){
+      paymentSave.set("shipping",shipOrder.shipping);
+      return paymentSave.save();
+    }
+    // paymentSave.set("trackingNumber",shipOrder.params.trackingNumber);
 
-    return paymentSave.save();
     /*agregar el shipOrder a payment*/
-  }).then(function(paymentSave){
+  }).then(function(){
 
-    paymentSave = paymentSave;
+    // if(pa)
+    // paymentSave = paymentSave;
 
     var fromAddress = shipping.from.street+" "+shipping.from.number;
     if(shipping.from.apt)
@@ -1205,7 +1218,7 @@ Parse.Cloud.define("chargeCard",function(request, response){
     toAddress += "<br>";
     toAddress += shipping.to.state+", "+shipping.to.city+", "+(shipping.to.country.code.toUpperCase())+"<br>"+shipping.to.zip+"<br>";
 
-    var trackingNumber = paymentSave.get("trackingNumber");
+    var trackingNumber = requestResult.shipping.get('trackingNumber');
     var packages = '<table><thead><tr><th style="padding: 10px">#</th><th>Largo</th style="padding: 10px"><th style="padding: 10px">Ancho</th><th style="padding: 10px">Alto</th><th style="padding: 10px">Peso</th></tr></thead><tbody>';
     for(var i=0; i<shipping.packages.length; i++){
       packages += '<tr><td style="padding: 10px">'+(i+1)+'</td><td style="padding: 10px">'+shipping.packages[i].length+' cms</td><td style="padding: 10px">'+shipping.packages[i].width+' cms</td><td style="padding: 10px">'+shipping.packages[i].height+' cms</td><td style="padding: 10px">'+shipping.packages[i].weight+' Kg</td></tr>';
@@ -1230,7 +1243,7 @@ Parse.Cloud.define("chargeCard",function(request, response){
     });
 
   }).then(function(){
-    createInvoice(user, amount, paymentSave, requestResult.shipping);
+    createInvoice(user, amount, paid, paymentSave, requestResult.shipping);
     response.success(requestResult);
   },function(error){
     response.error(error);
@@ -1238,6 +1251,463 @@ Parse.Cloud.define("chargeCard",function(request, response){
   // response.success(order);
 });
 //CONEKTA CHARGE CARD
+
+Parse.Cloud.beforeSave("Payment",function(request, response){
+  if(request.object.existed() === false && !request.object.get('paid')){
+    var folio;
+    getInvoceTotal('pago').then(function(folioId){
+      folio = folioId;
+
+      var tags =[];
+      var serie = "WSP";
+      var relInvoice = request.object.get('invoice');
+      var formaDePagoP = request.object.get('metodoPago');
+
+      if(!formaDePagoP){
+        formaDePagoP = "03";
+      }
+      request.object.set('originalAmount', request.object.get('amount'));
+      request.object.set('invoiceNo', serie+folio);
+
+      var invoice;
+      var account;
+      var shipping; 
+      relInvoice.fetch().then(function(result){
+        invoice = result;
+        return invoice.get('account').fetch();
+      }).then(function(result){
+        account = result;
+        request.object.set('account', account);
+        return invoice.get('shipping').fetch();
+      }).then(function(res){
+        shipping = res;
+        var RFC = account.get('taxId');
+        var razonSocial = account.get('taxName');
+        // si no hay receptor poner el de publico general.
+        var receptor = {
+          'RFC'           : RFC,
+          'razonSocial'   : razonSocial
+        };
+
+        var parcialidad = invoice.get('parcialidad')?invoice.get('parcialidad'):1;
+
+
+        var dueAmount = parseFloat(invoice.get('dueAmount'));
+        var impPagado = parseFloat(request.object.get('amount'));
+
+        if(impPagado > dueAmount){
+          impPagado = dueAmount;
+        }
+
+        var date = moment().subtract(6,"hours").format("YYYY-MM-DDTHH:mm:ss");
+        var newParams = {
+            'serie'     : serie,
+            'folio'     : folio,
+            'receptor'  : receptor,
+            "pagos"     :[
+              {
+                "fechaPago": date,
+                "formaDePagoP": formaDePagoP,
+                "monedaP":"MXN",
+                "monto": impPagado,
+                "documentos":[
+                {
+                  "idDocumento": invoice.get('cfdi').UUID,
+                  "serie":invoice.get('serie'),
+                  "folio":invoice.get('folio'),
+                  "monedaDR":"MXN",
+                  "numParcialidad": parcialidad,
+                  "impSaldoAnt": dueAmount,
+                  "impPagado": impPagado
+                }
+              ]
+              }
+            ]
+          };
+
+        return PagoCFDI(newParams);
+      }).then(function(params){
+        return makeCFDI(params);
+      }).then(function(params){
+
+        if(params && params.cfdi){
+         
+          var folio = params.cfdi.folio;
+          var serie = params.cfdi.serie;
+          
+          if(!request.object.get("reference")){
+            var reference = invoice.get('invoiceNo');
+            request.object.set("reference",reference);
+          }
+
+          request.object.set("cfdi",params.cfdi);
+
+          if(params.cfdi.UUID){
+            request.object.set("UUID",params.cfdi.UUID);
+          }
+
+
+          request.object.set("folio",folio);
+          request.object.set("serie",serie);
+          request.object.set("shipping",shipping);
+          request.object.set("cancelled",false);
+        }
+        var dueAmount =  invoice.get('dueAmount');
+        dueAmount = dueAmount - request.object.get('amount');
+
+        if(dueAmount == 0){
+          invoice.set('paid', true);
+        }
+        else if(dueAmount < 0){
+          request.object.set('amount',invoice.get('dueAmount'));
+          var Advance = Parse.Object.extend("Advance"); 
+          var advance = new Advance();
+          dueAmount = dueAmount*(-1);
+          advance.set('account', account);
+          advance.set('metodoPago', formaDePagoP);
+          advance.set('amount', parseFloat(dueAmount.toFixed(2)));
+          advance.set('description','Anticipo');
+          if(request.object.get('paymentGateway')){
+            advance.set('paymentGateway', request.object.get('paymentGateway'));
+          }
+          advance.save();
+          dueAmount = 0;
+          invoice.set('paid', true);
+        }
+
+
+        invoice.set('dueAmount', dueAmount);
+        return invoice.save();
+      }).then(function(invoice){
+        if(invoice && invoice.get("paid")==true){
+          shipping.set("paid", true);
+          return shipping.save();
+        }else{
+          response.success();    
+        }
+      }).then(function(){
+          response.success();
+      },function(err){
+        response.error(err);
+      });
+
+    },function(err){
+      repsonse.error(err);
+    });
+  }else{
+    response.success();
+  }
+
+});
+
+function PagoCFDI(params){
+  var parse_promise = new Parse.Promise();
+  if(!params.serie)
+    parse_promise.reject({error:true,message:'serie is required'});
+  else if(!params.folio)
+    parse_promise.reject({error:true,message:'folio is required'});
+  else if(!params.receptor)
+    parse_promise.reject({error:true,message:'receptor is required'});
+  else if(!params.pagos)
+    parse_promise.reject({error:true,message:'pagos is required'});
+  else{
+
+    var newParams = {  
+              "serie": params.serie,
+              "folio": params.folio,
+              "formaPago": params.formaPago,
+              "metodoPago": params.metodoPago,
+              "lugarExpedicion": emisor.CP,
+              "tipoDeComprobante":"P",
+              "usoCFDI":"P01",
+              "monto": params.monto,
+              "receptor": params.receptor,
+              "emisor": emisor.cedula,
+              "pagos" : params.pagos
+            };
+
+    if(params.cuenta){
+      newParams.cuenta = params.cuenta;
+    }
+    if(params.clabe){
+      newParams.clabe = params.clabe;
+    }
+    if(params.clientId){
+      newParams.clientId = params.clientId;
+    }
+
+    parse_promise.resolve(newParams);
+    
+  }
+  return parse_promise;
+}
+
+function cancelCFDI(params){
+  var parse_promise = new Parse.Promise();
+
+  if(!params || !params.UUID)
+    parse_promise.reject({error:"UUID is required"});
+
+  var url = 'http://54.244.218.15/development/cancelacion.php';
+
+  if(production){
+    url = 'http://54.244.218.15/endpoint/cancelacion.php';
+  }
+
+  var method = 'POST';
+
+  Parse.Cloud.httpRequest({
+  method: method,
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  url: url,
+  body: params
+  }).then(function(response){
+    parse_promise.resolve(response.text);
+  },function(err){
+    parse_promise.reject(err);
+  });
+
+  return parse_promise;
+
+}
+
+
+Parse.Cloud.define("cancelInvoice",function(request, response){
+  var UUID = request.params.UUID;
+
+  if(!UUID){
+    response.error({error:"UUID is required"});
+  }
+
+  var resp;
+  var findIt = false;
+  cancelCFDI({UUID:UUID}).then(function(res){
+    res = JSON.parse(res);
+    resp = res;
+    var Invoice = Parse.Object.extend('Invoice');
+    var query = new Parse.Query(Invoice);
+    query.equalTo("UUID",UUID);
+
+    return query.first()
+  }).then(function(res){
+    if(res){
+      findIt =  true;
+      invoice =  res;
+      invoice.set("cancelled", true);
+      return invoice.save();
+    }else{
+      var Payment = Parse.Object.extend('Payment');
+      var query = new Parse.Query(Payment);
+      query.equalTo("UUID",UUID);
+      return query.first();        
+    }
+  }).then(function(payment){
+
+    if(findIt){
+      var parse_promise = new Parse.Promise();
+      parse_promise.resolve(false);
+      return parse_promise;
+    }else{
+      if(payment){
+        findIt =  true;
+        payment.set("cancelled", true);
+        return payment.save();
+      }else{
+        var Outcome = Parse.Object.extend('Outcome');
+        var query = new Parse.Query(Outcome);
+        query.equalTo("UUID",UUID);
+        return query.first(); 
+      }
+    }
+  }).then(function(outcome){
+    if(findIt){
+      var parse_promise = new Parse.Promise();
+      parse_promise.resolve(false);
+      return parse_promise;
+    }else{
+      if(outcome){
+        findIt =  true;
+        outcome.set("cancelled", true);
+        return outcome.save();
+      }else{
+        var Advance = Parse.Object.extend('Advance');
+        var query = new Parse.Query(Advance);
+        query.equalTo("UUID",UUID);
+        return query.first(); 
+      }
+    }
+  }).then(function(advance){
+    if(findIt){
+      var parse_promise = new Parse.Promise();
+      parse_promise.resolve(false);
+      return parse_promise;
+    }else{
+      if(advance){
+        findIt =  true;
+        advance.set("cancelled", true);
+        return advance.save();
+      }else{
+        var parse_promise = new Parse.Promise();
+        parse_promise.resolve(false);
+        return parse_promise;
+      }
+    }
+  }).then(function(){
+    response.success(resp);
+  },function(err){
+    console.log(err);
+    var error = JSON.parse(err);
+    response.error(error);
+  });
+});
+
+Parse.Cloud.beforeSave("Outcome",function(request, response){
+  if(request.object.existed() === false){
+    var serie = "WSE";
+    var folio;
+    var invoice;
+    var shipping
+    var account;
+    var receptor;
+    var amount;
+    var descripcion;
+    getInvoceTotal('egreso').then(function(res){
+      folio = res;
+      return request.object.get("invoice").fetch();
+    }).then(function(res){
+      invoice = res;
+      return invoice.get("shipping").fetch();
+    }).then(function(res){
+      shipping = res;
+      amount = request.object.get("amount");
+      descripcion = request.object.get("description");
+      request.object.set("applied", false);
+      request.object.set("cancelled", false);
+      
+      request.object.get('account').fetch().then(function(result){
+        account = result;
+        var rfc = account.get('taxId');
+        var razonSocial = account.get('taxName');
+
+        receptor = {
+          'RFC'           : rfc,
+          'razonSocial'   : razonSocial
+        };
+
+        if(request.object.get('invoice')){
+          return request.object.get('invoice').fetch();
+        }else{
+          var parse_promise = new Parse.Promise();
+          parse_promise.resolve(false);
+          return parse_promise;
+        }
+
+      }).then(function(result){
+        invoice = result;
+
+        var newParams = {
+          'serie'     : serie,
+          'folio'     : folio,
+          'receptor'  : receptor,
+          'metodoPago': 'PUE',
+          'formaPago' : '99', // Por definir en caso de anticipo
+          'monto'     : amount,
+          'descripcion' : descripcion
+        };
+
+
+        if(invoice && invoice.get("cfdi") && invoice.get("cfdi").UUID){
+          console.log(invoice.get("cfdi").UUID);
+
+          var tipoRelacion = "01";
+          if(request.object.get("relationType") == "anticipo"){
+            tipoRelacion = "07";
+          }
+
+          request.object.set("tipoRelacion", tipoRelacion);
+
+
+          newParams.relacionados ={
+            "tipoRelacion" : tipoRelacion,
+            "documentos":[
+              {"UUID": invoice.get("cfdi").UUID}
+            ]
+          }
+        }
+
+        return EgresoCFDI(newParams);
+      }).then(function(params){
+        return makeCFDI(params);
+      }).then(function(params){
+
+        if(params && params.cfdi){
+       
+          var folio = params.cfdi.folio;
+          var serie = params.cfdi.serie;
+          // var reference = serie+folio;
+          var reference = invoice.get("invoiceNo");
+
+          request.object.set("reference",reference);
+          request.object.set("cfdi",params.cfdi);
+          request.object.set("invoiceNo",serie+folio);
+
+          if(params.cfdi.UUID){
+            request.object.set("UUID",params.cfdi.UUID);
+          }
+
+          request.object.set("amount",params.cfdi.total);
+          request.object.set("subtotal",params.cfdi.subtotal);
+          request.object.set("folio",folio);
+          request.object.set("serie",serie);
+          request.object.set("shipping",shipping);
+          request.object.set("applied",false);
+
+          if(invoice && invoice.get("cfdi") && invoice.get("cfdi").UUID){
+            var dueAmount =  parseFloat(invoice.get('dueAmount'));
+            var cfdiTotal = parseFloat(params.cfdi.total);
+            var difference = dueAmount - cfdiTotal;
+            difference = difference > 0 ? difference : 0;
+            difference = parseFloat(difference.toFixed(2));
+            if(difference == 0){
+              invoice.set('paid', true);
+            }
+            invoice.set('dueAmount',difference);
+            return invoice.save();
+          }else{
+            var parse_promise = new Parse.Promise();
+            parse_promise.resolve(true);
+            return parse_promise;
+          }
+
+        }else{
+          var parse_promise = new Parse.Promise();
+          parse_promise.reject("Invalid CFDI without UUID");
+          return parse_promise;
+        }
+
+
+      }).then(function(invoice){
+        if(invoice && invoice.get("paid") == true){
+          shipping.set("paid",true);
+          return shipping.save();
+        }else{
+          response.success();
+        }
+      }).then(function(){
+        response.success();
+      },function(err){
+        response.error(err);
+      });
+    },function(err){
+      response.error(err);
+    });
+  }else{
+    response.success();
+  }
+});
+
 
 /*GET CUSTOMER CARDS IN CONEKTA*/
 Parse.Cloud.define("getCustomer",function(request, response){
@@ -1319,6 +1789,56 @@ function makeCFDI(params){
 }
 /*CREACION DE LA FACTURA FISCAL*/
 
+function EgresoCFDI(params){
+  var parse_promise = new Parse.Promise();
+  if(!params.serie)
+    parse_promise.reject({error:true,message:'serie is required'});
+  else if(!params.folio)
+    parse_promise.reject({error:true,message:'folio is required'});
+  else if(!params.receptor)
+    parse_promise.reject({error:true,message:'receptor is required'});
+  else if(!params.metodoPago)
+    parse_promise.reject({error:true,message:'metodoPago is required'});
+  else if(!params.formaPago)
+    parse_promise.reject({error:true,message:'formaPago is required'});
+  else if(!params.monto)
+    parse_promise.reject({error:true,message:'monto is required'});
+  else if(!params.descripcion)
+    parse_promise.reject({error:true,message:'descripcion is required'});
+  else{
+
+    var newParams = {  
+                    "serie": params.serie,
+                    "folio": params.folio,
+                    "formaPago": params.formaPago,
+                    "metodoPago": params.metodoPago,
+                    "lugarExpedicion": emisor.CP,
+                    "tipoDeComprobante":"E",
+                    "usoCFDI":"G02",
+                    "monto": params.monto,
+                    "descripcion": params.descripcion,
+                    "receptor": params.receptor,
+                    "emisor": emisor.cedula
+                  };
+
+    if(params.cuenta){
+      newParams.cuenta = params.cuenta;
+    }
+    if(params.clabe){
+      newParams.clabe = params.clabe;
+    }
+    if(params.clientId){
+      newParams.clientId = params.clientId;
+    }
+
+    if(params.relacionados && params.relacionados.documentos){
+      newParams.relacionados = params.relacionados;
+    }
+
+    parse_promise.resolve(newParams);
+  }
+  return parse_promise;
+}
 /*Generar objecto de ingreso para facturacion*/
 function IngresoCFDI(params){
   var parse_promise = new Parse.Promise();
@@ -1402,14 +1922,10 @@ function sendShipOrder(user, shipping, payment) {
     if(account.id)
       shipping.set("account",account);
 
-    if(payment.type){
-      shipping.set("paymentType",payment.type);
-
-      if(payment.type == 'card'){
-        shipping.set("paid", true);
-      }else if(payment.type == 'account'){
-        shipping.set("paid", false);
-      }
+    if(payment && payment.type == 'card'){
+      shipping.set("paid", true);
+    }else{
+      shipping.set("paid", false);
     }
 
     shipping.set("user",user);

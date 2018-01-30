@@ -19,6 +19,7 @@
     $('.dashboard-menu').width(Math.floor(dashMenu-2));
 
     shipping.invoices = [];
+    shipping.payments = [];
 
 
     shipping.labels = shell.labels.shipping;
@@ -26,11 +27,26 @@
     if(data){
       shipping.data = data;
       shipping.packages = data.service.packages;
-
-      console.log(data.objectId);
       shippingApi.getInvoices(data.objectId).then(function(res){
         if(res && res.length > 0){
           shipping.invoices = res;
+
+        }
+      },function(err){
+        console.log(err);
+      });
+
+      shippingApi.getPayments(data.objectId).then(function(res){
+        if(res && res.length > 0){
+          shipping.payments = res;
+        }
+      },function(err){
+        console.log(err);
+      });
+
+      shippingApi.getOutcomes(data.objectId).then(function(res){
+        if(res && res.length > 0){
+          shipping.outcomes = res;
         }
       },function(err){
         console.log(err);
