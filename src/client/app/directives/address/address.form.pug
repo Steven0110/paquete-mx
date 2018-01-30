@@ -8,7 +8,7 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
         div(ng-message="maxlength")
           |Máximo 30 caracteres.
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="Escriba el Nombre y Apellido." data-balloon-pos="right")
           i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
@@ -18,7 +18,7 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
         div(ng-message="maxlength")
           |Máximo 30 caracteres.
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="Nombre de la empresa." data-balloon-pos="right")
           i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
@@ -28,7 +28,7 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
         div(ng-message="required",data-ng-bind="labels.address.errors.required")
         div(ng-message="pattern",data-ng-bind="labels.address.errors.pattern")
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="Agregar el número telefónico a 10 dígitos" data-balloon-pos="right")
           i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
@@ -38,7 +38,7 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
         div(ng-message="required",data-ng-bind="labels.address.errors.required")
         div(ng-message="invalid",data-ng-bind="labels.address.errors.pattern")
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="El correo que ingresas lo utilizamos para realizar confirmaciones, entregas de envío y notificaciones importantes." data-balloon-pos="right")
           i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
@@ -47,7 +47,7 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
       div(ng-messages="addressForm.street.$error")
         div(ng-message="required",data-ng-bind="labels.address.errors.required")
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="Ingresa el nombre de la calle sin número" data-balloon-pos="right")
           i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
@@ -56,7 +56,7 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
       div(ng-messages="addressForm.number.$error")
         div(ng-message="required",data-ng-bind="labels.address.errors.required")
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="Favor de verificar que el número es el correcto" data-balloon-pos="right")
           i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
@@ -65,7 +65,7 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
       div(ng-messages="addressForm.apt.$error")
         div(ng-message="required",data-ng-bind="labels.address.errors.required")
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="En caso que cuente con un número interior, especificarlo" data-balloon-pos="right")
           i.fa.fa-info-circle
   .country-zip(layout-xs-sm="row",data-ng-if="type == 'checkout' ")
     .row
@@ -103,7 +103,7 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
       input(name="county", data-ng-model="newAddress.county", required="")
       div(ng-messages="addressForm.county.$error")
         div(ng-message="required",data-ng-bind="labels.address.errors.required")
-      md-icon
+      //- md-icon
         div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
           i.fa.fa-info-circle
   div(layout-xs-sm="row")
@@ -112,8 +112,8 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
       input(name="city", data-ng-model="newAddress.city", required="")
       div(ng-messages="addressForm.city.$error")
         div(ng-message="required",data-ng-bind="labels.address.errors.required")
-      md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+      //- md-icon
+        div(data-balloon-length="medium")
           i.fa.fa-info-circle
   div(layout-xs-sm="row")
     md-input-container.md-block
@@ -121,7 +121,7 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
       input(name="state", data-ng-model="newAddress.state", required="")
       div(ng-messages="addressForm.state.$error")
         div(ng-message="required",data-ng-bind="labels.address.errors.required")
-      md-icon
+      //- md-icon
         div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
           i.fa.fa-info-circle
   .align-center(data-ng-if="type =='checkout'")

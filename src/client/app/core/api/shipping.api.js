@@ -80,7 +80,7 @@
 
     function getPayments(shippingId){
       var Payment = parse.endpoint('Payment');
-      var where = {"shipping":{"__type":"Pointer","className":"Shipping","objectId":shippingId}};
+      var where = {"shipping":{"__type":"Pointer","className":"Shipping","objectId":shippingId},"UUID":{"$exists":true}};
       return Payment.getAll(where);
     }
 
