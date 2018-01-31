@@ -13,6 +13,9 @@
     |Envios en curso
   h2(data-ng-if="shippings.inTransit.length < 1")
     |No hay envios en curso.
+  h1.accent.underline.align-center
+    a(ui-sref="home")
+      |¡Cotiza ahora mismo!
   table.table.table-responsive.table-striped.hover(data-ng-if="shippings.inTransit.length > 0")
     thead
       tr
