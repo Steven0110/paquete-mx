@@ -47,7 +47,7 @@
               span
                 |{{item.termination}}
             .board-actions
-              i.fa.fa-trash(confirm-message, data-ng-click="showModal()", data-question='¿Borrar Dirección?', data-confirm="paymentMethod.delete(item, $index)")
+              i.fa.fa-trash(data-ng-click="paymentMethod.delete(item, $index)")
       .col-xs-6
         .section-space-left
           .form-container

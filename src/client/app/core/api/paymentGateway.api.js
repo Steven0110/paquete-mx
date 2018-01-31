@@ -11,10 +11,17 @@
   function paymentGateway($q, parse) {
 
     var conekta = {
-      update : update
+      update : update,
+      remove : remove
     }
 
     return conekta;
+
+
+    function remove(cardId){
+      var Card = parse.endpoint('Card');
+      return Card.remove(cardId);
+    }
 
     function update(card){
       var deferred = $q.defer();
