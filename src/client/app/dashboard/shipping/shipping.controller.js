@@ -74,7 +74,8 @@
         console.log(res);
         if(res.confirmation){
           Dialog.showTooltip('Recolección cancelada','Tu recolección se cancelo con éxito',{close:"Cerrar"});
-          shipping.data.pickupConfirmation = res.confirmation;
+          shipping.data.pickupConfirmation = false;
+
         }
       },function(err){
         console.log(err);

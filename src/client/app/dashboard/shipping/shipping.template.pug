@@ -150,7 +150,7 @@
                         |&nbsp; entre 12:00 y 19:00 Horas.
                   md-button.md-raised.md-primary(type='submit')
                     |Solicitar Recolección
-      .shipping-info(data-ng-if="shipping.data.pickupConfirmation")
+      div(data-ng-if="shipping.data.pickupConfirmation")
         h1.accent
           |Recolección
         h3.disabled-color

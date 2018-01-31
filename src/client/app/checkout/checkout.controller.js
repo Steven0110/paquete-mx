@@ -107,6 +107,11 @@
                         console.log(res);
                       },function(err){
                         console.log(err);
+                        if(err && err.invalidTaxId){
+                          Dialog.showError("La verificación con el SAT nos marco el RFC como inválido, verifica que este correcto y que este activo ante el SAT", "¡RFC INVALIDO!",function(){
+                            checkout.invoiceRequired();
+                          });
+                        }
                       }).finally(shell.hideLoading);
                     }
                 },

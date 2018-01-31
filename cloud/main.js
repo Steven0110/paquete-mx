@@ -26,10 +26,10 @@ if(production){
   emisor.cedula.RFC = "MAG041126GT8";
   var domain = "paquete.mx";
   Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-5e0f8c7de60172d4428cb1edbed23275'});
-  // var tPagoPublic = "u2oiwgTFEHht04tqeYq0MT06Np8ixXdU:eEXLhTxBiYo6fmFnWupvaeN7lyxuEAot";
-  // var tPagoPrivate = "u2oiwgTFEHht04tqeYq0MT06Np8ixXdU:ylBRVVpuwDBbg0joIeyRwgQeY3U7KHNr";
-  var tPagoPublic = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:Fg4czj5lWgbUc9rJ0bX3IcPmSVgTKCUU";
-  var tPagoPrivate = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:QOTBkZTHlz0SeNhLt6fDRJWGcloMEsI1";
+  var tPagoPublic = "u2oiwgTFEHht04tqeYq0MT06Np8ixXdU:eEXLhTxBiYo6fmFnWupvaeN7lyxuEAot";
+  var tPagoPrivate = "u2oiwgTFEHht04tqeYq0MT06Np8ixXdU:ylBRVVpuwDBbg0joIeyRwgQeY3U7KHNr";
+  // var tPagoPublic = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:Fg4czj5lWgbUc9rJ0bX3IcPmSVgTKCUU";
+  // var tPagoPrivate = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:QOTBkZTHlz0SeNhLt6fDRJWGcloMEsI1";
   var appId = "OwwqTBzf9Tj618RyQqYmx3eJOhxaS8qolcojD3IA";
   var masterKey = "baplcn89UZ3uyJq0AflqtXjnFV2wRmo81SaWg7wd";
   var javascriptKey = "gCi0VgG0NVmtZA7lKsAAVVAvk9IwECg2GMJHwWdQ";
@@ -94,7 +94,7 @@ function createInvoice(user, amount, paid, payment, shipping){
                 }];
 
     var metodoPago = "PUE";
-    var serie =  "PQ";
+    var serie =  "WSI";
     // var folio = "1";
     var newParams = {
                       'serie'     : serie,
@@ -1439,6 +1439,49 @@ function PagoCFDI(params){
     parse_promise.resolve(newParams);
     
   }
+  return parse_promise;
+}
+
+Parse.Cloud.define("checkTaxId",function(request, response){
+  var taxId = request.params.taxId;
+  validaRFC(taxId).then(function(res){
+    response.success(res);
+  },function(err){
+    response.error(err);
+  })
+});
+
+
+function validaRFC(taxId){
+  var parse_promise = new Parse.Promise();
+
+  var url = 'http://54.244.218.15/development/statusRFC.php';
+
+  if(production){
+    url = 'http://54.244.218.15/endpoint/statusRFC.php';
+  }
+
+  var method = 'POST';
+  var params = {taxId:taxId};
+
+  Parse.Cloud.httpRequest({
+  method: method,
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  url: url,
+  body: params
+  }).then(function(response){
+    if(response && response.text){
+      var res = JSON.parse(response.text);
+      parse_promise.resolve(res);
+    }
+    else{
+      parse_promise.resolve(response);
+    }
+  },function(err){
+    parse_promise.reject(err);
+  });
   return parse_promise;
 }
 

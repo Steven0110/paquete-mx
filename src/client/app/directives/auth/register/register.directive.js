@@ -2,9 +2,9 @@ angular
   .module('app.core')
   .directive('registerForm',registerForm);
 
-registerForm.$inject = ['userApi','Dialog'];
+registerForm.$inject = ['userApi','Dialog', 'accountApi', '$q'];
 
-function registerForm(userApi, Dialog){
+function registerForm(userApi, Dialog, accountApi, $q){
   return{
     restrict: 'E',
     templateUrl: 'app/directives/auth/register/register.form.html',
@@ -33,6 +33,25 @@ function registerForm(userApi, Dialog){
           scope.account.invoice =  false;
         }
       });
+
+
+      function validateTaxId(taxId){
+        var deferred = $q.defer();
+        if(taxId){
+          accountApi.validateTaxId(taxId).then(function(res){
+            if(res && res.valid){
+              deferred.resolve();
+            }else{
+              deferred.reject({invalidTaxId:true});
+            }
+          },function(err){
+            deferred.reject(err);
+          });
+        }else{
+          deferred.resolve();
+        }
+        return deferred.promise;
+      }
       
       scope.register = function(){
         if(scope.registerForm.$valid){
@@ -51,7 +70,9 @@ function registerForm(userApi, Dialog){
               scope.account.taxName = null;
             }
 
-            userApi.register(scope.accountType,scope.account,scope.user).then(function(user){
+            validateTaxId(scope.account.taxId).then(function(){
+              return userApi.register(scope.accountType,scope.account,scope.user);
+            }).then(function(user){
               scope.setUser(user);
               shell.showMessage(shell.labels.register.form.welcome);
               if (typeof scope.loginSuccess === "function") { 
@@ -61,7 +82,10 @@ function registerForm(userApi, Dialog){
               }
             },function(error){
               console.log(error);
-              if(error && error.data && error.data.error){
+              if(error && error.invalidTaxId){
+                Dialog.showError("La verificación con el SAT nos marco el RFC como inválido, verifica que este correcto y que este activo ante el SAT", "¡RFC INVALIDO!");
+              }
+              else if(error && error.data && error.data.error){
                 // scope.response.register = error.data.error;
                 if(error.data.code == 202){
                   var error = scope.user.username+" "+shell.labels.register.form.errors.already;

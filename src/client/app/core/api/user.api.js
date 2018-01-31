@@ -143,21 +143,29 @@
           return deferred.promise;
         }
       }).then(function(account){
-        if(account){
-          account.invoice = invoice;
-          if(taxInfo.taxId)
-            account.taxId = taxInfo.taxId;
-          if(taxInfo.taxName)
-            account.taxName = taxInfo.taxName;
-          if(taxInfo.taxUse)
-            account.taxUse = taxInfo.taxUse;
-          return accountApi.update(account);
-        }
-        else{
-          var deferred = $q.defer();
-          deferred.reject({message:"Invalid account"});
-          return deferred.promise;
-        }
+        return accountApi.validateTaxId(taxInfo.taxId).then(function(res){
+          if(res && res.valid){
+            if(account){
+              account.invoice = invoice;
+              if(taxInfo.taxId)
+                account.taxId = taxInfo.taxId;
+              if(taxInfo.taxName)
+                account.taxName = taxInfo.taxName;
+              if(taxInfo.taxUse)
+                account.taxUse = taxInfo.taxUse;
+              return accountApi.update(account);
+            }
+            else{
+              var deferred = $q.defer();
+              deferred.reject({message:"Invalid account"});
+              return deferred.promise;
+            }
+          }else{
+            var deferred = $q.defer();
+            deferred.reject({invalidTaxId:true});
+            return deferred.promise;
+          }
+        });
       });
     }
 

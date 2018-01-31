@@ -109,7 +109,7 @@
 
 
 
-    this.showError = function(message, title){
+    this.showError = function(message, title, action){
       var title = title?title:'¡Ops, Hubo un error!';
 
       $ngConfirm({
@@ -122,7 +122,9 @@
               close:{
                 text: "Cerrar",
                 action: function(scope, button){
-                  
+                  if (typeof action === "function") { 
+                    action();
+                  }
                 }
               }
           }

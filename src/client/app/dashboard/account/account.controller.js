@@ -58,8 +58,6 @@
           shell.updateCurrentUser();
         },function(error){
           console.log(error);
-          // shell.setError();
-          // shell.showMessage(error);
         }).finally(shell.hideLoading);
       }else{
         Dialog.showMessage();
@@ -68,10 +66,16 @@
 
     account.updateTaxes = function(){
       if(account.taxForm.$valid){
+
         shell.showLoading();
-        console.log(account.taxes);
-        accountApi.update(account.taxes).then(function(res){
-          shell.showMessage();
+        accountApi.validateTaxId(account.taxes.taxId).then(function(res){
+          if(res && res.valid){
+            return accountApi.update(account.taxes).then(function(){
+              shell.showMessage();
+            });
+          }else{
+            Dialog.showError("La verificación con el SAT nos marco el RFC como inválido, verifica que este correcto y que este activo ante el SAT", "¡RFC INVALIDO!");
+          }
         },function(err){
           console.log(err);
         }).finally(shell.hideLoading);

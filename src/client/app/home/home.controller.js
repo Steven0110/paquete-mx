@@ -61,7 +61,6 @@
         packageInfo.weight = packageInfo.weight;
         packageInfo.real = false;
       }
-
     }
 
     home.calculateVW = function(packageInfo){
@@ -262,6 +261,15 @@
       if(!toCountry)
         toCountry = home.shipping.to.country.code;
 
+      for(var i=0;i<home.shipping.packages.length; i++){
+        var weight = parseFloat(home.shipping.packages[i].weight);
+        var volumetric = parseFloat(home.shipping.packages[i].volumetric);
+        if(weight > 70 || volumetric > 70){
+          Dialog.showError('El límite de peso para envios domesticos es de 70 Kg. Si hacer envios mayores a este peso por favor contactanos en: hola@paquete.mx.','Máximo 70 Kg permitido.');
+          return false;
+        }
+      }
+
 
       home.international =  shell.isInternational(fromCountry, toCountry);
       home.rated =  true;
@@ -445,10 +453,9 @@
 
                 var fromCountry = home.shipping.from.country;
                 var toCountry = home.shipping.to.country;
-
-                if(fromCountry.listed == true && !home.shipping.from.data.state){
+                if(fromCountry.listed == true && !home.shipping.from.data){
                   Dialog.showError('Selecciona un valor de origen de la lista que se despliega al escribir tu código postal o colonia.','Selecciona el origen.'); 
-                }else if(toCountry.listed == true && !home.shipping.to.data.state){
+                }else if(toCountry.listed == true && !home.shipping.to.data){
                   Dialog.showError('Selecciona un valor de destino de la lista que se despliega al escribir tu código postal o colonia.','Selecciona el destino.'); 
                 }
                 else{

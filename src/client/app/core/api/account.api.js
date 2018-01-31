@@ -11,7 +11,8 @@
   function accountApi($q, parse) {
     
     var factory = {
-      update : update
+      update : update,
+      validateTaxId: validateTaxId
     };
 
     return factory;
@@ -19,6 +20,21 @@
     function update(params){
       var Account = parse.endpoint("Account");
       return Account.update(params);
+    }
+
+    function validateTaxId(taxId){
+      var deferred = $q.defer();
+      var Cloud = parse.cloud('checkTaxId');
+      Cloud.post({taxId:taxId}).then(function(res){
+        if(res.result)
+          deferred.resolve(res.result);
+        else
+          deferred.resolve(res);
+      },function(err){
+        deferred.reject(err);
+      });
+
+      return deferred.promise;
     }
 
     // function getByUser(user){
