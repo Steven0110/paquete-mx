@@ -8,7 +8,7 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
         div(ng-message="required")
           |Es requerido
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="Nombre completo del tarjetahabiente" data-balloon-pos="right")
           i.fa.fa-info-circle
     md-input-container.md-block
       label(for="cardNumber",data-ng-bind="card.labels.form.number")
@@ -17,7 +17,7 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
         div(ng-message="validateCard")
           |Número de tarjeta invalido.
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="Número completo que aparece en la tarjeta" data-balloon-pos="right")
           i.fa.fa-info-circle
     md-input-container.md-block
       label(for="cvc",data-ng-bind="card.labels.form.cvc")
@@ -26,7 +26,7 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
         div(ng-message="validateCvc")
           |Código de seguridad invalido.
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="Número que se encuentra en la parte posterior de tu tarjeta, son 3 dígitos en caso de VISA y MASTERCARD. Para AMEX se encuentra en el frente y son 4 digitos" data-balloon-pos="right")
           i.fa.fa-info-circle
     div
       .row
@@ -50,7 +50,7 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
         div(ng-message="required")
           |Es requerido
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="Ingresar la Calle y Número de la dirección declarada en la tarjeta." data-balloon-pos="right")
           i.fa.fa-info-circle
     md-input-container.md-block
       label(for="address_line_2",data-ng-bind="card.labels.form.address_line_2")
@@ -59,7 +59,7 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
         div(ng-message="required")
           |Es requerido
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="Colonia de la dirección declarada en la tarjeta." data-balloon-pos="right")
           i.fa.fa-info-circle
     md-input-container.md-block
       label(for="city",data-ng-bind="card.labels.form.city")
@@ -68,7 +68,7 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
         div(ng-message="required")
           |Es requerido
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="Ciudad de la dirección declarada en la tarjeta." data-balloon-pos="right")
           i.fa.fa-info-circle
     md-input-container.md-block
       label(for="state",data-ng-bind="card.labels.form.state")
@@ -77,7 +77,7 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
         div(ng-message="required")
           |Es requerido
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="Estado de la dirección declarada en la tarjeta." data-balloon-pos="right")
           i.fa.fa-info-circle
     md-input-container.md-block
       label(for="postal_code",data-ng-bind="card.labels.form.postal_code")
@@ -86,7 +86,7 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
         div(ng-message="required")
           |Es requerido
       md-icon
-        div(data-balloon-length="medium" data-balloon="Now that's a super big text we have over here right? Lorem ipsum dolor sit I'm done." data-balloon-pos="right")
+        div(data-balloon-length="medium" data-balloon="Código postal de la dirección declarada en la tarjeta." data-balloon-pos="right")
           i.fa.fa-info-circle
     .align-center.margin-top-2
       md-button.md-raised.md-primary(type="submit", data-ng-bind="card.labels.form.save", aria-label="card.labels.form.save")

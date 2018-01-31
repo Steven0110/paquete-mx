@@ -298,7 +298,7 @@
 
       var where = {"user":{"__type":"Pointer","className":"_User","objectId":userId}}
       var Payment = parse.endpoint('Payment');
-      return Payment.getAll(where,'-createdAt');
+      return Payment.getAll(where,'-createdAt','shipping');
     }
 
     function getOrders(delivered,userId){

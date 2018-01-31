@@ -284,11 +284,28 @@
                           span
                             |{{checkout.shipping.service.service}} {{checkout.shipping.service.name}}
                         |{{checkout.shipping.service}}
-                .align-center
-                  div
-                    md-switch(ng-model="checkout.invoice",aria-label="Requiero Factura", data-ng-change="checkout.invoiceRequired()")
-                      |Requiero Factura Fiscal
-                  div
+                div
+                  .row
+                    .col-xs-2
+                      md-switch(ng-model="checkout.invoice",aria-label="Requiero Factura", data-ng-change="checkout.invoiceRequired()")
+                    .col-xs-10
+                      .padding-top-1
+                        |Requiero Factura Fiscal
+                  .row
+                    .col-xs-2
+                      md-switch(ng-model="checkout.acceptTerms",aria-label="Acepto Terminos")
+                    .col-xs-10
+                      |He Leído, entiendo y ACEPTO los
+                      a.accent.bold(ui-sref="conditions")
+                        |&nbsp; Términos y Condiciones
+                      |,
+                      a.accent.bold(ui-sref="privacy")
+                        |&nbsp;Política de Privacidad
+                      |, y estoy enterado de los 
+                      a.accent.bold(uis-ref="denied")
+                        |articulos prohibidos
+                      |&nbsp;para envío.
+                  .align-center
                     md-button.md-raised.md-primary(data-ng-click="checkout.order()")
                       |Confirmar y pagar
             .form-container(data-ng-show="checkout.step=='selectPayment'")
@@ -367,6 +384,51 @@
                 |Dirección de Origen
               .margin-top-4
                 address-form(data-type="checkout",data-labels="shell.labels.from",data-countries="shell.countries",data-send-form="checkout.fromAddress(response)", data-current-address="checkout.shipping.from")
+            .form-container(data-ng-show="checkout.step=='contentDescription'")
+              h1.accent.align-center
+                i.fa.fa-envelope-open-o.margin-right-1
+                |¿Qué envías?
+              .margin-top-4
+                //- h3.disabled-color
+                  |Describe la mercancía que envías.
+                form(name="shippingDesc", data-ng-submit="checkout.shippingDesc()", novalidate)
+                  md-input-container.md-block
+                    label(for="content")
+                      |Breve descripción del contenido tu envío
+                    textarea(autofocus,name="content", data-ng-model="checkout.shipping.content", required)
+                    div(ng-messages="shippingDesc.content.$error")
+                      div(ng-message="requied")
+                        |Es requerido.
+                  h4.disabled-color
+                    |Verifica que no enviés materiales y/o productos prohibidos, algunos de ellos son:
+                  ul
+                    li
+                      |Municiones
+                    li
+                      |Letras bancarias, billetes o moneda (que no sean monedas metálicas)
+                    li
+                      |Cadáveres, restos cremados o exhumados
+                    li
+                      |Fuegos Artificiales
+                    li
+                      |Desechos peligrosos
+                    li
+                      |Diamantes industriales
+                    li
+                      |Marfil
+                    li
+                      |Marihuana, incluyendo marihuana para uso medicinal
+                    li
+                      |Timbres postales
+                    li
+                      |Envíos prohibidos por ley
+                  .align-center
+                    a.accent.bold(ui-sref="denied", target="_blank")
+                      |Ver la lista completa
+                  .align-center.margin-top-2
+                    md-button.md-raised.md-primary(type="submit")
+                      |Continuar
+
             .form-container(data-ng-show="checkout.step=='to'")
               h1.accent.align-center
                 |Dirección de Destino
@@ -451,9 +513,27 @@
                       |{{checkout.shipping.service.total |currency}} MXN
               .align-center(data-ng-show="checkout.step == 'confirm'")
                 div
-                  md-switch(ng-model="checkout.invoice",aria-label="Requiero Factura", data-ng-change="checkout.invoiceRequired()")
-                    |Requiero Factura Fiscal
-                div
-                  md-button.md-raised.md-primary(data-ng-click="checkout.order()")
-                    |Confirmar y pagar
+                  .row
+                    .col-xs-2
+                      md-switch(ng-model="checkout.invoice",aria-label="Requiero Factura", data-ng-change="checkout.invoiceRequired()")
+                    .col-xs-10
+                      .padding-top-1
+                        |Requiero Factura Fiscal
+                  .row
+                    .col-xs-2
+                      md-switch(ng-model="checkout.acceptTerms",aria-label="Acepto Terminos")
+                    .col-xs-10
+                      |He Leído, entiendo y ACEPTO los
+                      a.accent.bold(ui-sref="conditions")
+                        |&nbsp; Términos y Condiciones
+                      |,
+                      a.accent.bold(ui-sref="privacy")
+                        |&nbsp;Política de Privacidad
+                      |, y estoy enterado de los 
+                      a.accent.bold(uis-ref="denied")
+                        |articulos prohibidos
+                      |&nbsp;para envío.
+                  .align-center
+                    md-button.md-raised.md-primary(data-ng-click="checkout.order()")
+                      |Confirmar y pagar
 div(data-ng-include="'app/templates/footer.template.html'")

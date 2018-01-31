@@ -4,7 +4,7 @@
     .dash-section-subtitle(data-ng-bind="shell.dashboard.subtitle")
 .dash-name-section
   .big-text-welcome
-    |¡Hola {{shell.currentUser.name}}!
+    |¡Hola {{shell.setName}}!
   .small-text-welcome
     a(ui-sref="logout")
       |Cerrar Sesión
@@ -28,7 +28,7 @@
       tr(data-ng-repeat="item in payments.list")
         td
           a.accent.medium-font.bold(ui-sref="dashboard.shipping({trackId: item.trackingNumber})")
-            |{{item.trackingNumber}}
+            |{{item.shipping.trackingNumber}}
         td.bold
           |{{item.amount | currency}}
         td

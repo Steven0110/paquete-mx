@@ -4,7 +4,7 @@
     .dash-section-subtitle(data-ng-bind="shell.dashboard.subtitle")
 .dash-name-section
   .big-text-welcome
-    |¡Hola {{shell.currentUser.name}}!
+    |¡Hola {{shell.setName}}!
   .small-text-welcome
     a(ui-sref="logout")
       |Cerrar Sesión
@@ -13,7 +13,7 @@
     |Envios en curso
   h2(data-ng-if="shippings.inTransit.length < 1")
     |No hay envios en curso.
-  table.table.table-responsive.table-striped(data-ng-if="shippings.inTransit.length > 0")
+  table.table.table-responsive.table-striped.hover(data-ng-if="shippings.inTransit.length > 0")
     thead
       tr
         th

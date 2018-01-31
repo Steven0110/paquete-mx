@@ -68,6 +68,14 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       url:'/aviso-de-privacidad',
       templateUrl : 'app/privacy/privacy.html'
     })
+    .state('conditions',{
+      url:'/terminos-y-condiciones',
+      templateUrl : 'app/conditions/conditions.template.html'
+    })
+    .state('denied',{
+      url:'/materiales-y-articulos-prohibidos',
+      templateUrl : 'app/denied/denied.template.html'
+    })
     .state('checkout',{
       url:'/checkout',
       templateUrl : 'app/checkout/checkout.template.html',

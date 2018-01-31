@@ -1940,7 +1940,8 @@ function sendShipOrder(user, shipping, payment) {
         packages: result.packages,
         status:'label_created',
         delivered: false,
-        service: body.shipping
+        service: body.shipping,
+        content: body.shipping.content
       }
     }
 

@@ -61,6 +61,15 @@
       checkout.step = 'confirm';
     }
 
+    checkout.shippingDesc = function(){
+      if($scope.shippingDesc.$valid){
+        shippingApi.setShipping(checkout.shipping);
+        checkout.step = "to";
+      }else{
+        Dialog.showMessage();
+      }
+    }
+
     var saveInvoice = function(){
       
       if(checkout.taxInfo.taxId)
@@ -181,10 +190,11 @@
 
     checkout.order = function(){
       shell.moveToTop();
-      var title ={main:"Términos y Condiciones",secondary:"He verificado mi información."};
-        var content ={main:"He Leído, entiendo y ACEPTO los <a class='underline' ui-sref='privacy' target='_blank'>Términos y Condiciones</a>. Así como las <a class='underline' ui-sref='privacy' target='blank'>Políticas de Privacidad</a>."};
-        var buttons ={main:{continue:"ACEPTO, crear etiqueta",cancel:"NO Acepto"},secondary:{continue:"Crear Etiqueta",cancel:"No, cancelar"}};
-      Dialog.confirmDialog(title,content,buttons, function(){
+      // var title ={main:"Términos y Condiciones",secondary:"He verificado mi información."};
+        // var content ={main:"He Leído, entiendo y ACEPTO los <a class='underline' ui-sref='privacy' target='_blank'>Términos y Condiciones</a>. Así como las <a class='underline' ui-sref='privacy' target='blank'>Políticas de Privacidad</a>."};
+        // var buttons ={main:{continue:"ACEPTO, crear etiqueta",cancel:"NO Acepto"},secondary:{continue:"Crear Etiqueta",cancel:"No, cancelar"}};
+      // Dialog.confirmDialog(title,content,buttons, function(){
+      if(checkout.acceptTerms){
         var total = checkout.shipping.service.total;
         var order = {
           shipping:{
@@ -192,7 +202,8 @@
             service       : checkout.shipping.service,
             from          : checkout.shipping.from,
             to            : checkout.shipping.to,
-            packages      : checkout.shipping.packages
+            packages      : checkout.shipping.packages,
+            content       : checkout.shipping.content
           },
           paymentMethod : {card: checkout.card},
           amount        : total
@@ -231,7 +242,10 @@
         }).finally(function(){
           checkout.connecting = false;
         });
-      },function(){});
+      }else{
+        Dialog.showError("Debes aceptar los términos y condiciones para continuar.","¡Solo un paso más!");
+      }
+      // },function(){});
     }
 
     checkout.fromAddress = function(response){
@@ -240,8 +254,8 @@
         shippingApi.setShipping(checkout.shipping);
         // shell.moveToTop();
         $timeout(function(){
-          checkout.step = 'to';
-          console.log('to');
+          // checkout.step = 'to';
+          checkout.step = 'contentDescription';
         },300)
       }
     }
