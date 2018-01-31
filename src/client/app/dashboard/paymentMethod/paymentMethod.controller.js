@@ -19,10 +19,11 @@
     var shell = $scope.shell;
     paymentMethod.labels = shell.labels.paymentMethod;
     paymentMethod.send =function(card){
-      if(card && card.token)
+      if(card){
+        $state.reload();
+        paymentMethod.form = false;
         paymentMethod.list.push(card)
-      else
-        console.error(card);
+      }
     }
 
     if(data && data.length > 0){

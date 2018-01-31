@@ -52,7 +52,6 @@ function cardForm(paymentGateway, Dialog){
         if(card.form.$valid){
           card.showLoading();
           paymentGateway.update(card.info).then(function(res){
-            console.log(res);
             card.sendForm({response:res});
           },function(err){
             console.log(err);
