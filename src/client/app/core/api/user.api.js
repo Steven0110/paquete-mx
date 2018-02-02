@@ -195,6 +195,7 @@
     
       var User = parse.user();
       var currentUser;
+      params.accountType = accountType;
       User.post(params).then(function(user){
         setSessionByToken(user.sessionToken);
         return getCurrentUser();

@@ -29,8 +29,12 @@
       shipping.packages = data.service.packages;
       shippingApi.getInvoices(data.objectId).then(function(res){
         if(res && res.length > 0){
-          shipping.invoices = res;
-
+          for(var i=0; i< res.length; i++){
+            if(res[i].invoiceType == 'extraCharge')
+              shipping.overWeight.push(res[i]);
+            else
+              shipping.invoices.push(res[i]);
+          }
         }
       },function(err){
         console.log(err);

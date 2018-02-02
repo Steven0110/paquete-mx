@@ -91,12 +91,71 @@ var templates = {
       <h1 style="color:#f38b00; text-align:center;margin:50px 0 30px 0">Bienvenido a PAQUETE.MX</h1>\
     </div>';
   },
+  pickupMail: function(name, trackingNumber, carrier){
+    return '<div style="color:#333"><h2 style="text-align:center; color:#666;margin-bottom: 10px">¡Recolección exitosa: '+trackingNumber+'!</h2>\
+  <div style="color:#333"><h4 style="text-align:center; color:#f38b00">COTIZA | COMPARA | ENVÍA</h4>\
+    <div style="width:100%;height:2px; background-color: #ccc; margin: 10px 0"></div>\
+    <h1 style="text-align: center;color:#f38b00">¡Hola <span style="text-transform: uppercase;">'+name+'</span>!</h1>\
+    <p>El envío con número de guia <span style="color:#f38b00">'+trackingNumber+'</span> ya fue recogido por la empresa <span style="color:#f38b00">'+carrier+'</span> recibirás notificaciones cuando se encuentre en tránsito. \
+    <p>Recuerda que puedes seguir tus envíos y conocer todos los detalles desde tu Dashboard\
+    <div style="text-align:center;margin-top:20px">\
+      <h3 style="color:#666; text-align:center">¿Quieres estar al tanto?</h3>\
+      <a style="display:inline-block;margin-top:10px;-webkit-border-radius: 8;-moz-border-radius: 8;border-radius: 8px;font-family: Arial;color: #ffffff;font-size: 14px;background: #f38b00;padding: 10px 20px 10px 20px;text-decoration: none;" href="https://paquete.mx/dashboard/shippings">¡MIS ENVIOS!</a>\
+    </div>\
+    <div style="text-align:center;margin-top:20px">\
+      <h3 style="color:#666; text-align:center">Visita y conoce tu Dashboard</h3>\
+      <a style="display:inline-block;margin-top:10px;-webkit-border-radius: 8;-moz-border-radius: 8;border-radius: 8px;font-family: Arial;color: #ffffff;font-size: 14px;background: #f38b00;padding: 10px 20px 10px 20px;text-decoration: none;" href="https://paquete.mx/dashboard/shipping">¡IR A MI DASHBOARD!</a>\
+    </div>\
+    <div style="text-align:center;margin-top:20px">\
+      <h1 style="color:#f38b00; text-align:center;margin:50px 0 30px 0">Gracias por usar PAQUETE.MX</h1>\
+    </div>';
+  },
+  delivered: function(name, trackingNumber, carrier){
+    return '<div style="color:#333"><h2 style="text-align:center; color:green;margin-bottom: 10px">¡Entrega exitosa: '+trackingNumber+'!</h2>\
+  <div style="color:#333"><h4 style="text-align:center; color:#f38b00">COTIZA | COMPARA | ENVÍA</h4>\
+    <div style="width:100%;height:2px; background-color: #ccc; margin: 10px 0"></div>\
+    <h1 style="text-align: center;color:#f38b00">¡Hola <span style="text-transform: uppercase;">'+name+'</span>!</h1>\
+    <p>El envío con número de guia <span style="color:#f38b00">'+trackingNumber+'</span> ya fue entregado en destino por la empresa <span style="color:#f38b00">'+carrier+'</span>. \
+    <p>Gracias por envíar con PAQUETE.MX, cuentanos como fue todo en hola@paquete.mx</p>\
+    <p>Recuerda que puedes seguir tus envíos y conocer todos los detalles desde tu Dashboard\
+    <div style="text-align:center;margin-top:20px">\
+      <h3 style="color:#666; text-align:center">¿Quieres estar al tanto?</h3>\
+      <a style="display:inline-block;margin-top:10px;-webkit-border-radius: 8;-moz-border-radius: 8;border-radius: 8px;font-family: Arial;color: #ffffff;font-size: 14px;background: #f38b00;padding: 10px 20px 10px 20px;text-decoration: none;" href="https://paquete.mx/dashboard/shippings">¡MIS ENVIOS!</a>\
+    </div>\
+    <div style="text-align:center;margin-top:20px">\
+      <h3 style="color:#666; text-align:center">Visita y conoce tu Dashboard</h3>\
+      <a style="display:inline-block;margin-top:10px;-webkit-border-radius: 8;-moz-border-radius: 8;border-radius: 8px;font-family: Arial;color: #ffffff;font-size: 14px;background: #f38b00;padding: 10px 20px 10px 20px;text-decoration: none;" href="https://paquete.mx/dashboard/shipping">¡IR A MI DASHBOARD!</a>\
+    </div>\
+    <div style="text-align:center;margin-top:20px">\
+      <h1 style="color:#f38b00; text-align:center;margin:50px 0 30px 0">Gracias por usar PAQUETE.MX</h1>\
+    </div>';
+  },
+  inTransit: function(name, trackingNumber, carrier){
+    return '<div style="color:#333"><h2 style="text-align:center; color:#666;margin-bottom: 10px">¡Tu paquete se encuentra en tránsito: '+trackingNumber+'!</h2>\
+  <div style="color:#333"><h4 style="text-align:center; color:#f38b00">COTIZA | COMPARA | ENVÍA</h4>\
+    <div style="width:100%;height:2px; background-color: #ccc; margin: 10px 0"></div>\
+    <h1 style="text-align: center;color:#f38b00">¡Hola <span style="text-transform: uppercase;">'+name+'</span>!</h1>\
+    <p>El envío con número de guia <span style="color:#f38b00">'+trackingNumber+'</span> ya se encuentra en tránsito, puedes revisar el estatus en todo momento en PAQUETE.MX. \
+    <p>Recuerda que puedes seguir tus envíos y conocer todos los detalles desde tu Dashboard\
+    <div style="text-align:center;margin-top:20px">\
+      <h3 style="color:#666; text-align:center">¿Quieres estar al tanto?</h3>\
+      <a style="display:inline-block;margin-top:10px;-webkit-border-radius: 8;-moz-border-radius: 8;border-radius: 8px;font-family: Arial;color: #ffffff;font-size: 14px;background: #f38b00;padding: 10px 20px 10px 20px;text-decoration: none;" href="https://paquete.mx/dashboard/shippings">¡MIS ENVIOS!</a>\
+    </div>\
+    <div style="text-align:center;margin-top:20px">\
+      <h3 style="color:#666; text-align:center">Visita y conoce tu Dashboard</h3>\
+      <a style="display:inline-block;margin-top:10px;-webkit-border-radius: 8;-moz-border-radius: 8;border-radius: 8px;font-family: Arial;color: #ffffff;font-size: 14px;background: #f38b00;padding: 10px 20px 10px 20px;text-decoration: none;" href="https://paquete.mx/dashboard/shipping">¡IR A MI DASHBOARD!</a>\
+    </div>\
+    <div style="text-align:center;margin-top:20px">\
+      <h1 style="color:#f38b00; text-align:center;margin:50px 0 30px 0">Gracias por usar PAQUETE.MX</h1>\
+    </div>';
+  },
   newInvoice: function(type, name, data, trackingNumber){
+    if(type == 'ingreso'){
     return '<div style="color:#333"><h2 style="text-align:center; color:#666;margin-bottom: 10px">¡Tu Factura esta lista para descargarse!</h2>\
   <div style="color:#333"><h4 style="text-align:center; color:#f38b00">COTIZA | COMPARA | ENVÍA</h4>\
     <div style="width:100%;height:2px; background-color: #ccc; margin: 10px 0"></div>\
     <h1 style="text-align: center;color:#f38b00">¡Hola <span style="text-transform: uppercase;">'+name+'</span>!</h1>\
-    <p>Tu Comprobante Fiscal Digital por Internet (CFDI 3.3) con folio <span style="text-align:center; color:#f38b00">'+data.invoiceNo+'</span> se encuentra adjunto en este correo electrónico, correspondiente a el envío con número de guia: <span style="color:#f38b00">'+trackingNumber+'</span></h3>\
+    <p>Tu Comprobante Fiscal Digital por Internet (CFDI 3.3) con folio <span style="text-align:center; color:#f38b00">'+data.invoiceNo+'</span>se encuentra adjunto en este correo electrónico, correspondiente a el envío con número de guia: <span style="color:#f38b00">'+trackingNumber+'</span></h3>\
     <p>Recuerda que también los puedes descargar desde tu Dashboard en la sección de facturas.</h3>\
     <div style="text-align:center;margin-top:20px">\
       <h3 style="color:#666; text-align:center">Ver mis Facturas</h3>\
@@ -109,6 +168,25 @@ var templates = {
     <div style="text-align:center;margin-top:20px">\
       <h1 style="color:#f38b00; text-align:center;margin:50px 0 30px 0">Gracias por usar PAQUETE.MX</h1>\
     </div>';
+    }else if(type =="pago"){
+      return '<div style="color:#333"><h2 style="text-align:center; color:#666;margin-bottom: 10px">¡Complemento de Pago CFDI 3.3!</h2>\
+  <div style="color:#333"><h4 style="text-align:center; color:#f38b00">COTIZA | COMPARA | ENVÍA</h4>\
+    <div style="width:100%;height:2px; background-color: #ccc; margin: 10px 0"></div>\
+    <h1 style="text-align: center;color:#f38b00">¡Hola <span style="text-transform: uppercase;">'+name+'</span>!</h1>\
+    <p>Se genero un complemento de pago con folio <span style="text-align:center; color:#f38b00">'+data.invoiceNo+'</span> se encuentra adjunto en este correo electrónico.</h3>\
+    <p>Recuerda que también los puedes descargar desde tu Dashboard en la sección de facturas.</h3>\
+    <div style="text-align:center;margin-top:20px">\
+      <h3 style="color:#666; text-align:center">Ver mis Facturas</h3>\
+      <a style="display:inline-block;margin-top:10px;-webkit-border-radius: 8;-moz-border-radius: 8;border-radius: 8px;font-family: Arial;color: #ffffff;font-size: 14px;background: #f38b00;padding: 10px 20px 10px 20px;text-decoration: none;" href="https://paquete.mx/dashboard/invoices">¡MIS FACTURAS!</a>\
+    </div>\
+    <div style="text-align:center;margin-top:20px">\
+      <h3 style="color:#666; text-align:center">Visita y conoce tu Dashboard</h3>\
+      <a style="display:inline-block;margin-top:10px;-webkit-border-radius: 8;-moz-border-radius: 8;border-radius: 8px;font-family: Arial;color: #ffffff;font-size: 14px;background: #f38b00;padding: 10px 20px 10px 20px;text-decoration: none;" href="https://paquete.mx/dashboard/shipping">¡IR A MI DASHBOARD!</a>\
+    </div>\
+    <div style="text-align:center;margin-top:20px">\
+      <h1 style="color:#f38b00; text-align:center;margin:50px 0 30px 0">Gracias por usar PAQUETE.MX</h1>\
+    </div>';
+    }
   },
   recoveryTemplate: function(key){
     return '<h2 style="text-align: center;color:#f38b00">¡Recuperar Contraseña!</h2>\

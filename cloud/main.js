@@ -9,6 +9,7 @@
 change log*/
 var moment = require("./moment");
 var templates = require("./templates.js").templates;
+var asyncEach = require("./each-series");
 var production = true;
 var Mailgun = null;
 
@@ -54,22 +55,28 @@ if(production){
 
 
 /*CREATE INVOICE*/
+function createInvoice(user,account, amount, paid, payment, shipping, formaPago, items, invoiceType){
+  if(!formaPago)
+    formaPago = "04";
 
-function createInvoice(user, amount, paid, payment, shipping){
+  if(!invoiceType)
+    invoiceType = "shipping";
+
+  paid = paid ==true?true:false;
   var parse_promise = new Parse.Promise();
-
+  var trackingNumber = shipping.get("trackingNumber");
   getInvoceTotal('ingreso').then(function(folio){
 
     var RFC = "XAXX010101000";
     var razonSocial = "PÚBLICO EN GENERAL";
     var satResponse = false;
 
-    if(user.get('invoice')){
-      RFC =  user.get("taxId");
+    if(account.get('invoice')){
+      RFC =  account.get("taxId");
       if(!RFC)
         RFC = "XAXX010101000";
 
-      razonSocial = user.get("taxName");
+      razonSocial = account.get("taxName");
       if(!razonSocial)
         razonSocial = "PÚBLICO EN GENERAL";
     }
@@ -79,21 +86,30 @@ function createInvoice(user, amount, paid, payment, shipping){
       'razonSocial'   : razonSocial
     };
 
-    var totalE = amount
-    var valorUnitario = (amount/1.16).toFixed(2);
+    if(!items){
+      var totalE = amount
+      var valorUnitario = (amount/1.16).toFixed(2);
 
-    var items = [{
-                  "claveSAT":"78102200",
-                  "claveLocal": "B20",
-                  "cantidad": "1",
-                  "claveUnidad": "E48",
-                  "unidad":"Servicio",
-                  "descripcion":"Servicio de paqueteria",
-                  "valorUnitario": valorUnitario,
-                  "totalE": totalE
-                }];
+      items = [{
+                    "claveSAT":"78102200",
+                    "claveLocal": trackingNumber,
+                    "cantidad": "1",
+                    "claveUnidad": "E48",
+                    "unidad":"Servicio",
+                    "descripcion":"Servicio de mensajeria: "+trackingNumber,
+                    "valorUnitario": valorUnitario,
+                    "totalE": totalE
+                  }];
+    }
 
     var metodoPago = "PUE";
+    if(paid){
+      metodoPago = "PUE";
+    }
+    else{
+      metodoPago = "PPD";
+      formaPago = "99";
+    }
     var serie =  "WSI";
     // var folio = "1";
     var newParams = {
@@ -101,13 +117,15 @@ function createInvoice(user, amount, paid, payment, shipping){
                       'folio'     : folio,
                       'receptor'  : receptor,
                       'metodoPago': metodoPago,
-                      'formaPago' : '04',
+                      'formaPago' : formaPago,
                       'items'     : items
                     };
-
+    console.log(newParams);
     IngresoCFDI(newParams).then(function(params){
       return makeCFDI(params);
     }).then(function(res){
+
+      console.log(res);
 
       if(res && res.cfdi){
 
@@ -115,12 +133,15 @@ function createInvoice(user, amount, paid, payment, shipping){
         var Invoice = Parse.Object.extend('Invoice');
         var invoice = new Invoice();
 
+
+        var amount = parseFloat(res.cfdi.total);
+        var subtotal = parseFloat(res.cfdi.subtotal);
+        var iva = parseFloat(res.cfdi.iva);
+
         if(res.cfdi.UUID){
           invoice.set("UUID",res.cfdi.UUID);
         }
 
-        // var paid = payment.get('paid');
-        paid = paid ==true?true:false;
         var dueAmount = amount;
         if(paid)
           dueAmount = 0;
@@ -131,10 +152,14 @@ function createInvoice(user, amount, paid, payment, shipping){
         invoice.set('dueAmount', dueAmount);
         invoice.set('cancelled', false);
         invoice.set('user', user);
-        // invoice.set('payment', payment);
+        invoice.set('invoiceType', invoiceType);
         invoice.set('folio', res.cfdi.folio);
         invoice.set('serie', res.cfdi.serie);
+        invoice.set('subtotal', subtotal);
+        invoice.set('iva', iva);
         invoice.set('invoiceNo', res.cfdi.serie+res.cfdi.folio);
+
+        console.log('debugging-4');
 
         if(shipping){
           invoice.set('shipping', shipping);
@@ -283,6 +308,42 @@ Parse.Cloud.define("cancelPickup",function(request, response){
     response.error(err);
   })
 });
+
+
+function calculateAccountDebt(account){
+  var parse_promise = new Parse.Promise();
+  if(!account && account.get('objectId')){
+    parse_promise.reject("Invalid account");
+    return parse_promise;
+  }
+
+  var Invoice = Parse.Object.extend('Invoice');
+  var query = new Parse.Query(Invoice);
+  query.equalTo("account", account);
+  query.equalTo("paid",false);
+  query.equalTo("cancelled",false);
+  var dueAmount = 0;
+  query.find().then(function(res){
+    console.log(res);
+    if(res && res.length > 0){
+      asyncEach(res,function(item, i, next){
+        var due = item.get('dueAmount')
+        console.log(due);
+        if(due)
+          dueAmount += due;
+        next();
+      },function(){
+        parse_promise.resolve({dueAmount: dueAmount});
+      })
+    }else{
+      parse_promise.resolve({dueAmount: dueAmount});
+    }
+  },function(err){
+    console.log(err);
+    parse_promise.reject(err);
+  });
+  return parse_promise;
+}
 
 
 Parse.Cloud.define("sendPickUp",function(request, response){
@@ -572,6 +633,9 @@ Parse.Cloud.beforeSave("Account", function(request, response){
     request.object.set('caratulaBancaria',"false");
     request.object.set('autorizacionBuro',"false");
     request.object.set('status',"submitDocs");
+    request.object.set('creditLimit',0);
+    request.object.set('creditAvailable',0);
+    request.object.set('dueAmount',0);
 
     var name;
     if(type && type == 'enterprise'){
@@ -699,7 +763,6 @@ function sendInvoice(cfdi, type, dataInfo, email, trackingNumber, name){
       url: xmlPath
     });
   }).then(function(data){
-    console.log('send-email-3.3');
     xmlBuffer = {data: data.buffer, filename: "factura.xml"};
     var attch = [new Mailgun.Attachment(pdfBuffer), new Mailgun.Attachment(xmlBuffer)];
     var html = htmlTemplate(templates.newInvoice(type,name, dataInfo, trackingNumber));
@@ -718,41 +781,152 @@ function sendInvoice(cfdi, type, dataInfo, email, trackingNumber, name){
 }
 
 Parse.Cloud.afterSave("Invoice",function(request){
-  if(request.object.existed() === false){
-    var cfdi = request.object.get("cfdi");
-    // console.log(cfdi.UUID);
-    var data = {};
-    var account;
-    var user;
-    var trackingNumber;
-    request.object.get("account").fetch().then(function(res){
-      account = res;
-      return request.object.get("user").fetch();
-    }).then(function(res){
-      user = res;
-      if(account && account.get('taxName'))
-        data.razonSocial = account.get('taxName');
-      if(request.object.get('invoiceNo'))
-        data.invoiceNo = request.object.get('invoiceNo');
+  request.object.get("account").fetch().then(function(res){
+    var account = res;
+    if(request.object.existed() === false){
+      var cfdi = request.object.get("cfdi");
+      // console.log(cfdi.UUID);
+      var data = {};
+      var user;
+      var trackingNumber;
+      // request.object.get("account").fetch().then(function(res){
+      // request.object.get("account").fetch().then(function(res){
+        // account = res;
 
-      if(request.object.get('trackingNumber'))
-        trackingNumber = request.object.get('trackingNumber'); 
+        var User = Parse.Object.extend("_User"); 
+        var query = new Parse.Query(User);
+        query.equalTo('account',account);
+        query.first().then(function(res){
+          user =  res;
+          if(account && account.get('taxName'))
+            data.razonSocial = account.get('taxName');
+          if(request.object.get('invoiceNo'))
+            data.invoiceNo = request.object.get('invoiceNo');
 
-      var email = false;
-      if(user.get('username'))
-        email = user.get('username');
+          if(request.object.get('trackingNumber'))
+            trackingNumber = request.object.get('trackingNumber'); 
 
-      var name = false;
-      if(user.get('name'))
-        name = user.get('name');
+          var email = false;
+          if(user.get('username'))
+            email = user.get('username');
 
-      if(email && account.get("invoice")){
-        return sendInvoice(cfdi,"ingreso", data, email, trackingNumber, name);
+          var name = false;
+          if(user.get('name'))
+            name = user.get('name');
+
+          if(email && account.get("invoice")){
+            return sendInvoice(cfdi,"ingreso", data, email, trackingNumber, name);
+          }
+      },function(err){
+        console.log(err);
+      });
+    }
+
+    console.log('here-mod');
+    calculateAccountDebt(account).then(function(res){
+      console.log("deuda");
+      console.log(res);
+      if(res && res.dueAmount >= 0){
+        account.set('dueAmount', res.dueAmount);
+        account.save();
       }
     },function(err){
       console.log(err);
     });
+  });
+});
+
+Parse.Cloud.afterSave("Payment", function(request){
+  request.object.get("account").fetch().then(function(res){
+    var account = res;
+    if(request.object.existed() === false){
+      var cfdi = request.object.get("cfdi");
+      var data = {};
+      var user;
+      var trackingNumber;
+
+      var User = Parse.Object.extend("_User"); 
+      var query = new Parse.Query(User);
+      query.equalTo('account',account);
+      query.first().then(function(res){
+        user =  res;
+        var data= {};
+
+        if(account && account.get('taxName'))
+          data.razonSocial = account.get('taxName');
+        if(request.object.get('invoiceNo'))
+          data.invoiceNo = request.object.get('invoiceNo');
+
+        var email = false;
+        if(user.get('username'))
+          email = user.get('username');
+
+        var name = false;
+        if(user.get('name'))
+          name = user.get('name');
+
+        console.log("beforesave-payment");
+        console.log(cfdi);
+        console.log(data);
+        console.log(email);
+        console.log(name);
+
+        sendInvoice(cfdi,"pago", data, email, false, name);
+      });
+    }
+  });
+});
+
+Parse.Cloud.beforeSave("Shipping",function(request,response){
+  var original = request.original;
+  var prevStatus = original.get("status");
+  var newStatus = request.object.get("status");
+  if(newStatus != prevStatus){
+    if(newStatus == "delivered" || newStatus =="pickup" || newStatus =="in_transit"){
+    var account;
+    var user;
+    request.object.get('account').fetch().then(function(res){
+      account=res;
+      var User = Parse.Object.extend('_User');
+      var query = new Parse.Query(User);
+      query.equalTo("account",account);
+
+      return query.first();
+    }).then(function(res){
+
+        user = res;
+        var email =  user.get('username');
+        var trackingNumber =  request.object.get("trackingNumber");
+        var name =  user.get('name');
+        var carrier =  request.object.get('carrier');
+        var html ="";
+        var subject;
+        if(newStatus == "delivered"){
+          html = templates.delivered(name, trackingNumber, carrier);
+          subject = "¡Entrega exitosa: "+trackingNumber+"!";    
+        }
+        else if(newStatus == "pickup"){
+          html = templates.pickupMail(name, trackingNumber, carrier);
+          subject = "¡Recolección exitosa: "+trackingNumber+"!";
+        }
+        else if(newStatus == "in_transit"){
+          html = templates.inTransit(name, trackingNumber, carrier);
+          subject = "¡Ya en transito: "+trackingNumber+"!";
+        }
+        html = htmlTemplate(html);
+        sendEmail('carlos@canizal.com', subject, html, false, false);
+        response.success();
+
+    },function(err){
+      response.error(err);
+    });
+    }else{
+      response.success();      
+    }
+  }else{
+    response.success();
   }
+
 });
 
 
@@ -910,11 +1084,11 @@ var submitOrder = function(type, order, user){
         if(account.get('verified') == true){
           var amount = parseFloat(order.amount);
           if(amount && amount > 0){
-
-            var available = account.get('creditAvailable');
+            var dueAmount = account.get('dueAmount');
+            var limit = account.get('creditLimit');
+            var available = limit-dueAmount;
             var status = account.get('status');
             var verified = account.get('verified');
-            var limit = account.get('creditLimit');
 
             if(verified && status == 'active' && available > amount){
               var auth = randomString(8);
@@ -1125,6 +1299,8 @@ Parse.Cloud.define("chargeCard",function(request, response){
   var order =  {amount: amount};
   var paymentType = false;
   var paid = false;
+  var account;
+
 
   if(paymentMethod && paymentMethod.card){
     var cardId = paymentMethod.card.token;
@@ -1133,8 +1309,15 @@ Parse.Cloud.define("chargeCard",function(request, response){
   }else if(paymentMethod == 'account'){
     paymentType = 'account';
   }
-
-  submitOrder(paymentType ,order, user).then(function(result){
+  user.get('account').fetch().then(function(res){
+    if(res){
+      account = res;
+    }
+    else{
+      //meter validador
+    }
+  return submitOrder(paymentType ,order, user);
+  }).then(function(result){
     requestResult.payment = result;
 
     if((result.message == "Aprobada" || result.message == "Approved") && result.auth_code){
@@ -1152,13 +1335,8 @@ Parse.Cloud.define("chargeCard",function(request, response){
       if(requestResult && requestResult.payment)
         requestResult.payment.type = paymentType;
 
-      if(user){
-        var Account = Parse.Object.extend('Account');
-        var account = new Account();
-        account.id = user.get('account').id;
-        if(account.id)
-          payment.set("account",account);
-      }
+      if(account)
+        payment.set("account",account);
 
       if(paymentType == 'account'){
         var parse_promise = new Parse.Promise();
@@ -1243,14 +1421,57 @@ Parse.Cloud.define("chargeCard",function(request, response){
     });
 
   }).then(function(){
-    createInvoice(user, amount, paid, paymentSave, requestResult.shipping);
+    createInvoice(user,account, amount, paid, paymentSave, requestResult.shipping, false, false, false);
     response.success(requestResult);
   },function(error){
     response.error(error);
   });
   // response.success(order);
 });
-//CONEKTA CHARGE CARD
+
+
+Parse.Cloud.define("invoiceShipping",function(request, response){
+  var trackingNumber = request.params.trackingNumber;
+  var formaPago = request.params.formaPago;
+  var invoiceType = request.params.invoiceType;
+  var items = request.params.items;
+  var paid = request.params.paid;
+
+
+  console.log('formaPago-canizal')
+  console.log(formaPago);
+
+  paid = paid == true || paid =="true"?true:false;
+  var user = request.user;
+  if(!trackingNumber)
+    return response.error({error:true,message:"Invalid trackingNumber"});
+
+  var Shipping = Parse.Object.extend("Shipping"); 
+  var query = new Parse.Query(Shipping);
+  var shipping;
+  var account;
+  query.equalTo('trackingNumber', trackingNumber);
+  query.first().then(function(res){
+    if(res)
+      shipping = res;
+    else
+      response.error({error:true, message:"trackingNumber not found"});
+    return shipping.get('account').fetch();
+  }).then(function(res){
+    if(res)
+      account = res;
+    else
+      response.error({error:true, message:"account not found"});
+
+    var amount =  shipping.get('paymentAmount');
+    return createInvoice(user,account, amount, paid, false, shipping, formaPago, items, invoiceType);
+  }).then(function(invoice){
+    response.success(invoice);
+  },function(err){
+    response.error(err);
+  });
+
+});
 
 Parse.Cloud.beforeSave("Payment",function(request, response){
   if(request.object.existed() === false && !request.object.get('paid')){

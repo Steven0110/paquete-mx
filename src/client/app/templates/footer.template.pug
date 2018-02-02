@@ -12,13 +12,13 @@
             .footer-title
               |Mi cuenta
             .footer-item
-              a(ui-sref="#")
+              a(ui-sref="login")
                 |Iniciar Sesión
             .footer-item
-              a(ui-sref="#")
-                |Mis Envios
+              a(uis-ref="dashboard.shippings")
+                |Mis Envíos
             .footer-item
-              a(ui-sref="#")
+              a(ui-sref="login.account")
                 |Mi Perfil
             .footer-title
               |Privacidad
@@ -39,7 +39,7 @@
               |Servicios
             .footer-item
               a(ui-sref="home")
-                |Cotizar mi envio
+                |Cotizar mi envío
             .footer-item
               a(ui-sref="dashboard.shippings")
                 |Rastrear mi paquete.
@@ -55,16 +55,16 @@
                 |Seguridad en pagos
             .footer-item
               a(ui-sref="home-section({section:'payments'})",ui-sref-opts="{reload: true}")
-                |¿Comó puedo pagar?
+                |¿Cómo puedo pagar?
         .col-sm-4.footer-separator
           .padding-footer
             .footer-title
-              |Contactanos
+              |Contáctanos
             .footer-item
               a(ui-sref="#")
                 |hola@paquete.mx
             .footer-title
-              |Siguenos
+              |Síguenos
             .footer-item
               a(href="https://facebook.com/pqtmex" target="_blank")
                 i.fa.fa-facebook
@@ -83,6 +83,6 @@
                 |@pqtmex
       .padding-footer
         .align-center.margin-top-2.accent
-          |Paquete MX. Todos los Derechos Reservador 2018
+          |Paquete MX. Todos los Derechos Reservados 2018
         .align-center
           |Los logos y marcas son propiedad de sus respectivos dueños.

@@ -26,12 +26,12 @@
             h4.align-center
               |Disponible
             h2.align-center.success
-              |{{enterprise.account.creditAvailable | currency}}
+              |{{enterprise.account.creditLimit - enterprise.account.dueAmount  | currency}}
           .col-xs-4
             h4.align-center
               |Por pagar
             h2.align-center.error
-              |{{enterprise.account.creditLimit - enterprise.account.creditAvailable | currency}}
+              |{{enterprise.account.dueAmount | currency}}
   div.align-center
     h3.disabled-color
       |Status de la cuenta:
@@ -61,8 +61,6 @@
         |Acta constitutiva y/o poder notarial.
       li
         |I.D. de representante legal (INE o PASAPORTE).
-      li
-        |CURP y RFC del representante legal.
       li
         |Comprobante de domicilio.
       li

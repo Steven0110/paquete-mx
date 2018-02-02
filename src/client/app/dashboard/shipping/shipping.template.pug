@@ -248,11 +248,6 @@
           |{{shipping.data.charge.termination}}
       h3
         span.accent
-          |Cargos de Sobrepeso
-      h3.disabled-color(data-ng-if="shipping.overWeight.length < 1")
-        |No hay cargos de sobrepeso.
-      h3
-        span.accent
           |Comprobante Fiscal:
       .row
         .col-xs-9
@@ -298,43 +293,48 @@
                 a.hover-accent(ng-href="{{shell.download(item.UUID, 'xml')}}")
                   i.fa.fa-download
                   |XML
-      div(data-ng-if="shipping.outcomes.length > 0")
-        h3
-          span.accent
-            |Complementos de Pago:
-        .row
-          .col-xs-9
-            table.table.table-responsive
-              thead
-                th
-                  |Folio
-                th
-                  |UUID
-                th
-                  |Monto
-                th
-                  |Status
-                th
-                  |Archivos
-              tbody(data-ng-repeat="item in shipping.outcomes")
-                td.bold.accent
-                  |{{item.invoiceNo}}
-                td
-                  |{{item.UUID}}
-                td
-                  |{{item.amount | currency}}
-                td
-                  span.error(data-ng-if="item.cancelled")
-                    |CANCELADA
-                  span.success(data-ng-if="!item.cancelled")
-                    |ACTIVA
-                td
+    .shipping-info
+      h3
+        span.accent
+          |Cargos de Sobrepeso
+      h3.disabled-color(data-ng-if="shipping.overWeight.length < 1")
+        |No hay cargos de sobrepeso.
+      .row(data-ng-if="shipping.overWeight.length > 0")
+        .col-xs-9
+          table.table.table-responsive
+            thead
+              th
+                |Folio
+              th
+                |UUID
+              th
+                |Monto
+              th
+                |Status
+              th
+                |Archivos
+            tbody(data-ng-repeat="item in shipping.overWeight")
+              td.bold.accent
+                |{{item.invoiceNo}}
+              td
+                |{{item.UUID}}
+              td
+                |{{item.amount | currency}}
+              td
+                span.error(data-ng-if="item.cancelled")
+                  |CANCELADA
+                span.success(data-ng-if="!item.cancelled")
+                  |ACTIVA
+              td
+                div
                   a.hover-accent(ng-href="{{shell.download(item.UUID, 'pdf')}}")
                     i.fa.fa-download
                     |PDF
+                div
                   a.hover-accent(ng-href="{{shell.download(item.UUID, 'xml')}}")
                     i.fa.fa-download
                     |XML
+    .shipping-info
       div(data-ng-if="shipping.payments.length > 0")
         h3
           span.accent
@@ -366,9 +366,51 @@
                   span.success(data-ng-if="!item.cancelled")
                     |ACTIVA
                 td
-                  a.hover-accent(ng-href="{{shell.download(item.UUID, 'pdf')}}")
-                    i.fa.fa-download
-                    |PDF
-                  a.hover-accent(ng-href="{{shell.download(item.UUID, 'xml')}}")
-                    i.fa.fa-download
-                    |XML
+                  div
+                    a.hover-accent(ng-href="{{shell.download(item.UUID, 'pdf')}}")
+                      i.fa.fa-download
+                      |PDF
+                  div
+                    a.hover-accent(ng-href="{{shell.download(item.UUID, 'xml')}}")
+                      i.fa.fa-download
+                      |XML
+    .shipping-info
+      div(data-ng-if="shipping.outcomes.length > 0")
+        h3
+          span.accent
+            |Notas de Crédito:
+        .row
+          .col-xs-9
+            table.table.table-responsive
+              thead
+                th
+                  |Folio
+                th
+                  |UUID
+                th
+                  |Monto
+                th
+                  |Status
+                th
+                  |Archivos
+              tbody(data-ng-repeat="item in shipping.outcomes")
+                td.bold.accent
+                  |{{item.invoiceNo}}
+                td
+                  |{{item.UUID}}
+                td
+                  |{{item.amount | currency}}
+                td
+                  span.error(data-ng-if="item.cancelled")
+                    |CANCELADA
+                  span.success(data-ng-if="!item.cancelled")
+                    |ACTIVA
+                td
+                  div
+                    a.hover-accent(ng-href="{{shell.download(item.UUID, 'pdf')}}")
+                      i.fa.fa-download
+                      |PDF
+                  div
+                    a.hover-accent(ng-href="{{shell.download(item.UUID, 'xml')}}")
+                      i.fa.fa-download
+                      |XML
