@@ -24,7 +24,7 @@ var emisor = {
 //Production
 
 if(production){
-  emisor.cedula.RFC = "MAG041126GT8";
+  emisor.cedula.RFC = "CTR150319NV9";
   var domain = "paquete.mx";
   Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-5e0f8c7de60172d4428cb1edbed23275'});
   var tPagoPublic = "u2oiwgTFEHht04tqeYq0MT06Np8ixXdU:eEXLhTxBiYo6fmFnWupvaeN7lyxuEAot";
@@ -879,49 +879,53 @@ Parse.Cloud.afterSave("Payment", function(request){
 
 Parse.Cloud.beforeSave("Shipping",function(request,response){
   var original = request.original;
-  var prevStatus = original.get("status");
-  var newStatus = request.object.get("status");
-  if(newStatus != prevStatus){
-    if(newStatus == "delivered" || newStatus =="pickup" || newStatus =="in_transit"){
-    var account;
-    var user;
-    request.object.get('account').fetch().then(function(res){
-      account=res;
-      var User = Parse.Object.extend('_User');
-      var query = new Parse.Query(User);
-      query.equalTo("account",account);
+  if(original){
+    var prevStatus = original.get("status");
+    var newStatus = request.object.get("status");
+    if(newStatus != prevStatus){
+      if(newStatus == "delivered" || newStatus =="pickup" || newStatus =="in_transit"){
+      var account;
+      var user;
+      request.object.get('account').fetch().then(function(res){
+        account=res;
+        var User = Parse.Object.extend('_User');
+        var query = new Parse.Query(User);
+        query.equalTo("account",account);
 
-      return query.first();
-    }).then(function(res){
+        return query.first();
+      }).then(function(res){
 
-        user = res;
-        var email =  user.get('username');
-        var trackingNumber =  request.object.get("trackingNumber");
-        var name =  user.get('name');
-        var carrier =  request.object.get('carrier');
-        var html ="";
-        var subject;
-        if(newStatus == "delivered"){
-          html = templates.delivered(name, trackingNumber, carrier);
-          subject = "¡Entrega exitosa: "+trackingNumber+"!";    
-        }
-        else if(newStatus == "pickup"){
-          html = templates.pickupMail(name, trackingNumber, carrier);
-          subject = "¡Recolección exitosa: "+trackingNumber+"!";
-        }
-        else if(newStatus == "in_transit"){
-          html = templates.inTransit(name, trackingNumber, carrier);
-          subject = "¡Ya en transito: "+trackingNumber+"!";
-        }
-        html = htmlTemplate(html);
-        sendEmail('carlos@canizal.com', subject, html, false, false);
-        response.success();
+          user = res;
+          var email =  user.get('username');
+          var trackingNumber =  request.object.get("trackingNumber");
+          var name =  user.get('name');
+          var carrier =  request.object.get('carrier');
+          var html ="";
+          var subject;
+          if(newStatus == "delivered"){
+            html = templates.delivered(name, trackingNumber, carrier);
+            subject = "¡Entrega exitosa: "+trackingNumber+"!";    
+          }
+          else if(newStatus == "pickup"){
+            html = templates.pickupMail(name, trackingNumber, carrier);
+            subject = "¡Recolección exitosa: "+trackingNumber+"!";
+          }
+          else if(newStatus == "in_transit"){
+            html = templates.inTransit(name, trackingNumber, carrier);
+            subject = "¡Ya en transito: "+trackingNumber+"!";
+          }
+          html = htmlTemplate(html);
+          sendEmail('carlos@canizal.com', subject, html, false, false);
+          response.success();
 
-    },function(err){
-      response.error(err);
-    });
+      },function(err){
+        response.error(err);
+      });
+      }else{
+        response.success();      
+      }
     }else{
-      response.success();      
+      response.success();
     }
   }else{
     response.success();
