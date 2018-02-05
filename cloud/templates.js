@@ -96,7 +96,7 @@ var templates = {
   <div style="color:#333"><h4 style="text-align:center; color:#f38b00">COTIZA | COMPARA | ENVÍA</h4>\
     <div style="width:100%;height:2px; background-color: #ccc; margin: 10px 0"></div>\
     <h1 style="text-align: center;color:#f38b00">¡Hola <span style="text-transform: uppercase;">'+name+'</span>!</h1>\
-    <p>El envío con número de guia <span style="color:#f38b00">'+trackingNumber+'</span> ya fue recogido por la empresa <span style="color:#f38b00">'+carrier+'</span> recibirás notificaciones cuando se encuentre en tránsito. \
+    <p>El envío con número de guia <span style="color:#f38b00">'+trackingNumber+'</span> ya fue recolectado por la empresa <span style="color:#f38b00">'+carrier+'</span> recibirás notificaciones cuando se encuentre en tránsito. \
     <p>Recuerda que puedes seguir tus envíos y conocer todos los detalles desde tu Dashboard\
     <div style="text-align:center;margin-top:20px">\
       <h3 style="color:#666; text-align:center">¿Quieres estar al tanto?</h3>\

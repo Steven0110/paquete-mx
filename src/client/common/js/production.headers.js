@@ -19,6 +19,9 @@
       javascriptKeys:{
         'applicationID' : 'OwwqTBzf9Tj618RyQqYmx3eJOhxaS8qolcojD3IA',
         'javascriptKey':'gCi0VgG0NVmtZA7lKsAAVVAvk9IwECg2GMJHwWdQ'
+      },
+      apiEndpoint:{
+        "baseUrl": "https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api"
       }
     };
   }

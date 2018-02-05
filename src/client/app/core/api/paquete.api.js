@@ -5,11 +5,11 @@
   .module('app.core')
   .factory('paqueteApi', paqueteApi);
 
-  paqueteApi.$inject = ['$q', 'Restangular'];
+  paqueteApi.$inject = ['$q', 'Restangular','parseheaders'];
 
   /* @ngInject */
 
-  function paqueteApi($q, Restangular) {
+  function paqueteApi($q, Restangular, parseheaders) {
 
     var factory = {
       endpoint  : endpoint
@@ -19,8 +19,6 @@
 
     function endpoint(endpoint){
       ///dev-rate
-      // Restangular.setBaseUrl('https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/rate');
-      // Restangular.setDefaultHeaders({'Content-Type': 'application/json'});
       return new ParseClass(endpoint);
     }
 
@@ -29,7 +27,8 @@
 
       var restObject;
       this.init = function(){
-        Restangular.setBaseUrl('https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api');
+        var baseUrl = parseheaders.apiEndpoint['baseUrl'];
+        Restangular.setBaseUrl(baseUrl);
         Restangular.setDefaultHeaders({'Content-Type': 'application/json'});
         restObject = Restangular.service(endpoint);
       }

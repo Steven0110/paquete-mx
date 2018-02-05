@@ -248,7 +248,8 @@ exports.handler = (event, context, callback) => {
                 },
                 Address: {
                   StreetLines: [
-                    fromAddress
+                    fromAddress,
+                    data.from.county
                   ],
                   City: data.from.city,
                   // StateOrProvinceCode: 'TN',
@@ -263,7 +264,8 @@ exports.handler = (event, context, callback) => {
                 },
                 Address: {
                   StreetLines: [
-                    toAddress
+                    toAddress,
+                    data.to.county
                   ],
                   City: data.to.city,
                   PostalCode: data.to.zip,

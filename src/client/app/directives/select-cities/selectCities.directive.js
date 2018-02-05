@@ -2,9 +2,9 @@ angular
   .module('app.core')
   .directive('selectCities',selectCities);
 
-selectCities.$inject = ['$http','$document'];
+selectCities.$inject = ['$http','$document','parseheaders'];
 
-function selectCities($http, $document){
+function selectCities($http, $document, parseheaders){
   return{
     require: 'ngModel',
     templateUrl: 'app/directives/select-cities/selectDirective.template.html',
@@ -69,7 +69,8 @@ function selectCities($http, $document){
           vm.options = [];
           search = search.trim();
           search = encodeURI(search);
-          $http.post("https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/counties",{search:search,country:country})
+          var baseUrl = parseheaders.apiEndpoint['baseUrl'];
+          $http.post(baseUrl+"/counties",{search:search,country:country})
           .then(function(response) {
             if(response && response.data && response.data.length > 0)
               vm.options = response.data;

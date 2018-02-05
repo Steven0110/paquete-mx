@@ -6,11 +6,13 @@
 27-Diciembre-2017: Se elimina conekta y se agrega t-pago
 6-Enero-2018: Se agregan las funciones de facturacion
 9-Enero-2018: Se egrega procesamiento para cuenta enterprise
+5-Febrero-2018: Se establecen ambientes desarrollo y produccion
+
 change log*/
 var moment = require("./moment");
 var templates = require("./templates.js").templates;
 var asyncEach = require("./each-series");
-var production = true;
+var production = false;
 var Mailgun = null;
 
 var emisor = {
@@ -21,6 +23,7 @@ var emisor = {
               },
               "CP":"15510"
             };
+
 //Production
 
 if(production){
@@ -29,28 +32,21 @@ if(production){
   Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-5e0f8c7de60172d4428cb1edbed23275'});
   var tPagoPublic = "u2oiwgTFEHht04tqeYq0MT06Np8ixXdU:eEXLhTxBiYo6fmFnWupvaeN7lyxuEAot";
   var tPagoPrivate = "u2oiwgTFEHht04tqeYq0MT06Np8ixXdU:ylBRVVpuwDBbg0joIeyRwgQeY3U7KHNr";
-  // var tPagoPublic = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:Fg4czj5lWgbUc9rJ0bX3IcPmSVgTKCUU";
-  // var tPagoPrivate = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:QOTBkZTHlz0SeNhLt6fDRJWGcloMEsI1";
   var appId = "OwwqTBzf9Tj618RyQqYmx3eJOhxaS8qolcojD3IA";
   var masterKey = "baplcn89UZ3uyJq0AflqtXjnFV2wRmo81SaWg7wd";
   var javascriptKey = "gCi0VgG0NVmtZA7lKsAAVVAvk9IwECg2GMJHwWdQ";
+  var endpointFacturacion = "http://54.244.218.15/endpoint";
 
 }else{
   emisor.cedula.RFC = "MAG041126GT8";
-  //localhot
-  // var domain = "sandbox0ac0a2a5c16246be98c97c0c2628f3fa.mailgun.org";
-  //beta.paquete.mx
   var domain = 'beta.paquete.mx';
-  //localhost
-  // Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-5e0f8c7de60172d4428cb1edbed23275'});
-  //beta.paquete.mx
   Mailgun = require('mailgun-js')({domain:domain, apiKey:'key-5e0f8c7de60172d4428cb1edbed23275'});
-  // var conekta_key = 'Basic OmtleV81elE2NGZIcWhRZmYzSEthaUNWVDRn';
   var tPagoPublic = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:Fg4czj5lWgbUc9rJ0bX3IcPmSVgTKCUU";
   var tPagoPrivate = "lP2Gv2NrgpXkP25UiHCWxv4qHnK4mmoI:QOTBkZTHlz0SeNhLt6fDRJWGcloMEsI1";
   var appId = "OaKte4Imh3dk5JIhsJoLAcLaPYMb2mQUeqyHXrP1";
   var masterKey = "rZx1h8G9530G73xbzk5F1MLvGzb080KL2u55uC8S";
   var javascriptKey = "wcFLh2UROrO8fN9SbFbgbeOZTZOlPu3YkAMys1bL";
+  var endpointFacturacion = "http://54.244.218.15/development";
 }
 
 
@@ -267,40 +263,45 @@ Parse.Cloud.define("cancelPickup",function(request, response){
     if(res){
       shipping =  res;
 
-      var pickupConfirmation = shipping.get("pickupConfirmation");
-      if(pickupConfirmation)
-        body.pickupConfirmation = pickupConfirmation
+      if(params.carrier == "REDPACK"){
+        shipping.set('pickupConfirmation', null);
+        shipping.save().then(function(){
+          var confirmation = randomString(5);
+          response.success({confirmation:confirmation});
+        });
+      }else{
 
-      console.log(body);
+        var pickupConfirmation = shipping.get("pickupConfirmation");
+        if(pickupConfirmation)
+          body.pickupConfirmation = pickupConfirmation
 
-      Parse.Cloud.httpRequest({
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/cancelpickup',
-        body: body
-      }).then(function(res){
-        console.log('heeeeee');
-        console.log(res.text);
-        if(res.text){
-          res =  JSON.parse(res.text);
-          console.log(res);
-          if(res.confirmation){
-            shipping.set('pickupConfirmation', null);
-            shipping.save().then(function(){
-              response.success(res);
-            });
+        Parse.Cloud.httpRequest({
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/cancelpickup',
+          body: body
+        }).then(function(res){
+          if(res.text){
+            res =  JSON.parse(res.text);
+            console.log(res);
+            if(res.confirmation){
+              shipping.set('pickupConfirmation', null);
+              shipping.save().then(function(){
+                response.success(res);
+              });
+            }
+          }else{
+            response.error({error:true, message:"Imposible cancelar recolección, intenta de nuevo por favor."});
           }
-        }else{
-          response.error({error:true, message:"Imposible cancelar recolección, intenta de nuevo por favor."});
-        }
-      },function(err){
-        if(err && err.data && err.data.error){
-          err = err.data.error;
-        }
-        response.error(err);
-      });
+        },function(err){
+          if(err && err.data && err.data.error){
+            err = err.data.error;
+          }
+          response.error(err);
+        });
+      }
     }else{
       response.error({error:true, message:"Invalid trackingNumber"});
     }
@@ -392,34 +393,86 @@ Parse.Cloud.define("sendPickUp",function(request, response){
         if(service.service && service.service.code)
           body.serviceCode = service.service.code;
         }
+        
+      if(params.carrier == 'REDPACK'){
 
-      console.log(body);
-
-      Parse.Cloud.httpRequest({
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/pickup',
-        body: body
-      }).then(function(res){
-        if(res.text){
-          res =  JSON.parse(res.text);
-          if(res.confirmation){
-            shipping.set('pickupConfirmation',res.confirmation);
-            shipping.save().then(function(){
-              response.success(res);
-            })
+        var packages = "";
+        for(var i=0; i< service.packages.length; i++){
+          var width = service.packages[i].width;
+          var length = service.packages[i].length;
+          var height = service.packages[i].height;
+          var weight = service.packages[i].weight;
+          packages += '<div>Peso: '+weight+' Kg.</div>';
+          packages += '<div>Alto: '+height+' cm</div>';
+          packages += '<div>Ancho: '+width+' cm</div>';
+          packages += '<div>Largo: '+length+' cm</div>';
+          packages += '<div>-------------------</div>';
+        }
+        var confirmation = randomString(5);
+        var html = '<h1>Recolección Redpack solicidata</h1>\
+                    <h2>Guia</h2>\
+                    <div>'+params.trackingNumber+'</div>\
+                    <h2>Servicio</h2>\
+                    <div>'+service.service.name+'</div>\
+                    <h2>Fecha</h2>\
+                    <div>'+body.date+'</div>\
+                    <h2>Hora</h2>\
+                    <div>'+params.schedule+'</div>\
+                    <h2>Origen</h2>\
+                    <div>Nombre:'+service.from.name+'</div>\
+                    <div>Telefono:'+service.from.phone+'</div>\
+                    <div>Email:'+service.from.email+'</div>\
+                    <div>Calle:'+service.from.street+'</div>\
+                    <div>Numero:'+service.from.number+'</div>\
+                    <div>Interior:'+service.from.apt+'</div>\
+                    <div>CP:'+service.from.zip+'</div>\
+                    <div>Estado:'+service.from.state+'</div>\
+                    <div>Ciudad:'+service.from.city+'</div>\
+                    <h2>Destino</h2>\
+                    <div>Nombre:'+service.to.name+'</div>\
+                    <div>Telefono:'+service.to.phone+'</div>\
+                    <div>Email:'+service.to.email+'</div>\
+                    <div>Calle:'+service.to.street+'</div>\
+                    <div>Numero:'+service.to.number+'</div>\
+                    <div>Interior:'+service.to.apt+'</div>\
+                    <div>CP:'+service.to.zip+'</div>\
+                    <div>Estado:'+service.to.state+'</div>\
+                    <div>Ciudad:'+service.to.city+'</div>\
+                    <h2>Paquetes</h2>'+packages+'\
+                    ';
+        html = htmlTemplate(html);
+        sendEmail('carlos@paquete.mx;joe@paquete.mx;atencion@paquete.mx;diego@paquete.mx', "¡Recoleccion solicitada:"+params.trackingNumber+"!", html, false);
+        shipping.set('pickupConfirmation',confirmation);
+        shipping.save().then(function(){
+          response.success({confirmation:confirmation});
+        })
+      }else{
+        Parse.Cloud.httpRequest({
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/pickup',
+          body: body
+        }).then(function(res){
+          if(res.text){
+            res =  JSON.parse(res.text);
+            if(res.confirmation){
+              shipping.set('pickupConfirmation',res.confirmation);
+              shipping.save().then(function(){
+                response.success(res);
+              })
+            }
+          }else{
+            response.error({error:true, message:"Imposible agendar recolección, intenta de nuevo por favor."});
           }
-        }else{
-          response.error({error:true, message:"Imposible agendar recolección, intenta de nuevo por favor."});
-        }
-      },function(err){
-        if(err && err.data && err.data.error){
-          err = err.data.error;
-        }
-        response.error(err);
-      });
+        },function(err){
+          if(err && err.data && err.data.error){
+            err = err.data.error;
+          }
+          response.error(err);
+        });
+      }
     }else{
       response.error({error:true, message:"Invalid trackingNumber"});
     }
@@ -1680,11 +1733,7 @@ Parse.Cloud.define("checkTaxId",function(request, response){
 function validaRFC(taxId){
   var parse_promise = new Parse.Promise();
 
-  var url = 'http://54.244.218.15/development/statusRFC.php';
-
-  if(production){
-    url = 'http://54.244.218.15/endpoint/statusRFC.php';
-  }
+  var url = endpointFacturacion+'/statusRFC.php';
 
   var method = 'POST';
   var params = {taxId:taxId};
@@ -1716,11 +1765,7 @@ function cancelCFDI(params){
   if(!params || !params.UUID)
     parse_promise.reject({error:"UUID is required"});
 
-  var url = 'http://54.244.218.15/development/cancelacion.php';
-
-  if(production){
-    url = 'http://54.244.218.15/endpoint/cancelacion.php';
-  }
+  var url = endpointFacturacion+'/cancelacion.php';
 
   var method = 'POST';
 
@@ -2011,13 +2056,7 @@ Parse.Cloud.define("getCustomer",function(request, response){
 function makeCFDI(params){
   var parse_promise = new Parse.Promise();
 
-  var url = 'http://54.244.218.15/development/index.php';
-
-  if(production){
-    url = 'http://54.244.218.15/endpoint/index.php';
-  }
-
-
+  var url =  endpointFacturacion+'/index.php';
   
   var method = 'POST';
 

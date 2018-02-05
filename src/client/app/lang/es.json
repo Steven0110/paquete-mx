@@ -163,6 +163,7 @@
   "shipping":{
     "in_transit" :"En transito",
     "delivered" :"Entregado",
+    "pickup": "Recolectado",
     "label_created" :"Etiqueta Creada"
   }
 }

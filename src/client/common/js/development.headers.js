@@ -21,8 +21,8 @@
         'javascriptKey':'wcFLh2UROrO8fN9SbFbgbeOZTZOlPu3YkAMys1bL'
 
       },
-      conektaKeys:{
-        'public': 'key_OhCaMWr5dkyi8V8PuzoGUPw'
+      apiEndpoint:{
+        "baseUrl": "https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api"
       }
     };
   }
