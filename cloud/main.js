@@ -36,7 +36,9 @@ if(production){
   var masterKey = "baplcn89UZ3uyJq0AflqtXjnFV2wRmo81SaWg7wd";
   var javascriptKey = "gCi0VgG0NVmtZA7lKsAAVVAvk9IwECg2GMJHwWdQ";
   var endpointFacturacion = "http://54.244.218.15/endpoint";
-
+  var urlApi = "https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api";
+  var invoiceUrl = "https://s3-us-west-2.amazonaws.com/paquetemx/invoices/";
+  var labelUrl = "http://54.245.38.66/?trackingNumber=";
 }else{
   emisor.cedula.RFC = "MAG041126GT8";
   var domain = 'beta.paquete.mx';
@@ -47,6 +49,9 @@ if(production){
   var masterKey = "rZx1h8G9530G73xbzk5F1MLvGzb080KL2u55uC8S";
   var javascriptKey = "wcFLh2UROrO8fN9SbFbgbeOZTZOlPu3YkAMys1bL";
   var endpointFacturacion = "http://54.244.218.15/development";
+  var urlApi = "https://mqxt7kvlib.execute-api.us-west-2.amazonaws.com/dev";
+  var invoiceUrl = "https://s3-us-west-2.amazonaws.com/paquetemx/development/";
+  var labelUrl = "http://54.245.38.66/dev.php?trackingNumber=";
 }
 
 
@@ -154,8 +159,6 @@ function createInvoice(user,account, amount, paid, payment, shipping, formaPago,
         invoice.set('subtotal', subtotal);
         invoice.set('iva', iva);
         invoice.set('invoiceNo', res.cfdi.serie+res.cfdi.folio);
-
-        console.log('debugging-4');
 
         if(shipping){
           invoice.set('shipping', shipping);
@@ -275,12 +278,14 @@ Parse.Cloud.define("cancelPickup",function(request, response){
         if(pickupConfirmation)
           body.pickupConfirmation = pickupConfirmation
 
+
+        var url = urlApi+"/cancelpickup";
         Parse.Cloud.httpRequest({
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/cancelpickup',
+          url: url,
           body: body
         }).then(function(res){
           if(res.text){
@@ -447,12 +452,14 @@ Parse.Cloud.define("sendPickUp",function(request, response){
           response.success({confirmation:confirmation});
         })
       }else{
+
+        var url = urlApi+"/pickup";
         Parse.Cloud.httpRequest({
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/pickup',
+          url: url,
           body: body
         }).then(function(res){
           if(res.text){
@@ -799,7 +806,7 @@ function sendInvoice(cfdi, type, dataInfo, email, trackingNumber, name){
     //regresar promsesa
   }
 
-  var file = "https://s3-us-west-2.amazonaws.com/paquetemx/invoices/"+cfdi.UUID; 
+  var file = invoiceUrl+cfdi.UUID; 
   var pdfPath = file+".pdf";
   var xmlPath = file+".xml";
   var pdfBuffer;
@@ -1464,7 +1471,7 @@ Parse.Cloud.define("chargeCard",function(request, response){
     
     //jccz send-email
 
-    var file = "http://54.245.38.66/?trackingNumber="+trackingNumber; 
+    var file = labelUrl+trackingNumber; 
     return Parse.Cloud.httpRequest({
       method: 'GET',
       headers:{},
@@ -2209,12 +2216,14 @@ function sendShipOrder(user, shipping, payment) {
     shipping  : shipping
   }
 
+  var url = urlApi+"/ship";
+
   Parse.Cloud.httpRequest({
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    url: 'https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/ship',
+    url: url,
     body: body
   }).then(function(result){
     console.log('result-shipping');

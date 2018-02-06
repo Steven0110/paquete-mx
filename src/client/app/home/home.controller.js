@@ -158,7 +158,7 @@
 
     home.setService = function(service){
 
-      console.log(service);
+      // console.log(service);
 
 
       var shipping ={

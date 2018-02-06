@@ -11,19 +11,19 @@ exports.handler = (event, context, callback) => {
     var type =  null;
     var production = false;
     var rate =  {};
-    const types = ['ups','fedex','redpack','ivoy'];
-    const functions = {};
+    const types = ['ups','fedex','redpack'];
+    var functions = {};
     if(production){
         functions = {
             "ups"     : "PROD-UPS-Rates",
-            "fedex"   : "DEV-Fedex-Rates",
-            "redpack" : "DEV-RedPack"
+            "fedex"   : "PROD-FEDEX-Rates",
+            "redpack" : "PROD-REDPACK-Rates"
         }
     }else{
         functions = {
             "ups"     : "DEV-UPS-Rates",
-            "fedex"   : "DEV-Fedex-Rates",
-            "redpack" : "DEV-RedPack"
+            "fedex"   : "DEV-FEDEX-Rates",
+            "redpack" : "DEV-REDPACK-Rates"
         }
     }
     

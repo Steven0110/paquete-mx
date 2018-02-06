@@ -1,7 +1,7 @@
 var https = require("https");
 var convert = require('xml-to-json-promise');
 var moment = require ('moment');
-const production =  true;
+const production =  false;
 const exchange = 20;
 const currentDiscount = 0.15;
 

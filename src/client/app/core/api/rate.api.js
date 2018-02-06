@@ -5,11 +5,11 @@
   .module('app.core')
   .factory('rateApi', rateApi);
 
-  rateApi.$inject = ['$q', 'paqueteApi','userApi','parse'];
+  rateApi.$inject = ['$q', 'paqueteApi','userApi','parse','parseheaders'];
 
   /* @ngInject */
 
-  function rateApi($q, paqueteApi,userApi, parse) {
+  function rateApi($q, paqueteApi,userApi, parse, parseheaders) {
 
     var factory = {
       rate    : rate,
@@ -31,12 +31,10 @@
         
     function rate(service,params){
       var deferred = $q.defer();
-      //flag de debug, quitar en produccion
-      params.debugging = true;
       var paquete = paqueteApi.endpoint("/rate");
       paquete.post(params).then(function(data){
-
-        if(params.debugging){
+        
+        if(parseheaders.debugging){
           console.log(data);
         }
         var json ={

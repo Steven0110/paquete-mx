@@ -6,6 +6,21 @@ function generateError(code, message){
     return JSON.stringify({"status":code,"error":message});
 }
 
+var production = false;
+var environment = production?"live":"sandbox";
+var key = "t1uSywQP78fogZx4";
+var password = "PGptLQ6OQHFjYkdKhDhoZjV15";
+var account_number = "510087860";
+var meter_number = "118841995";
+
+if(production){
+  key = "raF7pWAdOFqh7RWp";
+  password = "IpYuI9OM9zUIbTOZKg7mylyqo";
+  account_number = "912197689";
+  meter_number = "111951423";
+}
+
+
 function ship(data, items){
   var masterTrackingId = false;
   var counter = 0;
@@ -31,7 +46,7 @@ function ship(data, items){
           PaymentType: 'SENDER',
           Payor: {
             ResponsibleParty: {
-              AccountNumber: "912197689"
+              AccountNumber: account_number
             }
           }
         },
@@ -53,12 +68,12 @@ function ship(data, items){
     requestedShip.RequestedPackageLineItems = currentItem;
 
     var fedex = new fedexAPI({
-      environment: 'live', // or live
+      environment: environment, // or live
       debug: false,
-      key: 'raF7pWAdOFqh7RWp',
-      password: 'IpYuI9OM9zUIbTOZKg7mylyqo',
-      account_number: '912197689',
-      meter_number: '111951423',
+      key: key,
+      password: password,
+      account_number: account_number,
+      meter_number: meter_number,
       imperial: false // set to false for metric 
     });
 
@@ -68,6 +83,7 @@ function ship(data, items){
       if(err) {
         console.log(err);
       }else{
+        console.log('fedex-response');
         console.log(res);
         var trackingNumber = false;
         var label = false;

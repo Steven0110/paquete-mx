@@ -5,10 +5,10 @@
     .module('app.core')
     .controller('Shell',Shell);
 
-  Shell.$inject = ['$transitions','$scope','$state','$window','$q','$timeout','template','$mdToast','userApi','shippingApi'];
+  Shell.$inject = ['$transitions','$scope','$state','$window','$q','$timeout','template','$mdToast','userApi','shippingApi','parseheaders'];
 
 
-  function Shell($transitions, $scope, $state, $window, $q, $timeout,template, $mdToast, userApi, shippingApi){
+  function Shell($transitions, $scope, $state, $window, $q, $timeout,template, $mdToast, userApi, shippingApi, parseheaders){
     // jshint validthis: true 
     var shell = this;
     shell.loading = false;
@@ -23,9 +23,12 @@
       subtitle: "Subtitle"
     }
 
-    shell.downloadUrl = "http://54.244.218.15/endpoint/download.php";
     shell.download = function(uuid, type){
-      return shell.downloadUrl+"?uuid="+uuid+"&type="+type;
+      return parseheaders.apiEndpoint.downloadInvoice+"?uuid="+uuid+"&type="+type;
+    }
+
+    shell.downloadLabel = function(trackingNumber){
+      return parseheaders.apiEndpoint.downloadLabel+trackingNumber;
     }
 
 

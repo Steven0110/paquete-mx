@@ -6,7 +6,8 @@ config.$inject = ['$locationProvider', '$urlRouterProvider','$stateProvider','$m
 
 function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingProvider,localStorageServiceProvider) {
 
-  $locationProvider.html5Mode(true);
+  // if(parseheaders.production)
+    // $locationProvider.html5Mode(true);
   localStorageServiceProvider.setPrefix('paquete_mx');
 
   $mdThemingProvider.definePalette('customPalette', {

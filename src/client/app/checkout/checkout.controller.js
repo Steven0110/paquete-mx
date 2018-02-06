@@ -20,7 +20,6 @@
     checkout.paymentMethods = [];
     checkout.taxInfo = {};
     checkout.pickupConfirmation = false;
-    // console.log('shipping',checkout.shipping);
     
     if(checkout.shipping){
       var subtotal = checkout.shipping.service.discountTotal;
@@ -195,10 +194,7 @@
 
     checkout.order = function(){
       shell.moveToTop();
-      // var title ={main:"Términos y Condiciones",secondary:"He verificado mi información."};
-        // var content ={main:"He Leído, entiendo y ACEPTO los <a class='underline' ui-sref='privacy' target='_blank'>Términos y Condiciones</a>. Así como las <a class='underline' ui-sref='privacy' target='blank'>Políticas de Privacidad</a>."};
-        // var buttons ={main:{continue:"ACEPTO, crear etiqueta",cancel:"NO Acepto"},secondary:{continue:"Crear Etiqueta",cancel:"No, cancelar"}};
-      // Dialog.confirmDialog(title,content,buttons, function(){
+  
       if(checkout.acceptTerms){
         var total = checkout.shipping.service.total;
         var order = {
@@ -222,7 +218,6 @@
           // checkout.shipping.service.total = checkout.shipping.service.discountTotal;
         }
 
-        console.log('order-shipping',order);
         checkout.connecting = true;
         rateApi.ship(order).then(function(response){
           checkout.trackingNumber = response.shipOrder.trackingNumber;

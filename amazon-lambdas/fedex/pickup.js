@@ -1,7 +1,7 @@
 var https = require("https");
 var convert = require('xml-to-json-promise');
 var moment = require ('moment');
-const production =  true;
+const production =  false;
 
 
 function generateError(code, message){

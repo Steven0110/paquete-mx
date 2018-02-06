@@ -1,5 +1,5 @@
 var https = require("https");
-const production = true;
+const production = false;
 
 function generateError(code, message){
     return JSON.stringify({"status":code,"error":message});
@@ -76,7 +76,7 @@ exports.handler = (event, context, callback) => {
         var packagingType = "02";
         if(data.packagingType){
             if(data.packagingType == "document"){
-                packagingType = "01";    
+                packagingType = "02";    
             }else if(data.packagingType == "package"){
                 packagingType = "02";    
             }else{

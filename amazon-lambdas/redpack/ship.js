@@ -4,7 +4,7 @@ var Parse = require('parse/node').Parse;
 
 
 function getGuia(service){
-  var production = true;
+  var production = false;
   if(production){
     console.log('We are in production!');
     masterKey = "baplcn89UZ3uyJq0AflqtXjnFV2wRmo81SaWg7wd";
@@ -296,7 +296,15 @@ exports.handler = (event, context, callback) => {
         // body = '<?xmln version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><cotizacionNacional xmlns="http://ws.redpack.com"><PIN>QA j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=</PIN><idUsuario>785</idUsuario><guias><ns1:consignatario xmlns:ns1="http://vo.redpack.com/xsd"><ns1:codigoPostal>7270</ns1:codigoPostal></ns1:consignatario><ns2:paquetes xmlns:ns2="http://vo.redpack.com/xsd"><ns2:alto>0</ns2:alto>'+packages+'<ns'+(limit+start)+':remitente xmlns:ns'+(limit+start)+'="http://vo.redpack.com/xsd"><ns'+(limit+start)+':codigoPostal>1120</ns'+(limit+start)+':codigoPostal></ns'+(limit+start)+':remitente><ns'+(limit+start+1)+':tipoEntrega xmlns:ns'+(limit+start+1)+'="http://vo.redpack.com/xsd"><ns'+(limit+start+1)+':id>1</ns'+(limit+start+1)+':id></ns'+(limit+start+1)+':tipoEntrega></guias></cotizacionNacional></soapenv:Body></soapenv:Envelope>';
         var pin = "PROD j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=";
         var idUsuario = "785";
-
+        
+        var fromInterior = "";
+        if(data.from.apt)
+          fromInterior = data.from.apt;
+        
+        var toInterior = "";
+        if(data.to.apt)
+          toInterior = data.to.apt;
+        
         getGuia(data.service.name).then(function(res){
             if(res && res.guia){
                 var trackingNumber = (res.guia).toString();
@@ -311,13 +319,16 @@ exports.handler = (event, context, callback) => {
                               <ns1:calle>'+data.to.street+'</ns1:calle>\
                               <ns1:ciudad>'+data.to.city+'</ns1:ciudad>\
                               <ns1:codigoPostal>'+data.to.zip+'</ns1:codigoPostal>\
-                              <ns1:colonia_Asentamiento>Puente Blanco</ns1:colonia_Asentamiento>\
+                              <ns1:colonia_Asentamiento>'+data.to.county+'</ns1:colonia_Asentamiento>\
                               <ns1:contacto>'+data.to.name+'</ns1:contacto>\
-                              <ns1:email>carlos@canizal.com</ns1:email>\
-                              <ns1:estado>'+data.to.stata+'</ns1:estado>\
+                              <ns1:email>'+data.to.email+'</ns1:email>\
+                              <ns1:estado>'+data.to.state+'</ns1:estado>\
                               <ns1:numeroExterior>'+data.to.number+'</ns1:numeroExterior>\
-                              <ns1:numeroInterior>'+data.to.apt+'</ns1:numeroInterior>\
+                              <ns1:numeroInterior>'+toInterior+'</ns1:numeroInterior>\
                               <ns1:pais>Mexico</ns1:pais>\
+                              <ns1:telefonos>\
+                                <ns1:telefono>'+data.to.phone+'</ns1:telefono>\
+                              </ns1:telefonos>\
                             </ns1:consignatario>'+packages+'\
                             <ns2:moneda>1</ns2:moneda>\
                             <ns2:numeroDeGuia>'+trackingNumber+'</ns2:numeroDeGuia>\
@@ -331,12 +342,15 @@ exports.handler = (event, context, callback) => {
                               <ns4:calle>'+data.from.street+'</ns4:calle>\
                               <ns4:ciudad>'+data.from.city+'</ns4:ciudad>\
                               <ns4:codigoPostal>'+data.from.zip+'</ns4:codigoPostal>\
-                              <ns4:colonia_Asentamiento>Juarez</ns4:colonia_Asentamiento>\
-                              <ns4:contacto>Carlos Canizal</ns4:contacto>\
-                              <ns4:email>carlos@canizal.com</ns4:email>\
+                              <ns4:colonia_Asentamiento>'+data.from.county+'</ns4:colonia_Asentamiento>\
+                              <ns4:contacto>'+data.from.name+'</ns4:contacto>\
+                              <ns4:email>'+data.from.email+'</ns4:email>\
                               <ns4:estado>'+data.from.state+'</ns4:estado>\
                               <ns4:numeroExterior>'+data.from.number+'</ns4:numeroExterior>\
-                              <ns4:numeroInterior>'+data.from.apt+'</ns4:numeroInterior>\
+                              <ns4:numeroInterior>'+fromInterior+'</ns4:numeroInterior>\
+                              <ns4:telefonos>\
+                                <ns4:telefono>'+data.from.phone+'</ns4:telefono>\
+                              </ns4:telefonos>\
                               <ns4:pais>Mexico</ns4:pais>\
                             </ns4:remitente>\
                             <ns5:tipoEntrega xmlns:ns5="http://vo.redpack.com/xsd">\

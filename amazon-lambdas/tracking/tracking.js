@@ -7,17 +7,19 @@ var convert = require('xml-to-json-promise');
 var Parse = require('parse/node').Parse;
 
 
-const production = true;
+const production = false;
 if(production){
   console.log('We are in production!');
   masterKey = "baplcn89UZ3uyJq0AflqtXjnFV2wRmo81SaWg7wd";
   appId = "OwwqTBzf9Tj618RyQqYmx3eJOhxaS8qolcojD3IA";
   javascriptKey = "gCi0VgG0NVmtZA7lKsAAVVAvk9IwECg2GMJHwWdQ";
+  var environment = "live";
 }else{
   console.log('We are in development!');
   masterKey = "rZx1h8G9530G73xbzk5F1MLvGzb080KL2u55uC8S";
   appId = "OaKte4Imh3dk5JIhsJoLAcLaPYMb2mQUeqyHXrP1";
   javascriptKey = "wcFLh2UROrO8fN9SbFbgbeOZTZOlPu3YkAMys1bL";
+  var environment = "sandbox";
 }
 
 Parse.serverURL = 'https://parseapi.back4app.com/';
@@ -141,7 +143,7 @@ var buildTrack = function(trackingNumber, carrier){
     var response =[];
 
     var options = {
-      environment: 'live', // or live 
+      environment: environment, // or live 
       debug: false,
       key: 'raF7pWAdOFqh7RWp',
       password: 'IpYuI9OM9zUIbTOZKg7mylyqo',
@@ -150,9 +152,9 @@ var buildTrack = function(trackingNumber, carrier){
       imperial: false // set to false for metric 
     }
 
-    if(production){
-      options.environment = "live";
-    }
+    // if(production){
+    //   options.environment = "live";
+    // }
 
 
     var fedex = new fedexAPI(options);
@@ -297,7 +299,7 @@ var buildTrack = function(trackingNumber, carrier){
 }
 
 var trackRedpack = function(data,success,error){
-    var production =  false;
+    // var production =  false;
     var headers = {
       'Content-Type': 'text/xml',
     }
@@ -333,7 +335,7 @@ var trackRedpack = function(data,success,error){
 }
 
 var track = function(data,success,error){
-    var production =  false;
+    // var production =  false;
     var headers = {
       'Content-Type': 'application/json',
     }

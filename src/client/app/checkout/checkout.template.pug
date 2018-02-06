@@ -44,9 +44,8 @@
                   |Puedes dar seguimiento a tu envío desde nuestro
                   a.accent.bold(ui-sref="dashboard.shippings")
                     |&nbsp;administrador.
-              
             .align-center.margin-bottom-2
-              md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{checkout.trackingNumber}}", download)
+              md-button.md-raised.md-primary(href="{{shell.downloadLabel(checkout.trackingNumber)}}", download)
                 |Descargar Etiqueta
             h2.disabled-color
               |¿Dónde 
@@ -174,7 +173,7 @@
                       h3.secondary-accent.align-center
                         |{{item.TrackingNumber}}
                     .board-list.align-center.margin-top-2
-                      md-button.md-raised.md-primary(href="http://54.245.38.66?trackingNumber={{checkout.trackingNumber}}", download)
+                      md-button.md-raised.md-primary(href="{{shell.downloadLabel(checkout.trackingNumber)}}", download)
                         |Descargar Etiqueta
                       md-button.md-raised(ui-sref="dashboard.shippings")
                         |Ir a mi cuenta

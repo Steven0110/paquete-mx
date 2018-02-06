@@ -20,8 +20,12 @@
         'applicationID' : 'OwwqTBzf9Tj618RyQqYmx3eJOhxaS8qolcojD3IA',
         'javascriptKey':'gCi0VgG0NVmtZA7lKsAAVVAvk9IwECg2GMJHwWdQ'
       },
+      debugging: false,
+      production: true,
       apiEndpoint:{
-        "baseUrl": "https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api"
+        "baseUrl": "https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api",
+        "downloadInvoice": "http://54.244.218.15/endpoint/download.php",
+        "downloadLabel": "http://54.245.38.66?trackingNumber="
       }
     };
   }

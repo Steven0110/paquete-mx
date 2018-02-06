@@ -21,9 +21,9 @@ exports.handler = (event, context, callback) => {
         }
     }else{
         functions = {
-            "ups"     : "UPS-Ship",
-            "fedex"   : "FEDEX-Ship",
-            "redpack" : "REDPACK-Ship"
+            "ups"     : "DEV-UPS-Ship",
+            "fedex"   : "DEV-FEDEX-Ship",
+            "redpack" : "DEV-REDPACK-Ship"
         }
     }
     
@@ -60,4 +60,5 @@ exports.handler = (event, context, callback) => {
         }
       }
     });
+    
 }

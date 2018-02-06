@@ -2,7 +2,7 @@ var https = require("https");
 var moment = require("moment");
 
 
-const production =  true;
+const production =  false;
 const exchange = 20;
 const currentDiscount = 0.05;
 
@@ -95,7 +95,12 @@ function currentService(result){
     if(result.GuaranteedDelivery){
         if(result.GuaranteedDelivery.BusinessDaysInTransit){
             currentService.deliveryHours =  result.GuaranteedDelivery.BusinessDaysInTransit*24;
-            currentService.delivery      =  moment().add(result.GuaranteedDelivery.BusinessDaysInTransit,'day').format("YYYY-MM-DD");
+            if(currentService.code == "54")
+                currentService.delivery      =  moment().add(result.GuaranteedDelivery.BusinessDaysInTransit,'day').format("YYYY-MM-DDT08:30:00");
+            else if(currentService.code == "07")
+                currentService.delivery      =  moment().add(result.GuaranteedDelivery.BusinessDaysInTransit,'day').format("YYYY-MM-DDT10:30:00");
+            else
+                currentService.delivery      =  moment().add(result.GuaranteedDelivery.BusinessDaysInTransit,'day').format("YYYY-MM-DDT21:00:00");
         }
     }
     
@@ -158,7 +163,7 @@ exports.handler = (event, context, callback) => {
         
         if(data.type){
             if(data.type == "document"){
-                packagingType = "01";    
+                packagingType = "02";    
             }else if(data.type == "package"){
                 packagingType = "02";    
             }else{

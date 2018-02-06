@@ -26,10 +26,10 @@ var pickup = function(data,success,error){
     }
 
     var hostname = "wwwcie.ups.com";
-    var path = '/rest/FreightPickup';
+    var path = '/rest/Pickup';
     if(production){
       hostname =  "onlinetools.ups.com";
-      path = '/rest/FreightPickup';
+      path = '/rest/Pickup';
     }
 
 
@@ -99,6 +99,17 @@ exports.handler = (event, context, callback) => {
             context.fail(err);
         }
         
+        var serviceCode = false;
+        if(data.serviceCode){
+            serviceCode = data.serviceCode;
+            if(serviceCode.length < 3){
+                serviceCode = "0"+serviceCode;
+            }
+        }else{
+            var err= generateError(400,"seviceCode time is required HH:mm");
+            context.fail(err);
+        }
+        
         var endDay;
         if(data.end){
             endDay = data.end.replace(":","");
@@ -110,9 +121,9 @@ exports.handler = (event, context, callback) => {
         var packages = [];
         
         if(data.packages){
+            var NumberOfPieces = (data.packages.length).toString();
             for(var i=0; i< data.packages.length; i++){
                 var item = data.packages[i];
-                // var NumberOfPieces = (data.packages.length).toString();
                 var weight = item.weight.toString();
                 var packageItem =  {
                                        "HazMatIndicator":"",
@@ -154,52 +165,58 @@ exports.handler = (event, context, callback) => {
         }
         
         body = {
-                 "Security":{
-                    "UsernameToken":{
-                       "Username":"jc.canizal",
-                       "Password":"Kernelpanic0923"
-                    },
-                    "UPSServiceAccessToken":{
-                       "AccessLicenseNumber":"8D2F40C8969A08AC"
-                    }
-                 },
-                 "FreightPickupRequest":{
-                    "Request":{
-                       "TransactionReference":{
-                          "CustomerContext":""
-                       }
-                    },
-                    "AdditionalComments":"",
-                    "DestinationPostalCode": to.zip,
-                    "DestinationCountryCode": to.country.code,
-                    "Requester":{
-                       "AttentionName": to.name,
-                       "EMailAddress":to.email,
-                       "Name": to.name,
-                       "Phone":{
-                          "Number": to.phone
-                       }
-                    },
-                    "ShipFrom":{
-                       "AttentionName": from.name,
-                       "Name": from.name,
-                       "Address":{
-                          "AddressLine": from.street+" "+from.number+" "+from.apt,
-                          "City": from.city,
-                          "StateProvinceCode": from.state,
-                          "PostalCode": from.zip,
-                          "CountryCode":from.country.code
-                       },
-                       "Phone":{
-                          "Number": from.phone
-                       }
-                    },
-                    "ShipmentDetail": packages,
-                    "PickupDate": pickUpDate,
-                    "EarliestTimeReady": startDay,
-                    "LatestTimeReady": endDay
+           "UPSSecurity":{
+              "UsernameToken":{
+                 "Username":"jc.canizal",
+                 "Password":"Kernelpanic0923"
+              },
+              "ServiceAccessToken":{
+                 "AccessLicenseNumber":"8D2F40C8969A08AC"
+              }
+           },
+           "PickupCreationRequest":{
+              "Request":{
+                 "TransactionReference":{
+                    "CustomerContext":"CustomerContext."
                  }
-              };
+              },
+              "Shipper":{
+                "Account"  :{
+                    "AccountNumber": "979WR5",
+                    "AccountCountryCode": "MX"
+                }
+              },
+              "RatePickupIndicator":"Y",
+              "TaxInformationIndicator":"Y",
+              "PickupDateInfo":{
+                 "CloseTime": endDay,
+                 "ReadyTime": startDay,
+                 "PickupDate": pickUpDate
+              },
+              "PickupAddress":{
+                 "CompanyName": from.name,
+                 "ContactName": from.name,
+                 "AddressLine": from.street+" "+from.number+" "+from.apt,
+                 "City": from.city,
+                 "StateProvince": from.state,
+                 "PostalCode": from.zip,
+                 "CountryCode": from.country.code,
+                 "ResidentialIndicator":"N",
+                 "Phone":{
+                    "Number": from.phone
+                 }
+              },
+              "AlternateAddressIndicator":"N",
+              "PickupPiece":{
+                 "ServiceCode": serviceCode,
+                 "Quantity": NumberOfPieces ,
+                 "DestinationCountryCode": to.country.code,
+                 "ContainerCode":"01"
+              },
+              "OverweightIndicator":"N",
+              "PaymentMethod":"01"
+           }
+        };
         
         pickup(body,function(result){
             console.log(result);
@@ -210,13 +227,12 @@ exports.handler = (event, context, callback) => {
             if(debugging){
                 json.result = result;
             }
-            if(result.FreightPickupResponse){
-              if(result.FreightPickupResponse){
-                if(result.FreightPickupResponse.PickupRequestConfirmationNumber){
-                  json.confirmation = result.FreightPickupResponse.PickupRequestConfirmationNumber;
-                  context.succeed(json);
-                }
+            if(result.PickupCreationResponse){
+              json = result.PickupCreationResponse;
+              if(result.PickupCreationResponse.PRN){
+                json ={confirmation: result.PickupCreationResponse.PRN}
               }
+              context.succeed(json);
             }else{
               if(result.Fault && result.Fault.detail){
                 if(result.Fault.detail && result.Fault.detail.Errors){
