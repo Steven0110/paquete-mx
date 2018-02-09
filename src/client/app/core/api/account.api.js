@@ -12,7 +12,8 @@
     
     var factory = {
       update : update,
-      validateTaxId: validateTaxId
+      validateTaxId: validateTaxId,
+      validateCoupon: validateCoupon
     };
 
     return factory;
@@ -20,6 +21,21 @@
     function update(params){
       var Account = parse.endpoint("Account");
       return Account.update(params);
+    }
+
+    function validateCoupon(coupon){
+      var deferred = $q.defer();
+      var Cloud = parse.cloud('validateCoupon');
+      Cloud.post({coupon:coupon}).then(function(res){
+        if(res.result)
+          deferred.resolve(res.result);
+        else
+          deferred.resolve(res);
+      },function(err){
+        deferred.reject(err);
+      });
+
+      return deferred.promise;
     }
 
     function validateTaxId(taxId){

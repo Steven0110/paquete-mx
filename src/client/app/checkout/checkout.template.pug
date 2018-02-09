@@ -494,7 +494,28 @@
                   td.align-right
                     h3
                       |{{checkout.shipping.service.iva |currency}} MXN
-                tr(data-ng-show="checkout.shipping.service.cardComision")
+                tr.border-top
+                  td.align-right
+                    h4.disabled-color
+                      |Precio Original
+                  td.align-right
+                    h3.disabled-color
+                      |{{checkout.shipping.service.orignalAmount}} MXN
+                tr(data-ng-if="checkout.shipping.service.couponCode")
+                  td.align-right
+                    h4.disabled-color
+                      |Cupón ({{checkout.shipping.service.couponCode}})
+                  td.align-right
+                    h3.accent
+                      |{{checkout.shipping.service.couponDiscount}} %
+                tr(data-ng-if="checkout.shipping.service.couponCode && checkout.shipping.service.cardComision")
+                  td.align-right
+                    h4.disabled-color
+                      |Total
+                  td.align-right
+                    h3.disabled-color
+                      |{{checkout.shipping.service.prevDiscount | currency}} MXN
+                tr.border-top(data-ng-show="checkout.shipping.service.cardComision")
                   td.align-right
                     h4.disabled-color
                       |Comisión
@@ -510,6 +531,19 @@
                   td.align-right
                     h2.secondary-accent
                       |{{checkout.shipping.service.total |currency}} MXN
+                //- tr
+                  td
+                    h4.disabled-color
+                      |¿Tienes un Cupón?
+                tr(data-ng-if="!checkout.shipping.service.couponCode")
+                  td.align-left
+                    md-input-container.md-block
+                      label(for="coupon")
+                        |¿Tienes un cupón?
+                      input(autofocus,name="coupon", data-ng-model="checkout.shipping.coupon", required)
+                    td
+                      md-button.md-raised(data-ng-click="checkout.applyCoupon()")
+                        |Aplicar Cupón
               .align-center(data-ng-show="checkout.step == 'confirm'")
                 div
                   .row

@@ -247,6 +247,50 @@ Parse.Cloud.define("setPassword",function(request, response){
   })
 })
 
+Parse.Cloud.define("validateCoupon",function(request, response){
+  var code = request.params.coupon;
+  var user = request.user;
+  var account;
+  var discount;
+  if(user){
+    user.get('account').fetch().then(function(res){
+      console.log(res);
+      if(res){
+        account = res;
+        var Coupon = Parse.Object.extend('Coupon');
+        var query = new Parse.Query(Coupon);
+        query.equalTo('coupon',code);
+        query.equalTo('account',account);
+        query.equalTo('active',true);
+        query.first().then(function(res){
+          if(res){
+            var discount = res.get('discount');
+            var times = res.get('times');
+            var limit = res.get('limit');
+
+            if(times+1 > limit){
+              response.error({message: "Limit Exceded"});
+            }
+            response.success({discount: discount});
+          }else{
+            response.error({message: "Invalid Coupon"});        
+          }
+        },function(err){
+          console.log(err);
+        });
+      }else{
+        response.error({message: "Invalid Account"});    
+      }
+
+    },function(err){
+      console.log(err);
+    })
+
+  }else{
+    response.error({message: "Invalid User"});
+  }
+});
+
 Parse.Cloud.define("cancelPickup",function(request, response){
   var params = request.params;
   var body ={};
@@ -679,6 +723,17 @@ Parse.Cloud.define("removeCard",function(request, response){
 });
 //DELETES CARD FROM CONEKTA
 
+Parse.Cloud.beforeSave("Coupon", function(request, response){
+  if(request.object.existed() === false){
+    request.object.set("active", true);
+    request.object.set("times", 0);
+  }
+  response.success();
+});
+
+
+
+
 
 Parse.Cloud.beforeSave("Account", function(request, response){
   var type = request.object.get('type');
@@ -703,6 +758,7 @@ Parse.Cloud.beforeSave("Account", function(request, response){
       name = name.toUpperCase();
     }
     else if(type && type == 'personal'){
+      request.object.set('status',"active");
       if(request.object.get('taxName')){
         name =  request.object.get('taxName');
         name = name.trim();
@@ -939,6 +995,11 @@ Parse.Cloud.afterSave("Payment", function(request){
 
 Parse.Cloud.beforeSave("Shipping",function(request,response){
   var original = request.original;
+
+  if(request.object.existed() === false){
+    request.object.set("active", true);
+  }
+
   if(original){
     var prevStatus = original.get("status");
     var newStatus = request.object.get("status");

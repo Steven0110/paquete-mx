@@ -22,14 +22,7 @@
     checkout.pickupConfirmation = false;
     
     if(checkout.shipping){
-      var subtotal = checkout.shipping.service.discountTotal;
-      var iva = checkout.shipping.service.discountTotal;
-      subtotal = parseFloat((subtotal/1.16).toFixed(2));
-      iva -= subtotal;
-      checkout.shipping.service.subtotal =  subtotal;
-      checkout.shipping.service.iva =  iva;
-      checkout.shipping.service.cardComision =  false;
-      checkout.shipping.service.total = checkout.shipping.service.discountTotal;
+      calculateTotals();
 
     }else{
       shell.showMessage('Selecciona un servicio');
@@ -39,16 +32,50 @@
     $scope.$watch('checkout.step',function(newValue, oldValue){
       shell.moveToTop();
       if(newValue == 'selectPayment' || newValue =='payment'){
-        var subtotal = checkout.shipping.service.discountTotal;
-          var iva = checkout.shipping.service.discountTotal;
-          subtotal = parseFloat((subtotal/1.16).toFixed(2));
-          iva -= subtotal;
-          checkout.shipping.service.subtotal =  subtotal;
-          checkout.shipping.service.iva =  iva;
-          checkout.shipping.service.cardComision =  false;
-          checkout.shipping.service.total = checkout.shipping.service.discountTotal;
+        calculateTotals();
       }
     });
+
+    function calculateTotals(){
+      var subtotal = checkout.shipping.service.orignalAmount;
+      var iva = checkout.shipping.service.orignalAmount;
+      subtotal = parseFloat((subtotal/1.16).toFixed(2));
+      iva -= subtotal;
+      checkout.shipping.service.subtotal =  subtotal;
+      checkout.shipping.service.iva =  iva;
+      checkout.shipping.service.cardComision =  false;
+      checkout.shipping.service.total = checkout.shipping.service.discountTotal;
+    }
+
+    checkout.applyCoupon = function(){
+      var coupon = checkout.shipping.coupon;
+      if(coupon)
+        coupon = coupon.trim();
+      if(coupon && coupon !== ""){
+        shell.showLoading();
+        accountApi.validateCoupon(coupon).then(function(res){
+
+          if(res && res.discount){
+            
+            var service = checkout.shipping.service;
+            checkout.shipping.service.couponCode = coupon;
+            checkout.shipping.service.couponDiscount = res.discount;
+            service.prevDiscount = service.discountTotal;
+            var discount = service.orignalAmount*(res.discount/100);
+            checkout.shipping.service.discountPrev = discount;
+            service.discountTotal =  service.orignalAmount-discount;
+            calculateTotals();
+            shippingApi.setShipping(checkout.shipping);
+          }
+        },function(err){
+          Dialog.showError("Verifica que tu cupón este bien escrito, es sensible a mayusculas y minusculas. Si tienes problemas contactanos en hola@paquete.mx", "¡Lo sentimos el cupón es invalido!",function(){
+          });  
+        }).finally(shell.hideLoading);
+      }else{
+        Dialog.showError("Ingresa el valor de tu cupón", "¡Lo sentimos el cupón es invalido!",function(){
+        });
+      }
+    }
 
     checkout.goToPayment = function(){
       checkout.step = 'payment';
