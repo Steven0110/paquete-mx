@@ -5,9 +5,9 @@
     .module('app.core')
     .controller('Home',Home);
 
-  Home.$inject = ['$state','$scope','$q','$timeout','template','rateApi','Dialog'];
+  Home.$inject = ['$state','$scope','$q','$timeout','template','rateApi','Dialog','$window'];
 
-  function Home($state, $scope, $q, $timeout, template, rateApi, Dialog){
+  function Home($state, $scope, $q, $timeout, template, rateApi, Dialog, $window){
     // jshint validthis: true 
     var home = this;
     var shell = $scope.shell;
@@ -445,7 +445,7 @@
     }
 
     home.send = function(){
-      ga('send', {
+      $window.ga('send', {
         hitType: 'event',
         eventCategory: 'HomeEvents',
         eventAction: 'cotizar',
