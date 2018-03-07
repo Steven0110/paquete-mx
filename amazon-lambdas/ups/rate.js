@@ -2,7 +2,7 @@ var https = require("https");
 var moment = require("moment");
 
 
-const production =  false;
+const production =  true;
 const exchange = 20;
 const currentDiscount = 0.05;
 
@@ -70,7 +70,7 @@ function currentService(result){
         if(result.TotalCharges.MonetaryValue){
             var amount = parseFloat(result.TotalCharges.MonetaryValue);
             currentService.total = amount;
-            currentService.orignalAmount = amount;
+            currentService.originalAmount = amount;
             currentService.currency = result.TotalCharges.CurrencyCode;
             if(currentService.currency && currentService.currency != "MXN"){
                 currentService.total = (amount*exchange).toFixed(2);

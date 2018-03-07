@@ -485,22 +485,22 @@
                     h4.disabled-color
                       |Subtotal
                   td.align-right
-                    h3
+                    h3.disabled-color
                       |{{checkout.shipping.service.subtotal |currency}} MXN
                 tr
                   td.align-right
                     h4.disabled-color
                       |IVA(16%)
                   td.align-right
-                    h3
+                    h3.disabled-color
                       |{{checkout.shipping.service.iva |currency}} MXN
                 tr.border-top
                   td.align-right
                     h4.disabled-color
                       |Precio Original
                   td.align-right
-                    h3.disabled-color
-                      |{{checkout.shipping.service.orignalAmount}} MXN
+                    h3
+                      |{{checkout.shipping.service.originalAmount | currency}} MXN
                 tr(data-ng-if="checkout.shipping.service.couponCode")
                   td.align-right
                     h4.disabled-color
@@ -508,7 +508,14 @@
                   td.align-right
                     h3.accent
                       |{{checkout.shipping.service.couponDiscount}} %
-                tr(data-ng-if="checkout.shipping.service.couponCode && checkout.shipping.service.cardComision")
+                tr
+                  td.align-right
+                    h4.disabled-color
+                      |Descuento
+                  td.align-right
+                    h3.accent
+                      |-{{checkout.shipping.service.originalAmount - checkout.shipping.service.total |currency}} MXN
+                //- tr(data-ng-if="checkout.shipping.service.couponCode && checkout.shipping.service.cardComision")
                   td.align-right
                     h4.disabled-color
                       |Total
@@ -522,9 +529,9 @@
                       span
                         |&nbsp;{{checkout.card.brand}}
                   td.align-right
-                    h3
+                    h3.disabled-color
                       |{{checkout.shipping.service.cardComision |currency}} MXN 
-                tr
+                tr.border-top
                   td.align-right
                     h3
                       |Total a pagar

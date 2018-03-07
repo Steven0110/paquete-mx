@@ -1,9 +1,9 @@
 var https = require("https");
 var convert = require('xml-to-json-promise');
 var moment = require ('moment');
-const production =  false;
+const production =  true;
 const exchange = 20;
-const currentDiscount = 0.15;
+const currentDiscount = 0.05;
 
 
 function generateError(code, message){

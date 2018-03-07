@@ -12,7 +12,7 @@ change log*/
 var moment = require("./moment");
 var templates = require("./templates.js").templates;
 var asyncEach = require("./each-series");
-var production = false;
+var production = true;
 var Mailgun = null;
 
 var emisor = {
@@ -159,17 +159,11 @@ function createInvoice(user,account, amount, paid, payment, shipping, formaPago,
         invoice.set('subtotal', subtotal);
         invoice.set('iva', iva);
         invoice.set('invoiceNo', res.cfdi.serie+res.cfdi.folio);
+        invoice.set("account",account);
 
         if(shipping){
           invoice.set('shipping', shipping);
           invoice.set('trackingNumber', shipping.get("trackingNumber"));
-        }
-        if(user){
-          var Account = Parse.Object.extend('Account');
-          var account = new Account();
-          account.id = user.get('account').id;
-          if(account.id)
-            invoice.set("account",account);
         }
         return invoice.save();
       }else{
@@ -442,8 +436,10 @@ Parse.Cloud.define("sendPickUp",function(request, response){
         if(service.service && service.service.code)
           body.serviceCode = service.service.code;
         }
-        
-      if(params.carrier == 'REDPACK'){
+
+
+      
+      if(shipping.get('carrier') == 'redpack' || shipping.get('carrier')  == "REDPACK"){
 
         var packages = "";
         for(var i=0; i< service.packages.length; i++){
@@ -1036,7 +1032,7 @@ Parse.Cloud.beforeSave("Shipping",function(request,response){
             subject = "¡Ya en transito: "+trackingNumber+"!";
           }
           html = htmlTemplate(html);
-          sendEmail('carlos@canizal.com', subject, html, false, false);
+          sendEmail(email+';carlos@paquete.mx', subject, html, false, false);
           response.success();
 
       },function(err){

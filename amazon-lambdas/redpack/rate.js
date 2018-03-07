@@ -222,6 +222,7 @@ exports.handler = (event, context, callback) => {
                                                   if(fromState != "DIF" && toState != "DIF"){
                                                     var total = json.total * 1.16;
                                                     json.total = total;
+                                                    json.originalAmount = total;
                                                     discountTotal  =  total*0.025;
                                                     discountTotal  = (total-discountTotal).toFixed(2);
                                                     discountTotal = parseFloat(discountTotal);
@@ -242,6 +243,7 @@ exports.handler = (event, context, callback) => {
                                                     realWeight = realWeight.toString();
                                                     if(table[state] && table[state][realWeight]){
                                                       json.total = (table[state][realWeight].original)+40;
+                                                      json.originalAmount =  json.total;
                                                       discountTotal = table[state][realWeight].paquete;
                                                     }else{
                                                       json = false;
@@ -296,6 +298,7 @@ exports.handler = (event, context, callback) => {
 
                                                 if(base){
                                                   json.total = base.price;
+                                                  json.originalAmount  = json.total;
                                                   discountTotal  = base.paquetePrice;
                                                 }else{
                                                   json = false;
@@ -339,6 +342,8 @@ exports.handler = (event, context, callback) => {
                                                 // discountTotal = json.total-discountTotal;
                                             }
                                             json.discountTotal = Math.ceil(discountTotal);
+                                        }else{
+                                            json = false;
                                         }
                                         
                                         if(json.delivery){

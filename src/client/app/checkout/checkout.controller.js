@@ -21,7 +21,7 @@
     checkout.taxInfo = {};
     checkout.pickupConfirmation = false;
     
-    if(checkout.shipping){
+    if(checkout.shipping && checkout.shipping.service){
       calculateTotals();
 
     }else{
@@ -37,14 +37,18 @@
     });
 
     function calculateTotals(){
-      var subtotal = checkout.shipping.service.orignalAmount;
-      var iva = checkout.shipping.service.orignalAmount;
+      console.log(checkout.shipping.service);
+      var subtotal = parseFloat(checkout.shipping.service.originalAmount);
+      var iva = parseFloat(checkout.shipping.service.originalAmount);
       subtotal = parseFloat((subtotal/1.16).toFixed(2));
       iva -= subtotal;
       checkout.shipping.service.subtotal =  subtotal;
       checkout.shipping.service.iva =  iva;
-      checkout.shipping.service.cardComision =  false;
-      checkout.shipping.service.total = checkout.shipping.service.discountTotal;
+      checkout.shipping.service.total = parseFloat(checkout.shipping.service.discountTotal);
+      if(checkout.step == 'confirm' && checkout.shipping.service.cardComision)
+        checkout.shipping.service.total += parseFloat(checkout.shipping.service.cardComision);
+      else
+        checkout.shipping.service.cardComision = false
     }
 
     checkout.applyCoupon = function(){
@@ -61,9 +65,9 @@
             checkout.shipping.service.couponCode = coupon;
             checkout.shipping.service.couponDiscount = res.discount;
             service.prevDiscount = service.discountTotal;
-            var discount = service.orignalAmount*(res.discount/100);
+            var discount = service.originalAmount*(res.discount/100);
             checkout.shipping.service.discountPrev = discount;
-            service.discountTotal =  service.orignalAmount-discount;
+            service.discountTotal =  service.originalAmount-discount;
             calculateTotals();
             shippingApi.setShipping(checkout.shipping);
           }
@@ -118,7 +122,6 @@
 
     checkout.invoiceRequired = function(){
       if(checkout.invoice){
-        // alert('factura requerida');
         $ngConfirm({
             title: 'Datos Fiscales',
             contentUrl: '/app/dashboard/invoice/invoice.form.html',
@@ -162,7 +165,6 @@
             
         });
       }else{
-        // alert('factura no requerida');
         shell.showLoading();
         saveInvoice().then(function(res){
           console.log(res);
@@ -179,7 +181,6 @@
 
     $scope.setUser = function(user){
       shell.setCurrentUser(user);
-      // alert('yeah');
     };
 
     $scope.loginSuccess = function(){

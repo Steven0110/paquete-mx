@@ -288,8 +288,10 @@
         home.shipping.from.zip = home.shipping.from.data.zip;
       }else{
         fromZip =  home.fromSearch;
-        home.shipping.from.data.zip = home.fromSearch;
-        home.shipping.from.zip = home.fromSearch;
+        if(home.shipping.from && home.shipping.from.data){
+          home.shipping.from.data.zip = home.fromSearch;
+          home.shipping.from.zip = home.fromSearch;
+        }
       }
 
       var toZip;
@@ -298,8 +300,10 @@
         home.shipping.to.zip = home.shipping.to.data.zip;
       }else{
         toZip =  home.toSearch;
-        home.shipping.to.data.zip = home.toSearch;
-        home.shipping.to.zip = home.toSearch;
+        if(home.shipping.to && home.shipping.to.data){
+          home.shipping.to.data.zip = home.toSearch;
+          home.shipping.to.zip = home.toSearch;
+        }
       }
 
       var fromStateCode = false;
@@ -312,8 +316,10 @@
       if(home.shipping.to.data && home.shipping.to.data.stateCode){
         toStateCode =  home.shipping.to.data.stateCode;
       }
-      home.shipping.from.data.country = JSON.parse(JSON.stringify(home.shipping.from.country));
-      home.shipping.to.data.country = JSON.parse(JSON.stringify(home.shipping.to.country));
+      if(home.shipping.from && home.shipping.from.data  && home.shipping.from.country)
+        home.shipping.from.data.country = JSON.parse(JSON.stringify(home.shipping.from.country));
+      if(home.shipping.to && home.shipping.to.data && home.shipping.to.country)
+        home.shipping.to.data.country = JSON.parse(JSON.stringify(home.shipping.to.country));
 
       home.rate = {
         "type":home.shipping.type,
@@ -439,6 +445,12 @@
     }
 
     home.send = function(){
+      ga('send', {
+        hitType: 'event',
+        eventCategory: 'HomeEvents',
+        eventAction: 'cotizar',
+        eventLabel: 'Initial Campaign'
+      });
       if(home.shippingForm.fromZip.$valid){
         if(home.shippingForm.toZip.$valid){
           if(home.shipping.type == 'package' || home.shipping.type == 'document'){
@@ -475,6 +487,7 @@
       }else{
        Dialog.showError('Código postal de origen es requerido.','¿De dónde envías?');
       }
+      // ga('send', 'event', 'button', 'click');
     };
 
 

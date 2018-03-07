@@ -323,7 +323,7 @@
         }
       }
 
-      var where = {"user":{"__type":"Pointer","className":"_User","objectId":userId}}
+      var where = {"user":{"__type":"Pointer","className":"_User","objectId":userId},"active":true}
       if(delivered == true){
         where.delivered = true;
       }else if(delivered == false){

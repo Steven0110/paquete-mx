@@ -58,7 +58,7 @@
                 |{{shipping.data.signedBy}}
 
             div(data-ng-if="shipping.data.status == 'label_created'")
-              md-button.md-raised.md-primary(href="{{shell.downloadLabel(checkout.trackingNumber)}}", download)
+              md-button.md-raised.md-primary(href="{{shell.downloadLabel(shipping.data.trackingNumber)}}", download)
                 |Imprimir Etiqueta
         .col-xs-4
           h2.accent
@@ -91,7 +91,7 @@
             |Pega una de las copias en tu paquete o paquetes.
           li
             |Si llevas tus paquetes a mostrador una copia sera sellada como acuse de recepción.
-        md-button.md-raised.md-primary(href="{{shell.downloadLabel(checkout.trackingNumber)}}", download)
+        md-button.md-raised.md-primary(href="{{shell.downloadLabel(shipping.data.trackingNumber)}}", download)
           |Imprimir Etiqueta
         div(data-ng-if="!shipping.data.pickupConfirmation ")
           h2.disabled-color
