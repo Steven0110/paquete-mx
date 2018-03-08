@@ -256,10 +256,13 @@
 
     function getRates(fromCountry, toCountry){
       home.services = [];
+
       if(!fromCountry)
         fromCountry = home.shipping.from.country.code;
       if(!toCountry)
         toCountry = home.shipping.to.country.code;
+
+
 
       for(var i=0;i<home.shipping.packages.length; i++){
         var weight = parseFloat(home.shipping.packages[i].weight);
@@ -283,24 +286,34 @@
       var services = [{code:"ups", international:true},{code:"fedex",international:true},{code:"redpack",international:false}];
 
       var fromZip;
+      console.log("fromSearch",home.fromSearch);
       if(home.shipping.from.data && home.shipping.from.data.zip){
         fromZip =  home.shipping.from.data.zip;
         home.shipping.from.zip = home.shipping.from.data.zip;
       }else{
         fromZip =  home.fromSearch;
-        if(home.shipping.from && home.shipping.from.data){
+
+
+        if(home.shipping.from){
+          if(!home.shipping.from.data){
+            home.shipping.from.data = {};
+          }
           home.shipping.from.data.zip = home.fromSearch;
           home.shipping.from.zip = home.fromSearch;
         }
       }
 
       var toZip;
+      
       if(home.shipping.to.data && home.shipping.to.data.zip){
         toZip =  home.shipping.to.data.zip;
         home.shipping.to.zip = home.shipping.to.data.zip;
       }else{
         toZip =  home.toSearch;
-        if(home.shipping.to && home.shipping.to.data){
+        if(home.shipping.to){
+          if(!home.shipping.to.data){
+            home.shipping.to.data ={};
+          }
           home.shipping.to.data.zip = home.toSearch;
           home.shipping.to.zip = home.toSearch;
         }
@@ -338,7 +351,7 @@
         "packages": home.shipping.packages
       };
 
-      // console.log('rate',home.rate);
+      console.log('rate',home.rate);
 
       var promises = [];
       angular.forEach(services,function(service){
@@ -461,8 +474,6 @@
                   home.shipping.packages = home.documents;
                 }
 
-                var shipping = JSON.stringify(home.shipping);
-
                 var fromCountry = home.shipping.from.country;
                 var toCountry = home.shipping.to.country;
                 if(fromCountry.listed == true && !home.shipping.from.data){
@@ -472,6 +483,8 @@
                 }
                 else{
                   getRates();
+
+                  var shipping = JSON.stringify(home.shipping);
                   $state.go('home', {shipping: shipping}, {notify: false});
                 }
               }else{
@@ -495,6 +508,7 @@
       $timeout(function(){
         if($state.params.shipping){
           home.shipping = JSON.parse($state.params.shipping);
+          console.log('home.shipping',home.shipping);
           getRates();
         }else if($state.params.section){
           var section = $state.params.section;
