@@ -14,7 +14,8 @@
     var factory = {
       rate    : rate,
       ship    : ship,
-      createInvoice: createInvoice
+      createInvoice: createInvoice,
+      sendNotification: sendNotification
     };
 
     return factory;
@@ -27,6 +28,12 @@
       },function(err){
         console.log(err);
       })
+    }
+
+
+    function sendNotification(button){
+      var Notification = parse.cloud('sendNotification');
+      return Notification.post({button:button});
     }
         
     function rate(service,params){

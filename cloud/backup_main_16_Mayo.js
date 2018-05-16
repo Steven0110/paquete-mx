@@ -7,7 +7,7 @@
 6-Enero-2018: Se agregan las funciones de facturacion
 9-Enero-2018: Se egrega procesamiento para cuenta enterprise
 5-Febrero-2018: Se establecen ambientes desarrollo y produccion
-16-Mayo-2018: Se agregan notificaciones para MKT
+
 change log*/
 var moment = require("./moment");
 var templates = require("./templates.js").templates;
@@ -54,25 +54,6 @@ if(production){
   var labelUrl = "http://54.245.38.66/dev.php?trackingNumber=";
 }
 
-
-/*SEND NOTIFICATION MARKETING EMAIl*/
-Parse.Cloud.define("sendNotification",function(request, response){
-  var button = request.params.button;
-  if(button){
-    var to = "leads4@strave.com";
-    var subject = "Click Notification: "+button;
-    var date = moment().subtract(5,"hours").format("YYYY-MM-DDTHH:mm:ss");
-    var html = "<h1>Click Notification: Botón "+button+"</h1><div>Se realizo click en el boton de "+button+".</div><h2>"+date+"</h2>";
-    sendEmail(to, subject, html, false, false).then(function(){
-      response.success();
-    },function(err){
-      response.error(err);
-    })
-  }else{
-    response.error("Button event name is required");
-  }
-});
-/*SEND NOTIFICATION MARKETING EMAIl*/
 
 /*CREATE INVOICE*/
 function createInvoice(user,account, amount, paid, payment, shipping, formaPago, items, invoiceType){
@@ -505,7 +486,7 @@ Parse.Cloud.define("sendPickUp",function(request, response){
                     <h2>Paquetes</h2>'+packages+'\
                     ';
         html = htmlTemplate(html);
-        sendEmail('joe@paquete.mx;atencion@paquete.mx;diego@paquete.mx', "¡Recoleccion solicitada:"+params.trackingNumber+"!", html, false);
+        sendEmail('carlos@paquete.mx;joe@paquete.mx;atencion@paquete.mx;diego@paquete.mx', "¡Recoleccion solicitada:"+params.trackingNumber+"!", html, false);
         shipping.set('pickupConfirmation',confirmation);
         shipping.save().then(function(){
           response.success({confirmation:confirmation});
@@ -650,7 +631,7 @@ Parse.Cloud.define("saveCard",function(request, response){
 
 Parse.Cloud.define("sendCotizacion",function(request, response){
   var params = request.params;
-  var to =  "<diego@paquete.mx>,<joe@paquete.mx>,<thalia@paquete.mx>";
+  var to =  "<carlos@paquete.mx>,<diego@paquete.mx>,<joe@paquete.mx>,<thalia@paquete.mx>";
   var subject =  "Cotización Solicitada";
   
   var fromZip = params.from.search;
@@ -1051,7 +1032,7 @@ Parse.Cloud.beforeSave("Shipping",function(request,response){
             subject = "¡Ya en transito: "+trackingNumber+"!";
           }
           html = htmlTemplate(html);
-          sendEmail(email, subject, html, false, false);
+          sendEmail(email+';carlos@paquete.mx', subject, html, false, false);
           response.success();
 
       },function(err){
@@ -1660,7 +1641,7 @@ Parse.Cloud.beforeSave("Payment",function(request, response){
           impPagado = dueAmount;
         }
 
-        var date = moment().subtract(5,"hours").format("YYYY-MM-DDTHH:mm:ss");
+        var date = moment().subtract(6,"hours").format("YYYY-MM-DDTHH:mm:ss");
         var newParams = {
             'serie'     : serie,
             'folio'     : folio,

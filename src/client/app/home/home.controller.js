@@ -162,6 +162,9 @@
         'event_category' : 'enviar',
         'event_label' : 'enviar_event'
       });
+      
+      rateApi.sendNotification('Enviar');
+
 
       var shipping ={
         packagingType: home.shipping.type,
@@ -171,7 +174,6 @@
         packages    : home.rate.packages
       }
 
-      // console.log(shipping);
 
       shell.setShipping(shipping);
       $state.go('checkout');
