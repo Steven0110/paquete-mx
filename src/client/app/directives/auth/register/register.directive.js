@@ -2,9 +2,9 @@ angular
   .module('app.core')
   .directive('registerForm',registerForm);
 
-registerForm.$inject = ['userApi','Dialog', 'accountApi', '$q'];
+registerForm.$inject = ['$window','userApi','Dialog', 'accountApi', '$q'];
 
-function registerForm(userApi, Dialog, accountApi, $q){
+function registerForm($window,userApi, Dialog, accountApi, $q){
   return{
     restrict: 'E',
     templateUrl: 'app/directives/auth/register/register.form.html',
@@ -63,7 +63,7 @@ function registerForm(userApi, Dialog, accountApi, $q){
             shell.showLoading();
 
             scope.user.accountType = scope.accountType;
-
+            alert('register-1');
             if(scope.accountType == 'personal' && !scope.account.invoice){
               scope.account.taxId = null;
               scope.account.invoice = false;
@@ -73,13 +73,20 @@ function registerForm(userApi, Dialog, accountApi, $q){
             validateTaxId(scope.account.taxId).then(function(){
               return userApi.register(scope.accountType,scope.account,scope.user);
             }).then(function(user){
+              alert('register-0');
               scope.setUser(user);
               shell.showMessage(shell.labels.register.form.welcome);
+              $window.gtag('event', 'search', {
+                'event_category' : 'registro',
+                'event_label' : 'registro_event'
+              });
               if (typeof scope.loginSuccess === "function") { 
                 scope.loginSuccess();
               }else{
                 shell.loginSuccess();
               }
+
+              
             },function(error){
               console.log(error);
               if(error && error.invalidTaxId){

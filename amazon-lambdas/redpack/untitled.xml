@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soapenv:Body>
+    <cotizacionNacional xmlns="http://ws.redpack.com">
+      <PIN>QA MK0qRYhkIRIl6m/mX+2lj0D6AR2F5KBaQA3SbXpLA/E=</PIN>
+      <idUsuario>989</idUsuario>
+      <guias><ns1:consignatario xmlns:ns1="http://vo.redpack.com/xsd"><ns1:codigoPostal>"Codigo Postal Origen"</ns1:codigoPostal></ns1:consignatario><ns2:remitente xmlns:ns2="http://vo.redpack.com/xsd"><ns2:codigoPostal>"Codigo postal destino"</ns2:codigoPostal></ns2:remitente><ns3:tipoEntrega xmlns:ns3="http://vo.redpack.com/xsd"><ns3:id>1</ns3:id></ns3:tipoEntrega><ns1:paquetes xmlns:ns1="http://vo.redpack.com/xsd"><ns1:alto>altura</ns1:alto><ns1:ancho>ancho</ns1:ancho><ns1:largo>largo</ns1:largo><ns1:peso>peso</ns1></ns1:paquetes></guias>
+    </cotizacionNacional>
+  </soapenv:Body>
+</soapenv:Envelope>

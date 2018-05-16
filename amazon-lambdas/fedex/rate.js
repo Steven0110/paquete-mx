@@ -2,7 +2,7 @@ var https = require("https");
 var convert = require('xml-to-json-promise');
 var moment = require ('moment');
 const production =  true;
-const exchange = 20;
+const exchange = {"USD":20,"EUR":23};
 const currentDiscount = 0.05;
 
 
@@ -215,22 +215,45 @@ exports.handler = (event, context, callback) => {
                                     
                                     if(item["RatedShipmentDetails"] && item["RatedShipmentDetails"][1] ){
                                         if(item["RatedShipmentDetails"][1]["ShipmentRateDetail"]){
-                                            if(item["RatedShipmentDetails"][1]["ShipmentRateDetail"][0]["TotalNetChargeWithDutiesAndTaxes"]){
-                                                if(item["RatedShipmentDetails"][1]["ShipmentRateDetail"][0]["TotalNetChargeWithDutiesAndTaxes"][0]["Amount"]){
-                                                    json.total = item["RatedShipmentDetails"][1]["ShipmentRateDetail"][0]["TotalNetChargeWithDutiesAndTaxes"][0]["Amount"][0];        
+                                            if(item["RatedShipmentDetails"][1]["ShipmentRateDetail"][0]["TotalBaseCharge"]){
+                                                if(item["RatedShipmentDetails"][1]["ShipmentRateDetail"][0]["TotalBaseCharge"][0]["Amount"]){
+                                                    json.total = item["RatedShipmentDetails"][1]["ShipmentRateDetail"][0]["TotalBaseCharge"][0]["Amount"][0];        
                                                     json.total = parseFloat(json.total).toFixed(2);
-                                                    json.originalAmount = json.total;
-                                                    json.currency = item["RatedShipmentDetails"][1]["ShipmentRateDetail"][0]["TotalNetChargeWithDutiesAndTaxes"][0]["Currency"][0];
+                                                    json.currency = item["RatedShipmentDetails"][1]["ShipmentRateDetail"][0]["TotalBaseCharge"][0]["Currency"][0];
 
-                                                    // console.log(json.currency);
                                                     if(json.currency && json.currency != "NMP"){
-                                                        json.total = (json.total*exchange).toFixed(2);
+
+                                                        var currencyCode = "USD";
+                                                        if(json.currency == "EUR"){
+                                                            currencyCode = "EUR"
+                                                        }
+
+
+                                                        json.total = (json.total*exchange[currencyCode]).toFixed(2);
                                                         json.total = parseFloat(json.total);
                                                     }
-                                                    var discount = json.total*currentDiscount;
-                                                    // json.discountTotal = Math.ceil(json.total-discount);
-                                                    json.discountTotal = json.total-discount;
-                                                    json.negotiated = json.total;
+
+
+                                                    //algoritmo agregado por peticion de Bogar Muñoz
+                                                    //total + 31%
+                                                    json.originalAmount = json.total;
+                                                    var total = parseFloat((json.originalAmount*(1.31)).toFixed(2));
+                                                    json.total =  total;
+
+                                                    var initialDiscount = (json.originalAmount*0.02);
+                                                    initialDiscount = json.originalAmount - initialDiscount;
+                                                    initialDiscount = parseFloat((initialDiscount*(1.05)).toFixed(2));
+                                                    initialDiscount = parseFloat((initialDiscount*(1.16)).toFixed(2));
+                                                    json.discountTotal = initialDiscount;
+                                                    json.negotiated = total;
+                                                    //algoritmo agregado por peticion de Bogar Muñoz
+
+                                                    //VERSION ANTERIOR
+                                                    // json.originalAmount = json.total;
+                                                    // var discount = json.total*currentDiscount;
+                                                    // json.discountTotal = json.total-discount;
+                                                    // json.negotiated = json.total;
+                                                    //VERSION ANTERIOR
                                                 }
                                             }
                                         }
@@ -245,6 +268,7 @@ exports.handler = (event, context, callback) => {
                 
                 var response = {
                     services:services,
+                    // services:[],
                     totalServices:services.length
                 }
                 

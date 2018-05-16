@@ -7,7 +7,7 @@ var convert = require('xml-to-json-promise');
 var Parse = require('parse/node').Parse;
 
 
-const production = false;
+const production = true;
 if(production){
   console.log('We are in production!');
   masterKey = "baplcn89UZ3uyJq0AflqtXjnFV2wRmo81SaWg7wd";
@@ -204,10 +204,11 @@ var buildTrack = function(trackingNumber, carrier){
     });
 
   }else if(carrier == "REDPACK"){
-    var pin = "QA j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=";
+    console.log("inside-redpack");
+    var pin = "PROD j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=";
     var idUsuario = "785";
     var response =[];
-    body = '<?xml version="1.0" encoding="UTF-8"?> \
+    var body = '<?xml version="1.0" encoding="UTF-8"?> \
             <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns2="http://vo.redpack.com/xsd">\
               <soapenv:Body>\
                 <rastreo xmlns="http://ws.redpack.com">\
@@ -219,7 +220,9 @@ var buildTrack = function(trackingNumber, carrier){
                 </rastreo>\
               </soapenv:Body>\
             </soapenv:Envelope>';
+    console.log("inside-redpack-2");
     trackRedpack(body,function(result){
+      console.log("inside-redpack-3");
       if(result){
         var item = {
           status:{},
@@ -227,7 +230,7 @@ var buildTrack = function(trackingNumber, carrier){
           dateTime: "",
           trackingNumber: trackingNumber,
         };
-
+        console.log("inside-redpack-4");
         convert.xmlDataToJSON(result).then(function(data){
           var body = data;
           var signedForByName =false;
@@ -277,12 +280,13 @@ var buildTrack = function(trackingNumber, carrier){
               }
             }
           }
-
+          console.log("inside-redpack-5");
           // console.log(body);
           // console.log(signedForByName);
           if(item.dateTime)
             response.push(item);
           // console.log(response);
+          console.log("end-redpack");
           deferred.resolve(response);
         },function(err){
           deferred.reject(err);
@@ -307,7 +311,7 @@ var trackRedpack = function(data,success,error){
     var hostname = "ws.redpack.com.mx";
     var path = '/RedpackAPI_WS/services/RedpackWS?wsdl'
     if(production){
-      hostname =  "";
+      hostname =  "ws.redpack.com.mx";
       path = '/RedpackAPI_WS/services/RedpackWS?wsdl'
     }
 
@@ -376,14 +380,22 @@ exports.handler = (event, context, callback) => {
   var Shipping = Parse.Object.extend('Shipping');
   var query = new Parse.Query(Shipping);
   query.equalTo("delivered",false);
+  query.descending("createdAt");
+  query.skip(0);
+  query.limit(200);
 
   return query.find().then(function(res){
     var deferred =  q.defer();
     var promises = [];
+    console.log(res.length);
     async.eachSeries(res,function(shipping,callback){
       var trackingNumber = shipping.get("trackingNumber");
       var carrier = shipping.get("carrier");
+      console.log('trackingNumber');
+      console.log(trackingNumber);
+      console.log(carrier);
       if(trackingNumber){
+        console.log('inside');
         promises.push(
           buildTrack(trackingNumber, carrier).then(function(res){
             console.log(res);
@@ -470,7 +482,7 @@ exports.handler = (event, context, callback) => {
 
   }).then(function(){
     console.log('all done');
-    context.succeed(result);
+    context.succeed();
   },function(err){
     console.log(err);
   });

@@ -3,7 +3,7 @@ var moment = require("moment");
 
 
 const production =  true;
-const exchange = 20;
+const exchange = {"USD":20,"EUR":23};
 const currentDiscount = 0.05;
 
 
@@ -24,6 +24,7 @@ function IterateOver(list, iterator, callBack) {
 }
 
 function currentService(result){
+    // resul = JSON.stringify(result);
     var currentService = {};
     var defaultServices = {
       '01': 'UPS Next Day Air',
@@ -69,19 +70,22 @@ function currentService(result){
     if(result.TotalCharges){
         if(result.TotalCharges.MonetaryValue){
             var amount = parseFloat(result.TotalCharges.MonetaryValue);
+            if(result.TotalCharges && result.TotalCharges.CurrencyCode != "MXN"){
+                var currencyCode = "USD";
+                if(result.TotalCharges.CurrencyCode == "EUR"){
+                    currencyCode = "EUR"
+                }
+                amount = (amount*exchange[currencyCode]).toFixed(2);
+                amount = parseFloat(amount);
+            }
+
             currentService.total = amount;
             currentService.originalAmount = amount;
             currentService.currency = result.TotalCharges.CurrencyCode;
-            if(currentService.currency && currentService.currency != "MXN"){
-                currentService.total = (amount*exchange).toFixed(2);
-                currentService.total = parseFloat(currentService.total);
-            }
-            // currentService.currency = result.TotalCharges;
             var total  = parseFloat(currentService.total);
             var discountTotal =  total*currentDiscount;
             discountTotal = (total-discountTotal).toFixed(2);
             currentService.discountTotal = parseFloat(discountTotal);
-            // currentService.discountTotal = Math.ceil(parseFloat(discountTotal));
         }
     }
     
@@ -92,16 +96,18 @@ function currentService(result){
     
     currentService.result  = result;
     
-    if(result.GuaranteedDelivery){
-        if(result.GuaranteedDelivery.BusinessDaysInTransit){
-            currentService.deliveryHours =  result.GuaranteedDelivery.BusinessDaysInTransit*24;
-            if(currentService.code == "54")
-                currentService.delivery      =  moment().add(result.GuaranteedDelivery.BusinessDaysInTransit,'day').format("YYYY-MM-DDT08:30:00");
-            else if(currentService.code == "07")
-                currentService.delivery      =  moment().add(result.GuaranteedDelivery.BusinessDaysInTransit,'day').format("YYYY-MM-DDT10:30:00");
-            else
-                currentService.delivery      =  moment().add(result.GuaranteedDelivery.BusinessDaysInTransit,'day').format("YYYY-MM-DDT21:00:00");
-        }
+
+    
+    if(result.TimeInTransit.ServiceSummary.EstimatedArrival.BusinessDaysInTransit){
+        var businessDaysInTransit = result.TimeInTransit.ServiceSummary.EstimatedArrival.BusinessDaysInTransit;
+        businessDaysInTransit = parseFloat(businessDaysInTransit);
+        currentService.deliveryHours =  businessDaysInTransit*24;
+        if(currentService.code == "54")
+            currentService.delivery      =  moment().add(businessDaysInTransit,'day').format("YYYY-MM-DDT08:30:00");
+        else if(currentService.code == "07")
+            currentService.delivery      =  moment().add(businessDaysInTransit,'day').format("YYYY-MM-DDT10:30:00");
+        else
+            currentService.delivery      =  moment().add(businessDaysInTransit,'day').format("YYYY-MM-DDT21:00:00");
     }
     
     return currentService;
@@ -156,6 +162,7 @@ exports.handler = (event, context, callback) => {
         var toStateCode = false;
         var packagingType = "02";
         var debugging = false;
+        var totalWeight = 0;
         
         if(data.debugging){
             debugging = true;
@@ -240,6 +247,8 @@ exports.handler = (event, context, callback) => {
                     callback(generateError(400,"No weight value in package "+index+"."),null);
                 }
 
+                totalWeight += parseFloat(item.weight);
+
                 var json = {
                     "PackagingType": { 
                       "Code": packagingType, 
@@ -270,7 +279,6 @@ exports.handler = (event, context, callback) => {
                         }
                     };
                  }
-                 console.log(json);
                 packages.push(json);
                 // callBack();
             })
@@ -278,7 +286,8 @@ exports.handler = (event, context, callback) => {
             callback(generateError(400,"We need at least 1 package dimensions."),null);
         }
         
-        
+        totalWeight = totalWeight.toFixed(2);
+
         body = {
               "UPSSecurity": {
                 "UsernameToken": {
@@ -291,9 +300,19 @@ exports.handler = (event, context, callback) => {
               },
               "RateRequest": { 
                 "Request": {
-                  "RequestOption": "Shop"
+                  "RequestOption": "Shoptimeintransit"
                 }, 
                 "Shipment": {
+                    "DeliveryTimeInformation":{
+                        "PackageBillType":"03"
+                    },
+                    "ShipmentTotalWeight":{
+                        "UnitOfMeasurement": { 
+                        "Code": "Kgs", 
+                        "Description": "Kilogramos"
+                      },
+                      "Weight": totalWeight
+                    },
                     "Shipper": {
                         "Name": "Carlos Canizal", 
                         "ShipperNumber": "979WR5", 
@@ -332,7 +351,6 @@ exports.handler = (event, context, callback) => {
         }
         
         rateUPS(body,function(result){
-            console.log(result);
             var json ={
                 services: [],
                 totalServices: 0

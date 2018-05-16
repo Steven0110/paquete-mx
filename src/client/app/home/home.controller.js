@@ -158,8 +158,10 @@
 
     home.setService = function(service){
 
-      // console.log(service);
-
+      $window.gtag('event', 'search', {
+        'event_category' : 'enviar',
+        'event_label' : 'enviar_event'
+      });
 
       var shipping ={
         packagingType: home.shipping.type,
@@ -286,7 +288,6 @@
       var services = [{code:"ups", international:true},{code:"fedex",international:true},{code:"redpack",international:false}];
 
       var fromZip;
-      console.log("fromSearch",home.fromSearch);
       if(home.shipping.from.data && home.shipping.from.data.zip){
         fromZip =  home.shipping.from.data.zip;
         home.shipping.from.zip = home.shipping.from.data.zip;
@@ -351,14 +352,11 @@
         "packages": home.shipping.packages
       };
 
-      console.log('rate',home.rate);
-
       var promises = [];
       angular.forEach(services,function(service){
 
         var runRate = true; 
         if(home.international && !service.international){
-          // console.log('service no international'+service.code);
           runRate = false;
         }
 
@@ -379,12 +377,9 @@
             code: false
           };
 
-          // console.log('params',params);
-
           promises.push(
 
             rateApi.rate(service,params).then(function(response){
-              // console.log(response);
               if(response.services){
 
                 for(var i= 0; i< response.services.length; i++){
@@ -458,12 +453,6 @@
     }
 
     home.send = function(){
-      $window.ga('send', {
-        hitType: 'event',
-        eventCategory: 'HomeEvents',
-        eventAction: 'cotizar',
-        eventLabel: 'Initial Campaign'
-      });
       if(home.shippingForm.fromZip.$valid){
         if(home.shippingForm.toZip.$valid){
           if(home.shipping.type == 'package' || home.shipping.type == 'document'){
@@ -508,7 +497,6 @@
       $timeout(function(){
         if($state.params.shipping){
           home.shipping = JSON.parse($state.params.shipping);
-          console.log('home.shipping',home.shipping);
           getRates();
         }else if($state.params.section){
           var section = $state.params.section;

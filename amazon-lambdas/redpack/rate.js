@@ -146,14 +146,11 @@ exports.handler = (event, context, callback) => {
             callback(generateError(400,"We need at least 1 package dimensions."),null);
         }
         
-        
-        
-        
-        var pin = "QA j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=";
-        var idUsuario = "785";
+        var pin = "QA MK0qRYhkIRIl6m/mX+2lj0D6AR2F5KBaQA3SbXpLA/E=";
+        var idUsuario = "989";
         if(production){
-            pin = "PROD j54/PyzkOAeMZzGPNFBpP/y8thMFFdZfbqZTWYQ8sjw=";
-            idUsuario = "785";
+            pin = "PROD MK0qRYhkIRIl6m/mX+2lj0D6AR2F5KBaQA3SbXpLA/E=";
+            idUsuario = "989";
         }
         body ='<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><cotizacionNacional xmlns="http://ws.redpack.com"><PIN>'+pin+'</PIN><idUsuario>'+idUsuario+'</idUsuario><guias><ns1:consignatario xmlns:ns1="http://vo.redpack.com/xsd"><ns1:codigoPostal>'+fromZip+'</ns1:codigoPostal></ns1:consignatario><ns2:remitente xmlns:ns2="http://vo.redpack.com/xsd"><ns2:codigoPostal>'+toZip+'</ns2:codigoPostal></ns2:remitente><ns3:tipoEntrega xmlns:ns3="http://vo.redpack.com/xsd"><ns3:id>1</ns3:id></ns3:tipoEntrega>'+packages+'</guias></cotizacionNacional></soapenv:Body></soapenv:Envelope>';
         
@@ -208,6 +205,7 @@ exports.handler = (event, context, callback) => {
                                         if(json.total){
                                             var discountTotal;
                                             var realWeight = totalBruto > totalVolumetrico? totalBruto : totalVolumetrico;
+                                            json.total = json.total*1.16;
                                             if(json.name == "METROPOLITANO"){
                                                 // discountTotal  =json.total * 0.20;
                                                 // discountTotal  = (json.total-discountTotal).toFixed(2);
@@ -216,93 +214,101 @@ exports.handler = (event, context, callback) => {
                                             }
                                             else if(json.name == "EXPRESS"){
 
-                                              var table = require("states.json");
+                                                discountTotal  =json.total * 0.021;
+                                                discountTotal  = (json.total-discountTotal).toFixed(2);
+                                                discountTotal = parseFloat(discountTotal);
+
+                                              // var table = require("states.json");
 
 
-                                                  if(fromState != "DIF" && toState != "DIF"){
-                                                    var total = json.total * 1.16;
-                                                    json.total = total;
-                                                    json.originalAmount = total;
-                                                    discountTotal  =  total*0.025;
-                                                    discountTotal  = (total-discountTotal).toFixed(2);
-                                                    discountTotal = parseFloat(discountTotal);
+                                              //     if(fromState != "DIF" && toState != "DIF"){
+                                              //       var total = json.total * 1.16;
+                                              //       json.total = total;
+                                              //       json.originalAmount = total;
+                                              //       discountTotal  =  total*0.025;
+                                              //       discountTotal  = (total-discountTotal).toFixed(2);
+                                              //       discountTotal = parseFloat(discountTotal);
 
-                                                  }else if(fromState == "DIF" && toState == "DIF"){
-                                                    json =  false;
-                                                  }else{
-                                                    var state = false;
-                                                    if(fromState != "DIF")
-                                                      state = fromState;
-                                                    else
-                                                      state = toState;
-
-
-                                                    console.log(state);
-                                                    realWeight =  Math.ceil(realWeight);
-
-                                                    realWeight = realWeight.toString();
-                                                    if(table[state] && table[state][realWeight]){
-                                                      json.total = (table[state][realWeight].original)+40;
-                                                      json.originalAmount =  json.total;
-                                                      discountTotal = table[state][realWeight].paquete;
-                                                    }else{
-                                                      json = false;
-                                                    }
+                                              //     }else if(fromState == "DIF" && toState == "DIF"){
+                                              //       json =  false;
+                                              //     }else{
+                                              //       var state = false;
+                                              //       if(fromState != "DIF")
+                                              //         state = fromState;
+                                              //       else
+                                              //         state = toState;
 
 
+                                              //       console.log(state);
+                                              //       realWeight =  Math.ceil(realWeight);
+
+                                              //       realWeight = realWeight.toString();
+                                              //       if(table[state] && table[state][realWeight]){
+                                              //         json.total = (table[state][realWeight].original)+40;
+                                              //         json.originalAmount =  json.total;
+                                              //         discountTotal = table[state][realWeight].paquete;
+                                              //       }else{
+                                              //         json = false;
+                                              //       }
 
 
-                                                  }
+
+
+                                              //     }
                                             }
                                             else if(json.name == "ECOEXPRESS"){
-                                              var base = false;
-                                                var ecoexpress = [
-                                                  {weitgh:"0-5", paquetePrice:   155,price:217, discount: 62.00},
-                                                  {weitgh:"6-9", paquetePrice:   180.06,price:252.08, discount: 72.02},
-                                                  {weitgh:"10-14", paquetePrice: 232.46,price:325.44, discount: 92.98},
-                                                  {weitgh:"15-20", paquetePrice: 273.13,price:382.38, discount: 109.25},
-                                                  {weitgh:"21-25", paquetePrice: 343.78,price:481.29, discount: 137.51},
-                                                  {weitgh:"26-30", paquetePrice: 381.43,price:534.01, discount: 152.57},
-                                                  {weitgh:"31-35", paquetePrice: 445.28,price:623.40, discount: 178.11},
-                                                  {weitgh:"36-40", paquetePrice: 491.13,price:687.58, discount: 196.45},
-                                                  {weitgh:"41-50", paquetePrice: 597.53,price:836.54, discount: 239.01},
-                                                  {weitgh:"51-60", paquetePrice: 700.66,price:980.93, discount: 280.26},
-                                                  {weitgh:"61-70", paquetePrice: 816.90,price:1143.66, discount: 326.76}
-                                                ];
 
-                                                realWeight =  Math.ceil(realWeight);
+                                                discountTotal  =json.total * 0.238;
+                                                discountTotal  = (json.total-discountTotal).toFixed(2);
+                                                discountTotal = parseFloat(discountTotal);
+                                              // var base = false;
+                                              //   var ecoexpress = [
+                                              //     {weitgh:"0-5", paquetePrice:   155,price:217, discount: 62.00},
+                                              //     {weitgh:"6-9", paquetePrice:   180.06,price:252.08, discount: 72.02},
+                                              //     {weitgh:"10-14", paquetePrice: 232.46,price:325.44, discount: 92.98},
+                                              //     {weitgh:"15-20", paquetePrice: 273.13,price:382.38, discount: 109.25},
+                                              //     {weitgh:"21-25", paquetePrice: 343.78,price:481.29, discount: 137.51},
+                                              //     {weitgh:"26-30", paquetePrice: 381.43,price:534.01, discount: 152.57},
+                                              //     {weitgh:"31-35", paquetePrice: 445.28,price:623.40, discount: 178.11},
+                                              //     {weitgh:"36-40", paquetePrice: 491.13,price:687.58, discount: 196.45},
+                                              //     {weitgh:"41-50", paquetePrice: 597.53,price:836.54, discount: 239.01},
+                                              //     {weitgh:"51-60", paquetePrice: 700.66,price:980.93, discount: 280.26},
+                                              //     {weitgh:"61-70", paquetePrice: 816.90,price:1143.66, discount: 326.76}
+                                              //   ];
 
-                                                if(realWeight <= 5){
-                                                  base = ecoexpress[0]
-                                                }else if(realWeight > 5 && realWeight <= 9){
-                                                  base = ecoexpress[1]
-                                                }else if(realWeight > 9 && realWeight <= 14){
-                                                  base = ecoexpress[2]
-                                                }else if(realWeight > 14 && realWeight <= 20){
-                                                  base = ecoexpress[3]
-                                                }else if(realWeight > 20 && realWeight <= 25){
-                                                  base = ecoexpress[4]
-                                                }else if(realWeight > 25 && realWeight <= 30){
-                                                  base = ecoexpress[5]
-                                                }else if(realWeight > 30 && realWeight <= 35){
-                                                  base = ecoexpress[6]
-                                                }else if(realWeight > 35 && realWeight <= 40){
-                                                  base = ecoexpress[7]
-                                                }else if(realWeight > 40 && realWeight <= 50){
-                                                  base = ecoexpress[8]
-                                                }else if(realWeight > 50 && realWeight <= 60){
-                                                  base = ecoexpress[9]
-                                                }else if(realWeight > 60 && realWeight <= 70){
-                                                  base = ecoexpress[10]
-                                                }
+                                              //   realWeight =  Math.ceil(realWeight);
 
-                                                if(base){
-                                                  json.total = base.price;
-                                                  json.originalAmount  = json.total;
-                                                  discountTotal  = base.paquetePrice;
-                                                }else{
-                                                  json = false;
-                                                }
+                                              //   if(realWeight <= 5){
+                                              //     base = ecoexpress[0]
+                                              //   }else if(realWeight > 5 && realWeight <= 9){
+                                              //     base = ecoexpress[1]
+                                              //   }else if(realWeight > 9 && realWeight <= 14){
+                                              //     base = ecoexpress[2]
+                                              //   }else if(realWeight > 14 && realWeight <= 20){
+                                              //     base = ecoexpress[3]
+                                              //   }else if(realWeight > 20 && realWeight <= 25){
+                                              //     base = ecoexpress[4]
+                                              //   }else if(realWeight > 25 && realWeight <= 30){
+                                              //     base = ecoexpress[5]
+                                              //   }else if(realWeight > 30 && realWeight <= 35){
+                                              //     base = ecoexpress[6]
+                                              //   }else if(realWeight > 35 && realWeight <= 40){
+                                              //     base = ecoexpress[7]
+                                              //   }else if(realWeight > 40 && realWeight <= 50){
+                                              //     base = ecoexpress[8]
+                                              //   }else if(realWeight > 50 && realWeight <= 60){
+                                              //     base = ecoexpress[9]
+                                              //   }else if(realWeight > 60 && realWeight <= 70){
+                                              //     base = ecoexpress[10]
+                                              //   }
+
+                                              //   if(base){
+                                              //     json.total = base.price;
+                                              //     json.originalAmount  = json.total;
+                                              //     discountTotal  = base.paquetePrice;
+                                              //   }else{
+                                              //     json = false;
+                                              //   }
 
                                             }
                                             else{
