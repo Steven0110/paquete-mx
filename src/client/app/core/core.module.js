@@ -4,6 +4,7 @@
     'ui.router',
     'app.core',
     'app.storage',
-    'angularMoment'
+    'angularMoment',
+    'slickCarousel'
   ]);
 })();

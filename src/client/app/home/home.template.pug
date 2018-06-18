@@ -231,6 +231,16 @@
                       .cotizador-element-box
                         .cotizador-button(data-ng-click="home.send()")
                           |COTIZAR
+    div.text-center
+      //div.slick-div
+
+        slick(infinite="true" slides-to-show="3" slides-to-scroll="3" autoplay="true" autoplaySpeed="500")
+          p.slick-container
+            img.slick-img(src="common/images/fedex-logo.png", alt="Paquete.mx")
+          p.slick-container
+            img.slick-img(src="common/images/ups-logo.png", alt="Paquete.mx")
+          p.slick-container
+            img.slick-img(src="common/images/redpack-logo.png", alt="Paquete.mx")
 #float-section.background-container
   #content.section-container
     .rated-text(data-ng-class="{'active':home.active}", data-ng-show="home.rated")
