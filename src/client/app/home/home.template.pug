@@ -1,4 +1,4 @@
-.resume-content
+.resume-content#tag
   div
     a(data-ng-click="shell.moveToTop(true)")
       span.span-block
@@ -232,7 +232,7 @@
                         .cotizador-button(data-ng-click="home.send()")
                           |COTIZAR
     
-    //div.text-center
+    div.text-center
       div.slick-div
         slick(infinite="true" slides-to-show="3" slides-to-scroll="3" autoplay="true" autoplaySpeed="500" responsive="[{breakpoint:768,settings:{slidesToShow:2,slidesToScroll:2}},{breakpoint:480,settings:{slidesToShow:1,slidesToScroll:1}}]")
           p.slick-container
@@ -725,3 +725,13 @@
               .section-image.image-7.image-right
                 img(data-ng-src="common/images/section-7.png")
   div(data-ng-include="'app/templates/footer.template.html'")
+
+script(type="text/javascript")
+    |var ot = document.getElementById("float-section").offsetTop;
+    |window.addEventListener("scroll", function() {
+    |if (window.scrollY > ot) {
+    |  document.getElementById('tag').style.display = "block";
+    |}else{
+    |  document.getElementById('tag').style.display = "none";
+    |}
+    |});
