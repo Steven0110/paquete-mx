@@ -12,7 +12,7 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
           i.fa.fa-info-circle
     md-input-container.md-block
       label(for="cardNumber",data-ng-bind="card.labels.form.number")
-      input(name="cardNumber", data-ng-model="card.info.card_number", required, validate-card)
+      input(name="cardNumber", data-ng-model="card.info.card_number", required)
       div(ng-messages="card.form.cardNumber.$error")
         div(ng-message="validateCard")
           |Número de tarjeta invalido.
@@ -21,7 +21,7 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
           i.fa.fa-info-circle
     md-input-container.md-block
       label(for="cvc",data-ng-bind="card.labels.form.cvc")
-      input(name="cvc", data-ng-model="card.info.cvc",required, validate-cvc)
+      input(name="cvc", data-ng-model="card.info.cvc",required)
       div(ng-messages="card.form.cvc.$error")
         div(ng-message="validateCvc")
           |Código de seguridad invalido.

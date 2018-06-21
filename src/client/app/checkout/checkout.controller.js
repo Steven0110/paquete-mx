@@ -317,8 +317,8 @@
     }
 
     function calculateComision(brand){
-      var amex = 0.036;
-      var visa = 0.032;
+      var amex = 0.04176;
+      var visa = 0.03712;
       if(brand == "AMEX"){
         var comission = checkout.shipping.service.total*amex;
         comission = parseFloat(comission.toFixed(2));

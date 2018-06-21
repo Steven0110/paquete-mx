@@ -5,15 +5,16 @@ angular
 validateCard.$inject = [];
 
 function validateCard(){
-  return{
+  return true;
+  /*return{
     restrict: 'A',
     require: 'ngModel',
     link:function(scope,element,attr,ngModel){
       ngModel.$validators.validateCard = function(modelValue) {
-        return Conekta.card.validateNumber(modelValue);
+        return true;
       };
     }
-  };
+  };*/
 }
 
 angular
