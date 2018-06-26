@@ -740,10 +740,12 @@
 
 script(type="text/javascript")
     |var ot = document.getElementById("float-section").offsetTop;
+    |if(ot != undefined){
     |window.addEventListener("scroll", function() {
     |if (window.scrollY > ot) {
     |  document.getElementById('tag').style.display = "block";
     |}else{
     |  document.getElementById('tag').style.display = "none";
+    |}
     |}
     |});
