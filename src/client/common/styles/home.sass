@@ -976,20 +976,46 @@ i.medium-icon
     display: contents
     font-weight: bold
     color: rgba(0, 0, 0, 0.6)
-.slick-container
-  text-align: center !important
-.slick-img
-  display: inline-block !important
-  width: 100%
-.slick-div
-  background-color: rgba(255, 255, 255, 0.7)
-  margin-top: 20px
-  padding: 15px
-  display: inline-block
+.available-providers
+  .slick-container
+    //text-align: center !important
+  .slick-img
+    display: inline-block !important
+  .slick-div
+    background-color: rgba(255, 255, 255, 0.7)
+    margin-top: 20px
+    display: inline-block
 
-@media (min-width: 768px) and (max-width: 990px)
+@media (min-width: 1025px)
+  .available-providers
+    .slick-img
+      width: 200px
+    .slick-div
+      width: 60%
+
+@media (min-width: 769px) and (max-width: 1024px)
   .container-center .container-fluid .center-block
     margin-top: 60px
+
+  .available-providers
+    .slick-img
+      width: 150px
+    .slick-div
+      width: 60%
+    
+@media (min-width: 481px) and (max-width: 768px)
+  .available-providers
+    .slick-img
+      width: 140px
+    .slick-div
+      width: 90%
+
+@media (max-width: 480px)
+  .available-providers
+    .slick-img
+      width: 150px
+    .slick-div
+      width: 70%
 
 .resume-content#tag
   display: none
