@@ -45,6 +45,13 @@
       checkout.shipping.service.subtotal =  subtotal;
       checkout.shipping.service.iva =  iva;
       checkout.shipping.service.total = parseFloat(checkout.shipping.service.discountTotal);
+      /*Cupón aplicado a total y no a originalAmount*/
+      console.log(checkout.shipping.service.total);
+      console.log(checkout.shipping.service.couponDiscount);
+      console.log(parseFloat(checkout.shipping.service.couponDiscount/100));
+      if(checkout.shipping.service.couponCode)
+        checkout.shipping.service.total *= (1.00 - parseFloat(checkout.shipping.service.couponDiscount/100));
+
       if(checkout.step == 'confirm' && checkout.shipping.service.cardComision)
         checkout.shipping.service.total += parseFloat(checkout.shipping.service.cardComision);
       else
@@ -67,7 +74,7 @@
             service.prevDiscount = service.discountTotal;
             var discount = service.originalAmount*(res.discount/100);
             checkout.shipping.service.discountPrev = discount;
-            service.discountTotal =  service.originalAmount-discount;
+            //service.discountTotal =  service.originalAmount-discount;
             calculateTotals();
             shippingApi.setShipping(checkout.shipping);
           }

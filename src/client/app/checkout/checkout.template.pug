@@ -501,13 +501,6 @@
                   td.align-right
                     h3
                       |{{checkout.shipping.service.originalAmount | currency}} MXN
-                tr(data-ng-if="checkout.shipping.service.couponCode")
-                  td.align-right
-                    h4.disabled-color
-                      |Cupón ({{checkout.shipping.service.couponCode}})
-                  td.align-right
-                    h3.accent
-                      |{{checkout.shipping.service.couponDiscount}} %
                 tr
                   td.align-right
                     h4.disabled-color
@@ -515,6 +508,14 @@
                   td.align-right
                     h3.accent
                       |-{{checkout.shipping.service.originalAmount - checkout.shipping.service.total |currency}} MXN
+                      
+                tr(data-ng-if="checkout.shipping.service.couponCode")
+                  td.align-right
+                    h4.disabled-color
+                      |Cupón ({{checkout.shipping.service.couponCode}})
+                  td.align-right
+                    h3.accent
+                      |{{checkout.shipping.service.couponDiscount}} %
                 //- tr(data-ng-if="checkout.shipping.service.couponCode && checkout.shipping.service.cardComision")
                   td.align-right
                     h4.disabled-color
