@@ -167,7 +167,7 @@
                                           div
                                             |PESO
                                           div
-                                            input(name="weight", placeholder="Kg", data-ng-model="package.weight", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.updateWeight(package)")
+                                            input(name="weight", placeholder="Kg", data-ng-model="package.weight", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-blur="home.updateWeight(package)")
                                       .col-xs-9
                                         .box-attr
                                           div
