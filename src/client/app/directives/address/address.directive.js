@@ -65,7 +65,8 @@ function addressForm(userApi,$state,$ngConfirm,Dialog){
           county:scope.currentAddress.county,
           city: scope.currentAddress.city,
           state: scope.currentAddress.state,
-          zip: scope.currentAddress.zip
+          zip: scope.currentAddress.zip,
+          reference: scope.currentAddress.reference,
         };
       }else{
         scope.newAddress = {
@@ -77,7 +78,8 @@ function addressForm(userApi,$state,$ngConfirm,Dialog){
           county: null,
           city: null,
           state: null,
-          zip: null
+          zip: null,
+          reference: null
         };
       }
 
