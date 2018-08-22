@@ -742,6 +742,7 @@ script(type="text/javascript")
     |var ot = document.getElementById("float-section").offsetTop;
     |if(ot != undefined){
     |window.addEventListener("scroll", function() {
+    |if(document.getElementById('tag') != null){
     |if (window.scrollY > ot) {
     |  document.getElementById('tag').style.display = "block";
     |}else{
@@ -749,3 +750,4 @@ script(type="text/javascript")
     |}
     |}
     |});
+    |}

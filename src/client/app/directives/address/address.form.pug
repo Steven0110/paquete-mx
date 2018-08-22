@@ -71,7 +71,7 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
     md-input-container.md-block
       label(for="reference")
         |Referencia
-      input(name="reference", data-ng-model="newAddress.reference", placeholder="Ej. Fachada color naranja")
+      input(name="reference", data-ng-model="newAddress.reference", placeholder="Ej. Fachada color naranja", maxlength="29")
       div(ng-messages="addressForm.reference.$error")
         div(ng-message="required",data-ng-bind="labels.address.errors.required")
       md-icon

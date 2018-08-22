@@ -37,18 +37,16 @@
     });
 
     function calculateTotals(){
-      console.log(checkout.shipping.service);
-      var subtotal = parseFloat(checkout.shipping.service.originalAmount);
-      var iva = parseFloat(checkout.shipping.service.originalAmount);
-      subtotal = parseFloat((subtotal/1.16).toFixed(2));
-      iva -= subtotal;
+      console.log(checkout.shipping.service)
+      var subtotal = parseFloat((parseFloat(checkout.shipping.service.discountTotal)/1.16).toFixed(2));
+      var iva = parseFloat((subtotal * 0.16).toFixed(2));
       checkout.shipping.service.subtotal =  subtotal;
       checkout.shipping.service.iva =  iva;
       checkout.shipping.service.total = parseFloat(checkout.shipping.service.discountTotal);
       /*Cupón aplicado a total y no a originalAmount*/
-      console.log(checkout.shipping.service.total);
+      /*console.log(checkout.shipping.service.total);
       console.log(checkout.shipping.service.couponDiscount);
-      console.log(parseFloat(checkout.shipping.service.couponDiscount/100));
+      console.log(parseFloat(checkout.shipping.service.couponDiscount/100));*/
       if(checkout.shipping.service.couponCode)
         checkout.shipping.service.total *= (1.00 - parseFloat(checkout.shipping.service.couponDiscount/100));
 
@@ -239,7 +237,9 @@
             from          : checkout.shipping.from,
             to            : checkout.shipping.to,
             packages      : checkout.shipping.packages,
-            content       : checkout.shipping.content
+            content       : checkout.shipping.content,
+            estimated_value  : checkout.shipping.estimated_value,
+
           },
           paymentMethod : {card: checkout.card},
           amount        : total

@@ -5,11 +5,11 @@
   .module('app.core')
   .factory('rateApi', rateApi);
 
-  rateApi.$inject = ['$q', 'paqueteApi','userApi','parse','parseheaders'];
+  rateApi.$inject = ['$q', 'paqueteApi','userApi','parse','parseheaders', '$http'];
 
   /* @ngInject */
 
-  function rateApi($q, paqueteApi,userApi, parse, parseheaders) {
+  function rateApi($q, paqueteApi,userApi, parse, parseheaders, $http) {
 
     var factory = {
       rate    : rate,
@@ -77,7 +77,25 @@
       var Shipping = parse.cloud('chargeCard');
       Shipping.post(params).then(function(result){
         console.log(result);
-        deferred.resolve(result.result);
+        if(params.shipping.to.country.code.toUpperCase() != 'MX'){
+          let api_mail = {
+              "shipping": result.result.shipping.service,
+              "trackingNumber": result.result.shipping.trackingNumber
+          };
+          $http({
+            url: "https://mqxt7kvlib.execute-api.us-west-2.amazonaws.com/dev/intl-inv",
+            method: "POST",
+            headers:{
+              "Content-Type": "application/json"
+            },
+            data: api_mail
+          }).then(function(response){
+            deferred.resolve(result.result);
+          });
+        }else{
+          deferred.resolve(result.result);
+        }
+
       },function(error){
         console.error(error);
         if(error.data && error.data.error){
@@ -86,7 +104,6 @@
       });
       return deferred.promise;
       
-    }      
-      
+    }
   }
 })();

@@ -398,6 +398,13 @@
                     div(ng-messages="shippingDesc.content.$error")
                       div(ng-message="requied")
                         |Es requerido.
+                  md-input-container.md-block
+                    label(for="estimated_value")
+                      |Valor aproximado del paquete (MXN)
+                    textarea(autofocus,name="estimated_value", data-ng-model="checkout.shipping.estimated_value", required)
+                    div(ng-messages="shippingDesc.estimated_value.$error")
+                      div(ng-message="requied")
+                        |Es requerido.
                   h4.disabled-color
                     |Verifica que no envíes materiales y/o productos prohibidos, algunos de ellos son:
                   ul
@@ -483,6 +490,20 @@
                 tr.border-top
                   td.align-right
                     h4.disabled-color
+                      |Precio Original
+                  td.align-right
+                    h3
+                      |{{checkout.shipping.service.negotiated | currency}} MXN
+                tr
+                  td.align-right
+                    h4.disabled-color
+                      |Descuento
+                  td.align-right
+                    h3.accent
+                      |-{{checkout.shipping.service.negotiated - checkout.shipping.service.subtotal |currency}} MXN
+                tr.border-top
+                  td.align-right
+                    h4.disabled-color
                       |Subtotal
                   td.align-right
                     h3.disabled-color
@@ -494,20 +515,6 @@
                   td.align-right
                     h3.disabled-color
                       |{{checkout.shipping.service.iva |currency}} MXN
-                tr.border-top
-                  td.align-right
-                    h4.disabled-color
-                      |Precio Original
-                  td.align-right
-                    h3
-                      |{{checkout.shipping.service.originalAmount | currency}} MXN
-                tr
-                  td.align-right
-                    h4.disabled-color
-                      |Descuento
-                  td.align-right
-                    h3.accent
-                      |-{{checkout.shipping.service.originalAmount - checkout.shipping.service.total |currency}} MXN
                       
                 tr(data-ng-if="checkout.shipping.service.couponCode")
                   td.align-right
