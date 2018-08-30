@@ -74,6 +74,34 @@ md-content(layout-padding)
         md-select(data-ng-model="account.taxUse")
           md-option(data-ng-repeat="item in taxUses track by item.code", value="{{item.code}}")
             |{{item.name}}
+    h3.custom-title-register-30(data-ng-if="accountType == 'enterprise'")
+      |Información para complementos de CFDI
+    div(data-ng-show="account.invoice")
+      md-input-container.md-block
+        label(for="CtaOrdenante", data-ng-bind="shell.labels.register.form.CtaOrdenante")
+        input(name="CtaOrdenante", required="" data-ng-model="account.CtaOrdenante",ng-required="account.invoice")
+        div(data-ng-messages="registerForm.CtaOrdenante.$error")
+          div(data-ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+      md-input-container.md-block
+        label(for="RfcEmisorCtaOrd", data-ng-bind="shell.labels.register.form.RfcEmisorCtaOrd")
+        input(name="RfcEmisorCtaOrd", required="" data-ng-model="account.RfcEmisorCtaOrd",ng-required="account.invoice")
+        div(data-ng-messages="registerForm.RfcEmisorCtaOrd.$error")
+          div(data-ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+      md-input-container.md-block
+        label(for="NomBancoOrdExt", data-ng-bind="shell.labels.register.form.NomBancoOrdExt")
+        input(name="NomBancoOrdExt", required="" data-ng-model="account.NomBancoOrdExt",ng-required="account.invoice")
+        div(data-ng-messages="registerForm.NomBancoOrdExt.$error")
+          div(data-ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+      md-input-container.md-block
+        label(for="CtaBeneficiario", data-ng-bind="shell.labels.register.form.CtaBeneficiario")
+        input(name="CtaBeneficiario", required="" data-ng-model="account.CtaBeneficiario",ng-required="account.invoice")
+        div(data-ng-messages="registerForm.CtaBeneficiario.$error")
+          div(data-ng-message="required", data-ng-bind="shell.labels.form.errors.required")
+      md-input-container.md-block
+        label(for="RfcEmisorCtaBen", data-ng-bind="shell.labels.register.form.RfcEmisorCtaBen")
+        input(name="RfcEmisorCtaBen", required="" data-ng-model="account.RfcEmisorCtaBen",ng-required="account.invoice")
+        div(data-ng-messages="registerForm.RfcEmisorCtaBen.$error")
+          div(data-ng-message="required", data-ng-bind="shell.labels.form.errors.required")
     //- .privacy
       span(data-ng-bind="shell.labels.privacyParagraph1")
       span.accent(data-ng-bind="shell.labels.readIt")

@@ -101,5 +101,35 @@
                   md-select(data-ng-model="account.taxes.taxUse")
                     md-option(data-ng-repeat="item in account.taxUses track by item.code", value="{{item.code}}")
                       |{{item.name}}
+
+                div(data-ng-show="account.taxes.isEnterprise")
+                  h3
+                    |Datos de complemento de CFDI:
+                  br
+                  md-input-container.md-block
+                    label(for="CtaOrdenante", data-ng-bind="account.labels.form.CtaOrdenante")
+                    input(name="CtaOrdenante", data-ng-model="account.taxes.CtaOrdenante", required="")
+                    div(ng-messages="account.taxForm.CtaOrdenante.$error")
+                      div(ng-message="required",data-ng-bind="account.labels.errors.required")
+                  md-input-container.md-block
+                    label(for="RfcEmisorCtaOrd", data-ng-bind="account.labels.form.RfcEmisorCtaOrd")
+                    input(name="RfcEmisorCtaOrd", data-ng-model="account.taxes.RfcEmisorCtaOrd", required="")
+                    div(ng-messages="account.taxForm.RfcEmisorCtaOrd.$error")
+                      div(ng-message="required",data-ng-bind="account.labels.errors.required")
+                  md-input-container.md-block
+                    label(for="NomBancoOrdExt", data-ng-bind="account.labels.form.NomBancoOrdExt")
+                    input(name="NomBancoOrdExt", data-ng-model="account.taxes.NomBancoOrdExt", required="")
+                    div(ng-messages="account.taxForm.NomBancoOrdExt.$error")
+                      div(ng-message="required",data-ng-bind="account.labels.errors.required")
+                  md-input-container.md-block
+                    label(for="CtaBeneficiario", data-ng-bind="account.labels.form.CtaBeneficiario")
+                    input(name="CtaBeneficiario", data-ng-model="account.taxes.CtaBeneficiario", required="")
+                    div(ng-messages="account.taxForm.CtaBeneficiario.$error")
+                      div(ng-message="required",data-ng-bind="account.labels.errors.required")
+                  md-input-container.md-block
+                    label(for="RfcEmisorCtaBen", data-ng-bind="account.labels.form.RfcEmisorCtaBen")
+                    input(name="RfcEmisorCtaBen", data-ng-model="account.taxes.RfcEmisorCtaBen", required="")
+                    div(ng-messages="account.taxForm.RfcEmisorCtaBen.$error")
+                      div(ng-message="required",data-ng-bind="account.labels.errors.required")
               .align-center
                 md-button.md-raised.md-primary(type="submit",data-ng-bind="account.labels.form.save",aria-label="account.labels.form.save")

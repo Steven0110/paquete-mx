@@ -25,6 +25,7 @@
 
     if(currentUser){
       userApi.getByUser(currentUser).then(function(result){
+        console.log(result);
         if(result){
           if(result.objectId)
             account.taxes.objectId = result.objectId;
@@ -34,6 +35,20 @@
             account.taxes.taxName = result.taxName;
           if(result.taxUse)
             account.taxes.taxUse = result.taxUse;
+          /*********/
+          if(result.CtaOrdenante)
+            account.taxes.CtaOrdenante = result.CtaOrdenante;
+          if(result.RfcEmisorCtaOrd)
+            account.taxes.RfcEmisorCtaOrd = result.RfcEmisorCtaOrd;
+          if(result.NomBancoOrdExt)
+            account.taxes.NomBancoOrdExt = result.NomBancoOrdExt;
+          if(result.CtaBeneficiario)
+            account.taxes.CtaBeneficiario = result.CtaBeneficiario;
+          if(result.RfcEmisorCtaBen)
+            account.taxes.RfcEmisorCtaBen = result.RfcEmisorCtaBen;
+          if(result.type)
+            account.taxes.isEnterprise = result.type == "enterprise";
+
           account.taxes.invoice = result.invoice;
         }
       },function(err){
