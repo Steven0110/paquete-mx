@@ -55,7 +55,9 @@ function cardForm(paymentGateway, Dialog){
             card.sendForm({response:res});
           },function(err){
             console.log(err);
-            var message = Object.keys(err)[0];
+            var message = JSON.stringify(err);
+            Dialog.showError(message,"Hubo un error al agregar tu tarjeta.");
+            /*var message = Object.keys(err)[0];
             if(err[message]){
               if(err[message][0]){
                 message = err[message][0];
@@ -64,8 +66,7 @@ function cardForm(paymentGateway, Dialog){
               }
             }else{
               message = err;
-            }
-            Dialog.showError(message,"Hubo un error al agregar tu tarjeta.");
+            }*/
           }).finally(card.hideLoading);
         }else{
           Dialog.showMessage();

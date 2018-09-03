@@ -97,6 +97,7 @@
         }
 
       },function(error){
+        alert(JSON.stringify(error.data.error));
         console.error(error);
         if(error.data && error.data.error){
           deferred.reject(error.data.error);
