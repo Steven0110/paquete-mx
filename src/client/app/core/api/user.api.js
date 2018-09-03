@@ -88,11 +88,15 @@
       var deferred = $q.defer();
       var Login = parse.login();
       Login.one().get(params).then(function(user){
-        setSessionByToken(user.sessionToken);
-        var timestamp = Math.floor(Date.now() / 1000);
-        storage.set('user',user);
-        storage.set('timestamp',timestamp);
-        deferred.resolve(user);
+        if(user.suspended === true){
+          deferred.reject(-1);
+        }else{          
+          setSessionByToken(user.sessionToken);
+          var timestamp = Math.floor(Date.now() / 1000);
+          storage.set('user',user);
+          storage.set('timestamp',timestamp);
+          deferred.resolve(user);
+        }
       },function(error){
         deferred.reject(error);
       });
