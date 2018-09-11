@@ -26,7 +26,7 @@
       apiEndpoint:{
         "baseUrl": "https://mqxt7kvlib.execute-api.us-west-2.amazonaws.com/dev",
         "downloadInvoice": "http://54.244.218.15/development/download.php",
-        "downloadLabel": "http://54.245.38.66/dev.php?trackingNumber="
+        "downloadLabel": "http://35.163.92.55/dev.php?trackingNumber="
       }
     };
   }
