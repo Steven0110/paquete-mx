@@ -24,8 +24,8 @@
       production: true,
       apiEndpoint:{
         "baseUrl": "https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api",
-        "downloadInvoice": "http://54.244.218.15/endpoint/download.php",
-        "downloadLabel": "http://35.163.92.55?trackingNumber="
+        "downloadInvoice": "http://52.89.200.43/endpoint/download.php",
+        "downloadLabel": "http://54.201.237.120?trackingNumber="
       }
     };
   }
