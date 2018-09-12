@@ -226,57 +226,90 @@
     }
 
     checkout.order = function(){
-      shell.moveToTop();
   
       if(checkout.acceptTerms){
-        var total = checkout.shipping.service.total;
-        var order = {
-          shipping:{
-            packagingType : checkout.shipping.packagingType,
-            service       : checkout.shipping.service,
-            from          : checkout.shipping.from,
-            to            : checkout.shipping.to,
-            packages      : checkout.shipping.packages,
-            content       : checkout.shipping.content,
-            estimated_value  : checkout.shipping.estimated_value,
 
-          },
-          paymentMethod : {card: checkout.card},
-          amount        : total
-        }
-
-        if(checkout.payment == 'card'){
-          order.paymentMethod = {card: checkout.card};
-        }else if(checkout.payment == 'account'){
-          order.paymentMethod = 'account';
-          checkout.shipping.service.cardComision = false;
-          // checkout.shipping.service.total = checkout.shipping.service.discountTotal;
-        }
-
-        checkout.connecting = true;
-        rateApi.ship(order).then(function(response){
-          checkout.trackingNumber = response.shipOrder.trackingNumber;
+        shell.moveToTop();
+         //Sólo para Venta al público en general que 
+        userApi.getByUser(checkout.user).then(function(account){
+          if(account){
+            if(checkout.invoice == false){
+              account.taxId = "XAXX010101000";
+              account.taxName = "PÚBLICO EN GENERAL";
+              return {"promise": accountApi.update(account), "account": account};
+            }else return {"account": account};
+          }else{
+            Dialog.showError("Error al obtener la cuenta.","");
+            return false;
+          }
+        }).then(function(response){
+          //KB1
+          console.log("KB1");
           console.log(response);
-          checkout.response = true;
-          checkout.labels = response.shipOrder.packages;
-        },function(err){
-          if(checkout.payment == 'account')
-            checkout.step = 'selectPayment';
-          else if(checkout.payment == 'card'){
-            checkout.step = 'payment';
-            checkout.cardForm = false;
-          }
-          if(err.message){
-            var title = 'No se pudo pagar la orden.';
-            if(err.message == 'Deny' || err.message == 'Denegado'){
-              title = "Tarjeta Declianda";
-              err.message = "Lo sentimos no se pudo completar la orden ya que tu tarjeta fue declinada, ponte en contacto con tu banco."
+          //console.log(response.promise.$$state.status);
+          //Creates order and shipment
+            if(response.account){
+
+              var total = checkout.shipping.service.total;
+              var order = {
+                shipping:{
+                  packagingType : checkout.shipping.packagingType,
+                  service       : checkout.shipping.service,
+                  from          : checkout.shipping.from,
+                  to            : checkout.shipping.to,
+                  packages      : checkout.shipping.packages,
+                  content       : checkout.shipping.content,
+                  estimated_value  : checkout.shipping.estimated_value,
+                  RFCReceptor  :  response.account.taxId,
+                  RazonSocialReceptor  :  response.account.taxName
+                },
+                paymentMethod : {card: checkout.card},
+                amount        : total
+              }
+
+              console.log("KB2");
+              console.log(order);
+
+              if(checkout.payment == 'card'){
+                order.paymentMethod = {card: checkout.card};
+              }else if(checkout.payment == 'account'){
+                order.paymentMethod = 'account';
+                checkout.shipping.service.cardComision = false;
+                // checkout.shipping.service.total = checkout.shipping.service.discountTotal;
+              }
+
+              checkout.connecting = true;
+              rateApi.ship(order).then(function(response){
+                checkout.trackingNumber = response.shipOrder.trackingNumber;
+                console.log(response);
+                checkout.response = true;
+                checkout.labels = response.shipOrder.packages;
+              },function(err){
+                if(checkout.payment == 'account')
+                  checkout.step = 'selectPayment';
+                else if(checkout.payment == 'card'){
+                  checkout.step = 'payment';
+                  checkout.cardForm = false;
+                }
+                if(err.message){
+                  var title = 'No se pudo pagar la orden.';
+                  if(err.message == 'Deny' || err.message == 'Denegado'){
+                    title = "Tarjeta Declinada";
+                    err.message = "Lo sentimos no se pudo completar la orden ya que tu tarjeta fue declinada, ponte en contacto con tu banco."
+                  }
+                  Dialog.showError(err.message, title);
+                }
+              }).finally(function(){
+                checkout.connecting = false;
+              });
+
+            }else{
+              Dialog.showError("Ocurrió un problema al guardar tu envío.","Si el error persiste contacta a paquete@paquete.mx");
             }
-            Dialog.showError(err.message, title);
-          }
-        }).finally(function(){
-          checkout.connecting = false;
+        }, function(err){
+          console.log(err);
         });
+        
       }else{
         Dialog.showError("Debes aceptar los términos y condiciones para continuar.","¡Solo un paso más!");
       }
