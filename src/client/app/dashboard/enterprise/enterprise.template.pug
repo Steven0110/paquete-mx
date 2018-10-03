@@ -51,6 +51,15 @@
       i.fa.fa-folder-open-o
       span.padding-left-2
         |Esperando Documentación
+  div.align-center(data-ng-if="enterprise.account.api_token && enterprise.account.api_token != ''")
+    h2.align-center.disabled-color
+      |API Token:
+    h3.align-center.disabled-color
+      span(style="padding: 10px;border: 1px solid gray;")
+        |{{enterprise.account.api_token}}
+
+
+
   div(data-ng-if="!enterprise.account.verified && enterprise.account.status != 'waitingApproval' ")
     h2
       |Activar tu linea de crédito
