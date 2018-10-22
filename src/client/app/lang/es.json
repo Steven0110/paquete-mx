@@ -174,6 +174,8 @@
     "in_transit" :"En transito",
     "delivered" :"Entregado",
     "pickup": "Recolectado",
-    "label_created" :"Etiqueta Creada"
+    "label_created" :"Etiqueta Creada",
+    "out_of_delivery": "En ruta de entrega",
+    "in_facilities": "En instalaciones del transportista"
   }
 }

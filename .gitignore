@@ -6,3 +6,4 @@ build
 src/client/**/*.html
 src/client/**/*.css
 lambdas
+.firebaserc
