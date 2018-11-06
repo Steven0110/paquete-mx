@@ -166,45 +166,45 @@
           span
             b
               |Creado&nbsp;&nbsp;&nbsp;
-            span
+            span(data-ng-if="shipping.tracking.created.date != ''")
               |[{{shipping.tracking.created.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.created.location }}]&nbsp;&nbsp;&nbsp;
-            span
+            span(data-ng-if="shipping.tracking.created.date != ''")
               |{{shipping.tracking.created.date}} - {{shipping.tracking.created.time}} hrs.&nbsp;&nbsp;&nbsp;
         .row.mid-status
           .mark(data-ng-class="{'completed': shipping.tracking.in_transit.date != '' }")
           span
             b
               |En tránsito&nbsp;&nbsp;&nbsp;
-            span
+            span(data-ng-if="shipping.tracking.in_transit.date != ''")
               |[{{shipping.tracking.in_transit.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.in_transit.location }}]&nbsp;&nbsp;&nbsp;
-            span
+            span(data-ng-if="shipping.tracking.in_transit.date != ''")
               |{{shipping.tracking.in_transit.date}} - {{shipping.tracking.in_transit.time}} hrs.&nbsp;&nbsp;&nbsp;
         .row.mid-status
           .mark(data-ng-class="{'completed': shipping.tracking.in_facilities.date != '' }")
           span
             b
               |En instalaciones de paquetería&nbsp;&nbsp;&nbsp;
-            span
+            span(data-ng-if="shipping.tracking.in_facilities.date != ''")
               |[{{shipping.tracking.in_facilities.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.in_facilities.location }}]&nbsp;&nbsp;&nbsp;
-            span
+            span(data-ng-if="shipping.tracking.in_facilities.date != ''")
               |{{shipping.tracking.in_facilities.date}} - {{shipping.tracking.in_facilities.time}} hrs.&nbsp;&nbsp;&nbsp;
         .row.mid-status
           .mark(data-ng-class="{'completed': shipping.tracking.out_of_delivery.date != '' }")
           span
             b
               |En ruta de entrega&nbsp;&nbsp;&nbsp;
-            span
+            span(data-ng-if="shipping.tracking.out_of_delivery.date != ''")
               |[{{shipping.tracking.out_of_delivery.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.out_of_delivery.location }}]&nbsp;&nbsp;&nbsp;
-            span
+            span(data-ng-if="shipping.tracking.out_of_delivery.date != ''")
               |{{shipping.tracking.out_of_delivery.date}} - {{shipping.tracking.out_of_delivery.time}} hrs.&nbsp;&nbsp;&nbsp;
         .row.final-status
           .mark(data-ng-class="{'completed': shipping.tracking.delivered.date != '' }")
           span
             b
               |Entregado&nbsp;&nbsp;&nbsp;
-            span
+            span(data-ng-if="shipping.tracking.delivered.date != ''")
               |[{{shipping.tracking.delivered.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.delivered.location }}]&nbsp;&nbsp;&nbsp;
-            span
+            span(data-ng-if="shipping.tracking.delivered.date != ''")
               |{{shipping.tracking.delivered.date}} - {{shipping.tracking.delivered.time}} hrs.&nbsp;&nbsp;&nbsp;
       h3.disabled-color(data-ng-if="!shipping.tracking")
         |No hay actualizaciones disponibles
