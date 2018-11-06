@@ -239,3 +239,130 @@ table.table.table-responsive.hover
       td.account
         background-color: #f2f2f2
         color: $primary-color
+
+.tracking-status
+  .row
+    padding-top: 10px
+    padding-bottom: 10px
+  .mark
+    background-color: #f7f7f7
+
+.tracking-status.in-progress
+  .mark
+    display: inline-block
+    width: 20px
+    height: 20px
+    margin-right: 20px
+    border-radius: 50%
+    border: 1px solid orange
+  .mark.completed
+    background-color: orange
+
+
+  .mid-status
+    position: relative
+    .mark
+      &::after
+        position: absolute
+        content: ''
+        display: inline-block
+        background-color: orange
+        width: 2px
+        height: 30px
+        margin-left: 5px
+        bottom: 34px
+    .mark.completed
+      background-color: orange
+      &::before
+        position: absolute
+        content: ''
+        display: inline-block
+        background-color: orange
+        width: 10px
+        height: 50px
+        margin-left: 1px
+        bottom: 25px
+
+  .final-status
+    position: relative
+    .mark
+      &::after
+        position: absolute
+        content: ''
+        display: inline-block
+        background-color: orange
+        width: 2px
+        height: 30px
+        margin-left: 5px
+        bottom: 34px
+    .mark.completed
+      background-color: orange
+      &::before
+        position: absolute
+        content: ''
+        display: inline-block
+        background-color: orange
+        width: 10px
+        height: 50px
+        margin-left: 1px
+        bottom: 25px
+
+
+.tracking-status.delivered
+  .mark
+    display: inline-block
+    width: 20px
+    height: 20px
+    margin-right: 20px
+    border-radius: 50%
+    border: 1px solid #01b710
+  .mark.completed
+    background-color: #01b710
+
+  .mid-status
+    position: relative
+    .mark
+      &::after
+        position: absolute
+        content: ''
+        display: inline-block
+        background-color: #01b710
+        width: 2px
+        height: 30px
+        margin-left: 5px
+        bottom: 34px
+    .mark.completed
+      background-color: #01b710
+      &::before
+        position: absolute
+        content: ''
+        display: inline-block
+        background-color: #01b710
+        width: 10px
+        height: 50px
+        margin-left: 1px
+        bottom: 25px
+
+  .final-status
+    position: relative
+    .mark
+      &::after
+        position: absolute
+        content: ''
+        display: inline-block
+        background-color: #01b710
+        width: 2px
+        height: 30px
+        margin-left: 5px
+        bottom: 34px
+    .mark.completed
+      background-color: #01b710
+      &::before
+        position: absolute
+        content: ''
+        display: inline-block
+        background-color: #01b710
+        width: 10px
+        height: 50px
+        margin-left: 1px
+        bottom: 25px

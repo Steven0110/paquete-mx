@@ -18,6 +18,7 @@
       sendPickUp   : sendPickUp,
       cancelPickup : cancelPickup,
       getInvoices : getInvoices,
+      getTracking : getTracking,
       getPayments : getPayments,
       getOutcomes : getOutcomes
     };
@@ -70,6 +71,12 @@
         return shipping;
       else
         return false;
+    }
+
+    function getTracking(shippingId){
+      var Tracking = parse.endpoint("Tracking");
+      var where = {"Shipping":{"__type":"Pointer","className":"Shipping","objectId":shippingId}};
+      return Tracking.getAll(where);
     }
 
     function getInvoices(shippingId){

@@ -13,6 +13,7 @@
     var shipping = this;
     shipping.updates = [];
     shipping.overWeight = [];
+    shipping.tracking = {};
     var shell = $scope.shell;
     shipping.pickup = {};
     var dashMenu = $('#dash-menu').innerWidth();
@@ -27,6 +28,22 @@
     if(data){
       shipping.data = data;
       shipping.packages = data.service.packages;
+
+      shippingApi.getTracking(data.objectId).then(function(res){
+        if(res && res.length > 0){
+          shipping.tracking.created = res[0].created;
+          shipping.tracking.in_transit = res[0].in_transit;
+          shipping.tracking.in_facilities = res[0].in_facilities;
+          shipping.tracking.out_of_delivery = res[0].out_of_delivery;
+          shipping.tracking.delivered = res[0].delivered;
+        }else{
+          shipping.tracking = null;
+        }
+      },function(err){
+        console.log(err);
+      });
+
+
       shippingApi.getInvoices(data.objectId).then(function(res){
         if(res && res.length > 0){
           for(var i=0; i< res.length; i++){
