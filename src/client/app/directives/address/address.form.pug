@@ -2,11 +2,11 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
   div(layout-xs-sm="row")
     md-input-container.md-block
       label(for="name",data-ng-bind="labels.address.form.name")
-      input(name="name", data-ng-model="newAddress.name",ng-maxlength="30",required)
+      input(name="name", data-ng-model="newAddress.name",ng-maxlength="22",required)
       div(ng-messages="addressForm.name.$error")
         div(ng-message="required",data-ng-bind="labels.address.errors.required")
         div(ng-message="maxlength")
-          |Máximo 30 caracteres.
+          |Máximo 22 caracteres.
       md-icon
         div(data-balloon-length="medium" data-balloon="Escriba el Nombre y Apellido." data-balloon-pos="right")
           i.fa.fa-info-circle
