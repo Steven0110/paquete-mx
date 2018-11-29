@@ -10,9 +10,9 @@
         |{{shipping.data.carrier}}
       span
         |&nbsp;-&nbsp;{{shipping.data.trackingNumber}}
-      span
+      span.hide-on-mobile
         |&nbsp;-&nbsp;{{shipping.labels[shipping.data.status]}}
-.dash-name-section
+.dash-name-section.hide-on-mobile
   .big-text-welcome
     |¡Hola {{shell.setName}}!
   .small-text-welcome
@@ -24,7 +24,7 @@
   .container-fluid
     .shipping-info
       .row
-        .col-xs-4
+        .col-md-4
           h2.accent
             |Origen
           .section-space-right
@@ -42,7 +42,7 @@
               |{{shipping.data.service.from.state}}
               span.uppercase
                 |, {{shipping.data.service.from.country.name}}
-        .col-xs-4
+        .col-md-4
           .align-center
             .small-image(data-ng-if="shipping.data.status == 'delivered'")
               img(ng-src="common/images/delivered.png")
@@ -60,7 +60,7 @@
             div(data-ng-if="shipping.data.status == 'label_created'")
               md-button.md-raised.md-primary(href="{{shell.downloadLabel(shipping.data.trackingNumber)}}", download)
                 |Imprimir Etiqueta
-        .col-xs-4
+        .col-md-4
           h2.accent
             |Destino
           .board-list
@@ -116,7 +116,7 @@
             |&nbsp;recolección en domicilio
           
           .row
-            .col-xs-12.col-sm-6
+            .col-md-12.col-sm-6
               .padding-left-2
                 h4
                   |Fecha
@@ -166,7 +166,7 @@
           span
             b
               |Creado&nbsp;&nbsp;&nbsp;
-            span(data-ng-if="shipping.tracking.created.date != ''")
+            span.hide-on-mobile(data-ng-if="shipping.tracking.created.date != ''")
               |[{{shipping.tracking.created.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.created.location }}]&nbsp;&nbsp;&nbsp;
             span(data-ng-if="shipping.tracking.created.date != ''")
               |{{shipping.tracking.created.date}} - {{shipping.tracking.created.time}} hrs.&nbsp;&nbsp;&nbsp;
@@ -175,16 +175,18 @@
           span
             b
               |En tránsito&nbsp;&nbsp;&nbsp;
-            span(data-ng-if="shipping.tracking.in_transit.date != ''")
+            span.hide-on-mobile(data-ng-if="shipping.tracking.in_transit.date != ''")
               |[{{shipping.tracking.in_transit.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.in_transit.location }}]&nbsp;&nbsp;&nbsp;
             span(data-ng-if="shipping.tracking.in_transit.date != ''")
               |{{shipping.tracking.in_transit.date}} - {{shipping.tracking.in_transit.time}} hrs.&nbsp;&nbsp;&nbsp;
         .row.mid-status
           .mark(data-ng-class="{'completed': shipping.tracking.in_facilities.date != '' }")
           span
-            b
+            b.hide-on-mobile
               |En instalaciones de paquetería&nbsp;&nbsp;&nbsp;
-            span(data-ng-if="shipping.tracking.in_facilities.date != ''")
+            b.show-on-mobile
+              |En paquetería&nbsp;&nbsp;&nbsp;
+            span.hide-on-mobile(data-ng-if="shipping.tracking.in_facilities.date != ''")
               |[{{shipping.tracking.in_facilities.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.in_facilities.location }}]&nbsp;&nbsp;&nbsp;
             span(data-ng-if="shipping.tracking.in_facilities.date != ''")
               |{{shipping.tracking.in_facilities.date}} - {{shipping.tracking.in_facilities.time}} hrs.&nbsp;&nbsp;&nbsp;
@@ -193,7 +195,7 @@
           span
             b
               |En ruta de entrega&nbsp;&nbsp;&nbsp;
-            span(data-ng-if="shipping.tracking.out_of_delivery.date != ''")
+            span.hide-on-mobile(data-ng-if="shipping.tracking.out_of_delivery.date != ''")
               |[{{shipping.tracking.out_of_delivery.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.out_of_delivery.location }}]&nbsp;&nbsp;&nbsp;
             span(data-ng-if="shipping.tracking.out_of_delivery.date != ''")
               |{{shipping.tracking.out_of_delivery.date}} - {{shipping.tracking.out_of_delivery.time}} hrs.&nbsp;&nbsp;&nbsp;
@@ -202,7 +204,7 @@
           span
             b
               |Entregado&nbsp;&nbsp;&nbsp;
-            span(data-ng-if="shipping.tracking.delivered.date != ''")
+            span.hide-on-mobile(data-ng-if="shipping.tracking.delivered.date != ''")
               |[{{shipping.tracking.delivered.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.delivered.location }}]&nbsp;&nbsp;&nbsp;
             span(data-ng-if="shipping.tracking.delivered.date != ''")
               |{{shipping.tracking.delivered.date}} - {{shipping.tracking.delivered.time}} hrs.&nbsp;&nbsp;&nbsp;
@@ -278,7 +280,7 @@
         span.accent
           |Comprobante Fiscal:
       .row
-        .col-xs-9
+        .col-md-9
           table.table.table-responsive
             thead
               th
@@ -289,9 +291,9 @@
                 |Monto
               th
                 |Por Pagar
-              th
+              th.hide-on-mobile
                 |Status
-              th
+              th.hide-on-mobile
                 |Liquidada
               th
                 |Archivos
@@ -304,12 +306,12 @@
                 |{{item.amount | currency}}
               td
                 |{{item.dueAmount | currency}}
-              td
+              td.hide-on-mobile
                 span.error(data-ng-if="item.cancelled")
                   |CANCELADA
                 span.success(data-ng-if="!item.cancelled")
                   |ACTIVA
-              td
+              td.hide-on-mobile
                 span.success(data-ng-if="item.paid")
                   |SI
                 span.error(data-ng-if="!item.paid")
@@ -328,7 +330,7 @@
       h3.disabled-color(data-ng-if="shipping.overWeight.length < 1")
         |No hay cargos de sobrepeso.
       .row(data-ng-if="shipping.overWeight.length > 0")
-        .col-xs-9
+        .col-md-9
           table.table.table-responsive
             thead
               th
@@ -368,7 +370,7 @@
           span.accent
             |Complementos de Pago:
         .row
-          .col-xs-9
+          .col-md-9
             table.table.table-responsive
               thead
                 th
@@ -408,7 +410,7 @@
           span.accent
             |Notas de Crédito:
         .row
-          .col-xs-9
+          .col-md-9
             table.table.table-responsive
               thead
                 th

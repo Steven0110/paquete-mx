@@ -1,7 +1,7 @@
 .dashboard-header
-  .dashboard-header-content
+  .dashboard-header-content.mobile-halfed
     .dash-section-title(data-ng-bind="shell.dashboard.title")
-    .dash-section-subtitle(data-ng-bind="shell.dashboard.subtitle")
+    .dash-section-subtitle.hide-on-mobile(data-ng-bind="shell.dashboard.subtitle")
 .dash-name-section
   .big-text-welcome
     |¡Hola {{shell.setName}}!
@@ -15,21 +15,21 @@
     h3.align-center.disabled-color
       |{{enterprise.account.taxId}}
     .row
-      .col-xs-6.center-block
+      .col-md-6.center-block
         .row
-          .col-xs-4
+          .col-md-4
             h4.align-center
-              |Limite de Crédito
+              |Limite de Crédito:
             h2.align-center.disabled-color
               |{{enterprise.account.creditLimit |currency}}
-          .col-xs-4
+          .col-md-4
             h4.align-center
-              |Disponible
+              |Disponible:
             h2.align-center.success
               |{{enterprise.account.creditLimit - enterprise.account.dueAmount  | currency}}
-          .col-xs-4
+          .col-md-4
             h4.align-center
-              |Por pagar
+              |Por pagar:
             h2.align-center.error
               |{{enterprise.account.dueAmount | currency}}
   div.align-center
@@ -82,7 +82,7 @@
       |Subir documentos.
 
     .row
-      .col-xs-3
+      .col-md-3
         .padding-sides
           .align-center(data-ng-show="enterprise.account.actaConstitutiva != 'false'")
             i.medium-icon.fa.fa-check-circle.success
@@ -105,7 +105,7 @@
             .align-center
               a(href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.actaConstitutiva}}" target="_blank")
                 |Ver Acta cargada previamente.
-      .col-xs-3
+      .col-md-3
         .padding-sides
           .align-center(data-ng-show="enterprise.account.actaConstitutiva != 'false'")
             i.medium-icon.fa.fa-check-circle.success
@@ -128,7 +128,7 @@
             .align-center
               a(href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.INE}}" target="_blank")
                 |Ver INE cargada previamente.
-      .col-xs-3
+      .col-md-3
         .padding-sides
           .align-center(data-ng-show="enterprise.account.comprobanteDomicilio != 'false'")
             i.medium-icon.fa.fa-check-circle.success
@@ -151,7 +151,7 @@
             .align-center
               a(href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.comprobanteDomicilio}}" target="_blank")
                 |Ver Comprobante cargado previamente.
-      .col-xs-3
+      .col-md-3
         .padding-sides
           .align-center(data-ng-show="enterprise.account.constanciaFiscal != 'false'")
             i.medium-icon.fa.fa-check-circle.success
@@ -175,7 +175,7 @@
               a(href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.constanciaFiscal}}" target="_blank")
                 |Ver Constancia cargada previamente.
     .row
-      .col-xs-3
+      .col-md-3
         .padding-sides
           .align-center(data-ng-show="enterprise.account.caratulaBancaria != 'false'")
             i.medium-icon.fa.fa-check-circle.success
@@ -198,7 +198,7 @@
             .align-center
               a(href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.caratulaBancaria}}" target="_blank")
                 |Ver Caratula cargada previamente.
-      .col-xs-3
+      .col-md-3
         .padding-sides
           .align-center(data-ng-show="enterprise.account.autorizacionBuro != 'false'")
             i.medium-icon.fa.fa-check-circle.success

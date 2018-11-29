@@ -1,7 +1,7 @@
 .dashboard-header
   .dashboard-header-content
     .dash-section-title(data-ng-bind="shell.dashboard.title")
-    .dash-section-subtitle(data-ng-bind="shell.dashboard.subtitle")
+    .dash-section-subtitle.hide-on-mobile(data-ng-bind="shell.dashboard.subtitle")
 .dash-name-section
   .big-text-welcome
     |¡Hola {{shell.setName}}!
@@ -11,7 +11,7 @@
 .dashboard-content
   .container-fluid
     .row        
-      .col-xs-6
+      .col-md-6
         .section-space-right
           .form-container(data-ng-show="paymentMethod.list.length < 1")
             .align-center
@@ -48,7 +48,7 @@
                 |{{item.termination}}
             .board-actions
               i.fa.fa-trash(data-ng-click="paymentMethod.delete(item, $index)")
-      .col-xs-6
+      .col-md-6
         .section-space-left
           .form-container
             .add-dashboard(data-ng-hide="paymentMethod.form")

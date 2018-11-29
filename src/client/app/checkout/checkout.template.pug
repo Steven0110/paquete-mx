@@ -520,9 +520,12 @@
                   td.align-right
                     h4.disabled-color
                       |Cupón ({{checkout.shipping.service.couponCode}})
-                  td.align-right
+                  td.align-right(data-ng-if="checkout.shipping.service.percentageCoupon == true")
                     h3.accent
                       |{{checkout.shipping.service.couponDiscount}} %
+                  td.align-right(data-ng-if="checkout.shipping.service.percentageCoupon != true")
+                    h3.accent
+                      |${{checkout.shipping.service.couponDiscount}} MXN
                 //- tr(data-ng-if="checkout.shipping.service.couponCode && checkout.shipping.service.cardComision")
                   td.align-right
                     h4.disabled-color

@@ -1,4 +1,7 @@
-#side-menu
+#side-menu(data-ng-click="shell.toggleMenu()", data-ng-class="{'closed': !shell.dashboard.menu}")
+  .menu-toggle.show-on-mobile
+    span
+      img(data-ng-src="common/images/ToggleMenu.png")
   .dashboard-logo
     a(ui-sref="home")
       img(data-ng-src="common/images/logo-blanco.png")
@@ -7,7 +10,7 @@
     div
       |{{item.label}}
 #side-content
-  .resume-content
+  .resume-content.hide-on-mobile
     div
       a(ui-sref="home")
         |¡Cotizar de nuevo!

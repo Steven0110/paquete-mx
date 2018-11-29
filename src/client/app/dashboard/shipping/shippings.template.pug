@@ -1,7 +1,7 @@
 .dashboard-header
   .dashboard-header-content
     .dash-section-title(data-ng-bind="shell.dashboard.title")
-    .dash-section-subtitle(data-ng-bind="shell.dashboard.subtitle")
+    .dash-section-subtitle.hide-on-mobile(data-ng-bind="shell.dashboard.subtitle")
 .dash-name-section
   .big-text-welcome
     |¡Hola {{shell.setName}}!
@@ -25,13 +25,13 @@
           |Carrier
         th
           |Servicio
-        th
+        th.hide-on-mobile
           |Status
-        th
+        th.hide-on-mobile
           |Pagada
-        th
+        th.hide-on-mobile
           |Fecha de creación
-        th
+        th.hide-on-mobile
           |Ultima Actualización
     tbody
       tr(data-ng-repeat="item in shippings.inTransit")
@@ -41,16 +41,16 @@
           |{{item.carrier}}
         td.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{item.service.service.name}}
-        td.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
+        td.pointer.hide-on-mobile(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{shell.labels.shipping[item.status]}}
-        td.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
+        td.pointer.hide-on-mobile(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           span.success(data-ng-if="item.paid")
             |SI
           span.error(data-ng-if="!item.paid")
             |NO
-        td.uppercase.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
+        td.uppercase.pointer.hide-on-mobile(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{item.createdAt | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
-        td.uppercase.pointer(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
+        td.uppercase.pointer.hide-on-mobile(ui-sref="dashboard.shipping({trackId:item.trackingNumber})")
           |{{item.updatedAt | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
   h1.accent
     |Envios finalizados
@@ -65,11 +65,11 @@
           |Carrier
         th
           |Servicio
-        th
+        th.hide-on-mobile
           |Status
-        th
+        th.hide-on-mobile
           |Fecha de creación
-        th
+        th.hide-on-mobile
           |Ultima Actualización
     tbody
       tr(data-ng-repeat="item in shippings.delivered")
@@ -80,9 +80,9 @@
           |{{item.carrier}}
         td.pointer
           |{{item.service.service.name}}
-        td.success.pointer
-          |{{shell.labels.shipping[item.status]}}
-        td.uppercase.pointer
+        td.success.pointer.hide-on-mobile
+          |{{shell.labels.sh.hide-on-mobileipping[item.status]}}
+        td.uppercase.pointer.hide-on-mobile
           |{{item.createdAt | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}
-        td.uppercase.pointer
+        td.uppercase.pointer.hide-on-mobile
           |{{item.updatedAt | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}

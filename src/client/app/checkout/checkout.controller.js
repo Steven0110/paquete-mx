@@ -43,12 +43,11 @@
       checkout.shipping.service.subtotal =  subtotal;
       checkout.shipping.service.iva =  iva;
       checkout.shipping.service.total = parseFloat(checkout.shipping.service.discountTotal);
-      /*Cupón aplicado a total y no a originalAmount*/
-      /*console.log(checkout.shipping.service.total);
-      console.log(checkout.shipping.service.couponDiscount);
-      console.log(parseFloat(checkout.shipping.service.couponDiscount/100));*/
       if(checkout.shipping.service.couponCode)
-        checkout.shipping.service.total *= (1.00 - parseFloat(checkout.shipping.service.couponDiscount/100));
+        if(checkout.shipping.service.percentageCoupon === true)
+          checkout.shipping.service.total *= (1.00 - parseFloat(checkout.shipping.service.couponDiscount/100));
+        else
+          checkout.shipping.service.total -= checkout.shipping.service.couponDiscount;
 
       if(checkout.step == 'confirm' && checkout.shipping.service.cardComision)
         checkout.shipping.service.total += parseFloat(checkout.shipping.service.cardComision);
@@ -69,6 +68,10 @@
             var service = checkout.shipping.service;
             checkout.shipping.service.couponCode = coupon;
             checkout.shipping.service.couponDiscount = res.discount;
+
+            /*  ¿Cupón porcentual?   */
+            checkout.shipping.service.percentageCoupon = res.percentage;
+
             service.prevDiscount = service.discountTotal;
             var discount = service.originalAmount*(res.discount/100);
             checkout.shipping.service.discountPrev = discount;

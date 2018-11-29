@@ -1,7 +1,7 @@
 .dashboard-header
   .dashboard-header-content
     .dash-section-title(data-ng-bind="shell.dashboard.title")
-    .dash-section-subtitle(data-ng-bind="shell.dashboard.subtitle")
+    .dash-section-subtitle.hide-on-mobile(data-ng-bind="shell.dashboard.subtitle")
 .dash-name-section
   .big-text-welcome
     |¡Hola {{shell.setName}}!

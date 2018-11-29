@@ -157,6 +157,7 @@ table.dashboard-table
   height: 100vh
 
 #side-menu
+  z-index: 9999
   position: fixed
   top: 0
   left: 0
@@ -366,3 +367,81 @@ table.table.table-responsive.hover
         height: 50px
         margin-left: 1px
         bottom: 25px
+
+/*  Responsive Options  */
+.show-on-mobile
+  opacity: 0
+.menu-toggle
+  position: absolute
+  width: 50px
+  height: 50px
+  right: 0
+  top: 10px
+  padding-left: 55px
+  padding-top: 10px;
+  
+  span
+    padding: 8px;
+
+    img
+      width: 20px
+      height: 20px
+
+@media screen and (max-width: 800px)
+  /*  General responsive options  */
+  h1
+    font-size: 20px
+  h2
+    font-size: 18px
+  h3
+    span
+      font-size: 14px
+  .show-on-mobile
+    opacity: 1
+  .hide-on-mobile
+    display: none
+
+  #side-content
+    .dashboard-header
+      padding-left: 30px
+      height: 90px
+      .dashboard-header-content
+        .dash-section-title
+          font-size: 1.4em;
+      .mobile-halfed
+        width: 200px
+
+    .dash-name-section
+      opacity: 0
+      .big-text-welcome
+        font-size: 1.2em;
+
+    .dashboard-content
+      padding: 92px 30px
+      
+      .shipping-info
+        .tracking-status
+          span
+            b
+              font-size: 0.8em;
+            span
+              font-size: 0.8em;
+
+      table
+        th
+          font-size: 0.8em
+        td
+          font-size: 0.8em
+  #side-menu
+    height: 200vh
+    transition: 0.2s linear all;
+  #side-menu.closed
+    transition: 0.2s linear all;
+    margin-left: -140px
+  #side-menu.closed + #side-content
+    transition: 0.2s linear all;
+    padding-left: 0
+
+    .dash-name-section
+      opacity: 1
+

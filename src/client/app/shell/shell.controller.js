@@ -20,7 +20,8 @@
     shell.menuOpen = false;
     shell.dashboard ={
       title: "Title",
-      subtitle: "Subtitle"
+      subtitle: "Subtitle",
+      menu: false
     }
 
     shell.download = function(uuid, type){
@@ -192,6 +193,9 @@
       }
     }
 
+    shell.toggleMenu = function(){
+      shell.dashboard.menu = !shell.dashboard.menu;
+    }
 
 
     function showToast(message){

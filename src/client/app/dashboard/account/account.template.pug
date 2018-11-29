@@ -1,7 +1,7 @@
 .dashboard-header
   .dashboard-header-content
     .dash-section-title(data-ng-bind="shell.dashboard.title")
-    .dash-section-subtitle(data-ng-bind="shell.dashboard.subtitle")
+    .dash-section-subtitle.hide-on-mobile(data-ng-bind="shell.dashboard.subtitle")
 .dash-name-section
   .big-text-welcome
     |¡Hola {{shell.setName}}!
@@ -11,7 +11,7 @@
 .dashboard-content
   .container-fluid
     .row
-      .col-xs-6
+      .col-md-6
         .section-space-right
           .form-container
             h1.accent.align-center
@@ -41,7 +41,7 @@
                     div(ng-message="pattern",data-ng-bind="account.labels.form.mobileInvalid")
               .align-center
                 md-button.md-raised.md-primary(type="submit",data-ng-bind="account.labels.form.save",aria-label="account.labels.form.save")
-      .col-xs-6
+      .col-md-6
         .section-space-right
           .form-container
             h1.accent.align-center
@@ -70,7 +70,7 @@
               .align-center
                 md-button.md-raised.md-primary(type="submit",data-ng-bind="account.labels.form.update",aria-label="account.labels.form.update")
     .row
-      .col-xs-6
+      .col-md-6
         .section-space-right
           .form-container.margin-top-2
             h1.accent.align-center
