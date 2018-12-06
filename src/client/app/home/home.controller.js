@@ -18,6 +18,16 @@
     home.options = [];
     home.international = false;
 
+    home.plugin = {
+      "status": "Enviar",
+      "email": ""
+    };
+
+    home.api = {
+      "status": "Enviar",
+      "email": ""
+    };
+
     $scope.$watch('home.shipping.from.country',function(newVal, oldVal){
       home.shipping.from.data = {};
       home.fromSearch  = null;
@@ -255,6 +265,24 @@
 
     home.createInvoice = function(){
       rateApi.createInvoice();
+    }
+
+    home.sendContactRequest = function(type){
+      if(home[type].email){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if(this.readyState == 4 && this.status == 200) {
+            let response = JSON.parse(this.responseText);
+            if(response.code === "8000"){
+              home[type].status = "Enviado ✔";
+              $scope.$apply();
+            }
+          }
+        };
+        xhttp.open("POST", "https://r8v9vy7jw5.execute-api.us-west-2.amazonaws.com/api/contact", true);
+        //xhttp.open("POST", "#", true);
+        xhttp.send(JSON.stringify({"email": home[type].email, "type": type}));
+      }
     }
 
 

@@ -677,6 +677,16 @@
                 
         h2.accent.bold.align-center
           |¡Que la logística no frene tu negocio!
+
+        div.mini-contact-form.align-center
+          h3.accent.bold.align-center
+            |¿Quieres conocer más? Deja tu correo y nos comunicaremos contigo.
+          div.col-md-8.col-md-offset-2
+            div.cool-mail-input
+              input(type="email", placeholder="Email de contacto", data-ng-model="home.plugin.email")
+              button(data-ng-click="home.sendContactRequest('plugin')")
+                |{{home.plugin.status}}
+
     .section-container.section-6.right
       .section-description
         .container-fluid
@@ -736,6 +746,16 @@
             .col-xs-12.col-md-6
               .section-image.image-7.image-right
                 img(data-ng-src="common/images/section-7.png")
+          .row
+            .col-md-12
+              div.mini-contact-form.align-center
+                h3.accent.bold.align-center
+                  |¿Quieres usar nuestra API? Deja tu correo y nos comunicaremos contigo.
+                div.col-md-8.col-md-offset-2
+                  div.cool-mail-input
+                    input(type="email", placeholder="Email de contacto", data-ng-model="home.api.email")
+                    button(data-ng-click="home.sendContactRequest('api')")
+                      |{{home.api.status}}
   div(data-ng-include="'app/templates/footer.template.html'")
 
 script(type="text/javascript")
