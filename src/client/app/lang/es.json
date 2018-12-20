@@ -132,6 +132,7 @@
       "number": "Número que aparece en tu tarjeta",
       "expirationYear": "Año de expiración",
       "expirationMonth": "Mes de expiración",
+      "birthDate": "Fecha de nacimiento",
       "cvc":"Código de Seguridad",
       "save": "Continuar",
       "cancel": "Cancelar",

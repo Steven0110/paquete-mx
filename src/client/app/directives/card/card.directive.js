@@ -24,6 +24,7 @@ function cardForm(paymentGateway, Dialog){
         name       : null,
         card_number: null,
         cvc        : null,
+        birthDate  : null,
         exp_month  : 1,
         exp_year : 2019,
         address_line_1: null,

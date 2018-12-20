@@ -43,6 +43,14 @@ form(name="card.form", novalidate, data-ng-submit="card.send()")
             md-select(name="month", data-ng-model="card.info.exp_year")
               md-option(data-ng-repeat="item in card.years", value="{{item}}")
                 |{{item}}
+    div
+      .row
+        .col-md-6.col-md-offset-3
+          br
+          md-input-container.md-block
+            label(for="birthDate",data-ng-bind="card.labels.form.birthDate")
+            md-datepicker(name="birthDate" md-open-on-focus="md-open-on-focus" ng-model="card.info.birthDate" md-placeholder="Fecha" required="required")
+
     md-input-container.md-block
       label(for="address_line_1",data-ng-bind="card.labels.form.address_line_1")
       input(name="address_line_1", data-ng-model="card.info.address_line_1",required)

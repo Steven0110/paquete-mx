@@ -92,6 +92,7 @@
       shell.labels = labels;
       template.get('app/countries/countries.json').then(function(countries){
         shell.countries = countries;
+        shell.countries2 = [{"name": "méxico", "code": "mx", "listed":true}];
         shell.setLoaded(true);
       },function(err){
         console.log(err);
