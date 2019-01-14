@@ -1,3 +1,15 @@
+.popup-container
+  .layer(data-ng-show="home.popup.status")
+  .relative-container(data-ng-show="home.popup.status")
+    .block
+      .closer(data-ng-click="home.closePopup()")
+        img(src="https://www.freeiconspng.com/uploads/silver-close-button-png-15.png")
+      h2.title(data-ng-bind="home.popup.info.title")
+      p.text(data-ng-repeat="text in home.popup.info.paragraphs")
+        |{{text}}
+      div.footer
+        img.footer-image(src="common/images/paquete-mx.png")
+
 .resume-content#tag
   div
     a(data-ng-click="shell.moveToTop(true)")

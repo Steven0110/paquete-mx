@@ -1069,3 +1069,69 @@ i.medium-icon
       &:hover
         background: #f37700
 
+
+.popup-container
+  text-align: center
+  
+  .layer
+    position: fixed
+    width: 100%
+    height: 100%
+    margin-left: 0
+    margin-right: 0
+    left: 0
+    top: 0
+    background-color: rgba(0, 0, 0, .3)
+    z-index: 9998
+    transition: 0.3s linear all
+    opacity: 1
+
+    &.ng-hide
+      opacity: 0
+
+  .relative-container
+    position: fixed
+    width: 80%
+    max-height: 60%
+    margin-left: auto
+    margin-right: auto
+    margin-top: 50px
+    padding: 50px
+    padding-top: 10px
+    border-radius: 5px
+    left: 0
+    right: 0
+    background-color: white
+    z-index: 9999
+    transition: 0.3s linear all
+    opacity: 1
+
+    &.ng-hide
+      opacity: 0
+
+    .block
+      position: relative
+
+      .closer
+        img
+          width: 30px
+          height: 30px
+          position: absolute
+          right: -10px
+          top: -10px
+        &:hover
+          cursor: pointer
+      
+      .title
+        color: #f38b00
+      .text
+        font-size: 1.1em
+      
+      .footer
+        position: relative
+        text-align: center
+        background-color: transparent
+
+        .footer-image
+          height: 100px
+

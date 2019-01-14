@@ -12,6 +12,7 @@
     var home = this;
     var shell = $scope.shell;
     var index = 1;
+    home.popup = {};
     home.fromCities = {};
     home.toCities = {};
     home.countries = shell.countries;
@@ -26,6 +27,19 @@
     home.api = {
       "status": "Enviar",
       "email": ""
+    };
+
+    home.popup = {
+      "status": false,
+      "info": {
+        "title": "Aviso",
+        "paragraphs": [
+          "Informamos a todos nuestros clientes que debido a las celebraciones de fin de año los dias 24, 25, 31 de diciembre, y 1 de enero NO estará habilitado el servicio de recolección ni tampoco habrá servicio de entrega esos días por parte de nuestros aliados estratégicos. Por lo que toda entrega programada para tales días, será recorrida hasta el siguiente día disponible",
+          "¡Paquete.MX les desea una Feliz Navidad y un Prospero 2019!",
+          "Gracias"
+        ],
+        "footerImage": "common/images/paquete-mx.png"
+      }
     };
 
     $scope.$watch('home.shipping.from.country',function(newVal, oldVal){
@@ -60,6 +74,9 @@
         home.packageOpen = false;
         home.documentOpen = !home.documentOpen;        
       }
+    }
+    home.closePopup = function(){
+      home.popup.status = false;
     }
 
     home.updateWeight = function(packageInfo){
