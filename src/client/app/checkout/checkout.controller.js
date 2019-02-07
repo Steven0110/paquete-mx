@@ -53,6 +53,24 @@
         checkout.shipping.service.total += parseFloat(checkout.shipping.service.cardComision);
       else
         checkout.shipping.service.cardComision = false
+
+      /*      New changes for subtotals and commissions     */
+      var sale = parseFloat(checkout.shipping.service.discountTotal)
+      var subtotal_cfdi
+      if( checkout.shipping.service.cardComision )
+        subtotal_cfdi = parseFloat(sale)/1.16 + parseFloat(sale)*0.032
+      else
+        subtotal_cfdi = parseFloat(sale)/1.16
+      
+      console.log("Subtotal CFDI: " + subtotal_cfdi)
+      console.log("Sale: " + sale)
+      var iva_cfdi = parseFloat(subtotal_cfdi * 0.16)
+      checkout.shipping.commission = parseFloat(checkout.shipping.service.cardComision || 0.00).toFixed(2)
+      checkout.shipping.subtotal = parseFloat(subtotal_cfdi).toFixed(2)
+      checkout.shipping.iva = parseFloat(iva_cfdi).toFixed(2)
+      checkout.shipping.sale = parseFloat(sale).toFixed(2)
+      checkout.shipping.cost = parseFloat(sale).toFixed(2)
+      checkout.shipping.profit = 0
     }
 
     checkout.applyCoupon = function(){
@@ -254,17 +272,27 @@
             if(response.account){
 
               var total = checkout.shipping.service.total;
+
+              /*  Fix empty company    */
+              checkout.shipping.from.company = checkout.shipping.from.company || "N-A"
+              checkout.shipping.to.company = checkout.shipping.to.company || "N-A"
+              
               var order = {
                 shipping:{
-                  packagingType : checkout.shipping.packagingType,
-                  service       : checkout.shipping.service,
-                  from          : checkout.shipping.from,
-                  to            : checkout.shipping.to,
-                  packages      : checkout.shipping.packages,
-                  content       : checkout.shipping.content,
-                  estimated_value  : checkout.shipping.estimated_value,
-                  RFCReceptor  :  response.account.taxId,
-                  RazonSocialReceptor  :  response.account.taxName
+                  "packagingType"        : checkout.shipping.packagingType,
+                  "service"              : checkout.shipping.service,
+                  "from"                 : checkout.shipping.from,
+                  "to"                   : checkout.shipping.to,
+                  "packages"             : checkout.shipping.packages,
+                  "content"              : checkout.shipping.content,
+                  "estimated_value"      : checkout.shipping.estimated_value,
+                  "RFCReceptor"          : response.account.taxId,
+                  "RazonSocialReceptor"  : response.account.taxName,
+                  "iva"                  : Number(checkout.shipping.iva),
+                  "cost"                 : Number(checkout.shipping.cost),
+                  "subtotal"             : Number(checkout.shipping.subtotal),
+                  "sale"                 : Number(checkout.shipping.sale),
+                  "profit"               : Number(checkout.shipping.profit)
                 },
                 paymentMethod : {card: checkout.card},
                 amount        : total
@@ -272,13 +300,13 @@
 
               console.log("KB2");
               console.log(order);
+              console.log(checkout.shipping.subtotal);
 
               if(checkout.payment == 'card'){
                 order.paymentMethod = {card: checkout.card};
               }else if(checkout.payment == 'account'){
                 order.paymentMethod = 'account';
                 checkout.shipping.service.cardComision = false;
-                // checkout.shipping.service.total = checkout.shipping.service.discountTotal;
               }
 
               checkout.connecting = true;
@@ -363,16 +391,20 @@
       var amex = 0.04176;
       var visa = 0.03712;
       if(brand == "AMEX"){
-        var comission = checkout.shipping.service.total*amex;
-        comission = parseFloat(comission.toFixed(2));
-        checkout.shipping.service.cardComision = comission
-        checkout.shipping.service.total += comission;
+        var auxTotal = checkout.shipping.service.total + checkout.shipping.service.total * amex
+        var commission = auxTotal * amex
+        checkout.shipping.service.cardComision = commission
+        checkout.shipping.service.total += commission
+        checkout.shipping.service.total = parseFloat(checkout.shipping.service.total).toFixed(2)
       }else{
-        var comission = checkout.shipping.service.total*visa;
-        comission = parseFloat(comission.toFixed(2));
-        checkout.shipping.service.cardComision = comission
-        checkout.shipping.service.total += comission;
+        var auxTotal = checkout.shipping.service.total + checkout.shipping.service.total * visa
+        var commission = auxTotal * visa
+        checkout.shipping.service.cardComision = commission
+        checkout.shipping.service.total += commission
+        checkout.shipping.service.total = parseFloat(checkout.shipping.service.total).toFixed(2)
       }
+
+      calculateTotals()
     }
 
 
