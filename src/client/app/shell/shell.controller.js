@@ -85,7 +85,8 @@
     shell.regex = {
       zip       : /^\d{5}$/,
       mobile    : /^\d{10}$/,
-      decimal   : /^\d+(\.\d{1,2})?$/
+      decimal   : /^\d+(\.\d{1,2})?$/,
+      integer   : /^\d+$/
     }
 
     template.get('app/lang/es.json').then(function(labels){

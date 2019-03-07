@@ -218,19 +218,19 @@
                                           div
                                             |LARGO
                                           div
-                                            input(name="length",placeholder="cms", data-ng-model="package.length", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)")
+                                            input(name="length",placeholder="cms", data-ng-model="package.length", data-ng-pattern="shell.regex.integer",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)", type="number", step="1")
                                       .col-xs-4
                                         .box-attr
                                           div
                                             |ANCHO
                                           div
-                                            input(name="width",placeholder="cms", data-ng-model="package.width", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)")
+                                            input(name="width",placeholder="cms", data-ng-model="package.width", data-ng-pattern="shell.regex.integer",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)", type="number", step="1")
                                       .col-xs-4
                                         .box-attr
                                           div
                                             |ALTO
                                           div
-                                            input(name="height",placeholder="cms", data-ng-model="package.height", data-ng-pattern="shell.regex.decimal",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)")
+                                            input(name="height",placeholder="cms", data-ng-model="package.height", data-ng-pattern="shell.regex.integer",data-ng-required="home.shipping.type == 'package'",ng-model-options="{debounce: 500}", data-ng-change="home.calculateVW(package)", type="number", step="1")
                                     .col-xs-1
                                       .box-attr
                                         i.fa.fa-plus(data-ng-show="$index+1 == home.shipping.packages.length", data-ng-click="home.addPackage()")

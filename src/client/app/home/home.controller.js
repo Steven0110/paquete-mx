@@ -524,7 +524,7 @@
                   $state.go('home', {shipping: shipping}, {notify: false});
                 }
               }else{
-                Dialog.showError('Verifica las dimensiones de los paquetes, recuerda que deben ser numéricos mayores a 0','Dimensiones de los paquetes');  
+                Dialog.showError('Verifica las dimensiones de los paquetes, deben ser números enteros mayores a 0','Dimensiones de los paquetes');  
               }
             },500);
           }else{
