@@ -9,6 +9,14 @@
 
   /* @ngInject */
 
+  function isEmpty(obj) {
+      for(var key in obj) {
+          if(obj.hasOwnProperty(key))
+              return false;
+      }
+      return true;
+  };
+
   function rateApi($q, paqueteApi,userApi, parse, parseheaders, $http) {
 
     var factory = {
@@ -39,6 +47,16 @@
     function rate(service,params){
       var deferred = $q.defer();
       var paquete = paqueteApi.endpoint("/rate");
+      console.log(params)
+      
+      /*    Dimensions to string    */
+      if(params.type == "ups")
+        for( let i = 0 ; i < params.rate.packages.length ; i++ ){
+          params.rate.packages[ i ].height = params.rate.packages[ i ].height.toString()
+          params.rate.packages[ i ].length = params.rate.packages[ i ].length.toString()
+          params.rate.packages[ i ].width = params.rate.packages[ i ].width.toString()
+        }
+
       paquete.post(params).then(function(data){
         
         if(parseheaders.debugging){
@@ -76,31 +94,37 @@
 
       var Shipping = parse.cloud('chargeCard');
       Shipping.post(params).then(function(result){
-        console.log(result);
+        
         if(params.shipping.to.country.code.toUpperCase() != 'MX'){
-          let api_mail = {
-              "shipping": result.result.shipping.service,
-              "trackingNumber": result.result.shipping.trackingNumber
-          };
+
           $http({
             url: "https://mqxt7kvlib.execute-api.us-west-2.amazonaws.com/dev/intl-inv",
             method: "POST",
             headers:{
               "Content-Type": "application/json"
             },
-            data: api_mail
+            data: {
+                "shipping": result.result.shipping.service,
+                "trackingNumber": result.result.shipping.trackingNumber
+            }
           }).then(function(response){
             deferred.resolve(result.result);
-          });
+          })
+
         }else{
-          deferred.resolve(result.result);
+          deferred.resolve(result.result)
         }
 
       },function(error){
-        alert(JSON.stringify(error.data.error));
-        console.error(error);
-        if(error.data && error.data.error){
-          deferred.reject(error.data.error);
+        //alert(JSON.stringify(error.data.error));
+        console.error(error)
+        if(error.data){
+          if(isEmpty(error.data.error)){
+            /*    Payment might be done but with no shipping    */
+            deferred.reject({"code": -12345})
+          }else{
+            deferred.reject(error.data.error)
+          }
         }
       });
       return deferred.promise;

@@ -19,12 +19,12 @@
       javascriptKeys:{
         'applicationID' : 'OaKte4Imh3dk5JIhsJoLAcLaPYMb2mQUeqyHXrP1',
         'javascriptKey':'wcFLh2UROrO8fN9SbFbgbeOZTZOlPu3YkAMys1bL'
-
       },
       debugging: true,
       production: false,
       apiEndpoint:{
         "baseUrl": "https://mqxt7kvlib.execute-api.us-west-2.amazonaws.com/dev",
+        "internationalInvoice": "https://arnjlj6h6g.execute-api.us-west-2.amazonaws.com/dev/pmx-international-invoice",
         "downloadInvoice": "http://52.89.200.43/development/download.php",
         "downloadLabel": "http://54.201.237.120/dev.php?trackingNumber="
       }

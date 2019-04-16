@@ -305,7 +305,7 @@
                         |articulos prohibidos
                       |&nbsp;para envío.
                   .align-center
-                    md-button.md-raised.md-primary(data-ng-click="checkout.order()")
+                    md-button.md-raised.md-primary(data-ng-click="checkout.order()", ng-disabled="checkout.status.paying")
                       |Confirmar y pagar
             .form-container(data-ng-show="checkout.step=='selectPayment'")
               h1.accent.align-center

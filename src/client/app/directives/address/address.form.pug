@@ -33,7 +33,7 @@ form(name="addressForm", data-ng-submit="send()", novalidate)
   div(layout-xs-sm="row")
     md-input-container.md-block
       label(for="email",data-ng-bind="labels.address.form.email")
-      input(name="email", data-ng-model="newAddress.email", type="email")
+      input(name="email", data-ng-model="newAddress.email", type="email", required="required")
       div(ng-messages="addressForm.email.$error")
         div(ng-message="required",data-ng-bind="labels.address.errors.required")
         div(ng-message="invalid",data-ng-bind="labels.address.errors.pattern")

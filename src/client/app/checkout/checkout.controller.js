@@ -20,7 +20,10 @@
     checkout.paymentMethods = [];
     checkout.taxInfo = {};
     checkout.pickupConfirmation = false;
-    
+    checkout.status = {
+      "paying": false
+    }
+
     if(checkout.shipping && checkout.shipping.service){
       calculateTotals();
 
@@ -37,7 +40,6 @@
     });
 
     function calculateTotals(){
-      console.log(checkout.shipping.service)
       var subtotal = parseFloat((parseFloat(checkout.shipping.service.discountTotal)/1.16).toFixed(2));
       var iva = parseFloat((subtotal * 0.16).toFixed(2));
       checkout.shipping.service.subtotal =  subtotal;
@@ -62,8 +64,6 @@
       else
         subtotal_cfdi = parseFloat(sale)/1.16
       
-      console.log("Subtotal CFDI: " + subtotal_cfdi)
-      console.log("Sale: " + sale)
       var iva_cfdi = parseFloat(subtotal_cfdi * 0.16)
       checkout.shipping.commission = parseFloat(checkout.shipping.service.cardComision || 0.00).toFixed(2)
       checkout.shipping.subtotal = parseFloat(subtotal_cfdi).toFixed(2)
@@ -247,12 +247,13 @@
     }
 
     checkout.order = function(){
-  
+      checkout.status.paying = true
       if(checkout.acceptTerms){
 
         shell.moveToTop();
          //Sólo para Venta al público en general que 
         userApi.getByUser(checkout.user).then(function(account){
+          checkout.status.paying = false
           if(account){
             if(checkout.invoice == false){
               account.taxId = "XAXX010101000";
@@ -264,9 +265,6 @@
             return false;
           }
         }).then(function(response){
-          //KB1
-          console.log("KB1");
-          console.log(response);
           //console.log(response.promise.$$state.status);
           //Creates order and shipment
             if(response.account){
@@ -292,15 +290,15 @@
                   "cost"                 : Number(checkout.shipping.cost),
                   "subtotal"             : Number(checkout.shipping.subtotal),
                   "sale"                 : Number(checkout.shipping.sale),
-                  "profit"               : Number(checkout.shipping.profit)
+                  "profit"               : Number(checkout.shipping.profit),
+                  "commission"           : Number(checkout.shipping.commission)
                 },
                 paymentMethod : {card: checkout.card},
                 amount        : total
               }
 
               console.log("KB2");
-              console.log(order);
-              console.log(checkout.shipping.subtotal);
+              console.log(JSON.stringify(order))
 
               if(checkout.payment == 'card'){
                 order.paymentMethod = {card: checkout.card};
@@ -311,11 +309,12 @@
 
               checkout.connecting = true;
               rateApi.ship(order).then(function(response){
+                console.log( response )
                 checkout.trackingNumber = response.shipOrder.trackingNumber;
-                console.log(response);
                 checkout.response = true;
                 checkout.labels = response.shipOrder.packages;
               },function(err){
+                console.log(err)
                 if(checkout.payment == 'account')
                   checkout.step = 'selectPayment';
                 else if(checkout.payment == 'card'){
@@ -323,14 +322,32 @@
                   checkout.cardForm = false;
                 }
                 if(err.message){
-                  var title = 'No se pudo pagar la orden.';
-                  if(err.message == 'Deny' || err.message == 'Denegado'){
-                    title = "Tarjeta Declinada";
-                    err.message = "Lo sentimos no se pudo completar la orden ya que tu tarjeta fue declinada, ponte en contacto con tu banco."
-                  }
+                  var title = 'No se pudo pagar el envío.';
+                  if(err.message == "Referirse al Emisor de la tarjeta" || err.message == "Not able to trace back to original transaction" || err.message == "Reservado para uso privado o Datos de Track Incorrectos")
+                    err.message = "La transacción fue bloqueada por tu banco. Por favor comunícate con tu banco para que eliminen este bloqueo"
+                  else if(err.message == "PaymentFilterException" )
+                    err.message = "Tu tarjeta fue bloqueada temporalmente en nuestro sistema debido a la gran cantidad de intentos de pago realizados. Este bloqueo dura 24 horas."
+                  else if(err.message == "Reservado para uso privado o no existe modulo de seguridad" || err.message == "MTT_ERROR")
+                    err.message = "Transacción declinada por el banco. Esta tarjeta no puede ser usada para realizar este tipo de transacción online."
+                  
                   Dialog.showError(err.message, title);
+                }else if(err.code && err.code == -12345){
+                  /*    Payment might be done but with no shipping    */
+                  let title = 'Hubo un problema al realizar tu envío.',
+                      message = "Por favor, envíanos un correo a atencion@paquete.mx para ayudarte a resolver el problema con tu envío"
+
+                  Dialog.showError(message, title)
+
+                  shippingApi.notifyError(order)
+                  .then(response => console.log( response ))
+                  .catch(err => console.error( response ))
+                  
+                }else if(err.result && err.result.detail){
+                  let title = 'No se pudo pagar el envío.'
+                  Dialog.showError(err.result.detail, title)
                 }
-              }).finally(function(){
+              })
+              .finally(function(){
                 checkout.connecting = false;
               });
 
@@ -338,10 +355,12 @@
               Dialog.showError("Ocurrió un problema al guardar tu envío.","Si el error persiste contacta a paquete@paquete.mx");
             }
         }, function(err){
+          checkout.status.paying = false
           console.log(err);
         });
         
       }else{
+        checkout.status.paying = false
         Dialog.showError("Debes aceptar los términos y condiciones para continuar.","¡Solo un paso más!");
       }
       // },function(){});

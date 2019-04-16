@@ -5,11 +5,11 @@
   .module('app.core')
   .factory('shippingApi', shippingApi);
 
-  shippingApi.$inject = ['$q', 'storage','parse'];
+  shippingApi.$inject = ['$q', 'storage', 'paqueteApi','parse'];
 
   /* @ngInject */
 
-  function shippingApi($q, storage, parse) {
+  function shippingApi($q, storage, paqueteApi, parse) {
 
     var factory = {
       setShipping  : setShipping,
@@ -20,7 +20,8 @@
       getInvoices : getInvoices,
       getTracking : getTracking,
       getPayments : getPayments,
-      getOutcomes : getOutcomes
+      getOutcomes : getOutcomes,
+      notifyError : notifyError
     };
 
     return factory;
@@ -59,6 +60,17 @@
       });
 
       return deferred.promise;
+    }
+
+    function notifyError(params){
+
+      var deferred = $q.defer();
+      var paquete = paqueteApi.endpoint("/ship-error");
+      paquete.post(params).then( response => {
+        deferred.resolve()
+      })
+
+      return deferred.promise
     }
 
     function setShipping(shipping){
