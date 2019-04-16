@@ -30,12 +30,12 @@
     };
 
     home.popup = {
-      "status": false,
+      "status": true,
       "info": {
         "title": "Aviso",
         "paragraphs": [
-          "Informamos a todos nuestros clientes que debido a las celebraciones de fin de año los dias 24, 25, 31 de diciembre, y 1 de enero NO estará habilitado el servicio de recolección ni tampoco habrá servicio de entrega esos días por parte de nuestros aliados estratégicos. Por lo que toda entrega programada para tales días, será recorrida hasta el siguiente día disponible",
-          "¡Paquete.MX les desea una Feliz Navidad y un Prospero 2019!",
+          "Informamos a todos nuestros clientes que debido a las celebraciones de semana santa los dias 18 y 19 NO estará habilitado el servicio de recolección ni tampoco habrá servicio de entrega esos días por parte de nuestros aliados estratégicos. Por lo que toda entrega programada para tales días, será recorrida hasta el siguiente día hábil disponible",
+          "¡Paquete.MX les desea Feliz Semana Santa!",
           "Gracias"
         ],
         "footerImage": "common/images/paquete-mx.png"
