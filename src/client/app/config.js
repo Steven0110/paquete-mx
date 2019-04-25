@@ -91,7 +91,7 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
 
     })
     .state('register-alt',{
-      url:'/registro-pmx',
+      url:'/registro',
       templateUrl : 'app/register-alt/register-alt.template.html',
       controller: 'RegisterAlt',
       controllerAs: 'registerAlt'
