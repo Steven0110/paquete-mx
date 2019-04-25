@@ -30,7 +30,7 @@
     };
 
     home.popup = {
-      "status": true,
+      "status": false,
       "info": {
         "title": "Aviso",
         "paragraphs": [

@@ -90,6 +90,13 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controllerAs: 'login'
 
     })
+    .state('register-alt',{
+      url:'/registro-pmx',
+      templateUrl : 'app/register-alt/register-alt.template.html',
+      controller: 'RegisterAlt',
+      controllerAs: 'registerAlt'
+
+    })
     .state('logout',{
       url:'/logout',
       controller: 'Logout',
