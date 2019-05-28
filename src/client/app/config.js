@@ -90,7 +90,7 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
       controllerAs: 'login'
 
     })
-    .state('register-alt',{
+    .state('registro',{
       url:'/registro',
       templateUrl : 'app/register-alt/register-alt.template.html',
       controller: 'RegisterAlt',
