@@ -253,7 +253,7 @@
         shell.moveToTop();
          //Sólo para Venta al público en general que 
         userApi.getByUser(checkout.user).then(function(account){
-          checkout.status.paying = false
+          
           if(account){
             if(checkout.invoice == false){
               account.taxId = "XAXX010101000";
@@ -348,6 +348,7 @@
                 }
               })
               .finally(function(){
+                checkout.status.paying = false
                 checkout.connecting = false;
               });
 

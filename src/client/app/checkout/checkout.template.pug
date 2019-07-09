@@ -562,29 +562,4 @@
                     td
                       md-button.md-raised(data-ng-click="checkout.applyCoupon()")
                         |Aplicar Cupón
-              .align-center(data-ng-show="checkout.step == 'confirm'")
-                div
-                  .row
-                    .col-xs-2
-                      md-switch(ng-model="checkout.invoice",aria-label="Requiero Factura", data-ng-change="checkout.invoiceRequired()")
-                    .col-xs-10
-                      .padding-top-1
-                        |Requiero Factura Fiscal
-                  .row
-                    .col-xs-2
-                      md-switch(ng-model="checkout.acceptTerms",aria-label="Acepto Terminos")
-                    .col-xs-10
-                      |He Leído, entiendo y ACEPTO los
-                      a.accent.bold(ui-sref="conditions")
-                        |&nbsp; Términos y Condiciones
-                      |,
-                      a.accent.bold(ui-sref="privacy")
-                        |&nbsp;Política de Privacidad
-                      |, y estoy enterado de los 
-                      a.accent.bold(uis-ref="denied")
-                        |articulos prohibidos
-                      |&nbsp;para envío.
-                  .align-center
-                    md-button.md-raised.md-primary(data-ng-click="checkout.order()")
-                      |Confirmar y pagar
 div(data-ng-include="'app/templates/footer.template.html'")
