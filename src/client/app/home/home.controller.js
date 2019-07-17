@@ -201,6 +201,21 @@
         packages    : home.rate.packages
       }
 
+      switch( service.service ){
+        case "ups":
+          shipping.from.maxReference = 23
+          shipping.to.maxReference = 23
+          break;
+        case "fedex":
+          shipping.from.maxReference = 40
+          shipping.to.maxReference = 40
+          break;
+        case "redpack":
+          shipping.from.maxReference = 20
+          shipping.to.maxReference = 20
+          break;
+      }
+
 
       shell.setShipping(shipping);
       $state.go('checkout');

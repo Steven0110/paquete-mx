@@ -67,6 +67,7 @@ function addressForm(userApi,$state,$ngConfirm,Dialog){
           state: scope.currentAddress.state,
           zip: scope.currentAddress.zip,
           reference: scope.currentAddress.reference,
+          maxReference: scope.currentAddress.maxReference,
         };
       }else{
         scope.newAddress = {

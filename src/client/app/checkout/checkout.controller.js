@@ -24,6 +24,8 @@
       "paying": false
     }
 
+    console.log( checkout.shipping )
+
     if(checkout.shipping && checkout.shipping.service){
       calculateTotals();
 
