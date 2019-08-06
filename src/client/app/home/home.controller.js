@@ -205,14 +205,32 @@
         case "ups":
           shipping.from.maxReference = 23
           shipping.to.maxReference = 23
+          shipping.from.maxStreet = 20
+          shipping.from.maxNumber = 7
+          shipping.from.maxApt = 6
+          shipping.to.maxStreet = 20
+          shipping.to.maxNumber = 7
+          shipping.to.maxApt = 6
           break;
         case "fedex":
           shipping.from.maxReference = 40
           shipping.to.maxReference = 40
+          shipping.from.maxStreet = 20
+          shipping.from.maxNumber = 7
+          shipping.from.maxApt = 6
+          shipping.to.maxStreet = 20
+          shipping.to.maxNumber = 7
+          shipping.to.maxApt = 6
           break;
         case "redpack":
           shipping.from.maxReference = 20
           shipping.to.maxReference = 20
+          shipping.from.maxStreet = 40
+          shipping.from.maxNumber = 10
+          shipping.from.maxApt = 8
+          shipping.to.maxStreet = 40
+          shipping.to.maxNumber = 10
+          shipping.to.maxApt = 8
           break;
       }
 

@@ -49,7 +49,6 @@ function addressForm(userApi,$state,$ngConfirm,Dialog){
       });
       if(scope.countries && scope.countries[0])
         scope.country = scope.countries[0]
-
       if(scope.currentAddress){
         scope.search = scope.currentAddress.zip;
         scope.newAddress = {
@@ -68,6 +67,9 @@ function addressForm(userApi,$state,$ngConfirm,Dialog){
           zip: scope.currentAddress.zip,
           reference: scope.currentAddress.reference,
           maxReference: scope.currentAddress.maxReference,
+          maxStreet: scope.currentAddress.maxStreet,
+          maxNumber: scope.currentAddress.maxNumber,
+          maxApt: scope.currentAddress.maxApt,
         };
       }else{
         scope.newAddress = {
@@ -80,7 +82,11 @@ function addressForm(userApi,$state,$ngConfirm,Dialog){
           city: null,
           state: null,
           zip: null,
-          reference: null
+          reference: null,
+          maxReference: null,
+          maxStreet: null,
+          maxNumber: null,
+          maxApt: null,
         };
       }
 
@@ -121,42 +127,43 @@ function addressForm(userApi,$state,$ngConfirm,Dialog){
       scope.send = function(){
         if(scope.addressForm.$valid){
 
-            var street= scope.newAddress.street.trim().length;
-            var number = scope.newAddress.number.trim().length;
-            var apt = 0;
-            if(scope.newAddress.apt)
-              apt = scope.newAddress.apt.trim().length;
+          var street= scope.newAddress.street.trim().length;
+          var number = scope.newAddress.number.trim().length;
+          var apt = 0;
+          if(scope.newAddress.apt)
+            apt = scope.newAddress.apt.trim().length;
+          
+          let limit = scope.newAddress.maxStreet + scope.newAddress.maxNumber + scope.newAddress.maxApt
+          if(street+number+apt <= limit){
 
-            if(street+number+apt <= 30){
 
 
-
-              if(!scope.newAddress.zip){
-                scope.newAddress.zip = scope.search;
-              }
-              var country ={
-                code  : scope.newAddress.country.code,
-                name  : scope.newAddress.country.name
-              }
-              scope.newAddress.country = country;
-              if(scope.type == 'save'){
-                scope.loading();
-                userApi.saveAddress(scope.newAddress).then(function(data){
-                  // console.log(data)
-                  scope.sendForm({response:{result:true, data:data}});
-                },function(err){
-                  console.log(err);
-                  if(err.noSession == true){
-                    scope.sendForm({response:{noSession:true}});
-                  }else{
-                    scope.sendForm({response:err});
-                  }
-                });
+            if(!scope.newAddress.zip){
+              scope.newAddress.zip = scope.search;
+            }
+            var country ={
+              code  : scope.newAddress.country.code,
+              name  : scope.newAddress.country.name
+            }
+            scope.newAddress.country = country;
+            if(scope.type == 'save'){
+              scope.loading();
+              userApi.saveAddress(scope.newAddress).then(function(data){
+                // console.log(data)
+                scope.sendForm({response:{result:true, data:data}});
+              },function(err){
+                console.log(err);
+                if(err.noSession == true){
+                  scope.sendForm({response:{noSession:true}});
+                }else{
+                  scope.sendForm({response:err});
+                }
+              });
             }else{
               scope.sendForm({response:{result:true,data:scope.newAddress}});
             }
           }else{
-            Dialog.showError("El número de caracteres de la calle, número y número interior no debe ser mayor a 30","Dirección excede limite");
+            Dialog.showError("El número de caracteres de la calle, número y número interior no debe ser mayor a " + limit,"Dirección excede limite");
           }
         }else{
           Dialog.showMessage();

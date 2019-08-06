@@ -358,6 +358,7 @@
               Dialog.showError("Ocurrió un problema al guardar tu envío.","Si el error persiste contacta a paquete@paquete.mx");
             }
         }, function(err){
+          
           checkout.status.paying = false
           console.log(err);
         });
@@ -367,6 +368,71 @@
         Dialog.showError("Debes aceptar los términos y condiciones para continuar.","¡Solo un paso más!");
       }
       // },function(){});
+    }
+
+    checkout.preview = function() {
+      shell.showLoading()
+
+      let previewBody = {
+        "service": {
+          "code": checkout.shipping.service.code,
+          "name": checkout.shipping.service.name
+        },
+        "debugging": true,
+        "preview": true,
+        "packagingType": checkout.shipping.packagingType,
+        "from": {
+          "name": checkout.shipping.from.name,
+          "company": checkout.shipping.from.company,
+          "phone": checkout.shipping.from.phone,
+          "country": {
+            "code": checkout.shipping.from.country.code,
+            "name": checkout.shipping.from.country.name
+          },
+          "email": checkout.shipping.from.name,
+          "street": checkout.shipping.from.street,
+          "number": checkout.shipping.from.number,
+          "county": checkout.shipping.from.county,
+          "city": checkout.shipping.from.city,
+          "state": checkout.shipping.from.state,
+          "zip": checkout.shipping.from.zip,
+          "reference": checkout.shipping.from.reference || ""
+        },
+        "to": {
+          "name": checkout.shipping.to.name,
+          "company": checkout.shipping.to.company,
+          "phone": checkout.shipping.to.phone,
+          "country": {
+            "code": checkout.shipping.to.country.code,
+            "name": checkout.shipping.to.country.name
+          },
+          "email": checkout.shipping.to.name,
+          "street": checkout.shipping.to.street,
+          "number": checkout.shipping.to.number,
+          "county": checkout.shipping.to.county,
+          "city": checkout.shipping.to.city,
+          "state": checkout.shipping.to.state,
+          "zip": checkout.shipping.to.zip,
+          "reference": checkout.shipping.to.reference || ""
+        },
+        "packages": checkout.shipping.packages,
+        "content": checkout.shipping.content,
+        "estimated_value": checkout.shipping.estimated_value
+      }
+
+      shippingApi.preview( previewBody )
+      .then( result => {
+        console.log( result.data )
+        if( result.data.response && result.data.response.labelLink ){
+          window.open( result.data.response.labelLink, "_blank" )
+        }else
+          alert("No se pudo obtener la vista previa de tu etiqueta. El servicio de vista previa para \"" + checkout.shipping.service.name + "\" se encuentra temporalmente deshabilitado por la paquetería.")
+      })
+      .catch( err => {
+        console.error( err )
+        alert("No se pudo obtener la vista previa de tu etiqueta. El servicio de vista previa para \"" + checkout.shipping.service.name + "\" se encuentra temporalmente deshabilitado por la paquetería.")
+      })
+      .finally( shell.hideLoading )
     }
 
     checkout.fromAddress = function(response){
@@ -431,9 +497,7 @@
 
 
     var getPaymentMethods = function(){
-      shell.showLoading();
-
-      console.log(checkout.user);
+      shell.showLoading()
       userApi.getByUser(checkout.user).then(function(account){
         
         if(account){
@@ -447,30 +511,37 @@
           if(checkout.account.taxUse)
             checkout.taxInfo.taxUse = checkout.account.taxUse;
 
-          return userApi.getCards();
+          return userApi.getCards()
         }
         else{
-          alert("Invalid account");
+          alert("Tu sesión es inválida. Actualizaremos la página para corregirla. No te preocupes, los datos que has ingresado se van a conservar.");
+          location.reload()
+          return false
         }
       }).then(function(result){
-        console.log(result);
-        checkout.cardForm = true;
-        if(result && result.length > 0){
-          checkout.paymentMethods = result;
-          checkout.cardForm = false;
-        }
-        shell.hideLoading();
-        $timeout(function(){
-          if(checkout.account.type == 'personal'){
-            checkout.step = 'payment';
-          }else if(checkout.account.type == 'enterprise'){
-            if(checkout.account.verified){
-              checkout.step = 'selectPayment';
-            }else{
-              checkout.step = 'payment';
-            }
+
+        if( result ){
+
+          console.log( result )
+          checkout.cardForm = true;
+          if(result && result.length > 0){
+            checkout.paymentMethods = result;
+            checkout.cardForm = false;
           }
-        },300);
+          shell.hideLoading()
+          $timeout(function(){
+            if(checkout.account.type == 'personal'){
+              checkout.step = 'payment';
+            }else if(checkout.account.type == 'enterprise'){
+              if(checkout.account.verified){
+                checkout.step = 'selectPayment';
+              }else{
+                checkout.step = 'payment';
+              }
+            }
+          },300)
+
+        }
       },function(err){
         console.log(err);
       }).finally(shell.hideLoading);

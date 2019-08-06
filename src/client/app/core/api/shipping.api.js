@@ -5,11 +5,11 @@
   .module('app.core')
   .factory('shippingApi', shippingApi);
 
-  shippingApi.$inject = ['$q', 'storage', 'paqueteApi','parse'];
+  shippingApi.$inject = ['$q', 'storage', 'paqueteApi','parse', "$http"];
 
   /* @ngInject */
 
-  function shippingApi($q, storage, paqueteApi, parse) {
+  function shippingApi($q, storage, paqueteApi, parse, $http) {
 
     var factory = {
       setShipping  : setShipping,
@@ -21,7 +21,8 @@
       getTracking : getTracking,
       getPayments : getPayments,
       getOutcomes : getOutcomes,
-      notifyError : notifyError
+      notifyError : notifyError,
+      preview     : preview
     };
 
     return factory;
@@ -114,7 +115,20 @@
       var Shipping = parse.endpoint('Shipping');
       return Shipping.getFirst(where);
     }
-      
+
+    function preview( params ) {
+      params.debugging  = true
+      params.preview    = true
+      return $http({
+        url: "https://api.paquete.mx/dev/pmx-ship",
+        method: "POST",
+        headers:{
+          "Content-Type": "application/json",
+          "pmx_api_token": "82D624B7D679D900E0F0768EB6A568"
+        },
+        data: params
+      })
+    }
   }
     
 })();
