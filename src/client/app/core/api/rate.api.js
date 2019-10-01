@@ -17,7 +17,7 @@
       return true;
   };
 
-  function rateApi($q, paqueteApi,userApi, parse, parseheaders, $http) {
+  function rateApi($q, paqueteApi, userApi, parse, parseheaders, $http) {
 
     var factory = {
       rate    : rate,
@@ -76,7 +76,8 @@
       return deferred.promise;
     } 
 
-    function ship(params, userId){
+    function ship(params, userId, taxInfo ){
+      
       var deferred = $q.defer();
 
       if(!userId){
@@ -92,9 +93,13 @@
       //flag de debug, quitar en produccion
       params.debugging = true;
 
+      let result
+
       var Shipping = parse.cloud('chargeCard');
-      Shipping.post(params).then(function(result){
+      Shipping.post(params).then(function(_result){
+        result = _result
         
+        /*    Make Invoice   */
         if(params.shipping.to.country.code.toUpperCase() != 'MX'){
 
           $http({
@@ -108,11 +113,11 @@
                 "trackingNumber": result.result.shipping.trackingNumber
             }
           }).then(function(response){
-            deferred.resolve(result.result);
+            return Promise.resolve( params )
           })
 
         }else{
-          deferred.resolve(result.result)
+          return Promise.resolve( params )
         }
 
       },function(error){
@@ -126,7 +131,50 @@
             deferred.reject(error.data.error)
           }
         }
-      });
+      }).then(order => {
+        //console.log("orderRateAPI", JSON.stringify( order ))
+        /*    Makes Invoice     */
+        let invoiceBody = {
+          receptor: {
+            UsoCFDI: taxInfo.taxUse,
+            Rfc: taxInfo.taxId,
+            Nombre: taxInfo.taxName,
+          },
+          info: {
+            FormaPago: "99",
+            TipoDeComprobante: "I",
+            MetodoPago: order.paymentMethod === "account" ? "PPD": "PUE"
+          },
+          items: [{
+              "ClaveProdServ": "78102200",
+              "Cantidad": "1",
+              "ClaveUnidad": "E48",
+              "Unidad": "Servicio",
+              "Descripcion": "Servicio de mensajeria: " + result.result.shipping.trackingNumber,
+              "ValorUnitario": order.shipping.service.subtotal + "",
+              "Importe": order.shipping.service.subtotal + "",
+          }],
+          meta: {
+            invoiceType: "shipping",
+            userId: userId,
+            trackingNumber: result.result.shipping.trackingNumber
+          }
+        }
+
+        paqueteApi.build( invoiceBody )
+        .then( invoiceResult => {
+          result.result.invoice = {}
+          result.result.invoice.file = invoiceResult.files.pdf
+          deferred.resolve(result.result)
+        }, err => {
+          result.result.invoice = {}
+          if( err.message )
+            result.result.invoice.error = err.message
+
+          deferred.resolve(result.result)
+        })
+
+      })
       return deferred.promise;
       
     }

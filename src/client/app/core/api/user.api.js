@@ -160,7 +160,7 @@
           }
         }else{
           return accountApi.validateTaxId(taxInfo.taxId).then(function(res){
-            if(res && res.valid){
+            if(res){
               if(account){
                 account.invoice = invoice;
                 if(taxInfo.taxId)

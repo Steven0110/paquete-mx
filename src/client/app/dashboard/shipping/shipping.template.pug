@@ -317,10 +317,10 @@
                 span.error(data-ng-if="!item.paid")
                   |NO
               td
-                a.hover-accent(ng-href="{{shell.download(item.UUID, 'pdf')}}")
+                a.hover-accent(href="{{ item.files.pdf }}", target="_blank")
                   i.fa.fa-download
                   |PDF
-                a.hover-accent(ng-href="{{shell.download(item.UUID, 'xml')}}")
+                a.hover-accent(href="{{ item.files.xml }}", target="_blank")
                   i.fa.fa-download
                   |XML
     .shipping-info
@@ -357,11 +357,11 @@
                   |ACTIVA
               td
                 div
-                  a.hover-accent(ng-href="{{shell.download(item.UUID, 'pdf')}}")
+                  a.hover-accent(href="{{ item.files.pdf }}", target="_blank")
                     i.fa.fa-download
                     |PDF
                 div
-                  a.hover-accent(ng-href="{{shell.download(item.UUID, 'xml')}}")
+                  a.hover-accent(href="{{ item.files.xml }}", target="_blank")
                     i.fa.fa-download
                     |XML
     .shipping-info
@@ -397,14 +397,14 @@
                     |ACTIVA
                 td
                   div
-                    a.hover-accent(ng-href="{{shell.download(item.UUID, 'pdf')}}")
+                    a.hover-accent(href="{{ item.files.pdf }}", target="_blank")
                       i.fa.fa-download
                       |PDF
                   div
-                    a.hover-accent(ng-href="{{shell.download(item.UUID, 'xml')}}")
+                    a.hover-accent(href="{{ item.files.xml }}", target="_blank")
                       i.fa.fa-download
                       |XML
-    .shipping-info
+    //.shipping-info
       div(data-ng-if="shipping.outcomes.length > 0")
         h3
           span.accent

@@ -39,18 +39,7 @@
     }
 
     function validateTaxId(taxId){
-      var deferred = $q.defer();
-      var Cloud = parse.cloud('checkTaxId');
-      Cloud.post({taxId:taxId}).then(function(res){
-        if(res.result)
-          deferred.resolve(res.result);
-        else
-          deferred.resolve(res);
-      },function(err){
-        deferred.reject(err);
-      });
-
-      return deferred.promise;
+      return Promise.resolve( true )
     }
 
     // function getByUser(user){

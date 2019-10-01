@@ -5,14 +5,15 @@
   .module('app.core')
   .factory('paqueteApi', paqueteApi);
 
-  paqueteApi.$inject = ['$q', 'Restangular','parseheaders'];
+  paqueteApi.$inject = ['$q', 'Restangular','parseheaders', '$http'];
 
   /* @ngInject */
 
-  function paqueteApi($q, Restangular, parseheaders) {
+  function paqueteApi($q, Restangular, parseheaders, $http) {
 
     var factory = {
-      endpoint  : endpoint
+      endpoint  : endpoint,
+      build : build,
     };
 
     return factory;
@@ -47,6 +48,31 @@
           return restObject.one().customPUT(params);
         }        
       }
+    }
+
+    function build( body ) {
+
+      let url = parseheaders.apiEndpoint.invoice + "create-invoice"
+      let config = {
+        headers: {
+          "x-api-key": parseheaders.apiKeys.invoiceApiKey,
+          'Content-Type': 'application/json'
+        }
+      }
+      return new Promise((resolve, reject) => {
+        $http.post( url, body, config)
+        .success(function (data, status, headers, config) {
+          console.log( status )
+          console.log( data )
+          resolve( data )
+        })
+        .error(function (data, status, headers, config) {
+          console.log( status )
+          console.log( data )
+          reject( data )
+        })
+      })
+
     }
 
   }

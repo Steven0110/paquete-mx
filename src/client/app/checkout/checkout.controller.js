@@ -144,7 +144,7 @@
 
     }
 
-    checkout.taxUses = [{code:'G01',name:'Adquisición de mercancias'},{code:'G02',name:'Gastos en general'},{code:'P01',name:'Por definir'}];
+    checkout.taxUses = [{code:'G01',name:'Adquisición de mercancias'}, {code:'G02',name:'Devoluciones, descuentos o bonificaciones'},{code:'G03',name:'Gastos en general'},{code:'P01',name:'Por definir'}];
     checkout.taxInfo.taxUse = checkout.taxUses[1].code;
     
 
@@ -250,12 +250,13 @@
 
     checkout.order = function(){
       checkout.status.paying = true
+      let account
       if(checkout.acceptTerms){
-
+        console.log("User", checkout.user)
         shell.moveToTop();
          //Sólo para Venta al público en general que 
-        userApi.getByUser(checkout.user).then(function(account){
-          
+        userApi.getByUser(checkout.user).then(function(_account){
+          account = _account
           if(account){
             if(checkout.invoice == false){
               account.taxId = "XAXX010101000";
@@ -270,7 +271,6 @@
           //console.log(response.promise.$$state.status);
           //Creates order and shipment
             if(response.account){
-
               var total = checkout.shipping.service.total;
 
               /*  Fix empty company    */
@@ -300,7 +300,7 @@
               }
 
               console.log("KB2");
-              console.log(JSON.stringify(order))
+              //console.log(JSON.stringify(order))
 
               if(checkout.payment == 'card'){
                 order.paymentMethod = {card: checkout.card};
@@ -310,11 +310,16 @@
               }
 
               checkout.connecting = true;
-              rateApi.ship(order).then(function(response){
-                console.log( response )
+              rateApi.ship(order, checkout.user.objectId, checkout.taxInfo).then(function(response){
+                console.log( JSON.stringify(response) )
                 checkout.trackingNumber = response.shipOrder.trackingNumber;
                 checkout.response = true;
                 checkout.labels = response.shipOrder.packages;
+                if( response.invoice.error ){
+                  checkout.invoice = false
+                  Dialog.showError("El SAT nos indica que el RFC " + account.taxId + " es inválido.", "El envío fue generado correctamente pero la factura no");
+                }else
+                  checkout.invoice = response.invoice.file
               },function(err){
                 console.log(err)
                 if(checkout.payment == 'account')
@@ -514,6 +519,11 @@
           return userApi.getCards()
         }
         else{
+          localStorage.removeItem("paquete_mx.user")
+          localStorage.removeItem("admin_paquete_mx.user")
+          localStorage.removeItem("admin_paquete_mx.timestamp")
+          localStorage.removeItem("paquete_mx.timestamp")
+          
           alert("Tu sesión es inválida. Actualizaremos la página para corregirla. No te preocupes, los datos que has ingresado se van a conservar.");
           location.reload()
           return false

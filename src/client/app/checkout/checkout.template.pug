@@ -175,6 +175,8 @@
                     .board-list.align-center.margin-top-2
                       md-button.md-raised.md-primary(href="{{shell.downloadLabel(checkout.trackingNumber)}}", download)
                         |Descargar Etiqueta
+                      md-button.md-raised.md-primary(href="{{checkout.invoice}}", target="_blank", ng-if="checkout.invoice")
+                        |Descargar Factura
                       md-button.md-raised(ui-sref="dashboard.shippings")
                         |Ir a mi cuenta
       .row(data-ng-hide="checkout.response || checkout.connecting")
