@@ -128,12 +128,18 @@
       }
     }
 
-    var saveInvoice = function(){
+    var saveInvoice = function(cancel){
       
+      if( cancel ){ //Sets Generic RFC
+        checkout.taxInfo.taxId = "XAXX010101000"
+        checkout.taxInfo.taxName = "PÚBLICO EN GENERAL"
+      }
+
       if(checkout.taxInfo.taxId)
         checkout.taxInfo.taxId = checkout.taxInfo.taxId.toUpperCase();
       if(checkout.taxInfo.taxName)
         checkout.taxInfo.taxName = checkout.taxInfo.taxName.toUpperCase();
+      console.log( checkout.taxInfo )
 
       var user = checkout.user;
       return userApi.updateTaxInfo(checkout.invoice, checkout.taxInfo).then(function(){
@@ -178,7 +184,7 @@
                     shell.showLoading();
                     checkout.invoice = false;
                     $scope.$apply();
-                    saveInvoice().then(function(res){
+                    saveInvoice(true).then(function(res){
                       console.log(res);
                     },function(err){
                       console.log(err);
@@ -194,7 +200,7 @@
         });
       }else{
         shell.showLoading();
-        saveInvoice().then(function(res){
+        saveInvoice(true).then(function(res){
           console.log(res);
         },function(err){
           console.log(err);
@@ -249,6 +255,7 @@
     }
 
     checkout.order = function(){
+
       checkout.status.paying = true
       let account
       if(checkout.acceptTerms){
@@ -300,7 +307,7 @@
               }
 
               console.log("KB2");
-              //console.log(JSON.stringify(order))
+              console.log( order )
 
               if(checkout.payment == 'card'){
                 order.paymentMethod = {card: checkout.card};
@@ -311,15 +318,17 @@
 
               checkout.connecting = true;
               rateApi.ship(order, checkout.user.objectId, checkout.taxInfo).then(function(response){
-                console.log( JSON.stringify(response) )
                 checkout.trackingNumber = response.shipOrder.trackingNumber;
                 checkout.response = true;
                 checkout.labels = response.shipOrder.packages;
                 if( response.invoice.error ){
                   checkout.invoice = false
                   Dialog.showError("El SAT nos indica que el RFC " + account.taxId + " es inválido.", "El envío fue generado correctamente pero la factura no");
-                }else
-                  checkout.invoice = response.invoice.file
+                }else{
+                  checkout.invoice = {}
+                  checkout.invoice.pdf = response.invoice.files.pdf
+                  checkout.invoice.xml = response.invoice.files.xml
+                }
               },function(err){
                 console.log(err)
                 if(checkout.payment == 'account')

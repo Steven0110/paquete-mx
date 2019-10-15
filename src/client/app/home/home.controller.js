@@ -178,6 +178,16 @@
       home.shipping.packages.splice(index,1)
     }
 
+    home.clone = function(index){
+      let cloned = JSON.parse( JSON.stringify( home.shipping.packages[ index ] ) )
+      home.shipping.packages.push({
+        weight: cloned.weight,
+        width: cloned.width,
+        length: cloned.length,
+        height: cloned.height
+      })
+    }
+
     home.removeDocument = function(index){
       home.documents.splice(index,1)
     }

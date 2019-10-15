@@ -79,9 +79,9 @@
     function ship(params, userId, taxInfo ){
       
       var deferred = $q.defer();
-
+      var user
       if(!userId){
-        var user = userApi.currentUser();
+        user = userApi.currentUser();
         if(user && user.objectId){
           userId = user.objectId;
         }else{
@@ -134,6 +134,7 @@
       }).then(order => {
         //console.log("orderRateAPI", JSON.stringify( order ))
         /*    Makes Invoice     */
+        let subtotal = Number(order.shipping.commission || 0) + Number(order.shipping.service.subtotal)
         let invoiceBody = {
           receptor: {
             UsoCFDI: taxInfo.taxUse,
@@ -151,20 +152,24 @@
               "ClaveUnidad": "E48",
               "Unidad": "Servicio",
               "Descripcion": "Servicio de mensajeria: " + result.result.shipping.trackingNumber,
-              "ValorUnitario": order.shipping.service.subtotal + "",
-              "Importe": order.shipping.service.subtotal + "",
+              "ValorUnitario": subtotal + "",
+              "Importe": subtotal + "",
           }],
           meta: {
             invoiceType: "shipping",
             userId: userId,
-            trackingNumber: result.result.shipping.trackingNumber
+            trackingNumber: result.result.shipping.trackingNumber,
+            email: userApi.currentUser().username
           }
         }
+        
 
         paqueteApi.build( invoiceBody )
         .then( invoiceResult => {
           result.result.invoice = {}
-          result.result.invoice.file = invoiceResult.files.pdf
+          result.result.invoice.files = {}
+          result.result.invoice.files.pdf = invoiceResult.files.pdf
+          result.result.invoice.files.xml = invoiceResult.files.xml
           deferred.resolve(result.result)
         }, err => {
           result.result.invoice = {}

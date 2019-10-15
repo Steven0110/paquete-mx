@@ -234,6 +234,7 @@
                                     .col-xs-1
                                       .box-attr
                                         i.fa.fa-plus(data-ng-show="$index+1 == home.shipping.packages.length", data-ng-click="home.addPackage()")
+                                        i.fa.fa-copy(data-ng-click="home.clone($index)")
                                         i.fa.fa-trash(data-ng-show="$index > 0", data-ng-click="home.removePackage($index)")
                   .col-xs-12.col-sm-6.col-md-2
                     .padding-sides
