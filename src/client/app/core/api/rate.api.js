@@ -134,7 +134,7 @@
       }).then(order => {
         //console.log("orderRateAPI", JSON.stringify( order ))
         /*    Makes Invoice     */
-        let subtotal = Number(order.shipping.commission || 0) + Number(order.shipping.service.subtotal)
+        let subtotal = Number(order.shipping.subtotal)
         let invoiceBody = {
           receptor: {
             UsoCFDI: taxInfo.taxUse,

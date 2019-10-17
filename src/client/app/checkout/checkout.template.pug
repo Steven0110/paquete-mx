@@ -514,6 +514,15 @@
                   td.align-right
                     h3.disabled-color
                       |{{checkout.shipping.service.subtotal |currency}} MXN
+                tr(data-ng-show="checkout.shipping.service.cardComision")
+                  td.align-right
+                    h4.disabled-color
+                      |Comisión
+                      span
+                        |&nbsp;{{checkout.card.brand}}
+                  td.align-right
+                    h3.disabled-color
+                      |{{checkout.shipping.service.cardComision |currency}} MXN 
                 tr
                   td.align-right
                     h4.disabled-color
@@ -539,15 +548,6 @@
                   td.align-right
                     h3.disabled-color
                       |{{checkout.shipping.service.prevDiscount | currency}} MXN
-                tr.border-top(data-ng-show="checkout.shipping.service.cardComision")
-                  td.align-right
-                    h4.disabled-color
-                      |Comisión
-                      span
-                        |&nbsp;{{checkout.card.brand}}
-                  td.align-right
-                    h3.disabled-color
-                      |{{checkout.shipping.service.cardComision |currency}} MXN 
                 tr.border-top
                   td.align-right
                     h3
