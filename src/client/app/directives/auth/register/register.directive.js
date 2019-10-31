@@ -69,9 +69,8 @@ function registerForm($window,userApi, Dialog, accountApi,rateApi,$q){
               scope.account.taxName = null;
             }
 
-            validateTaxId(scope.account.taxId).then(function(){
-              return userApi.register(scope.accountType,scope.account,scope.user);
-            }).then(function(user){
+            userApi.register(scope.accountType,scope.account,scope.user)
+            .then(function(user){
               scope.setUser(user);
               shell.showMessage(shell.labels.register.form.welcome);
               $window.gtag('event', 'search', {
