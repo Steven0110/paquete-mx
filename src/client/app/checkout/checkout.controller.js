@@ -43,7 +43,7 @@
 
     function calculateTotals(){
       var subtotal = parseFloat((parseFloat(checkout.shipping.service.discountTotal)/1.16).toFixed(2));
-      var iva = parseFloat(( (Number(subtotal) + Number(checkout.shipping.service.cardComision || 0)) * 0.16).toFixed(2));
+      var iva = parseFloat( Number(subtotal) * 0.16).toFixed(2);
       checkout.shipping.service.subtotal =  subtotal;
       checkout.shipping.service.iva =  iva;
       checkout.shipping.service.total = parseFloat(Number(checkout.shipping.service.subtotal) + Number( checkout.shipping.service.iva ))
@@ -62,9 +62,9 @@
       var sale = parseFloat(checkout.shipping.service.discountTotal)
       var subtotal_cfdi
       if( checkout.shipping.service.cardComision )
-        subtotal_cfdi = parseFloat(sale)/1.16 + parseFloat(sale)*0.032
+        subtotal_cfdi = Number(parseFloat( (sale + checkout.shipping.service.cardComision) / 1.16).toFixed(2))
       else
-        subtotal_cfdi = parseFloat(sale)/1.16
+        subtotal_cfdi = sale / 1.16
       
       var iva_cfdi = parseFloat(subtotal_cfdi * 0.16)
       checkout.shipping.commission = parseFloat(checkout.shipping.service.cardComision || 0.00).toFixed(2)
@@ -117,6 +117,7 @@
       checkout.card = false;
       checkout.payment = 'account';
       checkout.step = 'confirm';
+      //calculateComision("VISA")
     }
 
     checkout.shippingDesc = function(){
@@ -494,11 +495,16 @@
       let visa = 0.032;
       let tax = brand == "AMEX" ? amex : visa
 
-      let commission = checkout.shipping.service.discountTotal * tax
-      let subtotal = 100 * checkout.shipping.service.discountTotal / 116
-      let _subtotal = commission + subtotal
-      let iva = _subtotal * 0.16
-      let total = _subtotal + iva
+      //let commission = checkout.shipping.service.discountTotal * tax
+
+      let bIVA = checkout.shipping.service.discountTotal * 1.16
+      let commissionAux = bIVA * tax * 1.16
+      let totalAux = bIVA + commissionAux
+      let commission = totalAux * tax
+      console.log( checkout.shipping.service )
+      let subtotal = checkout.shipping.service.discountTotal / 1.16
+      let iva = subtotal * 0.16
+      let total = subtotal + iva + commission
 
       checkout.shipping.service.cardComision = commission
       checkout.shipping.service.subtotal = subtotal
