@@ -18,7 +18,7 @@
     home.countries = shell.countries;
     home.options = [];
     home.international = false;
-    home.maintenance = true
+    home.maintenance = false
 
     home.plugin = {
       "status": "Enviar",
