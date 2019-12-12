@@ -40,6 +40,11 @@ html(data-ng-app="app", data-ng-controller="Shell as shell")
       div(data-ng-include="'app/templates/spinner.template.html'")
     confirm-dialog
     ui-view(autoscroll="false")
+    
+    //- Error monitor
+    <script src='https://js.sentry-cdn.com/61d91fa713b7459a880f57f39645126f.min.js' crossorigin="anonymous"></script>
+    script(type="text/javascript")
+        |Sentry.init({ dsn: 'https://61d91fa713b7459a880f57f39645126f@sentry.io/1853224' });
 
     //- Libraries
     script(src="bower_components/jquery/dist/jquery.js")
