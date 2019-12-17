@@ -133,7 +133,7 @@ function addressForm(userApi,$state,$ngConfirm,Dialog){
           if(scope.newAddress.apt)
             apt = scope.newAddress.apt.trim().length;
           
-          let limit = scope.newAddress.maxStreet + scope.newAddress.maxNumber + scope.newAddress.maxApt
+          var limit = scope.newAddress.maxStreet + scope.newAddress.maxNumber + scope.newAddress.maxApt
           if(street+number+apt <= limit){
 
 
