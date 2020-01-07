@@ -169,7 +169,7 @@
                   .confirm-title.accent.margin-top-1
                     |Guia y Etiqueta
                   div
-                    .board-list(data-ng-repeat="item in checkout.labels")
+                    .board-list(data-ng-repeat="item in checkout.labels", data-ng-show="item.TrackingNumber != '-1'")
                       h3.secondary-accent.align-center
                         |{{item.TrackingNumber}}
                     .board-list.align-center.margin-top-2

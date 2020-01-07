@@ -84,12 +84,12 @@
     .row
       .col-md-3
         .padding-sides
-          .align-center(data-ng-show="enterprise.account.actaConstitutiva != 'false'")
+          .align-center.pt-5(data-ng-show="enterprise.account.actaConstitutiva != 'false'")
             i.medium-icon.fa.fa-check-circle.success
           .align-center(data-ng-show="enterprise.account.actaConstitutiva == 'false'")
             i.medium-icon.fa.fa-upload.disabled-color
           div(ngf-select="enterprise.upload($file, 'actaConstitutiva')", ngf-drop="enterprise.upload($file, 'actaConstitutiva')",class="drop-box",
-            ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'")
+            ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'", data-ng-show="enterprise.account.actaConstitutiva == 'false' || enterprise.loading.actaConstitutiva <= 0")
             .drag-title
               |Acta Constitutiva
             .align-center
@@ -98,7 +98,7 @@
           h4.align-center.disabled-color(data-ng-if="enterprise.loading.actaConstitutiva > 0 && enterprise.loading.actaConstitutiva <= 100")
             |Cargando Acta.
           h4.align-center.success(data-ng-if="enterprise.loading.actaConstitutiva == 101")
-            |El archivo se cargo con éxito.
+            |El archivo se cargó con éxito.
           div(ngf-no-file-drop)
             |Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome
           .align-center(data-ng-show="enterprise.account.actaConstitutiva != 'false'")
@@ -107,12 +107,12 @@
                 |Ver Acta cargada previamente.
       .col-md-3
         .padding-sides
-          .align-center(data-ng-show="enterprise.account.actaConstitutiva != 'false'")
+          .align-center.pt-5(data-ng-show="enterprise.account.INE != 'false'")
             i.medium-icon.fa.fa-check-circle.success
-          .align-center(data-ng-show="enterprise.account.actaConstitutiva == 'false'")
+          .align-center(data-ng-show="enterprise.account.INE == 'false'")
             i.medium-icon.fa.fa-upload.disabled-color
           div(ngf-select="enterprise.upload($file, 'INE')", ngf-drop="enterprise.upload($file, 'INE')",class="drop-box",
-            ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'")
+            ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'", data-ng-show="enterprise.account.INE == 'false' || enterprise.loading.INE <= 0")
             .drag-title
               |INE
             .align-center
@@ -121,7 +121,7 @@
           h4.align-center.disabled-color(data-ng-if="enterprise.loading.INE > 0 && enterprise.loading.INE <= 100")
             |Cargando INE.
           h4.align-center.success(data-ng-if="enterprise.loading.INE == 101")
-            |El archivo se cargo con éxito.
+            |El archivo se cargó con éxito.
           div(ngf-no-file-drop)
             |Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome
           .align-center(data-ng-show="enterprise.account.INE != 'false'")
@@ -130,12 +130,12 @@
                 |Ver INE cargada previamente.
       .col-md-3
         .padding-sides
-          .align-center(data-ng-show="enterprise.account.comprobanteDomicilio != 'false'")
+          .align-center.pt-5(data-ng-show="enterprise.account.comprobanteDomicilio != 'false'")
             i.medium-icon.fa.fa-check-circle.success
           .align-center(data-ng-show="enterprise.account.comprobanteDomicilio == 'false'")
             i.medium-icon.fa.fa-upload.disabled-color
           div(ngf-select="enterprise.upload($file, 'comprobanteDomicilio')", ngf-drop="enterprise.upload($file, 'comprobanteDomicilio')",class="drop-box",
-            ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'")
+            ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'", data-ng-show="enterprise.account.comprobanteDomicilio == 'false' || enterprise.loading.comprobanteDomicilio <= 0")
             .drag-title
               |Comprobante Domicilio
             .align-center
@@ -144,7 +144,7 @@
           h4.align-center.disabled-color(data-ng-if="enterprise.loading.comprobanteDomicilio > 0 && enterprise.loading.comprobanteDomicilio <= 100")
             |Cargando Comprobante.
           h4.align-center.success(data-ng-if="enterprise.loading.comprobanteDomicilio == 101")
-            |El archivo se cargo con éxito.
+            |El archivo se cargó con éxito.
           div(ngf-no-file-drop)
             |Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome
           .align-center(data-ng-show="enterprise.account.comprobanteDomicilio != 'false'")
@@ -153,12 +153,12 @@
                 |Ver Comprobante cargado previamente.
       .col-md-3
         .padding-sides
-          .align-center(data-ng-show="enterprise.account.constanciaFiscal != 'false'")
+          .align-center.pt-5(data-ng-show="enterprise.account.constanciaFiscal != 'false'")
             i.medium-icon.fa.fa-check-circle.success
           .align-center(data-ng-show="enterprise.account.constanciaFiscal == 'false'")
             i.medium-icon.fa.fa-upload.disabled-color
           div(ngf-select="enterprise.upload($file, 'constanciaFiscal')", ngf-drop="enterprise.upload($file, 'constanciaFiscal')",class="drop-box",
-            ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'")
+            ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'", data-ng-show="enterprise.account.constanciaFiscal == 'false' || enterprise.loading.constanciaFiscal <= 0")
             .drag-title
               |Constancia Fiscal SAT
             .align-center
@@ -167,7 +167,7 @@
           h4.align-center.disabled-color(data-ng-if="enterprise.loading.constanciaFiscal > 0 && enterprise.loading.constanciaFiscal <= 100")
             |Cargando Constacia.
           h4.align-center.success(data-ng-if="enterprise.loading.constanciaFiscal == 101")
-            |El archivo se cargo con éxito.
+            |El archivo se cargó con éxito.
           div(ngf-no-file-drop)
             |Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome
           .align-center(data-ng-show="enterprise.account.constanciaFiscal != 'false'")
@@ -177,21 +177,21 @@
     .row
       .col-md-3
         .padding-sides
-          .align-center(data-ng-show="enterprise.account.caratulaBancaria != 'false'")
+          .align-center.pt-5(data-ng-show="enterprise.account.caratulaBancaria != 'false'")
             i.medium-icon.fa.fa-check-circle.success
           .align-center(data-ng-show="enterprise.account.caratulaBancaria == 'false'")
             i.medium-icon.fa.fa-upload.disabled-color
           div(ngf-select="enterprise.upload($file, 'caratulaBancaria')", ngf-drop="enterprise.upload($file, 'caratulaBancaria')",class="drop-box",
-            ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'")
+            ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'", data-ng-show="enterprise.account.caratulaBancaria == 'false' || enterprise.loading.caratulaBancaria <= 0")
             .drag-title
-              |Caratula Estado Cuenta Bancario
+              |Carátula Estado Cuenta Bancario
             .align-center
               |Haz clic o arrastra aqui el PDF de tu caratula bancaria.
           md-progress-linear(class="md-warn",md-mode="buffer",value="{{enterprise.loading.caratulaBancaria}}",md-buffer-value="100",ng-disabled="enterprise.loading.caratulaBancaria == 0")
           h4.align-center.disabled-color(data-ng-if="enterprise.loading.caratulaBancaria > 0 && enterprise.loading.caratulaBancaria <= 100")
             |Cargando Caratula.
           h4.align-center.success(data-ng-if="enterprise.loading.caratulaBancaria == 101")
-            |El archivo se cargo con éxito.
+            |El archivo se cargó con éxito.
           div(ngf-no-file-drop)
             |Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome
           .align-center(data-ng-show="enterprise.account.caratulaBancaria != 'false'")
@@ -200,12 +200,12 @@
                 |Ver Caratula cargada previamente.
       .col-md-3
         .padding-sides
-          .align-center(data-ng-show="enterprise.account.autorizacionBuro != 'false'")
+          .align-center.pt-5(data-ng-show="enterprise.account.autorizacionBuro != 'false'")
             i.medium-icon.fa.fa-check-circle.success
           .align-center(data-ng-show="enterprise.account.autorizacionBuro == 'false'")
             i.medium-icon.fa.fa-upload.disabled-color
           div(ngf-select="enterprise.upload($file, 'autorizacionBuro')", ngf-drop="enterprise.upload($file, 'autorizacionBuro')",class="drop-box",
-            ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'")
+            ngf-drag-over-class="'dragover'",ngf-pattern="'image/*,application/pdf'", data-ng-show="enterprise.account.autorizacionBuro == 'false' || enterprise.loading.autorizacionBuro <= 0")
             .drag-title
               |Autorización Buro de Crédito
             .align-center
@@ -214,7 +214,7 @@
           h4.align-center.disabled-color(data-ng-if="enterprise.loading.autorizacionBuro > 0 && enterprise.loading.autorizacionBuro <= 100")
             |Cargando Autorización.
           h4.align-center.success(data-ng-if="enterprise.loading.autorizacionBuro == 101")
-            |El archivo se cargo con éxito.
+            |El archivo se cargó con éxito.
           div(ngf-no-file-drop)
             |Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome
           .align-center(data-ng-show="enterprise.account.autorizacionBuro != 'false'")

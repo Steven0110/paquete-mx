@@ -102,7 +102,7 @@
         /*    Make Invoice   */
         if(params.shipping.to.country.code.toUpperCase() != 'MX'){
 
-          $http({
+          return $http({
             url: "https://mqxt7kvlib.execute-api.us-west-2.amazonaws.com/dev/intl-inv",
             method: "POST",
             headers:{
@@ -132,7 +132,7 @@
           }
         }
       }).then(order => {
-        //console.log("orderRateAPI", JSON.stringify( order ))
+        console.log("orderRateAPI", JSON.stringify( order ))
         /*    Makes Invoice     */
         let subtotal = Number(order.shipping.subtotal)
         let invoiceBody = {
