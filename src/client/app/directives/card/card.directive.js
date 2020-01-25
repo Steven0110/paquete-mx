@@ -50,27 +50,29 @@ function cardForm(paymentGateway, Dialog){
       }
 
       card.send = function(){
+
         if(card.form.$valid){
-          card.showLoading();
-          paymentGateway.update(card.info).then(function(res){
-            card.sendForm({response:res});
-          },function(err){
-            console.log(err);
-            var message = JSON.stringify(err);
-            Dialog.showError(message,"Hubo un error al agregar tu tarjeta.");
-            /*var message = Object.keys(err)[0];
-            if(err[message]){
-              if(err[message][0]){
-                message = err[message][0];
-              }else{
-                message = err[message];
-              }
-            }else{
-              message = err;
-            }*/
-          }).finally(card.hideLoading);
-        }else{
-          Dialog.showMessage();
+          card.showLoading()
+          
+          paymentGateway.tokenize( card.info )
+          .then( tokenizedCard => paymentGateway.update(tokenizedCard) )
+          .then( response => {
+            Dialog.successDialog({main:'¡Listo!'}, {main: "Tarjeta agregada correctamente"}, {main:{cancel:"Cerrar"}},
+              () => card.sendForm({response:response})
+            )
+          })
+          .catch( error => {
+            console.error( error )
+            let message
+            if( error.data && error.data.error && error.data.error.details && error.data.error.details[0].message)
+              message = error.data.error.details[0].message
+            else if( error.message_to_purchaser )
+              message = error.message_to_purchaser
+            else
+              message = "Error desconocido"
+            Dialog.showError( message, "Error al agregar la tarjeta" )
+          })
+          .finally(card.hideLoading)
         }
       }
     }

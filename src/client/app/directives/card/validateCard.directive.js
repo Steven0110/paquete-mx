@@ -5,16 +5,13 @@ angular
 validateCard.$inject = [];
 
 function validateCard(){
-  return true;
-  /*return{
+  return{
     restrict: 'A',
     require: 'ngModel',
     link:function(scope,element,attr,ngModel){
-      ngModel.$validators.validateCard = function(modelValue) {
-        return true;
-      };
+      ngModel.$validators.validateCard = modelValue => Conekta.card.validateNumber(modelValue)
     }
-  };*/
+  }
 }
 
 angular
@@ -28,34 +25,7 @@ function validateCvc(){
     restrict: 'A',
     require: 'ngModel',
     link:function(scope,element,attr,ngModel){
-      ngModel.$validators.validateCvc = function(modelValue) {
-        if(scope.card && scope.card.info && scope.card.info.card_number){
-          var brand =Conekta.card.getBrand(scope.card.info.card_number);
-          if(brand == 'amex'){
-            var validation = Conekta.card.validateCVC(modelValue);
-            if(validation){
-              if(modelValue.length == 4){
-                return true;
-              }else{
-                return false;
-              }
-            }else{
-              return validation;
-            }
-          }else{
-            var validation = Conekta.card.validateCVC(modelValue);
-            if(validation){
-              if(modelValue.length == 3){
-                return true;
-              }else{
-                return false;
-              }
-            }else{
-              return validation;
-            }
-          }
-        }
-      };
+      ngModel.$validators.validateCvc = modelValue => Conekta.card.validateCVC(modelValue)
     }
   };
 }

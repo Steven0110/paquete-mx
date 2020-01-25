@@ -276,7 +276,6 @@
             return false;
           }
         }).then(function(response){
-          //console.log(response.promise.$$state.status);
           //Creates order and shipment
             if(response.account){
               var total = checkout.shipping.service.total;
@@ -318,7 +317,8 @@
               }
 
               checkout.connecting = true;
-              rateApi.ship(order, checkout.user.objectId, checkout.taxInfo).then(function(response){
+              rateApi.ship(order, checkout.user.objectId, checkout.taxInfo).then(response => {
+                console.log("shiprespons", response)
                 checkout.trackingNumber = response.shipOrder.trackingNumber;
                 checkout.response = true;
                 checkout.labels = response.shipOrder.packages;
@@ -332,37 +332,35 @@
                 }
               },function(err){
                 console.log(err)
+                let title, message
+                
                 if(checkout.payment == 'account')
                   checkout.step = 'selectPayment';
                 else if(checkout.payment == 'card'){
                   checkout.step = 'payment';
                   checkout.cardForm = false;
                 }
+
                 if(err.message){
-                  var title = 'No se pudo pagar el envío.';
-                  if(err.message == "Referirse al Emisor de la tarjeta" || err.message == "Not able to trace back to original transaction" || err.message == "Reservado para uso privado o Datos de Track Incorrectos")
-                    err.message = "La transacción fue bloqueada por tu banco. Por favor comunícate con tu banco para que eliminen este bloqueo"
-                  else if(err.message == "PaymentFilterException" )
-                    err.message = "Tu tarjeta fue bloqueada temporalmente en nuestro sistema debido a la gran cantidad de intentos de pago realizados. Este bloqueo dura 24 horas."
-                  else if(err.message == "Reservado para uso privado o no existe modulo de seguridad" || err.message == "MTT_ERROR")
-                    err.message = "Transacción declinada por el banco. Esta tarjeta no puede ser usada para realizar este tipo de transacción online."
-                  
-                  Dialog.showError(err.message, title);
+                  title = "Error"
+                  message = err.message
                 }else if(err.code && err.code == -12345){
                   /*    Payment might be done but with no shipping    */
                   let title = 'Hubo un problema al realizar tu envío.',
                       message = "Por favor, envíanos un correo a atencion@paquete.mx para ayudarte a resolver el problema con tu envío"
-
-                  Dialog.showError(message, title)
-
+                  
                   shippingApi.notifyError(order)
                   .then(response => console.log( response ))
                   .catch(err => console.error( response ))
                   
                 }else if(err.result && err.result.detail){
-                  let title = 'No se pudo pagar el envío.'
-                  Dialog.showError(err.result.detail, title)
+                  title = 'No se pudo pagar el envío.'
+                  message = err.result.detail
+                }else if(err.data && err.data.error && err.data.error.details && err.data.error.details[0].message){
+                  title =  "Error al procesar el cobro"
+                  message = err.data.error.details[0].message
                 }
+                Dialog.showError(message, title)
               })
               .finally(function(){
                 checkout.status.paying = false
@@ -491,17 +489,38 @@
     }
 
     function calculateComision(brand){
-      let amex = 0.036;
-      let visa = 0.032;
-      let tax = brand == "AMEX" ? amex : visa
+      //let amex = 0.036;
+      //let visa = 0.032;
+      let tax = 0.029
+      let flatTax = 2.5
 
       //let commission = checkout.shipping.service.discountTotal * tax
 
-      let bIVA = checkout.shipping.service.discountTotal * 1.16
-      let commissionAux = bIVA * tax * 1.16
-      let totalAux = bIVA + commissionAux
-      let commission = totalAux * tax
-      console.log( checkout.shipping.service )
+      //let bIVA = checkout.shipping.service.discountTotal * 1.16
+      //let commissionAux = bIVA * tax * 1.16
+      //let totalAux = bIVA + commissionAux
+      //let commission = totalAux * tax
+      //console.log( checkout.shipping.service )
+
+      let preSubtotal = checkout.shipping.service.discountTotal * tax
+      console.log("preSubtotal", preSubtotal)
+      let preSubCommission = preSubtotal + flatTax
+      console.log("preSubCommission", preSubCommission)
+      let preIvaCommission = preSubCommission * 0.16
+      console.log("preIvaCommission", preIvaCommission)
+      let preCommission = preSubCommission + preIvaCommission
+      console.log("preCommission", preCommission)
+      let preTotal = checkout.shipping.service.discountTotal + preCommission
+      console.log("Pretotal", preTotal)
+      let preTotalCommission = preTotal * tax
+      console.log("preTotalCommission", preTotalCommission)
+      let subCommission = preTotalCommission + flatTax
+      console.log("subCommission", subCommission)
+      let ivaCommission = subCommission * 0.16
+      console.log("ivac", ivaCommission)
+      let commission = subCommission + ivaCommission
+      console.log("Commission", commission)
+      
       let subtotal = checkout.shipping.service.discountTotal / 1.16
       let iva = subtotal * 0.16
       let total = subtotal + iva + commission

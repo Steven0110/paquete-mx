@@ -130,6 +130,8 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
     .state('dashboard',{
       url:'/dashboard',
       templateUrl: 'app/dashboard/dashboard.template.html',
+      controller: 'Dashboard',
+      controllerAs: 'dashboard',
       data:{
         access: true,
         dashboard: true

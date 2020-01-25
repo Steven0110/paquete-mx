@@ -1,3 +1,15 @@
+.popup-container
+  .layer(data-ng-show="dashboard.popup.status")
+  .relative-container(data-ng-show="dashboard.popup.status")
+    .block
+      .closer(data-ng-click="dashboard.closePopup()")
+        img(src="https://www.freeiconspng.com/uploads/silver-close-button-png-15.png")
+      h2.title(data-ng-bind="dashboard.popup.info.title")
+      p.text(data-ng-repeat="text in dashboard.popup.info.paragraphs")
+        |{{text}}
+      div.footer
+        img.footer-image(src="common/images/paquete-mx.png")
+
 #side-menu(data-ng-click="shell.toggleMenu()", data-ng-class="{'closed': !shell.dashboard.menu}")
   .menu-toggle.show-on-mobile
     span

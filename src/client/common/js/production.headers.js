@@ -31,6 +31,9 @@
         "downloadInvoice": "http://52.89.200.43/endpoint/download.php",
         "downloadLabel": "http://54.201.237.120?trackingNumber=",
         "invoice": "https://or56mhirwj.execute-api.us-west-2.amazonaws.com/prod/",
+      },
+      conekta: {
+        key: "key_XzkDy9QygkjzZR98m4hVR6A"
       }
     };
   }

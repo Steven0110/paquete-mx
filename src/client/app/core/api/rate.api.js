@@ -78,28 +78,23 @@
 
     function ship(params, userId, taxInfo ){
       
-      var deferred = $q.defer();
-      var user
+      let user
       if(!userId){
-        user = userApi.currentUser();
-        if(user && user.objectId){
-          userId = user.objectId;
-        }else{
-          var deferred = $q.defer();
-          deferred.reject({noSession:true});
-          return deferred.promise;
-        }
+        user = userApi.currentUser()
+        if(user && user.objectId)
+          userId = user.objectId
+        else
+          return Promise.reject({noSession:true})
       }
-      //flag de debug, quitar en produccion
-      params.debugging = true;
+      
+      params.debugging = true
 
       let result
+      let Shipping = parse.cloud('chargeCard')
 
-      var Shipping = parse.cloud('chargeCard');
-      Shipping.post(params).then(function(_result){
+      return Shipping.post(params).then(function(_result){
         result = _result
         
-        /*    Make Invoice   */
         if(params.shipping.to.country.code.toUpperCase() != 'MX'){
 
           return $http({
@@ -112,25 +107,11 @@
                 "shipping": result.result.shipping.service,
                 "trackingNumber": result.result.shipping.trackingNumber
             }
-          }).then(function(response){
-            return Promise.resolve( params )
-          })
+          }).then(response => Promise.resolve( params ))
 
-        }else{
+        }else
           return Promise.resolve( params )
-        }
 
-      },function(error){
-        //alert(JSON.stringify(error.data.error));
-        console.error(error)
-        if(error.data){
-          if(isEmpty(error.data.error)){
-            /*    Payment might be done but with no shipping    */
-            deferred.reject({"code": -12345})
-          }else{
-            deferred.reject(error.data.error)
-          }
-        }
       }).then(order => {
         console.log("orderRateAPI", JSON.stringify( order ))
         /*    Makes Invoice     */
@@ -164,24 +145,22 @@
         }
         
 
-        paqueteApi.build( invoiceBody )
+        return paqueteApi.build( invoiceBody )
         .then( invoiceResult => {
           result.result.invoice = {}
           result.result.invoice.files = {}
           result.result.invoice.files.pdf = invoiceResult.files.pdf
           result.result.invoice.files.xml = invoiceResult.files.xml
-          deferred.resolve(result.result)
+          return Promise.resolve(result.result)
         }, err => {
           result.result.invoice = {}
           if( err.message )
             result.result.invoice.error = err.message
 
-          deferred.resolve(result.result)
+          return Promise.resolve(result.result)
         })
 
       })
-      return deferred.promise;
-      
     }
   }
 })();
