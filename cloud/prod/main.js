@@ -202,7 +202,8 @@ Parse.Cloud.define("addDeposit", function( request, response ){
   accounting.set("difference", request.params.difference)
   accounting.set("originalRemains", request.params.originalRemains)
   accounting.set("advanceDates", request.params.advanceDates)
-  accounting.set("date", request.params.date)
+  if( request.params.date )
+    accounting.set("realDate", new Date(request.params.date))
 
   accounting.save();
 
@@ -2309,7 +2310,8 @@ function sendShipOrder(user, shipping, payment) {
         cost: Number(body.shipping.cost || 0),
         subtotal: Number(body.shipping.subtotal || 0),
         sale: Number(body.shipping.sale || 0),
-        profit: Number(body.shipping.profit || 0)
+        profit: Number(body.shipping.profit || 0),
+        paymentProvider: "CONEKTA"
       }
     }
 

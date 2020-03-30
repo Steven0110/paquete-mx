@@ -202,7 +202,8 @@ Parse.Cloud.define("addDeposit", function( request, response ){
   accounting.set("difference", request.params.difference)
   accounting.set("originalRemains", request.params.originalRemains)
   accounting.set("advanceDates", request.params.advanceDates)
-  accounting.set("date", request.params.date)
+  if( request.params.date )
+  	accounting.set("realDate", new Date(request.params.date))
 
   accounting.save();
 
@@ -821,7 +822,7 @@ Parse.Cloud.define("saveCard",function(request, response){
 
       customer = customer.toObject()
 
-      let sourceId = customer.payment_sources.data[0].id
+      var sourceId = customer.payment_sources.data[0].id
 
       var Card = Parse.Object.extend('Card');
       var card = new Card();
@@ -1082,14 +1083,9 @@ Parse.Cloud.afterSave("Invoice",function(request){
     var account = res;
     if(request.object.existed() === false){
       var cfdi = request.object.get("cfdi");
-      // console.log(cfdi.UUID);
       var data = {};
       var user;
       var trackingNumber;
-      // request.object.get("account").fetch().then(function(res){
-      // request.object.get("account").fetch().then(function(res){
-        // account = res;
-
         var User = Parse.Object.extend("_User"); 
         var query = new Parse.Query(User);
         query.equalTo('account',account);
@@ -1235,7 +1231,7 @@ var createOrder = function(paymentType, params, user){
   if( paymentType == "account")
     return Promise.resolve( false )
   else{
-    let amount = Number(parseFloat(params.amount).toFixed(2)) * 100
+    var amount = Number(parseFloat(params.amount).toFixed(2)) * 100
     amount = Number(parseFloat(amount).toFixed(0))
     var conektaOrder = {
       "line_items": [{
@@ -1368,7 +1364,7 @@ function randomStringLower(length)
 
 //CONEKTA CHARGE CARD
 Parse.Cloud.define("simpleCharge",function(request, response){
-  let params = request.params.order
+  var params = request.params.order
   conekta.Order.create(params, (err,order) => err ? response.error( err ) : response.success({status: "ok"}) )
 });
 
@@ -1393,7 +1389,7 @@ Parse.Cloud.define("chargeCard",function(request, response){
     console.log("ORden", order)
     if( order ){ //Paid with card. Needs account credit update
       console.log("Paid with card. Needs account credit update")
-      let result = order.toObject()
+      var result = order.toObject()
 
       console.log("Conekta Response", result)
       result.amount /= 100
@@ -2249,7 +2245,8 @@ function sendShipOrder(user, shipping, payment) {
         paymentAmount: Number(body.shipping.cost || 0),
         subtotal: Number(body.shipping.subtotal || 0),
         sale: Number(body.shipping.sale || 0),
-        profit: Number(body.shipping.profit || 0)
+        profit: Number(body.shipping.profit || 0),
+        paymentProvider: "CONEKTA"
       }
     }
 

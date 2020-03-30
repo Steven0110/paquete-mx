@@ -31,13 +31,13 @@
     };
 
     home.popup = {
-      "status": false,
+      "status": true,
       "info": {
         "title": "Aviso",
         "paragraphs": [
-          "Informamos a todos nuestros clientes que debido a las celebraciones de semana santa los dias 18 y 19 NO estará habilitado el servicio de recolección ni tampoco habrá servicio de entrega esos días por parte de nuestros aliados estratégicos. Por lo que toda entrega programada para tales días, será recorrida hasta el siguiente día hábil disponible",
-          "¡Paquete.MX les desea Feliz Semana Santa!",
-          "Gracias"
+          "Debido a la situación que impera ante el COVID-19, por disposiciones de los socios comerciales de Paquete.MX, están presentando algunos retrasos en las entregas. Sin embargo estamos laborando en horario normal para brindarte el mejor servicio.",
+          //"¡Paquete.MX les desea Feliz Semana Santa!",
+          //"Gracias"
         ],
         "footerImage": "common/images/paquete-mx.png"
       }
