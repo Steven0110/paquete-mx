@@ -7,7 +7,6 @@
 
   Shipping.$inject = ['$scope','data','shippingApi','Dialog'];
 
-
   function Shipping($scope, data, shippingApi, Dialog){
     // jshint validthis: true 
     var shipping = this;
@@ -83,7 +82,10 @@
         this.myDate.getMonth(),
         this.myDate.getDate()
       )
-
+    shipping.onlyWeekendsPredicate = function(date) {
+      var day = date.getDay();
+      return day === 1 || day === 2 || day === 3 || day === 4 || day === 5 
+    }
 
     shipping.cancelPickup = function(){
       shell.showLoading();

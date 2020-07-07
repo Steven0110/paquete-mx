@@ -121,7 +121,7 @@
                 h4
                   |Fecha
                 form(name="shipping.pickupForm", novalidate="", data-ng-submit="shipping.sendPickUp()")
-                  md-datepicker(name="pickupDate",md-open-on-focus, ng-model="shipping.pickup.date", md-placeholder="Día", md-min-date="shipping.today", required)
+                  md-datepicker(name="pickupDate",md-open-on-focus, ng-model="shipping.pickup.date", md-placeholder="Día", md-min-date="shipping.today", md-date-filter="shipping.onlyWeekendsPredicate", required)
                   h4
                     |Horario
                   md-radio-group(name="pickupSchedule",ng-model="shipping.pickup.schedule")
