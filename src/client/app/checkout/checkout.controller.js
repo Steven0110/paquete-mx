@@ -75,6 +75,12 @@
       checkout.shipping.profit = 0
     }
 
+    
+    checkout.onlyWeekendsPredicate = function(date) {
+      var day = date.getDay();
+      return day === 1 || day === 2 || day === 3 || day === 4 || day === 5 
+    }
+
     checkout.applyCoupon = function(){
       var coupon = checkout.shipping.coupon;
       if(coupon)

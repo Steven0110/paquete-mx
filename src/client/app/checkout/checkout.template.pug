@@ -76,7 +76,7 @@
               h4
                 |Fecha
               form(name="checkout.pickupForm", novalidate="", data-ng-submit="checkout.sendPickUp()")
-                md-datepicker(name="pickupDate",md-open-on-focus, ng-model="checkout.pickup.date", md-placeholder="Día", md-min-date="checkout.today", required)
+                md-datepicker(name="pickupDate",md-open-on-focus, ng-model="checkout.pickup.date", md-placeholder="Día", md-min-date="checkout.today", md-date-filter="checkout.onlyWeekendsPredicate", required)
                 h4
                   |Horario
                 md-radio-group(name="pickupSchedule",ng-model="checkout.pickup.schedule")
