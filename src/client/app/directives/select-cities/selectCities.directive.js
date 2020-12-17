@@ -70,7 +70,9 @@ function selectCities($http, $document, parseheaders){
           search = search.trim();
           search = encodeURI(search);
           var baseUrl = parseheaders.apiEndpoint['baseUrl'];
-          $http.post(baseUrl+"/counties",{search:search,country:country})
+          var host = parseheaders.apiEndpoint['cities'];
+          $http.get( `${host}/${country}/${search}`)
+          //$http.get(baseUrl+"/counties",{search:search,country:country})
           .then(function(response) {
             if(response && response.data && response.data.length > 0)
               vm.options = response.data;

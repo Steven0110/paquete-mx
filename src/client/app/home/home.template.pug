@@ -148,29 +148,43 @@
                                       |PAQUETE
 
                           .cotizador-document(data-ng-if="home.documentOpen")
-                            //- .row
-                              .col-xs-12
+                            .row
+                              //.col-xs-4
                                 .select-weight
-                                  //- md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
+                                  md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
                                     |ASEGURAR
+                              .col-xs-8(data-ng-show="home.shipping.insurance")
+                                div
+                                  .row
+                                    .col-xs-12
+                                      .box-attr-secondary
+                                        span
+                                          |$
+                                        input(data-ng-model="home.shipping.insuranceAmount",placeholder="MXN", data-ng-pattern="shell.regex.decimal",ng-required='home.shipping.insurance', type="number")
+                                        small
+                                          |Valor factura de la mercancía en pesos mexicanos (MXN)
                             .row(data-ng-repeat="package in home.documents")
                               .col-xs-12
                                 .select-weight
                                   span
                                     |Tu sobre debe ser tamaño estandar y no pesar más de 0.5 Kg.
-                              .select-weiht(data-ng-show="home.shipping.insurance")
-                                .row
-                                  .col-xs-4
-                                    .box-attr-secondary
-                                      input(data-ng-model="package.valueDeclared",placeholder="Pesos (MXN)", data-ng-pattern="shell.regex.decimal",ng-required='home.shipping.insurance')
-                                  .col-xs-8
-                                    span.bold
-                                      |VALOR ($)
 
                           .cotizador-box(data-ng-if="home.packageOpen")
                             .row
-                              //- md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
-                                  |ASEGURAR
+                              //.col-xs-4
+                                .select-weight
+                                  md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
+                                    |ASEGURAR
+                              .col-xs-8(data-ng-show="home.shipping.insurance")
+                                div
+                                  .row
+                                    .col-xs-12
+                                      .box-attr-secondary
+                                        span
+                                          |$
+                                        input(data-ng-model="home.shipping.insuranceAmount",placeholder="MXN", data-ng-pattern="shell.regex.decimal",ng-required='home.shipping.insurance', type="number")
+                                        small
+                                          |Valor factura de la mercancía en pesos mexicanos (MXN)
                               .col-xs-12(data-ng-repeat="package in home.shipping.packages")
                                 .select-weight(data-ng-class="{'space-top':$index > 0}")
                                   .row
@@ -256,6 +270,9 @@
             img.slick-img(src="common/images/Paquete.MX-02.png", alt="REDPACK")
           p.slick-container
             img.slick-img(src="common/images/Paquete.MX-03.png", alt="UPS")
+          p.slick-container(style="position: relative;")
+            a(href="https://www.digitalgdl.com/", target="_blank", style="transform: translateY(30%);display:block;")
+              img.slick-img(src="common/images/digitaldgl.png", alt="DIGITAL GDL")
           p.slick-container
             img.slick-img(src="common/images/Paquete.MX-04.png", alt="DHL")
           p.slick-container

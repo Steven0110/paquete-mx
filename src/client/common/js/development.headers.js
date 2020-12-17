@@ -29,7 +29,8 @@
         "baseUrl": "https://mqxt7kvlib.execute-api.us-west-2.amazonaws.com/dev",
         "internationalInvoice": "https://arnjlj6h6g.execute-api.us-west-2.amazonaws.com/dev/pmx-international-invoice",
         "downloadInvoice": "http://52.89.200.43/development/download.php",
-        "downloadLabel": "http://54.201.237.120/dev.php?trackingNumber=",
+        "downloadLabel": "https://labels.paquete.mx/dev.php?trackingNumber=",
+        "cities": "https://labels.paquete.mx:2095",
         "invoice": "https://or56mhirwj.execute-api.us-west-2.amazonaws.com/dev/",
       },
       conekta: {

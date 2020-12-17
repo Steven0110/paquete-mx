@@ -440,6 +440,8 @@
           "country": toCountry,
           "stateCode": toStateCode
         },
+        "insurance": home.shipping.insurance,
+        "insuranceAmount": home.shipping.insuranceAmount,
         "packages": home.shipping.packages
       };
 
@@ -568,7 +570,7 @@
                   $state.go('home', {shipping: shipping}, {notify: false});
                 }
               }else{
-                Dialog.showError('Verifica las dimensiones de los paquetes, deben ser números enteros mayores a 0','Dimensiones de los paquetes');  
+                Dialog.showError('Verifica los valores de dimensiones y peso (deben ser mayores a 0). En caso de asegurar el envío, poner un valor válido.','Valores incorrectos');
               }
             },500);
           }else{
