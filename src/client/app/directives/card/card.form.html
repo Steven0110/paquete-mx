@@ -1,0 +1,121 @@
+
+<div class="card-wrapper"></div>
+<form name="card.form" novalidate="novalidate" data-ng-submit="card.send()">
+  <div layout-xs-sm="row">
+    <md-input-container class="md-block">
+      <label for="cardName" data-ng-bind="card.labels.form.name"></label>
+      <input name="cardName" data-ng-model="card.info.name" required="required"/>
+      <div ng-messages="card.form.cardName.$error">
+        <div ng-message="required">Es requerido</div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Nombre completo del tarjetahabiente" data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label for="cardNumber" data-ng-bind="card.labels.form.number"></label>
+      <input name="cardNumber" data-ng-model="card.info.card_number" required="required" validate-card="validate-card"/>
+      <div ng-messages="card.form.cardNumber.$error">
+        <div ng-message="validateCard">Número de tarjeta invalido.</div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Número completo que aparece en la tarjeta" data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label for="cvc" data-ng-bind="card.labels.form.cvc"></label>
+      <input name="cvc" data-ng-model="card.info.cvc" required="required" validate-cvc="validate-cvc"/>
+      <div ng-messages="card.form.cvc.$error">
+        <div ng-message="validateCvc">Código de seguridad invalido.</div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Número que se encuentra en la parte posterior de tu tarjeta, son 3 dígitos en caso de VISA y MASTERCARD. Para AMEX se encuentra en el frente y son 4 digitos" data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+    <div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-5">
+          <md-input-container class="md-block">
+            <label data-ng-bind="card.labels.form.expirationMonth"></label>
+            <md-select name="month" data-ng-model="card.info.exp_month">
+              <md-option data-ng-repeat="item in card.months" value="{{item}}">{{item}}</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+        <div class="col-xs-2"></div>
+        <div class="col-xs-12 col-sm-5">
+          <md-input-container class="md-block">
+            <label data-ng-bind="card.labels.form.expirationYear"></label>
+            <md-select name="month" data-ng-model="card.info.exp_year">
+              <md-option data-ng-repeat="item in card.years" value="{{item}}">{{item}}</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3"><br/>
+          <md-input-container class="md-block">
+            <label for="birthDate" data-ng-bind="card.labels.form.birthDate"></label>
+            <md-datepicker name="birthDate" md-open-on-focus="md-open-on-focus" ng-model="card.info.birthDate" md-placeholder="Fecha" required="required"></md-datepicker>
+          </md-input-container>
+        </div>
+      </div>
+    </div>
+    <md-input-container class="md-block">
+      <label for="address_line_1" data-ng-bind="card.labels.form.address_line_1"></label>
+      <input name="address_line_1" data-ng-model="card.info.address_line_1" required="required"/>
+      <div ng-messages="card.form.address_line_1.$error">
+        <div ng-message="required">Es requerido</div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Ingresar la Calle y Número de la dirección declarada en la tarjeta." data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label for="address_line_2" data-ng-bind="card.labels.form.address_line_2"></label>
+      <input name="address_line_2" data-ng-model="card.info.address_line_2" required="required"/>
+      <div ng-messages="card.form.address_line_2.$error">
+        <div ng-message="required">Es requerido</div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Colonia de la dirección declarada en la tarjeta." data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label for="city" data-ng-bind="card.labels.form.city"></label>
+      <input name="city" data-ng-model="card.info.city" required="required"/>
+      <div ng-messages="card.form.city.$error">
+        <div ng-message="required">Es requerido</div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Ciudad de la dirección declarada en la tarjeta." data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label for="state" data-ng-bind="card.labels.form.state"></label>
+      <input name="state" data-ng-model="card.info.state" required="required"/>
+      <div ng-messages="card.form.state.$error">
+        <div ng-message="required">Es requerido</div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Estado de la dirección declarada en la tarjeta." data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label for="postal_code" data-ng-bind="card.labels.form.postal_code"></label>
+      <input name="postal_code" data-ng-model="card.info.postal_code" required="required"/>
+      <div ng-messages="card.form.postal_code.$error">
+        <div ng-message="required">Es requerido</div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Código postal de la dirección declarada en la tarjeta." data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+    <div class="align-center margin-top-2">
+      <md-button class="md-raised md-primary" type="submit" data-ng-bind="card.labels.form.save" aria-label="card.labels.form.save"></md-button>
+      <md-button class="md-raised" data-ng-bind="card.labels.form.cancel" aria-label="card.labels.form.cancel" data-ng-click="card.cancel()"></md-button>
+    </div>
+  </div>
+</form>

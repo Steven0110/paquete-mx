@@ -3,7 +3,5 @@
 node_modules
 src/client/bower_components
 build
-src/client/**/*.html
-src/client/**/*.css
 lambdas
 .firebaserc

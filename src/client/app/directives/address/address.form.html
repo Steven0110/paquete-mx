@@ -1,0 +1,168 @@
+
+<form name="addressForm" data-ng-submit="send()" novalidate="novalidate">
+  <div layout-xs-sm="row">
+    <md-input-container class="md-block">
+      <label for="name" data-ng-bind="labels.address.form.name"></label>
+      <input name="name" data-ng-model="newAddress.name" ng-maxlength="22" required="required"/>
+      <div ng-messages="addressForm.name.$error">
+        <div ng-message="required" data-ng-bind="labels.address.errors.required"></div>
+        <div ng-message="maxlength">Máximo 22 caracteres.</div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Escriba el Nombre y Apellido." data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+  </div>
+  <div layout-xs-sm="row">
+    <md-input-container class="md-block">
+      <label for="company" data-ng-bind="labels.address.form.company"></label>
+      <input name="company" data-ng-model="newAddress.company" ng-maxlength="30"/>
+      <div ng-messages="addressForm.company.$error">
+        <div ng-message="maxlength">Máximo 30 caracteres.</div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Nombre de la empresa." data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+  </div>
+  <div layout-xs-sm="row">
+    <md-input-container class="md-block">
+      <label for="phone" data-ng-bind="labels.address.form.phone"></label>
+      <input name="phone" data-ng-model="newAddress.phone" required="required" data-ng-pattern="regex.mobile"/>
+      <div ng-messages="addressForm.phone.$error">
+        <div ng-message="required" data-ng-bind="labels.address.errors.required"></div>
+        <div ng-message="pattern" data-ng-bind="labels.address.errors.pattern"></div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Agregar el número telefónico a 10 dígitos" data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+  </div>
+  <div layout-xs-sm="row">
+    <md-input-container class="md-block">
+      <label for="email" data-ng-bind="labels.address.form.email"></label>
+      <input name="email" data-ng-model="newAddress.email" type="email" required="required"/>
+      <div ng-messages="addressForm.email.$error">
+        <div ng-message="required" data-ng-bind="labels.address.errors.required"></div>
+        <div ng-message="invalid" data-ng-bind="labels.address.errors.pattern"></div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="El correo que ingresas lo utilizamos para realizar confirmaciones, entregas de envío y notificaciones importantes." data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+  </div>
+  <div layout-xs-sm="row">
+    <md-input-container class="md-block">
+      <label for="street"><span>Calle (Te quedan&nbsp;</span><span>{{ newAddress.maxStreet - newAddress.street.length }}</span><span>&nbsp;caracteres)</span></label>
+      <input name="street" data-ng-model="newAddress.street" maxlength="{{newAddress.maxStreet}}" required="required"/>
+      <div ng-messages="addressForm.street.$error">
+        <div ng-message="required" data-ng-bind="labels.address.errors.required"></div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Ingresa el nombre de la calle sin número" data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+  </div>
+  <div layout-xs-sm="row">
+    <md-input-container class="md-block">
+      <label for="number"><span>Número exterior (Te quedan&nbsp;</span><span>{{ newAddress.maxNumber - newAddress.number.length }}</span><span>&nbsp;caracteres)</span></label>
+      <input name="number" data-ng-model="newAddress.number" maxlength="{{newAddress.maxNumber}}" required="required"/>
+      <div ng-messages="addressForm.number.$error">
+        <div ng-message="required" data-ng-bind="labels.address.errors.required"></div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Favor de verificar que el número es el correcto" data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+  </div>
+  <div layout-xs-sm="row">
+    <md-input-container class="md-block">
+      <label for="apt"><span>Número interior (Te quedan&nbsp;</span><span>{{ newAddress.maxApt - newAddress.apt.length }}</span><span>&nbsp;caracteres)</span></label>
+      <input name="apt" data-ng-model="newAddress.apt" maxlength="{{newAddress.maxApt}}"/>
+      <div ng-messages="addressForm.apt.$error">
+        <div ng-message="required" data-ng-bind="labels.address.errors.required"></div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="En caso que cuente con un número interior, especificarlo" data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+  </div>
+  <div layout-xs-sm="row">
+    <md-input-container class="md-block">
+      <label for="reference"><span>Referencia (Te quedan&nbsp;</span><span>{{ newAddress.maxReference - newAddress.reference.length }}</span><span>&nbsp;caracteres)</span></label>
+      <input name="reference" data-ng-model="newAddress.reference" placeholder="Ej. Fachada color naranja" maxlength="{{ newAddress.maxReference }}"/>
+      <div ng-messages="addressForm.reference.$error">
+        <div ng-message="required" data-ng-bind="labels.address.errors.required"></div>
+      </div>
+      <md-icon>
+        <div data-balloon-length="medium" data-balloon="Esto será de ayuda para la paquetería" data-balloon-pos="right"><i class="fa fa-info-circle"></i></div>
+      </md-icon>
+    </md-input-container>
+  </div>
+  <div class="country-zip" layout-xs-sm="row" data-ng-if="type == 'checkout' ">
+    <div class="row">
+      <div class="col-xs-6">
+        <div>País</div>
+        <div><span class="flag-icon flag-icon-squared icon-xl flag-icon-{{newAddress.country.code}}"></span><span class="address-country">{{newAddress.country.code}}</span></div>
+      </div>
+      <div class="col-xs-6">
+        <div>Código Postal</div><span class="address-country">{{newAddress.zip}}</span>
+      </div>
+      <div class="col-xs-12">
+        <div class="change-zip"><span data-ng-click="showZipMessage()">Modificar Código Postal</span></div>
+      </div>
+    </div>
+  </div>
+  <div layout-xs-sm="row" data-ng-if="type != 'checkout' ">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-3">
+          <select-country data-countries="countries" data-country="newAddress.country"></select-country>
+        </div>
+        <div class="col-xs-9">
+          <md-input-container class="md-block">
+            <label for="zip" data-ng-bind="labels.address.form.zip"></label>
+            <input name="zip" data-ng-model="newAddress.zip" required=""/>
+            <div ng-messages="addressForm.zip.$error">
+              <div ng-message="required" data-ng-bind="labels.address.errors.required"></div>
+            </div>
+          </md-input-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div layout-xs-sm="row">
+    <md-input-container class="md-block">
+      <label for="county" data-ng-bind="labels.address.form.county"></label>
+      <input name="county" data-ng-model="newAddress.county" required=""/>
+      <div ng-messages="addressForm.county.$error">
+        <div ng-message="required" data-ng-bind="labels.address.errors.required"></div>
+      </div>
+    </md-input-container>
+  </div>
+  <div layout-xs-sm="row">
+    <md-input-container class="md-block">
+      <label for="city" data-ng-bind="labels.address.form.city"></label>
+      <input name="city" data-ng-model="newAddress.city" required=""/>
+      <div ng-messages="addressForm.city.$error">
+        <div ng-message="required" data-ng-bind="labels.address.errors.required"></div>
+      </div>
+    </md-input-container>
+  </div>
+  <div layout-xs-sm="row">
+    <md-input-container class="md-block">
+      <label for="state" data-ng-bind="labels.address.form.state"></label>
+      <input name="state" data-ng-model="newAddress.state" required=""/>
+      <div ng-messages="addressForm.state.$error">
+        <div ng-message="required" data-ng-bind="labels.address.errors.required"></div>
+      </div>
+    </md-input-container>
+  </div>
+  <div class="align-center" data-ng-if="type =='checkout'">
+    <md-button class="md-raised md-primary" type="submit" data-ng-bind="labels.address.form.continue" aria-label="labels.address.form.continue"></md-button>
+  </div>
+  <div class="align-center" data-ng-if="type =='save'">
+    <md-button class="md-raised" data-ng-click="hideForm()" data-ng-bind="labels.address.form.cancel" aria-label="labels.address.form.cancel"></md-button>
+    <md-button class="md-raised md-primary" type="submit" data-ng-bind="labels.address.form.save" aria-label="labels.address.form.save"></md-button>
+  </div>
+</form>

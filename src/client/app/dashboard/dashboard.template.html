@@ -1,0 +1,25 @@
+
+<div class="popup-container">
+  <div class="layer" data-ng-show="dashboard.popup.status"></div>
+  <div class="relative-container" data-ng-show="dashboard.popup.status">
+    <div class="block">
+      <div class="closer" data-ng-click="dashboard.closePopup()"><img src="https://www.freeiconspng.com/uploads/silver-close-button-png-15.png"/></div>
+      <h2 class="title" data-ng-bind="dashboard.popup.info.title"></h2>
+      <p class="text" data-ng-repeat="text in dashboard.popup.info.paragraphs">{{text}}</p>
+      <div class="footer"><img class="footer-image" src="common/images/paquete-mx.png"/></div>
+    </div>
+  </div>
+</div>
+<div id="side-menu" data-ng-click="shell.toggleMenu()" data-ng-class="{'closed': !shell.dashboard.menu}">
+  <div class="menu-toggle show-on-mobile"><span><img data-ng-src="common/images/ToggleMenu.png"/></span></div>
+  <div class="dashboard-logo"><a ui-sref="home"><img data-ng-src="common/images/logo-blanco.png"/></a></div>
+  <div class="item-side" data-ng-repeat="item in shell.dashMenu" ui-sref="{{item.uiref}}"><i class="fa {{item.icon}}"></i>
+    <div>{{item.label}}</div>
+  </div>
+</div>
+<div id="side-content">
+  <div class="resume-content hide-on-mobile">
+    <div><a ui-sref="home">¡Cotizar de nuevo!</a></div>
+  </div>
+  <ui-view></ui-view>
+</div>

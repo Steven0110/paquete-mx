@@ -1,0 +1,262 @@
+
+<div class="dashboard-header">
+  <div class="dashboard-header-content">
+    <div class="dash-section-title"><span class="back-button" ui-sref="dashboard.shippings"><i class="fa fa-arrow-circle-left"></i>&nbsp;</span><span data-ng-bind="shell.dashboard.title"></span></div>
+    <div class="dash-section-subtitle"><span class="uppercase">{{shipping.data.carrier}}</span><span>&nbsp;-&nbsp;{{shipping.data.trackingNumber}}</span><span class="hide-on-mobile">&nbsp;-&nbsp;{{shipping.labels[shipping.data.status]}}</span></div>
+  </div>
+</div>
+<div class="dash-name-section hide-on-mobile">
+  <div class="big-text-welcome">¡Hola {{shell.setName}}!</div>
+  <div class="small-text-welcome"><a ui-sref="logout">Cerrar Sesión</a></div>
+</div>
+<div class="dashboard-content">
+  <h1 class="accent align-center">&nbsp;{{shipping.data.trackingNumber}}</h1>
+  <div class="container-fluid">
+    <div class="shipping-info">
+      <div class="row">
+        <div class="col-md-4">
+          <h2 class="accent">Origen</h2>
+          <div class="section-space-right">
+            <div class="board-list">{{shipping.data.service.from.street}}, {{shipping.data.service.from.number}}&nbsp;<span data-ng-if="shipping.data.service.from.apt">- {{shipping.data.service.from.apt}}</span></div>
+            <div class="board-list">{{shipping.data.service.from.county}}<span data-ng-if="shipping.data.service.from.city">, {{shipping.data.service.from.city}}</span><span>, CP. {{shipping.data.service.from.zip}}</span></div>
+            <div class="board-list">{{shipping.data.service.from.state}}<span class="uppercase">, {{shipping.data.service.from.country.name}}</span></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="align-center">
+            <div class="small-image" data-ng-if="shipping.data.status == 'delivered'"><img ng-src="common/images/delivered.png"/></div>
+            <div class="small-image" data-ng-if="shipping.data.status == 'label_created'"><img ng-src="common/images/label_created.png"/></div>
+            <div class="small-image" data-ng-if="shipping.data.status != 'label_created' &amp;&amp; shipping.data.status != 'delivered'"><img ng-src="common/images/in_transit.png"/></div>
+            <h1 class="disabled-color" data-ng-class="{'success': shipping.data.status =='delivered'}">{{shipping.labels[shipping.data.status]}}</h1>
+            <div data-ng-if="shipping.data.signedBy">Recibido Por
+              <h3 class="uppercase">{{shipping.data.signedBy}}</h3>
+            </div>
+            <div data-ng-if="shipping.data.status == 'label_created'">
+              <md-button class="md-raised md-primary" href="{{shell.downloadLabel(shipping.data.trackingNumber)}}" download="download">Imprimir Etiqueta</md-button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h2 class="accent">Destino</h2>
+          <div class="board-list">{{shipping.data.service.to.street}}, {{shipping.data.service.to.number}}&nbsp;<span data-ng-if="shipping.data.service.to.apt">- {{shipping.data.service.to.apt}}</span></div>
+          <div class="board-list">{{shipping.data.service.to.county}}<span data-ng-if="shipping.data.service.to.city">, {{shipping.data.service.to.city}}</span><span>, CP. {{shipping.data.service.to.zip}}</span></div>
+          <div class="board-list">{{shipping.data.service.to.state}}<span class="uppercase">, {{shipping.data.service.to.country.name}}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="shipping-info" data-ng-if="shipping.data.status == 'label_created'">
+      <h1 class="accent">Etiqueta y Recolección</h1>
+      <div data-ng-if="shipping.data.status == 'label_created'">
+        <ul>
+          <li>Descarga e imprime tu etiqueta <span class="accent bold">2 veces </span>&nbsp;( por cada paquete ).</li>
+          <li>Pega una de las copias en tu paquete o paquetes.</li>
+          <li>Si llevas tus paquetes a mostrador una copia sera sellada como acuse de recepción.</li>
+        </ul>
+        <md-button class="md-raised md-primary" href="{{shell.downloadLabel(shipping.data.trackingNumber)}}" download="download">Imprimir Etiqueta</md-button>
+        <div data-ng-if="!shipping.data.pickupConfirmation ">
+          <h2 class="disabled-color"><span class="bold">Entrega </span>&nbsp;tu paquete en mostrador        </h2>
+          <div class="padding-left-2"><span>¿Donde entregar?</span><a class="accent underline" href="https://www.ups.com/dropoff?loc=es_MX" target="_blank" data-ng-if="shipping.data.service.service.service == 'ups'">&nbsp;Buscar puntos de entrega <span class="uppercase bold accent">{{shipping.data.service.service.service}}</span></a><a class="accent underline" href="http://www.fedex.com/locate/index.html?locale=es_MX" target="_blank" data-ng-if="shipping.data.service.service.service == 'fedex'">&nbsp;Buscar puntos de entrega <span class="uppercase bold accent">{{shipping.data.service.service.service}}</span></a></div>
+          <h2 class="disabled-color">o<span class="bold">&nbsp;Agenda</span>&nbsp;recolección en domicilio</h2>
+          <div class="row">
+            <div class="col-md-12 col-sm-6">
+              <div class="padding-left-2">
+                <h4>Fecha</h4>
+                <form name="shipping.pickupForm" novalidate="" data-ng-submit="shipping.sendPickUp()">
+                  <md-datepicker name="pickupDate" md-open-on-focus="md-open-on-focus" ng-model="shipping.pickup.date" md-placeholder="Día" md-min-date="shipping.today" md-date-filter="shipping.onlyWeekendsPredicate" required="required"></md-datepicker>
+                  <h4>Horario</h4>
+                  <md-radio-group name="pickupSchedule" ng-model="shipping.pickup.schedule">
+                    <md-radio-button class="md-primary" value="08:00-19:00">8:00 horas - 19:00 horas (Horario Abierto)</md-radio-button>
+                    <md-radio-button class="md-primary" value="09:00-19:00">09:00 horas - 19:00 horas (Horario Abierto)</md-radio-button>
+                    <md-radio-button class="md-primary" value="10:00-19:00">10:00 horas - 19:00 horas (Horario Abierto)</md-radio-button>
+                    <md-radio-button class="md-primary" value="11:00-19:00">11:00 horas - 19:00 horas (Horario Abierto)</md-radio-button>
+                    <md-radio-button class="md-primary" value="12:00-19:00">12:00 horas - 19:00 horas (Horario Abierto)</md-radio-button>
+                    <h3 class="disabled-color"><span>{{shipping.pickup.date | amDateFormat:'ddd LL'}}</span><span data-ng-if="shipping.pickup.schedule == '08:00-19:00'">&nbsp; entre 8:00 y 19:00 Horas.</span><span data-ng-if="shipping.pickup.schedule == '09:00-19:00'">&nbsp; entre 9:00 y 19:00 Horas.</span><span data-ng-if="shipping.pickup.schedule == '10:00-19:00'">&nbsp; entre 10:00 y 19:00 Horas.</span><span data-ng-if="shipping.pickup.schedule == '11:00-19:00'">&nbsp; entre 11:00 y 19:00 Horas.</span><span data-ng-if="shipping.pickup.schedule == '12:00-19:00'">&nbsp; entre 12:00 y 19:00 Horas.</span></h3>
+                  </md-radio-group>
+                  <md-button class="md-raised md-primary" type="submit">Solicitar Recolección</md-button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-ng-if="shipping.data.pickupConfirmation">
+        <h1 class="accent">Recolección</h1>
+        <h3 class="disabled-color">Confirmación: {{shipping.data.pickupConfirmation}}</h3>
+        <md-button class="md-raised md-primary" data-ng-click="shipping.cancelPickup()">Cancelar Recolección</md-button>
+      </div>
+    </div>
+    <div class="shipping-info">
+      <h1 class="accent">Actualizaciones</h1>
+      <div class="row tracking-status" data-ng-class="{'delivered': shipping.tracking.delivered.date != '', 'in-progress': shipping.tracking.delivered.date == '', }" data-ng-if="shipping.tracking">
+        <div class="row initial-status">
+          <div class="mark" data-ng-class="{'completed': shipping.tracking.created.date != '' }"></div><span><b>Creado&nbsp;&nbsp;&nbsp;</b><span class="hide-on-mobile" data-ng-if="shipping.tracking.created.date != ''">[{{shipping.tracking.created.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.created.location }}]&nbsp;&nbsp;&nbsp;</span><span data-ng-if="shipping.tracking.created.date != ''">{{shipping.tracking.created.date}} - {{shipping.tracking.created.time}} hrs.&nbsp;&nbsp;&nbsp;</span></span>
+        </div>
+        <div class="row mid-status">
+          <div class="mark" data-ng-class="{'completed': shipping.tracking.in_transit.date != '' }"></div><span><b>En tránsito&nbsp;&nbsp;&nbsp;</b><span class="hide-on-mobile" data-ng-if="shipping.tracking.in_transit.date != ''">[{{shipping.tracking.in_transit.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.in_transit.location }}]&nbsp;&nbsp;&nbsp;</span><span data-ng-if="shipping.tracking.in_transit.date != ''">{{shipping.tracking.in_transit.date}} - {{shipping.tracking.in_transit.time}} hrs.&nbsp;&nbsp;&nbsp;</span></span>
+        </div>
+        <div class="row mid-status">
+          <div class="mark" data-ng-class="{'completed': shipping.tracking.in_facilities.date != '' }"></div><span><b class="hide-on-mobile">En instalaciones de paquetería&nbsp;&nbsp;&nbsp;</b><b class="show-on-mobile">En paquetería&nbsp;&nbsp;&nbsp;</b><span class="hide-on-mobile" data-ng-if="shipping.tracking.in_facilities.date != ''">[{{shipping.tracking.in_facilities.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.in_facilities.location }}]&nbsp;&nbsp;&nbsp;</span><span data-ng-if="shipping.tracking.in_facilities.date != ''">{{shipping.tracking.in_facilities.date}} - {{shipping.tracking.in_facilities.time}} hrs.&nbsp;&nbsp;&nbsp;</span></span>
+        </div>
+        <div class="row mid-status">
+          <div class="mark" data-ng-class="{'completed': shipping.tracking.out_of_delivery.date != '' }"></div><span><b>En ruta de entrega&nbsp;&nbsp;&nbsp;</b><span class="hide-on-mobile" data-ng-if="shipping.tracking.out_of_delivery.date != ''">[{{shipping.tracking.out_of_delivery.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.out_of_delivery.location }}]&nbsp;&nbsp;&nbsp;</span><span data-ng-if="shipping.tracking.out_of_delivery.date != ''">{{shipping.tracking.out_of_delivery.date}} - {{shipping.tracking.out_of_delivery.time}} hrs.&nbsp;&nbsp;&nbsp;</span></span>
+        </div>
+        <div class="row final-status">
+          <div class="mark" data-ng-class="{'completed': shipping.tracking.delivered.date != '' }"></div><span><b>Entregado&nbsp;&nbsp;&nbsp;</b><span class="hide-on-mobile" data-ng-if="shipping.tracking.delivered.date != ''">[{{shipping.tracking.delivered.location == '' ? 'SIN UBICACIÓN' : shipping.tracking.delivered.location }}]&nbsp;&nbsp;&nbsp;</span><span data-ng-if="shipping.tracking.delivered.date != ''">{{shipping.tracking.delivered.date}} - {{shipping.tracking.delivered.time}} hrs.&nbsp;&nbsp;&nbsp;</span></span>
+        </div>
+      </div>
+      <h3 class="disabled-color" data-ng-if="!shipping.tracking">No hay actualizaciones disponibles</h3>
+      <h1 class="accent">Paquetes</h1>
+      <h3 class="disabled-color" data-ng-if="shipping.packages.length &lt; 1">No hay paquetes en este envio.</h3>
+      <table class="info-table" data-ng-if="shipping.packages.length &gt; 0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Peso</th>
+            <th>Largo</th>
+            <th>Ancho</th>
+            <th>Alto</th>
+          </tr>
+        </thead>
+        <tbody data-ng-repeat="item in shipping.packages">
+          <tr>
+            <td>{{$index+1 }}</td>
+            <td>{{item.weight}} Kgs.</td>
+            <td>{{item.length}} cms.</td>
+            <td>{{item.width}} cms.</td>
+            <td>{{item.height}} cms.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="shipping-info">
+      <h1><span class="accent">Pago y Facturación: </span></h1>
+      <h1><span class="disabled-color">Monto:</span><span class="success">&nbsp;{{shipping.data.paymentAmount | currency}} MXN</span></h1>
+      <h3><span class="accent">Pagado con:</span></h3>
+      <div class="card-item" data-ng-if="shipping.data.charge.brand == 'PQT'">
+        <h3 class="disabled-color">Cuenta Empresarial</h3>
+      </div>
+      <div class="card-item" data-ng-if="shipping.data.charge.brand !== 'PQT'"><i class="big fa fa-cc-mastercard" data-ng-if="shipping.data.charge.brand == 'MASTERCARD'"></i><i class="big fa fa-cc-visa" data-ng-if="shipping.data.charge.brand == 'VISA'"></i><i class="big fa fa-cc-amex" data-ng-if="shipping.data.charge.brand == 'AMEX'"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<span class="termination-font">{{shipping.data.charge.termination}}</span></div>
+      <h3><span class="accent">Comprobante Fiscal:</span></h3>
+      <div class="row">
+        <div class="col-md-9">
+          <table class="table table-responsive">
+            <thead>
+              <th>Folio</th>
+              <th>UUID</th>
+              <th>Monto</th>
+              <th>Por Pagar</th>
+              <th class="hide-on-mobile">Status</th>
+              <th class="hide-on-mobile">Liquidada</th>
+              <th>Archivos</th>
+            </thead>
+            <tbody data-ng-repeat="item in shipping.invoices">
+              <td class="bold accent">{{item.invoiceNo}}</td>
+              <td>{{item.UUID}}</td>
+              <td>{{item.amount | currency}}</td>
+              <td>{{item.dueAmount | currency}}</td>
+              <td class="hide-on-mobile"><span class="error" data-ng-if="item.cancelled">CANCELADA</span><span class="success" data-ng-if="!item.cancelled">ACTIVA</span></td>
+              <td class="hide-on-mobile"><span class="success" data-ng-if="item.paid">SI</span><span class="error" data-ng-if="!item.paid">NO</span></td>
+              <td><a class="hover-accent" href="{{ item.files.pdf }}" target="_blank"><i class="fa fa-download"></i>PDF</a><a class="hover-accent" href="{{ item.files.xml }}" target="_blank"><i class="fa fa-download"></i>XML</a></td>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="shipping-info">
+      <h3><span class="accent">Cargos de Sobrepeso</span></h3>
+      <h3 class="disabled-color" data-ng-if="shipping.overWeight.length &lt; 1">No hay cargos de sobrepeso.</h3>
+      <div class="row" data-ng-if="shipping.overWeight.length &gt; 0">
+        <div class="col-md-9">
+          <table class="table table-responsive">
+            <thead>
+              <th>Folio</th>
+              <th>UUID</th>
+              <th>Monto</th>
+              <th>Status</th>
+              <th>Archivos</th>
+            </thead>
+            <tbody data-ng-repeat="item in shipping.overWeight">
+              <td class="bold accent">{{item.invoiceNo}}</td>
+              <td>{{item.UUID}}</td>
+              <td>{{item.amount | currency}}</td>
+              <td><span class="error" data-ng-if="item.cancelled">CANCELADA</span><span class="success" data-ng-if="!item.cancelled">ACTIVA</span></td>
+              <td>
+                <div><a class="hover-accent" href="{{ item.files.pdf }}" target="_blank"><i class="fa fa-download"></i>PDF</a></div>
+                <div><a class="hover-accent" href="{{ item.files.xml }}" target="_blank"><i class="fa fa-download"></i>XML</a></div>
+              </td>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="shipping-info">
+      <div data-ng-if="shipping.payments.length &gt; 0">
+        <h3><span class="accent">Complementos de Pago:</span></h3>
+        <div class="row">
+          <div class="col-md-9">
+            <table class="table table-responsive">
+              <thead>
+                <th>Folio</th>
+                <th>UUID</th>
+                <th>Monto</th>
+                <th>Status</th>
+                <th>Archivos</th>
+              </thead>
+              <tbody data-ng-repeat="item in shipping.payments">
+                <td class="bold accent">{{item.invoiceNo}}</td>
+                <td>{{item.UUID}}</td>
+                <td>{{item.amount | currency}}</td>
+                <td><span class="error" data-ng-if="item.cancelled">CANCELADA</span><span class="success" data-ng-if="!item.cancelled">ACTIVA</span></td>
+                <td>
+                  <div><a class="hover-accent" href="{{ item.files.pdf }}" target="_blank"><i class="fa fa-download"></i>PDF</a></div>
+                  <div><a class="hover-accent" href="{{ item.files.xml }}" target="_blank"><i class="fa fa-download"></i>XML</a></div>
+                </td>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--.shipping-info
+    div(data-ng-if="shipping.outcomes.length > 0")
+      h3
+        span.accent
+          |Notas de Crédito:
+      .row
+        .col-md-9
+          table.table.table-responsive
+            thead
+              th
+                |Folio
+              th
+                |UUID
+              th
+                |Monto
+              th
+                |Status
+              th
+                |Archivos
+            tbody(data-ng-repeat="item in shipping.outcomes")
+              td.bold.accent
+                |{{item.invoiceNo}}
+              td
+                |{{item.UUID}}
+              td
+                |{{item.amount | currency}}
+              td
+                span.error(data-ng-if="item.cancelled")
+                  |CANCELADA
+                span.success(data-ng-if="!item.cancelled")
+                  |ACTIVA
+              td
+                div
+                  a.hover-accent(ng-href="{{shell.download(item.UUID, 'pdf')}}")
+                    i.fa.fa-download
+                    |PDF
+                div
+                  a.hover-accent(ng-href="{{shell.download(item.UUID, 'xml')}}")
+                    i.fa.fa-download
+                    |XML
+    -->
+  </div>
+</div>

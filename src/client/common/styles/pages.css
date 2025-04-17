@@ -1,0 +1,75 @@
+/* line 4, src/client/common/styles/pages.sass */
+.pages-section {
+  background-color: #f2f2f2;
+  padding: 10px 0 20px 0; }
+
+/* line 7, src/client/common/styles/pages.sass */
+.pages {
+  background-color: #f7f7f7; }
+
+/* line 12, src/client/common/styles/pages.sass */
+.pages-image {
+  padding: 10px 0 20px 0;
+  margin: 0 auto;
+  max-width: 1000px; }
+  /* line 17, src/client/common/styles/pages.sass */
+  .pages-image img {
+    width: 100%;
+    max-width: 800px; }
+
+/* line 21, src/client/common/styles/pages.sass */
+.main-title {
+  font-family: 'Roboto'; }
+  /* line 23, src/client/common/styles/pages.sass */
+  .main-title h1 {
+    font-size: 4rem;
+    color: #f38b00;
+    font-weight: 700; }
+  /* line 27, src/client/common/styles/pages.sass */
+  .main-title h2 {
+    font-size: 3rem;
+    color: rgba(0, 0, 0, 0.8); }
+
+/* line 31, src/client/common/styles/pages.sass */
+.page-attribute {
+  margin-top: 20px;
+  font-family: 'Roboto'; }
+  /* line 34, src/client/common/styles/pages.sass */
+  .page-attribute h1 {
+    font-size: 4rem; }
+  /* line 36, src/client/common/styles/pages.sass */
+  .page-attribute h2 {
+    font-size: 2.5rem;
+    line-height: 1.3em; }
+
+/* line 39, src/client/common/styles/pages.sass */
+.page-image-section {
+  text-align: center;
+  padding: 10% 10px 0 10px; }
+  /* line 42, src/client/common/styles/pages.sass */
+  .page-image-section img {
+    width: 100%;
+    max-width: 400px; }
+
+/* line 46, src/client/common/styles/pages.sass */
+.page-image-section-small {
+  text-align: center;
+  padding: 10% 10px 0 10px; }
+  /* line 49, src/client/common/styles/pages.sass */
+  .page-image-section-small img {
+    width: 100%;
+    max-width: 200px; }
+
+/* line 53, src/client/common/styles/pages.sass */
+.pages-main {
+  margin-top: 20px;
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: solid 2px #f38b00; }
+
+/* line 59, src/client/common/styles/pages.sass */
+.page-final-text {
+  border-top: solid 2px #f38b00;
+  text-align: center;
+  margin-top: 25px;
+  padding: 25px 0; }

@@ -1,0 +1,27 @@
+
+<md-content layout-padding="layout-padding">
+  <form name="loginForm" novalidate="novalidate" data-ng-submit="login()">
+    <div layout-xs-sm="row">
+      <md-input-container class="md-block">
+        <label for="username" data-ng-bind="shell.labels.login.form.email"></label>
+        <input name="username" type="email" data-ng-model="user.username" required="" autofocus="autofocus"/>
+        <div ng-messages="loginForm.username.$error">
+          <div ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+          <div ng-message="email" data-ng-bind="shell.labels.login.form.errors.email"></div>
+        </div>
+      </md-input-container>
+      <md-input-container class="md-block">
+        <label for="password" data-ng-bind="shell.labels.login.form.password"></label>
+        <input name="password" type="password" data-ng-model="user.password" required=""/>
+        <div ng-messages="loginForm.password.$error">
+          <div ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+        </div>
+      </md-input-container>
+    </div>
+    <div class="align-center">
+      <md-button class="md-raised md-primary" type="submit" data-ng-bind="shell.labels.login.form.login" aria-label="shell.labels.login.form.login"></md-button>
+    </div>
+    <div class="align-center"><a class="action" data-ui-sref="forgot" data-ng-bind="shell.labels.login.form.forgot">   </a></div>
+    <div class="error align-center" data-ng-show="response.login" data-ng-bind="shell.labels.login_errors[response.code]"></div>
+  </form>
+</md-content>

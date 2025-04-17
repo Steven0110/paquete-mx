@@ -1,0 +1,711 @@
+
+<div class="maintenance" ng-if="home.maintenance"><img src="/common/images/mantenimiento01.png"/></div>
+<div class="popup-container">
+  <div class="layer" data-ng-show="home.popup.status"></div>
+  <div class="relative-container" data-ng-show="home.popup.status">
+    <div class="block">
+      <div class="closer" data-ng-click="home.closePopup()"><img src="https://www.freeiconspng.com/uploads/silver-close-button-png-15.png"/></div>
+      <h2 class="title" data-ng-bind="home.popup.info.title"></h2>
+      <p class="text" data-ng-repeat="text in home.popup.info.paragraphs">{{text}}</p>
+      <div class="footer"><img class="footer-image" src="common/images/paquete-mx.png"/></div>
+    </div>
+  </div>
+</div>
+<div class="resume-content" id="tag">
+  <div><a data-ng-click="shell.moveToTop(true)"><span class="span-block">¡Cotizar</span><span class="span-block">SIN COSTO!</span></a></div>
+</div>
+<div class="home-menu-container">
+  <div class="home-menu" data-ng-class="{'active':shell.menuOpen}">
+    <nav class="container-bars secondary" data-ng-click="shell.menuOpen = !shell.menuOpen" data-ng-class="{'active':shell.menuOpen}">
+      <div class="menu-bar bar1"></div>
+      <div class="menu-bar bar2"></div>
+      <div class="menu-bar bar3"></div>
+    </nav>
+  </div>
+  <div class="tracking-home" ui-sref="dashboard.shippings" data-ng-hide="shell.menuOpen"><i class="fa fa-location-arrow"></i>Rastrear Envío</div>
+  <div class="login-home" data-ng-hide="shell.menuOpen"><span data-ng-if="!shell.currentUser" data-ui-sref="login"><i class="fa fa-home"></i>Iniciar Sesión</span><span data-ng-if="shell.currentUser" data-ui-sref="dashboard.shippings"><i class="fa fa-home"></i>¡Hola {{shell.setName}}!</span></div>
+</div>
+<div class="image-space">
+  <div class="msg-info hidden-xs">
+    <div class="icon"><img class="msg-logo" src="common/images/favicon.png" alt="Paquete.mx"/></div>
+    <div class="msg-text"><span>Cotizador y Comparador de Paquetería y Mensajería</span></div>
+  </div>
+  <div class="menu-mobile" data-ng-class="{'active':shell.menuOpen}">
+    <div class="padding-top-bottom">
+      <div class="logo-complete-link margin-auto"></div>
+    </div>
+    <nav ui-sref="home">INICIO</nav>
+    <nav ui-sref="home">COTIZAR</nav>
+    <nav ui-sref="dashboard.shippings">RASTREAR</nav>
+    <nav data-ng-click="home.openSection(4,2000)">eCOMMERCE</nav>
+    <nav data-ng-click="home.openSection(2,2000)">MÉTODOS DE PAGO</nav>
+    <nav data-ng-click="home.openSection(1,2000)">PARTNERS</nav>
+    <nav ui-sref="login">MI CUENTA</nav>
+  </div>
+  <div class="container-center">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12 center-block">
+          <div class="logo-color logo-home" data-ng-click="home.reload()"></div>
+          <form name="home.shippingForm" data-ng-submit="home.send()" novalidate="novalidate">
+            <div class="container-fluid opacity-box">
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-3" data-balloon="Ingresa el código postal o el nombre de la colonia de ORIGEN. Por favor NO ingreses una dirección completa.Para seleccionar como ORIGEN otro país da un click sobre la bandera y selecciona el país que buscas." data-balloon-pos="up" data-balloon-length="fit">
+                  <div class="cotizador-element">
+                    <div class="padding-sides">
+                      <h3><span class="light">LUGAR DE</span><span class="bold">&nbsp;ORIGEN</span></h3>
+                      <div class="cotizador-element-box">
+                        <div class="row">
+                          <div class="col-xs-4">
+                            <select-country data-countries="shell.countries2" data-country="home.shipping.from.country"></select-country>
+                          </div>
+                          <div class="col-xs-8">
+                            <div class="input-cotizador">
+                              <div class="input-container">
+                                <input placeholder="C.P." name="fromZip" data-ng-model="home.fromSearch" data-ng-focus="home.cleanSearch('from')" required="required"/>
+                                <select-cities data-cities="home.fromCities" data-selected="home.shipping.from.data" data-search="home.fromSearch" data-country="home.shipping.from.country"></select-cities>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3" data-balloon="Ingresa el código postal o el nombre de la colonia DESTINO, Por favor NO ingreses una dirección completa.Para seleccionar como destino otro país da un click sobre la bandera y selecciona el país que buscas" data-balloon-pos="up" data-balloon-length="fit">
+                  <div class="cotizador-element">
+                    <div class="padding-sides">
+                      <h3><span class="light">LUGAR DE</span><span class="bold">&nbsp;DESTINO</span></h3>
+                      <div class="cotizador-element-box">
+                        <div class="col-xs-4">
+                          <select-country data-countries="shell.countries" data-country="home.shipping.to.country"></select-country>
+                        </div>
+                        <div class="col-xs-8">
+                          <div class="input-cotizador">
+                            <div class="input-container">
+                              <input id="toSearch" placeholder="C.P." name="toZip" data-ng-model="home.toSearch" data-ng-focus="home.cleanSearch('to')" required="required"/>
+                              <select-cities data-cities="home.toCities" data-selected="home.shipping.to.data" data-clean="home.toClean" data-search="home.toSearch" data-country="home.shipping.to.country"></select-cities>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4" data-balloon="Selecciona la opción que se ajusta a lo que envías. Es importante que ingreses los pesos y medidas correctas con ello evitamos molestarte con sobrecargos." data-balloon-pos="up" data-balloon-length="fit">
+                  <div class="cotizador-element">
+                    <div class="padding-sides">
+                      <h3><span class="bold">¿QUÉ ENVÍAS?</span></h3>
+                      <div class="cotizador-element-box complex">
+                        <div class="row">
+                          <div class="col-xs-6">
+                            <div class="cotizador-type" data-ng-class="{'active': home.shipping.type == 'document'}" data-ng-click="home.selectType('document')">
+                              <div class="row">
+                                <div class="col-xs-2">
+                                  <div class="padding-sides">
+                                    <md-radio-group ng-model="home.shipping.type">
+                                      <md-radio-button class="md-primary" value="document" aria-label="Documento"></md-radio-button>
+                                    </md-radio-group>
+                                  </div>
+                                </div>
+                                <div class="col-xs-10"><span>DOCUMENTO</span></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-xs-6">
+                            <div class="cotizador-type" data-ng-class="{'active': home.shipping.type == 'package'}" data-ng-click="home.selectType('package')">
+                              <div class="row">
+                                <div class="col-xs-2">
+                                  <div class="padding-sides">
+                                    <md-radio-group ng-model="home.shipping.type">
+                                      <md-radio-button class="md-primary" value="package" aria-label="Paquete"></md-radio-button>
+                                    </md-radio-group>
+                                  </div>
+                                </div>
+                                <div class="col-xs-10"><span>PAQUETE</span></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="cotizador-document" data-ng-if="home.documentOpen">
+                          <div class="row">
+                            <!--.col-xs-4
+                            .select-weight
+                              md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
+                                |ASEGURAR
+                            -->
+                            <div class="col-xs-8" data-ng-show="home.shipping.insurance">
+                              <div>
+                                <div class="row">
+                                  <div class="col-xs-12">
+                                    <div class="box-attr-secondary"><span>$</span>
+                                      <input data-ng-model="home.shipping.insuranceAmount" placeholder="MXN" data-ng-pattern="shell.regex.decimal" ng-required="home.shipping.insurance" type="number"/><small>Valor factura de la mercancía en pesos mexicanos (MXN)</small>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row" data-ng-repeat="package in home.documents">
+                            <div class="col-xs-12">
+                              <div class="select-weight"><span>Tu sobre debe ser tamaño estandar y no pesar más de 0.5 Kg.</span></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="cotizador-box" data-ng-if="home.packageOpen">
+                          <div class="row">
+                            <!--.col-xs-4
+                            .select-weight
+                              md-switch(ng-model="home.shipping.insurance" aria-label="Asegurar Carga")
+                                |ASEGURAR
+                            -->
+                            <div class="col-xs-8" data-ng-show="home.shipping.insurance">
+                              <div>
+                                <div class="row">
+                                  <div class="col-xs-12">
+                                    <div class="box-attr-secondary"><span>$</span>
+                                      <input data-ng-model="home.shipping.insuranceAmount" placeholder="MXN" data-ng-pattern="shell.regex.decimal" ng-required="home.shipping.insurance" type="number"/><small>Valor factura de la mercancía en pesos mexicanos (MXN)</small>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xs-12" data-ng-repeat="package in home.shipping.packages">
+                              <div class="select-weight" data-ng-class="{'space-top':$index &gt; 0}">
+                                <div class="row">
+                                  <div class="select-weight"></div>
+                                  <div class="col-xs-11">
+                                    <div class="col-xs-3">
+                                      <div class="box-attr">
+                                        <div>PESO</div>
+                                        <div>
+                                          <input name="weight" placeholder="Kg" data-ng-model="package.weight" data-ng-pattern="shell.regex.decimal" data-ng-required="home.shipping.type == 'package'" ng-model-options="{debounce: 500}" data-ng-blur="home.updateWeight(package)"/>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-xs-9">
+                                      <div class="box-attr">
+                                        <div>PESO VOLUMÉTRICO<span class="small-text tooltip-home" data-ng-click="home.describeWeight()">¿Qué es?</span></div>
+                                        <div><span class="regular-text" data-ng-hide="package.volumetric">Ingresa las dimensiones para calcular el peso volumétrico.</span><span class="regular-text" data-ng-show="package.volumetric &amp;&amp; !package.real">El peso volumetrico es de<span class="accent">&nbsp;{{package.volumetric}} Kg.</span></span><span class="regular-text" data-ng-show="package.volumetric &amp;&amp; package.real"><span data-ng-show="package.volumetric &gt; package.real">Se utilizara el peso VOLUMÉTRICO<span class="accent">&nbsp;({{package.volumetric}} Kg.)</span>&nbsp;ya que es mayor al peso REAL<span class="accent">&nbsp;({{package.weight}} Kg.)</span></span><span data-ng-show="package.real &gt; package.volumetric">Se utilizara el peso REAL<span class="accent">&nbsp;({{package.weight}} Kg.)</span>&nbsp;ya que es mayor al peso VOLUMÉTRICO<span class="accent">&nbsp;({{package.volumetric}} Kg.)</span></span><span data-ng-show="package.real == package.volumetric">El peso REAL y el peso VOLUMÉTRICO es el mismo<span class="accent">&nbsp;({{package.volumetric}} Kg.)</span></span></span></div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-xs-11">
+                                    <div class="col-xs-4">
+                                      <div class="box-attr">
+                                        <div>LARGO</div>
+                                        <div>
+                                          <input name="length" placeholder="cms" data-ng-model="package.length" data-ng-pattern="shell.regex.integer" data-ng-required="home.shipping.type == 'package'" ng-model-options="{debounce: 500}" data-ng-change="home.calculateVW(package)" type="number" step="1"/>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                      <div class="box-attr">
+                                        <div>ANCHO</div>
+                                        <div>
+                                          <input name="width" placeholder="cms" data-ng-model="package.width" data-ng-pattern="shell.regex.integer" data-ng-required="home.shipping.type == 'package'" ng-model-options="{debounce: 500}" data-ng-change="home.calculateVW(package)" type="number" step="1"/>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                      <div class="box-attr">
+                                        <div>ALTO</div>
+                                        <div>
+                                          <input name="height" placeholder="cms" data-ng-model="package.height" data-ng-pattern="shell.regex.integer" data-ng-required="home.shipping.type == 'package'" ng-model-options="{debounce: 500}" data-ng-change="home.calculateVW(package)" type="number" step="1"/>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-xs-1">
+                                    <div class="box-attr"><i class="fa fa-plus" data-ng-show="$index+1 == home.shipping.packages.length" data-ng-click="home.addPackage()"></i><i class="fa fa-copy" data-ng-click="home.clone($index)"></i><i class="fa fa-trash" data-ng-show="$index &gt; 0" data-ng-click="home.removePackage($index)"></i></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-2">
+                  <div class="padding-sides">
+                    <h3><span class="bold">COMPARA</span></h3>
+                    <div class="cotizador-element-box">
+                      <div class="cotizador-button" data-ng-click="home.send()">COTIZAR</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="text-center available-providers">
+      <div class="slick-div">
+        <slick infinite="true" slides-to-show="3" slides-to-scroll="3" autoplay="true" autoplaySpeed="500" responsive="[{breakpoint:768,settings:{slidesToShow:2,slidesToScroll:1}},{breakpoint:480,settings:{slidesToShow:1,slidesToScroll:1}}]">
+          <p class="slick-container"><img class="slick-img" src="common/images/Paquete.MX_01.png" alt="FEDEX"/></p>
+          <p class="slick-container"><img class="slick-img" src="common/images/Paquete.MX-02.png" alt="REDPACK"/></p>
+          <p class="slick-container"><img class="slick-img" src="common/images/Paquete.MX-03.png" alt="UPS"/></p>
+          <p class="slick-container" style="position: relative;"><a href="https://www.digitalgdl.com/" target="_blank" style="transform: translateY(30%);display:block;"><img class="slick-img" src="common/images/digitaldgl.png" alt="DIGITAL GDL"/></a></p>
+          <p class="slick-container"><img class="slick-img" src="common/images/Paquete.MX-04.png" alt="DHL"/></p>
+          <p class="slick-container"><img class="slick-img" src="common/images/Paquete.MX-05.png" alt="AEROFLASH"/></p>
+          <p class="slick-container"><img class="slick-img" src="common/images/Paquete.MX-06.png" alt="ESTAFETA"/></p>
+          <p class="slick-container"><img class="slick-img" src="common/images/Paquete.MX-07.png" alt="AMPM"/></p>
+          <p class="slick-container"><img class="slick-img" src="common/images/Paquete.MX-08.png" alt="IVOY"/></p>
+          <p class="slick-container"><img class="slick-img" src="common/images/Paquete.MX-09.png" alt="TRESGUERRAS"/></p>
+        </slick>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="background-container" id="float-section">
+  <div class="section-container" id="content">
+    <div class="rated-text" data-ng-class="{'active':home.active}" data-ng-show="home.rated">
+      <div class="logo-color" data-ng-class="{'active':!home.active}"></div>
+      <div data-ng-show="!home.searching">
+        <div data-ng-if="home.services.length &gt; 0">
+          <div class="line margin-top-1">Tenemos las siguientes</div>
+          <div class="line">opciones para ti:</div>
+        </div>
+        <div data-ng-if="home.services.length &lt; 1">
+          <div class="line margin-top-1">¡Ups! No encontramos opciones</div>
+          <div class="line">para tu origen / destino</div>
+        </div>
+      </div>
+      <div data-ng-show="home.searching"> 
+        <div class="line margin-top-1">Estamos buscando </div>
+        <div class="line">las mejores opciones</div>
+        <div class="line">para tu envío:</div>
+      </div>
+      <div data-ng-show="home.searching">
+        <div data-ng-include="'app/templates/spinner.white.template.html'"></div>
+      </div>
+      <div class="table-response rate-params">
+        <div class="row title-params red">
+          <div class="col-xs-6">ORIGEN</div>
+          <div class="col-xs-6">DESTINO</div>
+        </div>
+        <div class="row title-params gray">
+          <div class="col-xs-6">
+            <div><span class="flag-icon flag-icon-{{home.rate.from.country}}"></span><span class="primary-color">&nbsp;&nbsp;{{home.rate.from.zip}}</span></div>
+            <div data-ng-if="home.rate.from.data.county">{{home.rate.from.data.county}}, {{home.rate.from.data.city}}</div>
+            <div data-ng-if="home.rate.from.data.state">{{home.rate.from.data.state}}</div>
+          </div>
+          <div class="col-xs-6">
+            <div><span class="flag-icon flag-icon-{{home.rate.to.country}}"></span><span class="primary-color">&nbsp;&nbsp;{{home.rate.to.zip}}</span></div>
+            <div data-ng-if="home.rate.to.data.county">{{home.rate.to.data.county}}, {{home.rate.to.data.city}}</div>
+            <div data-ng-if="home.rate.to.data.state">{{home.rate.to.data.state}}</div>
+          </div>
+        </div>
+        <div class="row title-params red">
+          <div class="col-xs-2">#</div>
+          <div class="col-xs-2">Peso Real</div>
+          <div class="col-xs-2">Largo</div>
+          <div class="col-xs-2">Ancho</div>
+          <div class="col-xs-2">Alto</div>
+          <div class="col-xs-2">Peso Vol.</div>
+        </div>
+        <div class="row title-params gray" data-ng-repeat="item in home.rate.packages">
+          <div class="col-xs-2">{{$index+1}}</div>
+          <div class="col-xs-2" data-ng-class="{'accent':item.weight &gt;= item.volumetric}">{{item.weight}} Kg.</div>
+          <div class="col-xs-2">{{item.length}} cm.</div>
+          <div class="col-xs-2">{{item.width}} cm.</div>
+          <div class="col-xs-2">{{item.height}} cm.</div>
+          <div class="col-xs-2" data-ng-class="{'accent':item.weight &lt; item.volumetric}">{{item.volumetric}} Kg.</div>
+        </div>
+      </div>
+      <div data-ng-show="!home.searching">
+        <div data-ng-if="home.services.length &lt; 1">
+          <div class="line margin-top-1"><i class="fa fa-globe big-globe"></i></div>
+          <div class="line margin-top-1">Estamos trabajando para</div>
+          <div class="line">&nbsp;para brindarte más opciones</div>
+          <div class="line">&nbsp;y conectarte con el mundo.</div>
+        </div>
+      </div>
+      <div class="table-response">
+        <div class="container-fluid">
+          <div class="table-container clearfix animated bounceIn" data-ng-repeat="item in home.services">
+            <div class="table-box red">
+              <div>ENTREGA ESTIMADA</div>
+              <div class="margin-top-1"><span class="important-text">{{item.qty}}</span><span class="secondary-text">&nbsp;{{item.units}}</span></div>
+              <div data-ng-if="item.service == 'fedex' || item.service == 'ups'">{{item.delivery | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}</div>
+              <div data-ng-if="item.service == 'redpack'">{{item.delivery | amDateFormat:'DD-MMM-YY'}}</div>
+            </div>
+            <div class="table-box service-logo">
+              <div>
+                <div><img data-ng-src="common/images/{{item.service}}.png" data-ng-class="{'ups':item.service == 'ups', 'fedex':item.service == 'fedex'}"/></div>
+                <div class="service-name">{{item.name}}</div>
+              </div>
+            </div>
+            <div class="table-box big-table-box">
+              <div>PRECIO AL PÚBLICO</div>
+              <div class="regular-price">{{item.total | currency}} MXN</div>
+              <div class="semi-important-red">AHORRA</div>
+              <div class="important-red">{{item.total-item.discountTotal | currency}} MXN</div>
+            </div>
+            <div class="table-box attr-img"><img data-ng-src="common/images/cheapest.png" data-ng-if="home.cheapest.code == item.code"/><img data-ng-src="common/images/fastest.png" data-ng-if="home.fastest.code == item.code"/></div>
+            <div class="table-box big-table-box"><span class="light-font">PRECIO</span><span class="bold-font">&nbsp;PAQUETE.MX</span>
+              <div><span class="big-price" ng-class="{'small-font': item.discountTotal &gt; 1000}">{{item.discountTotal| currency}}</span><span class="red-color">MXN</span></div>
+            </div>
+            <div class="table-box service-logo">
+              <div class="button-send" data-ng-click="home.setService(item)">ENVIAR</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-ng-if="!home.rated">
+      <div class="big-text" data-ng-class="{'active':home.active}">
+        <div class="logo-color" data-ng-class="{'active':!home.active}"></div>
+        <div>Las mejores</div>
+        <div>opciones</div>
+        <div>para tus envios.</div>
+        <div>
+          <h1>Conoce todos los beneficios que tenemos para ti:</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div data-ng-if="!home.rated">
+    <div class="section-container section-1 left">
+      <div class="section-description">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12 col-md-6">
+              <h1>Las mejores tarifas</h1>
+              <h2>Desde tu primer envío, obtienes las mejores tarifas y entre más envías adquieres mayores beneficios.</h2>
+              <div class="more-info" data-ng-click="home.openSection(0)"><i class="fa fa-plus-circle"></i>Más información</div>
+            </div>
+            <div class="col-xs-12 col-md-6">
+              <div class="section-image image-1 image-right"><img data-ng-src="common/images/section-1.png"/></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="more-info-section benefits-0">
+      <div class="close-button" data-ng-click="home.closeSection(0)"><i class="fa fa-times-circle"></i></div>
+      <div class="top-line"></div>
+      <div class="bottom-line"></div>
+      <div class="description">
+        <h1>Diversas opciones al mejor precio.</h1>
+        <h2>Nuestros convenios con las principales paqueterías nos permiten brindarte las mejores opciones y al mejor precio.</h2>
+        <div class="benefits"> 
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-12 col-md-4">
+                <div class="benefits-image"><img data-ng-src="common/images/section-1-1.png"/></div>
+                <div class="benefits-text">Descuentos desde tu primer envió.</div>
+              </div>
+              <div class="col-xs-12 col-md-4">
+                <div class="benefits-image"><img data-ng-src="common/images/section-1-2.png"/></div>
+                <div class="benefits-text">Te mostramos diversas opciones de envío.</div>
+              </div>
+              <div class="col-xs-12 col-md-4">
+                <div class="benefits-image"><img data-ng-src="common/images/section-1-3.png"/></div>
+                <div class="benefits-text">Entre más envíos realices mejores tarifas obtienes.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h2 class="accent bold align-center">¡LAS MEJORES OPCIONES!</h2>
+      </div>
+    </div>
+    <div class="section-container section-2 right">
+      <div class="section-description">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12 col-md-6 pull-right">
+              <h1>Todas las opciones a tu alcance</h1>
+              <h2>Las mejores empresas de mensajería y paquetería, con los mejores servicios y costos en un clic.</h2>
+              <h2>¡Tú eliges!</h2>
+              <div class="more-info-right" data-ng-click="home.openSection(1)"><i class="fa fa-plus-circle"></i>Más información</div>
+            </div>
+            <div class="col-xs-12 col-md-6 pull-right">
+              <div class="section-image image-2 image-left"><img data-ng-src="common/images/section-2.png"/></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="more-info-section benefits-1">
+      <div class="close-button" data-ng-click="home.closeSection(1)"><i class="fa fa-times-circle"></i></div>
+      <div class="top-line"></div>
+      <div class="bottom-line"></div>
+      <div class="description">
+        <h1>Distribuidor Autorizado</h1>
+        <h2>Para brindarte un mejor servicio, contamos de aliados estratégicos a:</h2>
+        <div class="benefits"> 
+          <div class="row">
+            <div class="ups-box"><img data-ng-src="common/images/ups-logo.png"/></div>
+            <div class="fedex-box"><img data-ng-src="common/images/fedex-logo.png"/></div>
+            <div class="redpack-box"><img data-ng-src="common/images/redpack-logo.png"/></div>
+            <div class="dhl-box"><img data-ng-src="common/images/dhl-logo-bn.png"/>
+              <md-tooltip md-direction="bottom">Próximamente</md-tooltip>
+            </div>
+          </div>
+          <div class="row">
+            <div class="aeroflash-box"><img data-ng-src="common/images/aeroflash-logo-bn.png"/>
+              <md-tooltip md-direction="bottom">Próximamente</md-tooltip>
+            </div>
+            <div class="estafeta-box"><img data-ng-src="common/images/estafeta-logo-bn.png"/>
+              <md-tooltip md-direction="bottom">Próximamente</md-tooltip>
+            </div>
+            <div class="ivoy-box"><img data-ng-src="common/images/ivoy-logo-bn.png"/>
+              <md-tooltip md-direction="bottom">Próximamente</md-tooltip>
+            </div>
+            <div class="ampm-box"><img data-ng-src="common/images/ampm-logo-bn.png"/>
+              <md-tooltip md-direction="bottom">Próximamente</md-tooltip>
+            </div>
+          </div>
+        </div>
+        <h2 class="accent bold align-center">¡Envía con Paquete.MX tu mejor opción!</h2>
+      </div>
+    </div>
+    <div class="section-container section-3 left">
+      <div class="section-description">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12 col-md-6">
+              <h1>Realiza tus pagos sin salir de casa</h1>
+              <h2>Tarjetas Bancarias de Crédito y Débito.<br/>¡Tú eliges!</h2>
+              <div class="more-info" data-ng-click="home.openSection(2)"><i class="fa fa-plus-circle"></i>Más información</div>
+            </div>
+            <div class="col-xs-12 col-md-6">
+              <div class="section-image image-3 image-right"><img data-ng-src="common/images/section-3.png"/></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="more-info-section benefits-2">
+      <div class="close-button" data-ng-click="home.closeSection(2)"><i class="fa fa-times-circle"></i></div>
+      <div class="top-line"></div>
+      <div class="bottom-line"></div>
+      <div class="description">
+        <h1>Paga desde la comodidad de tu hogar o negocio</h1>
+        <h2>Genera tu cuenta corporativa y asciende a mejores beneficios, como descuentos, crédito y nuestra política de lealtad.</h2>
+        <h2>Contamos con un sistema de pagos seguro. ¡No te preocupes!.</h2>
+        <div class="benefits"> 
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-12 col-sm-4">
+                <div class="benefits-image"><img data-ng-src="common/images/visa.png"/></div>
+              </div>
+              <div class="col-xs-12 col-sm-4">
+                <div class="benefits-image"><img data-ng-src="common/images/mastercard.png"/></div>
+              </div>
+              <div class="col-xs-12 col-sm-4">
+                <div class="benefits-image"><img data-ng-src="common/images/amex.png"/></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h2 class="accent bold align-center">¡Tu eliges la opción que más te convenga!</h2>
+      </div>
+    </div>
+    <div class="section-container section-4 right">
+      <div class="section-description">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12 col-md-6 pull-right">
+              <h1>Conoce en tiempo real el estatus de tus envíos</h1>
+              <h2>Recibe notificaciones constantes sobre la entrega de tus envíos.</h2>
+              <div class="more-info-right" data-ng-click="home.openSection(3)"><i class="fa fa-plus-circle"></i>Más información</div>
+            </div>
+            <div class="col-xs-12 col-md-6 pull-right">
+              <div class="section-image image-4 image-left"><img data-ng-src="common/images/section-4.png"/></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="more-info-section benefits-3">
+      <div class="close-button" data-ng-click="home.closeSection(3)"><i class="fa fa-times-circle"></i></div>
+      <div class="top-line"></div>
+      <div class="bottom-line"></div>
+      <div class="description">
+        <h1>¿Tuviste una incidencia?, te mantendremos informado y estaremos ayudandote a manejarlo.</h1>
+        <h2>Olvídate de llamadas, con un solo clic realiza tus envíos.</h2>
+        <div class="benefits"> 
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-12 col-md-4">
+                <div class="benefits-image"><img data-ng-src="common/images/section-4-1.png"/></div>
+                <div class="benefits-text">Verificar el estatus de tu envío en todo momento desde nuestro Panel de Control.</div>
+              </div>
+              <div class="col-xs-12 col-md-4">
+                <div class="benefits-image"><img data-ng-src="common/images/section-4-2.png"/></div>
+                <div class="benefits-text">Te enviamos notificaciones de recolección, entrega e incidencias. </div>
+              </div>
+              <div class="col-xs-12 col-md-4">
+                <div class="benefits-image"><img data-ng-src="common/images/section-4-3.png"/></div>
+                <div class="benefits-text">Puedes compartir los estatus de envío con tus clientes.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h2 class="accent bold align-center">¡Nadie te mantiene mejor informado que Paquete.MX!</h2>
+      </div>
+    </div>
+    <div class="section-container section-5 left">
+      <div class="section-description">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12 col-md-6">
+              <h1>¿Tienes un eCommerce?</h1>
+              <h2>Tú encárgate de tu negocio, nosotros nos encargamos de los envíos.</h2>
+              <div class="more-info" data-ng-click="home.openSection(4)"><i class="fa fa-plus-circle"></i>Más información</div>
+            </div>
+            <div class="col-xs-12 col-md-6">
+              <div class="section-image image-5 image-right"><img data-ng-src="common/images/section-5.png"/></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="more-info-section benefits-4">
+      <div class="close-button" data-ng-click="home.closeSection(4)"><i class="fa fa-times-circle"></i></div>
+      <div class="top-line"></div>
+      <div class="bottom-line"></div>
+      <div class="description">
+        <h1>Hemos logrado hacer todo más sencillo</h1>
+        <h2>Con nuestra API conectamos tu sistema con el nuestro. </h2>
+        <div class="benefits"> 
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-12 col-md-4">
+                <div class="benefits-image"><img data-ng-src="common/images/section-5-1.png"/></div>
+                <div class="benefits-text">Tenemos plugins para las plataformas más usadas de venta en línea.</div>
+              </div>
+              <div class="col-xs-12 col-md-4">
+                <div class="benefits-image"><img data-ng-src="common/images/section-5-2.png"/></div>
+                <div class="benefits-text">Con un solo clic instala y empieza a disfrutar de los beneficios que Paquete.MX tiene para ti.</div>
+              </div>
+              <div class="col-xs-12 col-md-4">
+                <div class="benefits-image"><img data-ng-src="common/images/section-5-3.png"/></div>
+                <div class="benefits-text">Y recuerda entre más envíes un mejor precio obtienes.</div>
+              </div>
+            </div>
+          </div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-12 col-md-3">
+                <div class="e-commerce-image"><img data-ng-src="common/images/woocomerce.png"/></div>
+              </div>
+              <div class="col-xs-12 col-md-3">
+                <div class="e-commerce-image"><img data-ng-src="common/images/shopify.png"/></div>
+              </div>
+              <div class="col-xs-12 col-md-3">
+                <div class="e-commerce-image"><img data-ng-src="common/images/magento.png"/></div>
+              </div>
+              <div class="col-xs-12 col-md-3">
+                <div class="e-commerce-image"><img data-ng-src="common/images/prestashop.png"/></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h2 class="accent bold align-center">¡Que la logística no frene tu negocio!</h2>
+        <div class="mini-contact-form align-center">
+          <h3 class="accent bold align-center">¿Quieres conocer más? Deja tu correo y nos comunicaremos contigo.</h3>
+          <div class="col-md-8 col-md-offset-2">
+            <div class="cool-mail-input">
+              <input type="email" placeholder="Email de contacto" data-ng-model="home.plugin.email"/>
+              <button data-ng-click="home.sendContactRequest('plugin')">{{home.plugin.status}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section-container section-6 right">
+      <div class="section-description">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12 col-md-6 pull-right">
+              <h1>Pide tu recolección con un clic.</h1>
+              <h2>Solicita la recolección de tus paquetes desde nuestra plataforma. Sin Llamadas con un solo clic.</h2>
+              <div class="more-info-right" data-ng-click="home.openSection(5)"><i class="fa fa-plus-circle"></i>Más información</div>
+            </div>
+            <div class="col-xs-12 col-md-6 pull-right">
+              <div class="section-image image-6 image-left"><img data-ng-src="common/images/section-6.png"/></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="more-info-section benefits-5">
+      <div class="close-button" data-ng-click="home.closeSection(5)"><i class="fa fa-times-circle"></i></div>
+      <div class="top-line"></div>
+      <div class="bottom-line"></div>
+      <div class="description">
+        <h1>Pide tu recolección con un solo clic.</h1>
+        <h2>¿No puedes entregar en mostrador? ¿Son demasiados paquetes? No te preocupes puedes solicitar la recolección de tus paquetes desde nuestra plataforma.</h2>
+        <h2>Basta con hacer clic en el botón de "Solicitar recolección".</h2>
+        <div class="benefits"> 
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-12 col-md-4">
+                <div class="benefits-image"><img data-ng-src="common/images/section-6-1.png"/></div>
+                <div class="benefits-text">Solicita la recolección de tus paquetes con un clic.</div>
+              </div>
+              <div class="col-xs-12 col-md-4">
+                <div class="benefits-image"><img data-ng-src="common/images/section-6-2.png"/></div>
+                <div class="benefits-text">No tienes por que transportar tus paquetes a mostrador.</div>
+              </div>
+              <div class="col-xs-12 col-md-4">
+                <div class="benefits-image"><img data-ng-src="common/images/section-6-3.png"/></div>
+                <div class="benefits-text">No hay cargo adicional por recolección</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h2 class="accent bold align-center">¡LAS MEJORES OPCIONES GARANTIZADO!</h2>
+      </div>
+    </div>
+    <div class="section-container section-7 left">
+      <div class="section-description">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12 col-md-6">
+              <h1>¿Eres desarrollador?</h1>
+              <h2>Con nuestra API es muy fácil integrar PAQUETE.MX a tu sistema.</h2>
+            </div>
+            <div class="col-xs-12 col-md-6">
+              <div class="section-image image-7 image-right"><img data-ng-src="common/images/section-7.png"/></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mini-contact-form align-center">
+                <h3 class="accent bold align-center">¿Quieres usar nuestra API? Deja tu correo y nos comunicaremos contigo.</h3>
+                <div class="col-md-8 col-md-offset-2">
+                  <div class="cool-mail-input">
+                    <input type="email" placeholder="Email de contacto" data-ng-model="home.api.email"/>
+                    <button data-ng-click="home.sendContactRequest('api')">{{home.api.status}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div data-ng-include="'app/templates/footer.template.html'"></div>
+</div>
+<script type="text/javascript">
+  var ot = document.getElementById("float-section").offsetTop;
+  if(ot != undefined){
+  window.addEventListener("scroll", function() {
+  if(document.getElementById('tag') != null){
+  if (window.scrollY > ot) {
+   document.getElementById('tag').style.display = "block";
+  }else{
+   document.getElementById('tag').style.display = "none";
+  }
+  }
+  });
+  }
+</script>

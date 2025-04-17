@@ -1,0 +1,14 @@
+
+<div class="select-box left">
+  <ul>
+    <li data-ng-show="vm.loading">
+      <div class="signal-container">
+        <div class="signal"></div>
+      </div>
+    </li>
+    <li class="select-item" data-ng-repeat="item in vm.options" data-ng-click="vm.selectItem(item)"><span class="main">{{item.zip}}</span>
+      <div>{{item.county}}</div>
+      <div><span data-ng-if="item.city">{{item.city}}&nbsp;-&nbsp;</span><span class="capitalize">{{item.state}}</span><span class="capitalize" data-ng-if="!item.city">&nbsp;-&nbsp;{{vm.country.name}}</span></div>
+    </li>
+  </ul>
+</div>

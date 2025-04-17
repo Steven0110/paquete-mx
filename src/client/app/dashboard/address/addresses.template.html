@@ -1,0 +1,50 @@
+
+<div class="dashboard-header">
+  <div class="dashboard-header-content">
+    <div class="dash-section-title" data-ng-bind="shell.dashboard.title"></div>
+    <div class="dash-section-subtitle" data-ng-bind="shell.dashboard.subtitle"></div>
+  </div>
+</div>
+<div class="dash-name-section">
+  <div class="big-text-welcome">¡Hola {{shell.currentUser.name}}!</div>
+  <div class="small-text-welcome"><a ui-sref="logout">Cerrar Sesión</a></div>
+</div>
+<div class="dashboard-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-6">
+        <div class="section-space-right">
+          <div class="form-container" data-ng-hide="addresses.list.length &gt; 0">
+            <div class="align-center">
+              <h1>Aun no tienes direcciones guardadas.</h1>
+              <p>Al guardar tus direcciones frecuentes, ahorras tiempo cuando haces tus envios y cotizaciones.</p>
+              <div class="add-dashboard"><i class="fa fa-plus-circle" data-ng-click="addresses.showForm(true)"></i>
+                <h3 data-ng-click="addresses.showForm(true)">¡Agrega la primera!</h3>
+              </div>
+            </div>
+          </div>
+          <div class="board-element" data-ng-repeat="item in addresses.list">
+            <h2>{{item.alias}}</h2>
+            <div class="board-list">{{item.street}}, {{item.number}}&nbsp;<span data-ng-if="item.apt">- {{item.apt}}</span></div>
+            <div class="board-list">{{item.county}}<span data-ng-if="item.city">, &nbsp;{{item.city}}</span><span>, {{item.zip}}</span></div>
+            <div class="board-list">{{item.state}}<span class="uppercase">, {{item.country.name}}</span></div>
+            <div class="board-actions"><a ui-sref="dashboard.editAddress({'objectId':item.objectId})"><i class="fa fa-pencil"></i></a><i class="fa fa-trash" confirm-message="confirm-message" data-ng-click="showModal()" data-question="¿Borrar Dirección?" data-confirm="addresses.delete(item, $index)"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="section-space-left">
+          <div class="form-container">
+            <div class="add-dashboard" data-ng-hide="addresses.form"><i class="fa fa-plus-circle" data-ng-click="addresses.showForm(true)"></i>
+              <h3 data-ng-click="addresses.showForm(true)">Agregar Dirección</h3>
+            </div>
+            <div data-ng-show="addresses.form">
+              <div class="form-title">Ingresa tu nueva dirección</div>
+              <address-form data-labels="shell.labels" data-countries="shell.countries" data-show-form="addresses.showForm(value)" data-send-form="addresses.send(response)" data-loading="shell.showLoading()"></address-form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+
+<div class="dashboard-header">
+  <div class="dashboard-header-content">
+    <div class="dash-section-title" data-ng-bind="shell.dashboard.title"></div>
+    <div class="dash-section-subtitle hide-on-mobile" data-ng-bind="shell.dashboard.subtitle"></div>
+  </div>
+</div>
+<div class="dash-name-section">
+  <div class="big-text-welcome">¡Hola {{shell.setName}}!</div>
+  <div class="small-text-welcome"><a ui-sref="logout">Cerrar Sesión</a></div>
+</div>
+<div class="dashboard-content">
+  <div class="container-fluid">
+    <div class="row">       
+      <div class="col-md-6">
+        <div class="section-space-right">
+          <div class="form-container" data-ng-show="paymentMethod.list.length &lt; 1">
+            <div class="align-center">
+              <h1>Aun no tienes tarjetas guardadas.</h1>
+              <div class="add-dashboard"><i class="fa fa-plus-circle" data-ng-click="paymentMethod.showForm(true)"></i>
+                <h3 data-ng-click="paymentMethod.showForm(true)">¡Agrega la primera!</h3>
+              </div>
+            </div>
+          </div>
+          <div class="board-element" data-ng-repeat="item in paymentMethod.list">
+            <div class="card-item">
+              <h3>{{item.name}}</h3><i class="big fa fa-cc-mastercard" data-ng-if="item.brand.toUpperCase() == 'MASTERCARD'"></i><i class="big fa fa-cc-visa" data-ng-if="item.brand.toUpperCase() == 'VISA'"></i><i class="big fa fa-cc-amex" data-ng-if="item.brand.toUpperCase() == 'AMEX'"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<span>{{item.termination}}</span>
+            </div>
+            <div class="board-actions"><i class="fa fa-trash" data-ng-click="paymentMethod.delete(item, $index)"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="section-space-left">
+          <div class="form-container">
+            <div class="add-dashboard" data-ng-hide="paymentMethod.form"><i class="fa fa-plus-circle" data-ng-click="paymentMethod.showForm(true)"></i>
+              <h3 data-ng-click="paymentMethod.showForm(true)">Agregar Tarjeta</h3>
+            </div>
+            <div data-ng-show="paymentMethod.form">
+              <div class="form-title">Agregar Tarjeta.</div>
+              <card-form data-labels="paymentMethod.labels" data-send-form="paymentMethod.send(response)" data-show-loading="shell.showLoading()" data-hide-loading="shell.hideLoading()"></card-form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+
+<div class="opacity-layer" data-ng-if="showModal">
+  <div class="confirmation-box">
+    <div class="icon"><i class="fa fa-question-circle"></i></div>
+    <div class="confirmation-text" data-ng-bind="question"></div>
+    <div class="confirmation-buttons">
+      <md-button class="md-raised" data-ng-click="cancelModal()" data-ng-bind="shell.labels.confirm.noCancel"></md-button>
+      <md-button class="md-raised md-primary" data-ng-click="confirmModal()" data-ng-bind="shell.labels.confirm.yesContinue"></md-button>
+    </div>
+  </div>
+</div>

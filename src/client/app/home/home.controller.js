@@ -31,7 +31,7 @@
     };
 
     home.popup = {
-      "status": true,
+      "status": false,
       "info": {
         "title": "Aviso",
         "paragraphs": [
@@ -520,9 +520,69 @@
               deferred.resolve(response);
               return deferred.promise;
             },function(err){
-              console.log(err);
+              // console.log(err);
+              // var deferred = $q.defer();
+              // deferred.reject(err);
+              // return deferred.promise;
+
+
+              var response = {
+                services: [
+                  {
+                    "name": "Envío Express",
+                    "deliveryHours": 72,
+                    "discountTotal": 100,
+                    "amount": 1000,
+                    "service": "ups",
+                  },
+                ]
+              }
+
+              if(response.services){
+
+                for(var i= 0; i< response.services.length; i++){
+                  var deliveryHours =  response.services[i].deliveryHours;
+
+                  var discountTotal =  response.services[i].discountTotal;
+
+                  if(home.fastest.time > deliveryHours){
+                    home.fastest.time = deliveryHours;
+                    home.fastest.code = response.services[i].code;
+                  }
+
+                  if(home.cheapest.amount > discountTotal){
+                    home.cheapest.amount = discountTotal;
+                    home.cheapest.code = response.services[i].code;
+                  }
+
+                  if(deliveryHours){
+                    // if(deliveryHours < 24){
+                      // response.services[i].qty = deliveryHours;
+                      // response.services[i].units = "HORAS";
+                    // }
+                    if(deliveryHours  <=24){
+                      response.services[i].qty = 1;
+                      response.services[i].units = "DÍA";
+                    }else{
+                      deliveryHours =  Math.ceil(deliveryHours/24)
+                      response.services[i].qty = deliveryHours;
+                      response.services[i].units = "DÍAS";
+                    }
+                  }else{
+                    if(response.services[i].code == "08" || response.services[i].code == "11"){
+                      response.services[i].qty = 5;
+                      response.services[i].units = "DÍAS";
+                    }
+                  }
+
+
+                }
+
+                home.services = home.services.concat(response.services);
+              }
               var deferred = $q.defer();
-              deferred.reject(err);
+
+              deferred.resolve(response);
               return deferred.promise;
             })
           );

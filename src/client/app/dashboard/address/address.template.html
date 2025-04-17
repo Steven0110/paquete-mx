@@ -1,0 +1,34 @@
+
+<div class="dashboard-header">
+  <div class="dashboard-header-content">
+    <div class="dash-section-title" data-ng-bind="shell.dashboard.title"></div>
+    <div class="dash-section-subtitle" data-ng-bind="shell.dashboard.subtitle"></div>
+  </div>
+</div>
+<div class="dash-name-section">
+  <div class="big-text-welcome">¡Hola {{shell.currentUser.name}}!</div>
+  <div class="small-text-welcome"><a ui-sref="logout">Cerrar Sesión</a></div>
+</div>
+<div class="dashboard-content">
+  <div class="container-fluid">
+    <div class="row">       
+      <div class="col-xs-6">
+        <div class="section-space-left">
+          <div class="form-container">
+            <div>
+              <div class="form-title">Actualizar Dirección</div>
+              <address-form data-labels="shell.labels" data-countries="shell.countries" data-cancel="address.cancel()" data-send-form="address.send(response)" data-loading="shell.showLoading()" data-current-address="address.data"></address-form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="section-space-left">
+          <div class="form-container">
+            <md-button class="md-raised" data-ng-click="address.delete()">Eliminar</md-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

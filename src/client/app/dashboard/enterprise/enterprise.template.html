@@ -1,0 +1,165 @@
+
+<div class="dashboard-header">
+  <div class="dashboard-header-content mobile-halfed">
+    <div class="dash-section-title" data-ng-bind="shell.dashboard.title"></div>
+    <div class="dash-section-subtitle hide-on-mobile" data-ng-bind="shell.dashboard.subtitle"></div>
+  </div>
+</div>
+<div class="dash-name-section">
+  <div class="big-text-welcome">¡Hola {{shell.setName}}!</div>
+  <div class="small-text-welcome"><a ui-sref="logout">Cerrar Sesión</a></div>
+</div>
+<div class="dashboard-content">
+  <div data-ng-if="enterprise.account.verified">
+    <h2 class="align-center disabled-color">{{enterprise.account.taxName}}</h2>
+    <h3 class="align-center disabled-color">{{enterprise.account.taxId}}</h3>
+    <div class="row">
+      <div class="col-md-6 center-block">
+        <div class="row">
+          <div class="col-md-4">
+            <h4 class="align-center">Limite de Crédito:</h4>
+            <h2 class="align-center disabled-color">{{enterprise.account.creditLimit |currency}}</h2>
+          </div>
+          <div class="col-md-4">
+            <h4 class="align-center">Disponible:</h4>
+            <h2 class="align-center success">{{enterprise.account.creditLimit - enterprise.account.dueAmount  | currency}}</h2>
+          </div>
+          <div class="col-md-4">
+            <h4 class="align-center">Por pagar:</h4>
+            <h2 class="align-center error">{{enterprise.account.dueAmount | currency}}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="align-center">
+    <h3 class="disabled-color">Status de la cuenta:</h3>
+    <h1 class="success" data-ng-if="enterprise.account.verified &amp;&amp; enterprise.account.status == 'active'"><i class="fa fa-check-circle"></i><span class="padding-left-2">Activa</span></h1>
+    <h1 class="error" data-ng-if="enterprise.account.verified &amp;&amp; enterprise.account.status == 'suspended'"><i class="fa fa-check-circle"></i><span class="padding-left-2">Suspendida</span></h1>
+    <h1 class="disabled-color" data-ng-if="enterprise.account.status == 'waitingApproval'"><i class="fa fa-clock-o"></i><span class="padding-left-2">Esperando respuesta</span></h1>
+    <h1 class="disabled-color" data-ng-if="!enterprise.account.verified &amp;&amp; enterprise.account.status == 'submitDocs'"><i class="fa fa-folder-open-o"></i><span class="padding-left-2">Esperando Documentación</span></h1>
+  </div>
+  <div class="align-center" data-ng-if="enterprise.account.api_token &amp;&amp; enterprise.account.api_token != ''">
+    <h2 class="align-center disabled-color">API Token:</h2>
+    <h3 class="align-center disabled-color"><span style="padding: 10px;border: 1px solid gray;">{{enterprise.account.api_token}}</span></h3>
+  </div>
+  <div data-ng-if="!enterprise.account.verified &amp;&amp; enterprise.account.status != 'waitingApproval' ">
+    <h2>Activar tu linea de crédito</h2>
+    <p>Para activar tu cuenta empresarial necesitamos verificar los siguientes documentos.</p>
+    <ul>
+      <li>Acta constitutiva y/o poder notarial.</li>
+      <li>I.D. de representante legal (INE o PASAPORTE).</li>
+      <li>Comprobante de domicilio.</li>
+      <li>Constancia de situación fiscal.</li>
+      <li>Caratula de estado de cuenta bancario.</li>
+      <li>Autotización consulta de buro de crédito.</li>
+    </ul>
+    <h2>Subir documentos.</h2>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="padding-sides">
+          <div class="align-center pt-5" data-ng-show="enterprise.account.actaConstitutiva != 'false'"><i class="medium-icon fa fa-check-circle success"></i></div>
+          <div class="align-center" data-ng-show="enterprise.account.actaConstitutiva == 'false'"><i class="medium-icon fa fa-upload disabled-color"></i></div>
+          <div class="drop-box" ngf-select="enterprise.upload($file, 'actaConstitutiva')" ngf-drop="enterprise.upload($file, 'actaConstitutiva')" ngf-drag-over-class="'dragover'" ngf-pattern="'image/*,application/pdf'" data-ng-show="enterprise.account.actaConstitutiva == 'false' || enterprise.loading.actaConstitutiva &lt;= 0">
+            <div class="drag-title">Acta Constitutiva</div>
+            <div class="align-center">Haz clic o arrastra aqui el PDF de tu acta constitutiva.</div>
+          </div>
+          <md-progress-linear class="md-warn" md-mode="buffer" value="{{enterprise.loading.actaConstitutiva}}" md-buffer-value="100" ng-disabled="enterprise.loading.actaConstitutiva == 0"></md-progress-linear>
+          <h4 class="align-center disabled-color" data-ng-if="enterprise.loading.actaConstitutiva &gt; 0 &amp;&amp; enterprise.loading.actaConstitutiva &lt;= 100">Cargando Acta.</h4>
+          <h4 class="align-center success" data-ng-if="enterprise.loading.actaConstitutiva == 101">El archivo se cargó con éxito.</h4>
+          <div ngf-no-file-drop="ngf-no-file-drop">Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome</div>
+          <div class="align-center" data-ng-show="enterprise.account.actaConstitutiva != 'false'">
+            <div class="align-center"><a href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.actaConstitutiva}}" target="_blank">Ver Acta cargada previamente.</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="padding-sides">
+          <div class="align-center pt-5" data-ng-show="enterprise.account.INE != 'false'"><i class="medium-icon fa fa-check-circle success"></i></div>
+          <div class="align-center" data-ng-show="enterprise.account.INE == 'false'"><i class="medium-icon fa fa-upload disabled-color"></i></div>
+          <div class="drop-box" ngf-select="enterprise.upload($file, 'INE')" ngf-drop="enterprise.upload($file, 'INE')" ngf-drag-over-class="'dragover'" ngf-pattern="'image/*,application/pdf'" data-ng-show="enterprise.account.INE == 'false' || enterprise.loading.INE &lt;= 0">
+            <div class="drag-title">INE</div>
+            <div class="align-center">Haz clic o arrastra aqui el PDF de tu INE por ambos lados.</div>
+          </div>
+          <md-progress-linear class="md-warn" md-mode="buffer" value="{{enterprise.loading.INE}}" md-buffer-value="100" ng-disabled="enterprise.loading.INE == 0"></md-progress-linear>
+          <h4 class="align-center disabled-color" data-ng-if="enterprise.loading.INE &gt; 0 &amp;&amp; enterprise.loading.INE &lt;= 100">Cargando INE.</h4>
+          <h4 class="align-center success" data-ng-if="enterprise.loading.INE == 101">El archivo se cargó con éxito.</h4>
+          <div ngf-no-file-drop="ngf-no-file-drop">Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome</div>
+          <div class="align-center" data-ng-show="enterprise.account.INE != 'false'">
+            <div class="align-center"><a href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.INE}}" target="_blank">Ver INE cargada previamente.</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="padding-sides">
+          <div class="align-center pt-5" data-ng-show="enterprise.account.comprobanteDomicilio != 'false'"><i class="medium-icon fa fa-check-circle success"></i></div>
+          <div class="align-center" data-ng-show="enterprise.account.comprobanteDomicilio == 'false'"><i class="medium-icon fa fa-upload disabled-color"></i></div>
+          <div class="drop-box" ngf-select="enterprise.upload($file, 'comprobanteDomicilio')" ngf-drop="enterprise.upload($file, 'comprobanteDomicilio')" ngf-drag-over-class="'dragover'" ngf-pattern="'image/*,application/pdf'" data-ng-show="enterprise.account.comprobanteDomicilio == 'false' || enterprise.loading.comprobanteDomicilio &lt;= 0">
+            <div class="drag-title">Comprobante Domicilio</div>
+            <div class="align-center">Haz clic o arrastra aqui el PDF de tu comprobante de domicilio.</div>
+          </div>
+          <md-progress-linear class="md-warn" md-mode="buffer" value="{{enterprise.loading.comprobanteDomicilio}}" md-buffer-value="100" ng-disabled="enterprise.loading.comprobanteDomicilio == 0"></md-progress-linear>
+          <h4 class="align-center disabled-color" data-ng-if="enterprise.loading.comprobanteDomicilio &gt; 0 &amp;&amp; enterprise.loading.comprobanteDomicilio &lt;= 100">Cargando Comprobante.</h4>
+          <h4 class="align-center success" data-ng-if="enterprise.loading.comprobanteDomicilio == 101">El archivo se cargó con éxito.</h4>
+          <div ngf-no-file-drop="ngf-no-file-drop">Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome</div>
+          <div class="align-center" data-ng-show="enterprise.account.comprobanteDomicilio != 'false'">
+            <div class="align-center"><a href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.comprobanteDomicilio}}" target="_blank">Ver Comprobante cargado previamente.</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="padding-sides">
+          <div class="align-center pt-5" data-ng-show="enterprise.account.constanciaFiscal != 'false'"><i class="medium-icon fa fa-check-circle success"></i></div>
+          <div class="align-center" data-ng-show="enterprise.account.constanciaFiscal == 'false'"><i class="medium-icon fa fa-upload disabled-color"></i></div>
+          <div class="drop-box" ngf-select="enterprise.upload($file, 'constanciaFiscal')" ngf-drop="enterprise.upload($file, 'constanciaFiscal')" ngf-drag-over-class="'dragover'" ngf-pattern="'image/*,application/pdf'" data-ng-show="enterprise.account.constanciaFiscal == 'false' || enterprise.loading.constanciaFiscal &lt;= 0">
+            <div class="drag-title">Constancia Fiscal SAT</div>
+            <div class="align-center">Haz clic o arrastra aqui el PDF de tu Constancia Fiscal del SAT.</div>
+          </div>
+          <md-progress-linear class="md-warn" md-mode="buffer" value="{{enterprise.loading.constanciaFiscal}}" md-buffer-value="100" ng-disabled="enterprise.loading.constanciaFiscal == 0"></md-progress-linear>
+          <h4 class="align-center disabled-color" data-ng-if="enterprise.loading.constanciaFiscal &gt; 0 &amp;&amp; enterprise.loading.constanciaFiscal &lt;= 100">Cargando Constacia.</h4>
+          <h4 class="align-center success" data-ng-if="enterprise.loading.constanciaFiscal == 101">El archivo se cargó con éxito.</h4>
+          <div ngf-no-file-drop="ngf-no-file-drop">Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome</div>
+          <div class="align-center" data-ng-show="enterprise.account.constanciaFiscal != 'false'">
+            <div class="align-center"><a href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.constanciaFiscal}}" target="_blank">Ver Constancia cargada previamente.</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="padding-sides">
+          <div class="align-center pt-5" data-ng-show="enterprise.account.caratulaBancaria != 'false'"><i class="medium-icon fa fa-check-circle success"></i></div>
+          <div class="align-center" data-ng-show="enterprise.account.caratulaBancaria == 'false'"><i class="medium-icon fa fa-upload disabled-color"></i></div>
+          <div class="drop-box" ngf-select="enterprise.upload($file, 'caratulaBancaria')" ngf-drop="enterprise.upload($file, 'caratulaBancaria')" ngf-drag-over-class="'dragover'" ngf-pattern="'image/*,application/pdf'" data-ng-show="enterprise.account.caratulaBancaria == 'false' || enterprise.loading.caratulaBancaria &lt;= 0">
+            <div class="drag-title">Carátula Estado Cuenta Bancario</div>
+            <div class="align-center">Haz clic o arrastra aqui el PDF de tu caratula bancaria.</div>
+          </div>
+          <md-progress-linear class="md-warn" md-mode="buffer" value="{{enterprise.loading.caratulaBancaria}}" md-buffer-value="100" ng-disabled="enterprise.loading.caratulaBancaria == 0"></md-progress-linear>
+          <h4 class="align-center disabled-color" data-ng-if="enterprise.loading.caratulaBancaria &gt; 0 &amp;&amp; enterprise.loading.caratulaBancaria &lt;= 100">Cargando Caratula.</h4>
+          <h4 class="align-center success" data-ng-if="enterprise.loading.caratulaBancaria == 101">El archivo se cargó con éxito.</h4>
+          <div ngf-no-file-drop="ngf-no-file-drop">Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome</div>
+          <div class="align-center" data-ng-show="enterprise.account.caratulaBancaria != 'false'">
+            <div class="align-center"><a href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.caratulaBancaria}}" target="_blank">Ver Caratula cargada previamente.</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="padding-sides">
+          <div class="align-center pt-5" data-ng-show="enterprise.account.autorizacionBuro != 'false'"><i class="medium-icon fa fa-check-circle success"></i></div>
+          <div class="align-center" data-ng-show="enterprise.account.autorizacionBuro == 'false'"><i class="medium-icon fa fa-upload disabled-color"></i></div>
+          <div class="drop-box" ngf-select="enterprise.upload($file, 'autorizacionBuro')" ngf-drop="enterprise.upload($file, 'autorizacionBuro')" ngf-drag-over-class="'dragover'" ngf-pattern="'image/*,application/pdf'" data-ng-show="enterprise.account.autorizacionBuro == 'false' || enterprise.loading.autorizacionBuro &lt;= 0">
+            <div class="drag-title">Autorización Buro de Crédito</div>
+            <div class="align-center">Haz clic o arrastra aqui el PDF de tu autorización.</div>
+          </div>
+          <md-progress-linear class="md-warn" md-mode="buffer" value="{{enterprise.loading.autorizacionBuro}}" md-buffer-value="100" ng-disabled="enterprise.loading.autorizacionBuro == 0"></md-progress-linear>
+          <h4 class="align-center disabled-color" data-ng-if="enterprise.loading.autorizacionBuro &gt; 0 &amp;&amp; enterprise.loading.autorizacionBuro &lt;= 100">Cargando Autorización.</h4>
+          <h4 class="align-center success" data-ng-if="enterprise.loading.autorizacionBuro == 101">El archivo se cargó con éxito.</h4>
+          <div ngf-no-file-drop="ngf-no-file-drop">Tu navegador no soporta subir archivos, te recomendamos Firefox o Chrome</div>
+          <div class="align-center" data-ng-show="enterprise.account.autorizacionBuro != 'false'">
+            <div class="align-center"><a href="https://s3-us-west-2.amazonaws.com/paquetemx/documents/{{enterprise.account.autorizacionBuro}}" target="_blank">Ver Autorización cargada previamente.</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

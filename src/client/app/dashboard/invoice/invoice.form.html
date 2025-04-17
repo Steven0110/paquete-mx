@@ -1,0 +1,26 @@
+
+<div class="card-wrapper">
+  <form name="checkout.invoiceForm" novalidate="novalidate" data-ng-submit="card.send()">
+    <md-input-container class="md-block">
+      <label for="taxId">RFC</label>
+      <input name="taxId" data-ng-model="checkout.taxInfo.taxId" required="required"/>
+      <div ng-messages="checkout.invoiceForm.taxId.$error">
+        <div ng-message="required">Es requerido</div>
+      </div>
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label for="taxId">Razón Social</label>
+      <input name="taxName" data-ng-model="checkout.taxInfo.taxName" required="required"/>
+      <div ng-messages="checkout.invoiceForm.taxName.$error">
+        <div ng-message="required">Es requerido</div>
+      </div>
+    </md-input-container>
+    <div class="md-block">
+      <label for="taxUse">Uso de CFDI: </label>
+      <select data-ng-model="checkout.taxInfo.taxUse">
+        <option data-ng-repeat="item in checkout.taxUses" value="{{item.code}}">{{item.name}}</option>
+      </select>
+    </div>
+    <md-input-container class="md-block"></md-input-container>
+  </form>
+</div>

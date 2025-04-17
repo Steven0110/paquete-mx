@@ -1,0 +1,61 @@
+
+<div class="menu-container">
+  <div class="menu menu-tabs clearfix">
+    <div data-ng-include="'app/templates/menu.template.html'"></div>
+  </div>
+</div>
+<div class="pages-section">
+  <div class="container-fluid">
+    <div class="row" data-ng-show="recovery.success">
+      <div class="col-xs-10 col-xs-6 center-block">
+        <div class="container-padding">
+          <h2 class="disabled-color align-center">Tu contraseña se actualizo con éxito. Inicia sesión para continuar.</h2>
+          <div class="align-center">
+            <md-button class="md-raised md-primary" ui-sref="login">Iniciar Sesión</md-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" data-ng-show="recovery.verified &amp;&amp; !recovery.state &amp;&amp; !recovery.success">
+      <div class="col-xs-10 col-xs-6 center-block">
+        <div class="container-padding">
+          <h2 class="disabled-color align-center">LLave Incorrecta verifica tu correo electrónico.</h2>
+          <div class="align-center">
+            <md-button class="md-raised md-primary" ui-sref="login">Iniciar Sesión</md-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" data-ng-show="recovery.verified &amp;&amp; recovery.state &amp;&amp; !recovery.success">
+      <div class="col-xs-10 col-xs-6 center-block">
+        <h1 class="align-center">Ingresa tu contraseña</h1>
+        <div class="padding-left">
+          <form name="passwordForm" data-ng-submit="recovery.updatePassword()" novalidate="">
+            <div layout-xs-sm="row">
+              <md-input-container class="md-block">
+                <label for="password">Contraseña</label>
+                <input class="pure-input-1" id="password" name="password" type="password" data-ng-model="recovery.newPassword" required="" password-match="passwordMatch"/>
+                <div ng-messages="passwordForm.password.$error">
+                  <div ng-message="required">Es requerido</div>
+                  <div ng-message="match">La contraseña no coincide</div>
+                </div>
+              </md-input-container>
+              <md-input-container class="md-block">
+                <label for="confirmPassword">Confirmar Contraseña</label>
+                <input class="pure-input-1" name="confirmPassword" type="password" data-ng-model="passwordMatch" required=""/>
+                <div ng-messages="passwordForm.password.$error">
+                  <div ng-message="required">
+                        Es requerido</div>
+                </div>
+              </md-input-container>
+            </div>
+            <div class="align-center">
+              <md-button class="md-raised md-primary" type="submit">Actualizar</md-button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div data-ng-include="'app/templates/footer.template.html'"></div>

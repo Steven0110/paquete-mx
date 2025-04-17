@@ -71,18 +71,29 @@ function selectCities($http, $document, parseheaders){
           search = encodeURI(search);
           var baseUrl = parseheaders.apiEndpoint['baseUrl'];
           var host = parseheaders.apiEndpoint['cities'];
-          $http.get( `${host}/${country}/${search}`)
-          //$http.get(baseUrl+"/counties",{search:search,country:country})
-          .then(function(response) {
-            if(response && response.data && response.data.length > 0)
-              vm.options = response.data;
-            else
-              vm.options = [];
-          }, function(err) {
-            vm.options = [];
-          }).finally(function(){
-            vm.loading = false;
-          });
+
+
+          vm.options = [
+            {
+              "zip": "12345",
+              "county": "Demo",
+              "city": "Mexico",
+              "state": "Mexico",
+            }
+          ];
+          vm.loading = false;
+          // $http.get( `${host}/${country}/${search}`)
+          // //$http.get(baseUrl+"/counties",{search:search,country:country})
+          // .then(function(response) {
+          //   if(response && response.data && response.data.length > 0)
+          //     vm.options = response.data;
+          //   else
+          //     vm.options = [];
+          // }, function(err) {
+          //   vm.options = [];
+          // }).finally(function(){
+          //   vm.loading = false;
+          // });
         }else{
           vm.options = [];
         }

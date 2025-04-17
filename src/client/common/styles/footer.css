@@ -1,0 +1,40 @@
+/* line 3, src/client/common/styles/footer.sass */
+.footer {
+  padding: 20px 0;
+  width: 100%;
+  background-color: #333;
+  font-family: 'Roboto';
+  color: #FFF;
+  font-size: 14px; }
+
+/* line 11, src/client/common/styles/footer.sass */
+.padding-footer {
+  padding: 10px 20px;
+  color: #FFF; }
+
+/* line 19, src/client/common/styles/footer.sass */
+.footer-item {
+  padding: 0px 0;
+  font-size: 1.1em; }
+  /* line 22, src/client/common/styles/footer.sass */
+  .footer-item a {
+    text-decoration: none;
+    cursor: pointer; }
+    /* line 25, src/client/common/styles/footer.sass */
+    .footer-item a:hover {
+      color: #f38b00; }
+  /* line 27, src/client/common/styles/footer.sass */
+  .footer-item i {
+    display: inline-block;
+    position: relative;
+    top: 5px;
+    padding-top: 10px;
+    font-size: 2.5rem;
+    width: 35px; }
+
+/* line 34, src/client/common/styles/footer.sass */
+.footer-title {
+  font-size: 1.4em;
+  font-weight: 700;
+  border-bottom: solid 1px #666;
+  margin: 10px 0; }

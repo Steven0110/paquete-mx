@@ -1,0 +1,35 @@
+
+<div class="dashboard-header">
+  <div class="dashboard-header-content">
+    <div class="dash-section-title" data-ng-bind="shell.dashboard.title"></div>
+    <div class="dash-section-subtitle hide-on-mobile" data-ng-bind="shell.dashboard.subtitle"></div>
+  </div>
+</div>
+<div class="dash-name-section">
+  <div class="big-text-welcome">¡Hola {{shell.setName}}!</div>
+  <div class="small-text-welcome"><a ui-sref="logout">Cerrar Sesión</a></div>
+</div>
+<div class="dashboard-content">
+  <h1 data-ng-if="payments.list.length &lt; 1">No hay pagos registrados.</h1>
+  <table class="table table-responsive table-striped" data-ng-if="payments.list.length  &gt; 0">
+    <thead>
+      <tr>
+        <th>Número de rastreo</th>
+        <th>Monto</th>
+        <th>Fecha de pago</th>
+        <th>Método de Pago</th>
+        <th>Pagado</th>
+      </tr>
+    </thead>
+    <thbody>
+      <tr data-ng-repeat="item in payments.list">
+        <td><a class="accent medium-font bold" ui-sref="dashboard.shipping({trackId: item.trackingNumber})">{{item.shipping.trackingNumber}}</a></td>
+        <td class="bold">{{item.amount | currency}}</td>
+        <td>{{item.createdAt | amDateFormat:'DD-MMM-YY, HH:mm:ss'}}</td>
+        <td data-ng-if="item.charge.brand == 'PQT'">Cargo a cuenta Empresarial</td>
+        <td data-ng-if="item.charge.brand != 'PQT'"><i class="medium-font fa fa-cc-mastercard" data-ng-if="item.charge.brand == 'MASTERCARD'"></i><i class="medium-font fa fa-cc-visa" data-ng-if="item.charge.brand == 'VISA'"></i><i class="medium-font fa fa-cc-amex" data-ng-if="item.charge.brand == 'AMEX'"></i>&nbsp;**** **** **** {{item.charge.termination}}</td>
+        <td><span class="success" data-ng-if="item.paid">SI</span><span class="error" data-ng-if="!item.paid">NO</span></td>
+      </tr>
+    </thbody>
+  </table>
+</div>

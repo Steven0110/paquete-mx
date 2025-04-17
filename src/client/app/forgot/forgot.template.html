@@ -1,0 +1,45 @@
+
+<div class="menu-container">
+  <div class="menu menu-tabs clearfix">
+    <div data-ng-include="'app/templates/menu.template.html'"></div>
+  </div>
+</div>
+<div class="pages-section">
+  <div class="container-fluid">
+    <div class="row" data-ng-show="forgot.success">
+      <div class="col-xs-10 col-xs-6 center-block">
+        <div class="container-padding">
+          <h2 class="disabled-color align-center">Se ha enviado un correo electronico a<span class="accent">&nbsp;{{forgot.username}}</span>, recuerda verficar tu carpeta de SPAM.</h2>
+          <div class="align-center">
+            <md-button class="md-raised md-primary" ui-sref="login">Iniciar Sesión</md-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" data-ng-hide="forgot.success">
+      <div class="col-xs-10 col-xs-6 center-block">
+        <h1 class="align-center">Recuperar Contraseña</h1>
+        <div class="padding-left">
+          <md-content layout-padding="layout-padding">
+            <form name="recoveryForm" novalidate="novalidate" data-ng-submit="forgot.send()">
+              <div layout-xs-sm="row">
+                <md-input-container class="md-block">
+                  <label for="username" data-ng-bind="shell.labels.login.form.email"></label>
+                  <input name="username" type="email" data-ng-model="forgot.username" required="" autofocus="autofocus"/>
+                  <div ng-messages="recoveryForm.username.$error">
+                    <div ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+                    <div ng-message="email" data-ng-bind="shell.labels.login.form.errors.email"></div>
+                  </div>
+                </md-input-container>
+              </div>
+              <div class="align-center">
+                <md-button class="md-raised md-primary" type="submit" data-ng-bind="shell.labels.login.form.recovery" aria-label="shell.labels.login.form.recovery"></md-button>
+              </div>
+            </form>
+          </md-content>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div data-ng-include="'app/templates/footer.template.html'"></div>

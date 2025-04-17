@@ -1,0 +1,524 @@
+/* line 3, src/client/common/styles/dashboard.sass */
+.dashboard-menu {
+  background-color: #f2f2f2;
+  height: 100vh;
+  border-right: 2px solid #f38b00;
+  position: fixed;
+  left: 0;
+  top: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
+
+/* line 11, src/client/common/styles/dashboard.sass */
+.dashboard-logo {
+  padding: 20px 0;
+  text-align: center; }
+  /* line 14, src/client/common/styles/dashboard.sass */
+  .dashboard-logo img {
+    width: 100px; }
+
+/* line 17, src/client/common/styles/dashboard.sass */
+.dashboard-items nav {
+  position: relative;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: 'Arial' !important;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.6); }
+  /* line 28, src/client/common/styles/dashboard.sass */
+  .dashboard-items nav:hover {
+    background-color: rgba(0, 0, 0, 0.1); }
+  /* line 30, src/client/common/styles/dashboard.sass */
+  .dashboard-items nav span, .dashboard-items nav a {
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    padding: 5px 25px; }
+  /* line 35, src/client/common/styles/dashboard.sass */
+  .dashboard-items nav .selected-bar {
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    width: 0;
+    height: 100%;
+    background-color: #f38b00; }
+    /* line 42, src/client/common/styles/dashboard.sass */
+    .dashboard-items nav .selected-bar.active {
+      width: 15px; }
+  /* line 44, src/client/common/styles/dashboard.sass */
+  .dashboard-items nav.active {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: rgba(0, 0, 0, 0.5); }
+
+/* line 47, src/client/common/styles/dashboard.sass */
+.dashboard-header {
+  overflow: auto;
+  border-bottom: 2px solid #f2f2f2;
+  position: fixed;
+  background-color: #FFF;
+  width: 100%;
+  z-index: 2;
+  height: 130px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
+  /* line 56, src/client/common/styles/dashboard.sass */
+  .dashboard-header .dashboard-header-content {
+    position: relative;
+    padding: 15px 30px;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box; }
+  /* line 61, src/client/common/styles/dashboard.sass */
+  .dashboard-header .dash-section-title {
+    font-size: 5rem;
+    font-weight: 700;
+    font-family: 'Roboto';
+    color: rgba(0, 0, 0, 0.7); }
+  /* line 66, src/client/common/styles/dashboard.sass */
+  .dashboard-header .dash-section-subtitle {
+    font-size: 2rem;
+    font-weight: 300;
+    font-family: 'Roboto';
+    color: rgba(0, 0, 0, 0.7); }
+
+/* line 73, src/client/common/styles/dashboard.sass */
+.dashboard-content {
+  padding: 160px 30px;
+  background-color: #f7f7f7; }
+
+/* line 78, src/client/common/styles/dashboard.sass */
+.board-element {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 2px solid #f2f2f2;
+  border-radius: 10px;
+  color: #666; }
+  /* line 84, src/client/common/styles/dashboard.sass */
+  .board-element h2 {
+    color: #f38b00;
+    margin: 0; }
+
+/* line 88, src/client/common/styles/dashboard.sass */
+.board-list {
+  font-size: 2rem; }
+
+/* line 91, src/client/common/styles/dashboard.sass */
+.add-dashboard {
+  cursor: pointer;
+  text-align: center;
+  color: #f38b00;
+  font-family: 'Roboto'; }
+  /* line 96, src/client/common/styles/dashboard.sass */
+  .add-dashboard:hover {
+    color: #FA4F0C; }
+  /* line 98, src/client/common/styles/dashboard.sass */
+  .add-dashboard i {
+    font-size: 6rem; }
+
+/* line 101, src/client/common/styles/dashboard.sass */
+.form-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #f38b00;
+  font-family: 'Roboto';
+  font-weight: 400;
+  font-size: 3rem;
+  line-height: 1em; }
+
+/* line 111, src/client/common/styles/dashboard.sass */
+.card-icons i {
+  font-size: 7rem;
+  margin-right: 20px; }
+  /* line 114, src/client/common/styles/dashboard.sass */
+  .card-icons i.fa-cc-visa {
+    color: #01579B; }
+  /* line 116, src/client/common/styles/dashboard.sass */
+  .card-icons i.fa-cc-amex {
+    color: #2196F3; }
+  /* line 118, src/client/common/styles/dashboard.sass */
+  .card-icons i.fa-cc-mastercard {
+    color: #FFC107; }
+
+/* line 121, src/client/common/styles/dashboard.sass */
+.board-actions {
+  color: #CCC;
+  font-size: 2rem;
+  text-align: right;
+  cursor: pointer; }
+  /* line 126, src/client/common/styles/dashboard.sass */
+  .board-actions i {
+    margin-left: 10px; }
+    /* line 128, src/client/common/styles/dashboard.sass */
+    .board-actions i:hover {
+      color: #f38b00; }
+
+/* line 131, src/client/common/styles/dashboard.sass */
+.form-container {
+  padding: 15px;
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px; }
+  /* line 135, src/client/common/styles/dashboard.sass */
+  .form-container .confirm-title {
+    font-size: 2.3rem;
+    font-weight: bold; }
+  /* line 138, src/client/common/styles/dashboard.sass */
+  .form-container h1 {
+    margin: 0 0 20px 0; }
+
+/* line 142, src/client/common/styles/dashboard.sass */
+table.dashboard-table td, table.dashboard-table th {
+  padding: 10px; }
+
+/* line 145, src/client/common/styles/dashboard.sass */
+.small-image {
+  text-align: center; }
+  /* line 147, src/client/common/styles/dashboard.sass */
+  .small-image img {
+    max-width: 150px;
+    width: 100%; }
+
+/* line 151, src/client/common/styles/dashboard.sass */
+.shipping-info {
+  padding-bottom: 20px;
+  border-bottom: solid 2px rgba(0, 0, 0, 0.2); }
+
+/* line 155, src/client/common/styles/dashboard.sass */
+#side-content {
+  padding-left: 140px;
+  height: 100vh; }
+
+/* line 159, src/client/common/styles/dashboard.sass */
+#side-menu {
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 140px;
+  height: 100vh;
+  background-color: #f38b00; }
+  /* line 167, src/client/common/styles/dashboard.sass */
+  #side-menu .item-side {
+    text-align: center;
+    color: #FFF;
+    cursor: pointer;
+    padding: 10px;
+    font-family: 'Quicksand';
+    font-weight: 700;
+    border-bottom: 1px solid #FFF; }
+    /* line 175, src/client/common/styles/dashboard.sass */
+    #side-menu .item-side i {
+      font-size: 3rem; }
+    /* line 177, src/client/common/styles/dashboard.sass */
+    #side-menu .item-side:hover, #side-menu .item-side.active {
+      background-color: #FFF;
+      color: #f38b00; }
+
+/* line 181, src/client/common/styles/dashboard.sass */
+.back-button {
+  cursor: pointer; }
+  /* line 183, src/client/common/styles/dashboard.sass */
+  .back-button i {
+    color: #CCC; }
+    /* line 185, src/client/common/styles/dashboard.sass */
+    .back-button i:hover {
+      color: #f38b00; }
+
+/* line 188, src/client/common/styles/dashboard.sass */
+.dash-name-section {
+  font-family: 'Roboto';
+  position: fixed;
+  right: 50px;
+  z-index: 2;
+  top: 23px; }
+  /* line 195, src/client/common/styles/dashboard.sass */
+  .dash-name-section .big-text-welcome {
+    font-weight: 700;
+    font-size: 3.5rem;
+    line-height: 1em;
+    color: #f38b00; }
+  /* line 200, src/client/common/styles/dashboard.sass */
+  .dash-name-section .small-text-welcome {
+    color: rgba(0, 0, 0, 0.5);
+    text-align: right;
+    font-size: 1.5rem;
+    text-decoration: underline; }
+
+/* line 206, src/client/common/styles/dashboard.sass */
+.dash-submenu {
+  padding: 10px 0; }
+  /* line 208, src/client/common/styles/dashboard.sass */
+  .dash-submenu nav {
+    float: right;
+    font-family: 'Roboto';
+    font-size: 2rem;
+    padding-left: 10px; }
+
+/* line 214, src/client/common/styles/dashboard.sass */
+.drop-box {
+  width: 100%;
+  border: 3px rgba(0, 0, 0, 0.5) dashed;
+  padding: 10px;
+  cursor: pointer; }
+  /* line 219, src/client/common/styles/dashboard.sass */
+  .drop-box.dragover {
+    background-color: rgba(0, 0, 0, 0.5); }
+  /* line 221, src/client/common/styles/dashboard.sass */
+  .drop-box .drag-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center; }
+
+/* line 226, src/client/common/styles/dashboard.sass */
+i.fa.fa-download {
+  padding: 5px 5px; }
+
+/* line 229, src/client/common/styles/dashboard.sass */
+.hover-accent:hover {
+  color: #f38b00; }
+
+/* line 234, src/client/common/styles/dashboard.sass */
+table.table.table-responsive.hover tbody tr:hover {
+  background-color: #f38b00;
+  color: #FFF;
+  cursor: pointer; }
+  /* line 238, src/client/common/styles/dashboard.sass */
+  table.table.table-responsive.hover tbody tr:hover td.accent {
+    color: #FFF; }
+  /* line 240, src/client/common/styles/dashboard.sass */
+  table.table.table-responsive.hover tbody tr:hover td.account {
+    background-color: #f2f2f2;
+    color: #f38b00; }
+
+/* line 245, src/client/common/styles/dashboard.sass */
+.tracking-status .row {
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+/* line 248, src/client/common/styles/dashboard.sass */
+.tracking-status .mark {
+  background-color: #f7f7f7; }
+
+/* line 252, src/client/common/styles/dashboard.sass */
+.tracking-status.in-progress .mark {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 20px;
+  border-radius: 50%;
+  border: 1px solid orange; }
+
+/* line 259, src/client/common/styles/dashboard.sass */
+.tracking-status.in-progress .mark.completed {
+  background-color: orange; }
+
+/* line 263, src/client/common/styles/dashboard.sass */
+.tracking-status.in-progress .mid-status {
+  position: relative; }
+  /* line 266, src/client/common/styles/dashboard.sass */
+  .tracking-status.in-progress .mid-status .mark::after {
+    position: absolute;
+    content: '';
+    display: inline-block;
+    background-color: orange;
+    width: 2px;
+    height: 30px;
+    margin-left: 5px;
+    bottom: 34px; }
+  /* line 275, src/client/common/styles/dashboard.sass */
+  .tracking-status.in-progress .mid-status .mark.completed {
+    background-color: orange; }
+    /* line 277, src/client/common/styles/dashboard.sass */
+    .tracking-status.in-progress .mid-status .mark.completed::before {
+      position: absolute;
+      content: '';
+      display: inline-block;
+      background-color: orange;
+      width: 10px;
+      height: 50px;
+      margin-left: 1px;
+      bottom: 25px; }
+
+/* line 287, src/client/common/styles/dashboard.sass */
+.tracking-status.in-progress .final-status {
+  position: relative; }
+  /* line 290, src/client/common/styles/dashboard.sass */
+  .tracking-status.in-progress .final-status .mark::after {
+    position: absolute;
+    content: '';
+    display: inline-block;
+    background-color: orange;
+    width: 2px;
+    height: 30px;
+    margin-left: 5px;
+    bottom: 34px; }
+  /* line 299, src/client/common/styles/dashboard.sass */
+  .tracking-status.in-progress .final-status .mark.completed {
+    background-color: orange; }
+    /* line 301, src/client/common/styles/dashboard.sass */
+    .tracking-status.in-progress .final-status .mark.completed::before {
+      position: absolute;
+      content: '';
+      display: inline-block;
+      background-color: orange;
+      width: 10px;
+      height: 50px;
+      margin-left: 1px;
+      bottom: 25px; }
+
+/* line 313, src/client/common/styles/dashboard.sass */
+.tracking-status.delivered .mark {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 20px;
+  border-radius: 50%;
+  border: 1px solid #01b710; }
+
+/* line 320, src/client/common/styles/dashboard.sass */
+.tracking-status.delivered .mark.completed {
+  background-color: #01b710; }
+
+/* line 323, src/client/common/styles/dashboard.sass */
+.tracking-status.delivered .mid-status {
+  position: relative; }
+  /* line 326, src/client/common/styles/dashboard.sass */
+  .tracking-status.delivered .mid-status .mark::after {
+    position: absolute;
+    content: '';
+    display: inline-block;
+    background-color: #01b710;
+    width: 2px;
+    height: 30px;
+    margin-left: 5px;
+    bottom: 34px; }
+  /* line 335, src/client/common/styles/dashboard.sass */
+  .tracking-status.delivered .mid-status .mark.completed {
+    background-color: #01b710; }
+    /* line 337, src/client/common/styles/dashboard.sass */
+    .tracking-status.delivered .mid-status .mark.completed::before {
+      position: absolute;
+      content: '';
+      display: inline-block;
+      background-color: #01b710;
+      width: 10px;
+      height: 50px;
+      margin-left: 1px;
+      bottom: 25px; }
+
+/* line 347, src/client/common/styles/dashboard.sass */
+.tracking-status.delivered .final-status {
+  position: relative; }
+  /* line 350, src/client/common/styles/dashboard.sass */
+  .tracking-status.delivered .final-status .mark::after {
+    position: absolute;
+    content: '';
+    display: inline-block;
+    background-color: #01b710;
+    width: 2px;
+    height: 30px;
+    margin-left: 5px;
+    bottom: 34px; }
+  /* line 359, src/client/common/styles/dashboard.sass */
+  .tracking-status.delivered .final-status .mark.completed {
+    background-color: #01b710; }
+    /* line 361, src/client/common/styles/dashboard.sass */
+    .tracking-status.delivered .final-status .mark.completed::before {
+      position: absolute;
+      content: '';
+      display: inline-block;
+      background-color: #01b710;
+      width: 10px;
+      height: 50px;
+      margin-left: 1px;
+      bottom: 25px; }
+
+/*  Responsive Options  */
+/* line 372, src/client/common/styles/dashboard.sass */
+.show-on-mobile {
+  opacity: 0; }
+
+/* line 374, src/client/common/styles/dashboard.sass */
+.menu-toggle {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  right: 0;
+  top: 10px;
+  padding-left: 55px;
+  padding-top: 10px; }
+  /* line 383, src/client/common/styles/dashboard.sass */
+  .menu-toggle span {
+    padding: 8px; }
+    /* line 386, src/client/common/styles/dashboard.sass */
+    .menu-toggle span img {
+      width: 20px;
+      height: 20px; }
+
+@media screen and (max-width: 800px) {
+  /*  General responsive options  */
+  /* line 392, src/client/common/styles/dashboard.sass */
+  h1 {
+    font-size: 20px; }
+  /* line 394, src/client/common/styles/dashboard.sass */
+  h2 {
+    font-size: 18px; }
+  /* line 397, src/client/common/styles/dashboard.sass */
+  h3 span {
+    font-size: 14px; }
+  /* line 399, src/client/common/styles/dashboard.sass */
+  .show-on-mobile {
+    opacity: 1; }
+  /* line 401, src/client/common/styles/dashboard.sass */
+  .hide-on-mobile {
+    display: none; }
+  /* line 405, src/client/common/styles/dashboard.sass */
+  #side-content .dashboard-header {
+    padding-left: 30px;
+    height: 90px; }
+    /* line 409, src/client/common/styles/dashboard.sass */
+    #side-content .dashboard-header .dashboard-header-content .dash-section-title {
+      font-size: 1.4em; }
+    /* line 411, src/client/common/styles/dashboard.sass */
+    #side-content .dashboard-header .mobile-halfed {
+      width: 200px; }
+  /* line 414, src/client/common/styles/dashboard.sass */
+  #side-content .dash-name-section {
+    opacity: 0; }
+    /* line 416, src/client/common/styles/dashboard.sass */
+    #side-content .dash-name-section .big-text-welcome {
+      font-size: 1.2em; }
+  /* line 419, src/client/common/styles/dashboard.sass */
+  #side-content .dashboard-content {
+    padding: 92px 30px; }
+    /* line 425, src/client/common/styles/dashboard.sass */
+    #side-content .dashboard-content .shipping-info .tracking-status span b {
+      font-size: 0.8em; }
+    /* line 427, src/client/common/styles/dashboard.sass */
+    #side-content .dashboard-content .shipping-info .tracking-status span span {
+      font-size: 0.8em; }
+    /* line 431, src/client/common/styles/dashboard.sass */
+    #side-content .dashboard-content table th {
+      font-size: 0.8em; }
+    /* line 433, src/client/common/styles/dashboard.sass */
+    #side-content .dashboard-content table td {
+      font-size: 0.8em; }
+  /* line 435, src/client/common/styles/dashboard.sass */
+  #side-menu {
+    height: 200vh;
+    -webkit-transition: 0.2s linear all;
+    transition: 0.2s linear all; }
+  /* line 438, src/client/common/styles/dashboard.sass */
+  #side-menu.closed {
+    -webkit-transition: 0.2s linear all;
+    transition: 0.2s linear all;
+    margin-left: -140px; }
+  /* line 441, src/client/common/styles/dashboard.sass */
+  #side-menu.closed + #side-content {
+    -webkit-transition: 0.2s linear all;
+    transition: 0.2s linear all;
+    padding-left: 0; }
+    /* line 445, src/client/common/styles/dashboard.sass */
+    #side-menu.closed + #side-content .dash-name-section {
+      opacity: 1; } }

@@ -1,0 +1,396 @@
+
+<div class="resume-content">
+  <div><a ui-sref="home">¡Cotizar de nuevo!</a></div>
+</div>
+<div class="menu-container">
+  <div class="menu menu-tabs clearfix">
+    <div data-ng-include="'app/templates/menu.template.html'"></div>
+  </div>
+</div>
+<div class="pages">
+  <div class="checkout-content">
+    <div class="container-fluid">
+      <div class="align-center" data-ng-if="checkout.connecting">
+        <div class="logo-color"></div>
+        <div data-ng-include="'app/templates/spinner.template.html'"></div>
+        <h1>Estamos obteniendo tu guia y etiquetas.</h1>
+        <h2>No cierres la página hasta obtener una respuesta.</h2>
+      </div>
+      <div class="row" data-ng-if="checkout.response">
+        <div class="col-xs-12 col-sm-6">
+          <div class="section-space-right">
+            <div class="logo-color"></div>
+            <h1 class="align-center accent">¡Gracias por usar Paquete.MX!</h1>
+            <h2 class="disabled-color align-center">¿Cómo hago mi envío?</h2>
+            <div>
+              <ul>
+                <li>Descarga e imprime tu etiqueta <span class="accent bold">2 veces </span>&nbsp;( por cada paquete ).</li>
+                <li>Pega una de las copias en tu paquete o paquetes.</li>
+                <li>Si llevas tus paquetes a mostrador una copia sera sellada como acuse de recepción.</li>
+                <li>Puedes dar seguimiento a tu envío desde nuestro<a class="accent bold" ui-sref="dashboard.shippings">&nbsp;administrador.</a></li>
+              </ul>
+            </div>
+            <div class="align-center margin-bottom-2">
+              <md-button class="md-raised md-primary" href="{{shell.downloadLabel(checkout.trackingNumber)}}" download="download">Descargar Etiqueta</md-button>
+            </div>
+            <h2 class="disabled-color">¿Dónde <span class="bold">entregar</span>?</h2><a class="accent underline" href="https://www.ups.com/dropoff?loc=es_MX" target="_blank" data-ng-show="checkout.shipping.service.service == 'ups' ">&nbsp;Buscar puntos de entrega <span class="uppercase bold accent">{{checkout.shipping.service.service}}</span></a><a class="accent underline" href="http://www.fedex.com/locate/index.html?locale=es_MX" target="_blank" data-ng-if="shipping.data.service.service.service == 'fedex'">&nbsp;Buscar puntos de entrega <span class="uppercase bold accent">{{checkout.shipping.service.service}}</span></a>
+            <h2 class="disabled-color">o<span class="bold">&nbsp;Agenda</span>&nbsp;recolección en domicilio</h2>
+            <div class="align-center" data-ng-if="checkout.pickupConfirmation">
+              <h3 class="accent">Tu recolección fue solicitada.</h3>
+              <h3 class="disabled-color">Confirmación: {{checkout.pickupConfirmation}}</h3>
+              <md-button class="md-raised md-primary" ui-sref="home">HACER OTRO ENVÍO</md-button>
+            </div>
+            <div data-ng-if="!checkout.pickupConfirmation">
+              <h4>Fecha</h4>
+              <form name="checkout.pickupForm" novalidate="" data-ng-submit="checkout.sendPickUp()">
+                <md-datepicker name="pickupDate" md-open-on-focus="md-open-on-focus" ng-model="checkout.pickup.date" md-placeholder="Día" md-min-date="checkout.today" md-date-filter="checkout.onlyWeekendsPredicate" required="required"></md-datepicker>
+                <h4>Horario</h4>
+                <md-radio-group name="pickupSchedule" ng-model="checkout.pickup.schedule">
+                  <md-radio-button class="md-primary" value="08:00-19:00">8:00 horas - 19:00 horas (Horario Abierto)</md-radio-button>
+                  <md-radio-button class="md-primary" value="09:00-19:00">09:00 horas - 19:00 horas (Horario Abierto)</md-radio-button>
+                  <md-radio-button class="md-primary" value="10:00-19:00">10:00 horas - 19:00 horas (Horario Abierto)</md-radio-button>
+                  <md-radio-button class="md-primary" value="11:00-19:00">11:00 horas - 19:00 horas (Horario Abierto)</md-radio-button>
+                  <md-radio-button class="md-primary" value="12:00-19:00">12:00 horas - 19:00 horas (Horario Abierto)</md-radio-button>
+                </md-radio-group>
+                <md-button class="md-raised md-primary" type="submit">Solicitar Recolección</md-button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <div class="form-container">
+            <div class="success-checkout"><i class="fa fa-check-circle"></i></div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="confirm-title accent margin-top-1">Origen</div>
+                <div>
+                  <div class="board-list">{{checkout.shipping.from.street}}, {{checkout.shipping.from.number}}&nbsp;<span data-ng-if="checkout.from.apt">- {{checkout.shipping..from.apt}}</span></div>
+                  <div class="board-list">{{checkout.shipping.from.county}}<span data-ng-if="checkout.from.city">, {{checkout.shipping.from.city}}</span><span>, {{checkout.shipping.from.zip}}</span></div>
+                  <div class="board-list">{{checkout.shipping.from.state}}<span class="uppercase">, {{checkout.shipping.from.country.name}}</span></div>
+                </div>
+              </div>
+              <div class="col-xs-12">
+                <div class="confirm-title accent margin-top-1">Destino</div>
+                <div>
+                  <div class="board-list">{{checkout.shipping.to.street}}, {{checkout.shipping.to.number}}&nbsp;<span data-ng-if="checkout.to.apt">- {{checkout.shipping.to.apt}}</span></div>
+                  <div class="board-list">{{checkout.shipping.to.county}}<span data-ng-if="checkout.to.city">, {{checkout.shipping.to.city}}</span><span>, {{checkout.shipping.to.zip}}</span></div>
+                  <div class="board-list">{{checkout.shipping.to.state}}<span class="uppercase">, {{checkout.shipping.to.country.name}}</span></div>
+                </div>
+              </div>
+              <div class="col-xs-12">
+                <div class="confirm-title accent margin-top-1">Método de Pago</div>
+                <div>
+                  <div class="card-item" data-ng-if="checkout.payment == 'account'">
+                    <div class="board-list">Cargo a cuenta empresarial</div>
+                  </div>
+                  <div class="card-item" data-ng-if="checkout.card">
+                    <div>
+                      <div class="payment-name">{{checkout.card.name}}</div>
+                    </div>
+                    <div><i class="big fa fa-cc-mastercard" data-ng-if="checkout.card.brand == 'MASTERCARD'"></i><i class="big fa fa-cc-visa" data-ng-if="checkout.card.brand == 'VISA'"></i><i class="big fa fa-cc-amex" data-ng-if="checkout.card.brand == 'AMEX'"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<span class="last4">{{checkout.card.termination}}</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12">
+                <div class="confirm-title accent margin-top-1">Guia y Etiqueta</div>
+                <div>
+                  <div class="board-list" data-ng-repeat="item in checkout.labels" data-ng-show="item.TrackingNumber != '-1'">
+                    <h3 class="secondary-accent align-center">{{item.TrackingNumber}}</h3>
+                  </div>
+                  <div class="board-list align-center margin-top-2">
+                    <md-button class="md-raised md-primary" href="{{shell.downloadLabel(checkout.trackingNumber)}}" download="download">Descargar Etiqueta</md-button>
+                    <md-button class="md-raised md-primary" href="{{checkout.invoice.pdf}}" target="_blank" ng-if="checkout.invoice.pdf">Factura (PDF)</md-button>
+                    <md-button class="md-raised md-primary" href="{{checkout.invoice.xml}}" target="_blank" ng-if="checkout.invoice.xml">Factura (XML)</md-button>
+                    <md-button class="md-raised" ui-sref="dashboard.shippings">Ir a mi cuenta</md-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" data-ng-hide="checkout.response || checkout.connecting">
+        <div class="col-xs-12 col-sm-6">
+          <div class="section-space-right">
+            <div class="form-container" data-ng-show="checkout.step=='confirm'">
+              <h1 class="accent align-center">¡Confirma la información!</h1>
+              <div>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <div class="confirm-title accent">Origen</div>
+                      <div data-ng-if="checkout.shipping.from">
+                        <div class="board-list">{{checkout.shipping.from.street}}, {{checkout.shipping.from.number}}&nbsp;<span data-ng-if="checkout.shipping.from.apt">- {{checkout.shipping.from.apt}}</span></div>
+                        <div class="board-list">{{checkout.shipping.from.county}}<span data-ng-if="checkout.shipping.from.city">, {{checkout.shipping.from.city}}</span><span>, CP. {{checkout.shipping.from.zip}}</span></div>
+                        <div class="board-list">{{checkout.shipping.from.state}}<span class="uppercase">, {{checkout.shipping.from.country.name}}</span></div>
+                      </div>
+                      <div class="align-right">
+                        <div class="anchor-section" data-ng-click="checkout.changeSection('from')">Modificar</div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12">
+                      <div class="confirm-title accent">Destino</div>
+                      <div data-ng-if="checkout.shipping.to">
+                        <div class="board-list">{{checkout.shipping.to.street}}, {{checkout.shipping.to.number}}&nbsp;<span data-ng-if="checkout.shipping.to.apt">- {{checkout.shipping.to.apt}}</span></div>
+                        <div class="board-list">{{checkout.shipping.to.county}}<span data-ng-if="checkout.shipping.to.city">, {{checkout.shipping.to.city}}</span><span>, CP. {{checkout.shipping.to.zip}}</span></div>
+                        <div class="board-list">{{checkout.shipping.to.state}}<span class="uppercase">, {{checkout.shipping.to.country.name}}</span></div>
+                      </div>
+                      <div class="align-right">
+                        <div class="anchor-section" data-ng-click="checkout.changeSection('to')">Modificar</div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12">
+                      <div class="confirm-title accent">Método de Pago</div>
+                      <div class="card-item" data-ng-if="checkout.payment == 'account'">
+                        <div class="board-list">Cargo a cuenta empresarial</div>
+                      </div>
+                      <div class="card-item" data-ng-if="checkout.card">
+                        <div>
+                          <div class="payment-name">{{checkout.card.name}}</div>
+                        </div>
+                        <div><i class="big fa fa-cc-mastercard" data-ng-if="checkout.card.brand == 'MASTERCARD'"></i><i class="big fa fa-cc-visa" data-ng-if="checkout.card.brand == 'VISA'"></i><i class="big fa fa-cc-amex" data-ng-if="checkout.card.brand == 'AMEX'"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<span class="last4">{{checkout.card.termination}}</span></div>
+                      </div>
+                      <div class="align-right">
+                        <div class="anchor-section" data-ng-click="checkout.changeSection('payment')">Modificar</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="row">
+                    <div class="col-xs-2">
+                      <md-switch ng-model="checkout.invoice" aria-label="Requiero Factura" data-ng-change="checkout.invoiceRequired()"></md-switch>
+                    </div>
+                    <div class="col-xs-10">
+                      <div class="padding-top-1">Requiero Factura Fiscal</div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-2">
+                      <md-switch ng-model="checkout.acceptTerms" aria-label="Acepto Terminos"></md-switch>
+                    </div>
+                    <div class="col-xs-10">He Leído, entiendo y ACEPTO los<a class="accent bold" ui-sref="conditions">&nbsp; Términos y Condiciones</a>,<a class="accent bold" ui-sref="privacy">&nbsp;Política de Privacidad</a>, y estoy enterado de los <a class="accent bold" uis-ref="denied">articulos prohibidos</a>&nbsp;para envío.</div>
+                  </div>
+                  <div class="align-center">
+                    <md-button class="md-raised md-primary" data-ng-click="checkout.preview()">Vista previa de etiqueta</md-button>
+                    <md-button class="md-raised md-primary" data-ng-click="checkout.order()" ng-disabled="checkout.status.paying">Confirmar y pagar</md-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-container" data-ng-show="checkout.step=='selectPayment'">
+              <h1 class="accent align-center">¿Como deseas pagar?</h1>
+              <div class="align-center">
+                <h3>Quiero que el monto se cargue a mi cuenta Empresarial</h3><i class="fa fa-upload big-icon"></i>
+              </div>
+              <div class="align-center">
+                <md-button class="md-raised md-primary" data-ng-click="checkout.goToConfirm()">Cargar a mi cuenta</md-button>
+              </div>
+              <div class="align-center">
+                <h3>Quiero pagar con Tarjeta de Crédito o Débito</h3><i class="fa fa-credit-card big-icon"></i>
+              </div>
+              <div class="align-center">
+                <md-button class="md-raised md-primary" data-ng-click="checkout.goToPayment()">Tarjeta Crédito o Débito</md-button>
+              </div>
+            </div>
+            <div class="form-container" data-ng-show="checkout.step=='payment'">
+              <div data-ng-hide="checkout.cardForm">
+                <h1 class="accent align-center" data-ng-show="checkout.paymentMethods.length &gt; 0">Selecciona Tarjeta</h1>
+                <h1 class="accent align-center" data-ng-show="checkout.paymentMethods.length &lt; 1">No tienes tarjetas registradas</h1>
+                <div>
+                  <div class="card-select" data-ng-repeat="item in checkout.paymentMethods" data-ng-click="checkout.selectCard(item)">
+                    <div>
+                      <div class="payment-name">{{item.name}}</div>
+                    </div>
+                    <div><i class="big fa fa-cc-mastercard" data-ng-if="item.brand == 'MASTERCARD'"></i><i class="big fa fa-cc-visa" data-ng-if="item.brand == 'VISA'"></i><i class="big fa fa-cc-amex" data-ng-if="item.brand == 'AMEX'"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i><i class="fa fa-circle"></i>&nbsp;<span class="last4">{{item.termination}}</span></div>
+                  </div>
+                </div>
+                <div class="add-dashboard" data-ng-hide="checkout.cardForm"><i class="fa fa-plus-circle" data-ng-click="checkout.cardForm = true"></i>
+                  <h2 data-ng-click="checkout.cardForm = true">¡Agregar tarjeta!</h2>
+                </div>
+              </div>
+              <div data-ng-show="checkout.cardForm">
+                <h1 class="accent align-center">Agregar Tarjeta</h1>
+                <div class="margin-top-4">
+                  <card-form data-show-loading="shell.showLoading()" data-hide-Loading="shell.hideLoading()" data-labels="checkout.labels.payment" data-send-form="checkout.paymentMethod(response)" data-cancel-form="checkout.cancelPayment()"></card-form>
+                </div>
+              </div>
+            </div>
+            <div class="form-container" data-ng-show="checkout.step=='login'">
+              <h3 class="align-center">¿Ya tienes cuenta?</h3>
+              <h1 class="accent align-center">Inicia Sesión</h1>
+              <login-form></login-form>
+              <h3 class="align-center">¿No tienes cuenta?</h3>
+              <h1 class="accent align-center">¡Regístrate!</h1>
+              <register-form></register-form>
+            </div>
+            <div class="form-container" data-ng-show="checkout.step=='from'">
+              <h1 class="accent align-center"><i class="fa fa-map-marker margin-right-1"></i>Dirección de Origen</h1>
+              <div class="margin-top-4">
+                <address-form data-type="checkout" data-labels="shell.labels.from" data-countries="shell.countries" data-send-form="checkout.fromAddress(response)" data-current-address="checkout.shipping.from"></address-form>
+              </div>
+            </div>
+            <div class="form-container" data-ng-show="checkout.step=='contentDescription'">
+              <h1 class="accent align-center"><i class="fa fa-envelope-open-o margin-right-1"></i>¿Qué envías?</h1>
+              <div class="margin-top-4">
+                <form name="shippingDesc" data-ng-submit="checkout.shippingDesc()" novalidate="novalidate">
+                  <md-input-container class="md-block">
+                    <label for="content">Breve descripción del contenido tu envío</label>
+                    <textarea autofocus="autofocus" name="content" data-ng-model="checkout.shipping.content" required="required"></textarea>
+                    <div ng-messages="shippingDesc.content.$error">
+                      <div ng-message="requied">Es requerido.</div>
+                    </div>
+                  </md-input-container>
+                  <md-input-container class="md-block">
+                    <label for="estimated_value">Valor aproximado del paquete (MXN)</label>
+                    <textarea autofocus="autofocus" name="estimated_value" data-ng-model="checkout.shipping.estimated_value" required="required"></textarea>
+                    <div ng-messages="shippingDesc.estimated_value.$error">
+                      <div ng-message="requied">Es requerido.</div>
+                    </div>
+                  </md-input-container>
+                  <h4 class="disabled-color">Verifica que no envíes materiales y/o productos prohibidos, algunos de ellos son:</h4>
+                  <ul>
+                    <li>Municiones</li>
+                    <li>Letras bancarias, billetes o moneda (que no sean monedas metálicas)</li>
+                    <li>Cadáveres, restos cremados o exhumados</li>
+                    <li>Fuegos Artificiales</li>
+                    <li>Desechos peligrosos</li>
+                    <li>Diamantes industriales</li>
+                    <li>Marfil</li>
+                    <li>Marihuana, incluyendo marihuana para uso medicinal</li>
+                    <li>Timbres postales</li>
+                    <li>Envíos prohibidos por ley</li>
+                  </ul>
+                  <div class="align-center"><a class="accent bold" ui-sref="denied" target="_blank">Ver la lista completa</a></div>
+                  <div class="align-center margin-top-2">
+                    <md-button class="md-raised md-primary" type="submit">Continuar</md-button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="form-container" data-ng-show="checkout.step=='to'">
+              <h1 class="accent align-center">Dirección de Destino<i class="fa fa-flag-checkered margin-left-1"></i></h1>
+              <div class="margin-top-4">
+                <address-form data-type="checkout" data-labels="shell.labels.to" data-countries="shell.countries" data-send-form="checkout.toAddress(response)" data-current-address="checkout.shipping.to"></address-form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <div class="logo-color-small"></div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-8 center-block">
+              <div class="checkout-header hvr-bounce-to-right active">
+                <h3 class="align-center">Resumen de mi Orden</h3>
+              </div>
+              <table class="confirm-order">
+                <tr>
+                  <td>
+                    <h3 class="disabled-color">Origen</h3>
+                  </td>
+                  <td class="disabled-color">
+                    <h2 class="accent"><span class="flag-icon flag-icon-{{checkout.shipping.from.country.code}}"></span><span>{{checkout.shipping.from.zip}}</span></h2>
+                    <div>{{checkout.shipping.from.county}}</div>
+                    <div>{{checkout.shipping.from.city}}</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h3 class="disabled-color">Destino</h3>
+                  </td>
+                  <td class="disabled-color">
+                    <h2 class="accent"><span class="flag-icon flag-icon-{{checkout.shipping.to.country.code}}"></span><span>{{checkout.shipping.to.zip}}</span></h2>
+                    <div>{{checkout.shipping.to.county}}</div>
+                    <div>{{checkout.shipping.to.state}}</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><img data-ng-src="common/images/{{checkout.shipping.service.service}}.png" data-ng-class="{'ups':checkout.shipping.service.service == 'ups', 'fedex':checkout.shipping.service.service == 'fedex'}"/></td>
+                  <td>
+                    <h2 class="accent">{{checkout.shipping.service.name}}</h2>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <h4>Entrega estimada: {{checkout.shipping.service.delivery  | amDateFormat:'DD-MMM-YY, HH:mm:ss'}} </h4>*Fecha y hora aproximada depende de factores como fecha de envío, condiciones climáticas. 
+                  </td>
+                </tr>
+                <tr class="border-top">
+                  <td class="align-right">
+                    <h4 class="disabled-color">Precio Original</h4>
+                  </td>
+                  <td class="align-right">
+                    <h3>{{checkout.shipping.service.negotiated | currency}} MXN</h3>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="align-right">
+                    <h4 class="disabled-color">Descuento</h4>
+                  </td>
+                  <td class="align-right">
+                    <h3 class="accent">-{{checkout.shipping.service.negotiated - checkout.shipping.service.subtotal |currency}} MXN</h3>
+                  </td>
+                </tr>
+                <tr class="border-top">
+                  <td class="align-right">
+                    <h4 class="disabled-color">Subtotal</h4>
+                  </td>
+                  <td class="align-right">
+                    <h3 class="disabled-color">{{checkout.shipping.service.subtotal |currency}} MXN</h3>
+                  </td>
+                </tr>
+                <tr data-ng-show="checkout.shipping.service.cardComision">
+                  <td class="align-right">
+                    <h4 class="disabled-color">Comisión<span>&nbsp;{{checkout.card.brand}}</span></h4>
+                  </td>
+                  <td class="align-right">
+                    <h3 class="disabled-color">{{checkout.shipping.service.cardComision |currency}} MXN </h3>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="align-right">
+                    <h4 class="disabled-color">IVA(16%)</h4>
+                  </td>
+                  <td class="align-right">
+                    <h3 class="disabled-color">{{checkout.shipping.service.iva |currency}} MXN</h3>
+                  </td>
+                </tr>
+                <tr data-ng-if="checkout.shipping.service.couponCode">
+                  <td class="align-right">
+                    <h4 class="disabled-color">Cupón ({{checkout.shipping.service.couponCode}})</h4>
+                  </td>
+                  <td class="align-right" data-ng-if="checkout.shipping.service.percentageCoupon == true">
+                    <h3 class="accent">{{checkout.shipping.service.couponDiscount}} %</h3>
+                  </td>
+                  <td class="align-right" data-ng-if="checkout.shipping.service.percentageCoupon != true">
+                    <h3 class="accent">${{checkout.shipping.service.couponDiscount}} MXN</h3>
+                  </td>
+                </tr>
+                <tr class="border-top">
+                  <td class="align-right">
+                    <h3>Total a pagar</h3>
+                  </td>
+                  <td class="align-right">
+                    <h2 class="secondary-accent">{{checkout.shipping.service.total |currency}} MXN</h2>
+                  </td>
+                </tr>
+                <tr data-ng-if="!checkout.shipping.service.couponCode">
+                  <td class="align-left">
+                    <md-input-container class="md-block">
+                      <label for="coupon">¿Tienes un cupón?</label>
+                      <input autofocus="autofocus" name="coupon" data-ng-model="checkout.shipping.coupon" required="required"/>
+                    </md-input-container>
+                    <td>
+                      <md-button class="md-raised" data-ng-click="checkout.applyCoupon()">Aplicar Cupón</md-button>
+                    </td>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div data-ng-include="'app/templates/footer.template.html'"></div>

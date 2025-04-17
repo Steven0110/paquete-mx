@@ -1,0 +1,182 @@
+
+<div class="row">
+  <div class="col-sm-6">
+    <h3 class="align-center">Datos de tu cuenta:</h3>
+    <div class="padding-left">
+      <md-content layout-padding="layout-padding">
+        <form class="registerFormAlt" name="registerFormAlt" novalidate="novalidate" data-ng-submit="register()">
+          <h3 class="custom-title-register-20">¿Quieres abrir una cuenta de tipo?</h3>
+          <md-radio-group ng-model="accountType">
+            <md-radio-button class="md-primary" value="personal">Personal o Persona Física</md-radio-button>
+            <md-radio-button class="md-primary" value="enterprise">Empresarial</md-radio-button>
+          </md-radio-group>
+          <h3 class="custom-title-register-30">Información Personal</h3>
+          <md-input-container class="md-block">
+            <label for="name" data-ng-bind="shell.labels.register.form.name"></label>
+            <input name="name" data-ng-model="user.name" required=""/>
+            <div ng-messages="registerFormAlt.name.$error">
+              <div ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label for="lastname" data-ng-bind="shell.labels.register.form.lastname"></label>
+            <input name="lastname" data-ng-model="user.lastname" required=""/>
+            <div ng-messages="registerFormAlt.lastname.$error">
+              <div ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label for="username" data-ng-bind="shell.labels.register.form.email"></label>
+            <input name="username" type="email" data-ng-model="user.username" required=""/>
+            <div ng-messages="registerFormAlt.username.$error">
+              <div ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+              <div ng-message="email" data-ng-bind="shell.labels.register.form.errors.email"></div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label for="phone" data-ng-bind="shell.labels.register.form.mobile"></label>
+            <input name="phone" data-ng-model="user.phone" data-ng-pattern="shell.regex.mobile" required="required"/>
+            <div data-ng-messages="registerFormAlt.phone.$error">
+              <div data-ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+              <div data-ng-message="pattern" data-ng-bind="shell.labels.register.form.errors.mobile"></div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label for="password" data-ng-bind="shell.labels.register.form.password"></label>
+            <input name="password" type="password" data-ng-model="user.password" required="" password-match="passwordMatch"/>
+            <div ng-messages="registerFormAlt.password.$error">
+              <div ng-message="match" data-ng-bind="shell.labels.register.form.errors.mismatch"></div>
+              <div ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label for="password" data-ng-bind="shell.labels.register.form.confirm"></label>
+            <input name="confirmPassword" type="password" required="" data-ng-model="passwordMatch"/>
+            <div ng-messages="registerFormAlt.confirmPassword.$error">
+              <div ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block no-margin" data-ng-show="false">
+            <label>Requiero Factura Fiscal</label>
+            <md-switch class="md-primary margin-top-2" ng-model="account.invoice" aria-label="Requiero Factura"><span data-ng-if="account.invoice">Sí</span><span data-ng-if="!account.invoice">No</span></md-switch>
+            <div class="align-center margin-bottom"></div>
+          </md-input-container>
+          <md-button class="md-raised md-primary" type="submit" data-ng-bind="shell.labels.register.form.register" aria-label="shell.labels.register.form.register"></md-button>
+        </form>
+      </md-content>
+    </div>
+  </div>
+  <div class="col-sm-6" data-ng-if="accountType == 'personal'">
+    <h3 class="align-center">Como miembro de Paquete.MX puedes:</h3>
+    <div class="specs-list padding-left">
+      <md-content class="layout-padding _md" layout-padding="layout-padding">
+        <ul class="padding-left">
+          <li>
+            <div class="specs-list-item"><i class="fa fa-star"></i><span>Cotiza, Compara y Envía tus productos en un instante.</span></div>
+          </li>
+          <li>
+            <div class="specs-list-item"><i class="fa fa-star"></i><span>Crear nuevos envíos con facilidad y rapidez.</span></div>
+          </li>
+          <li>
+            <div class="specs-list-item"><i class="fa fa-star"></i><span>Programa tus recolecciones en forma gratuita.</span></div>
+          </li>
+          <li>
+            <div class="specs-list-item"><i class="fa fa-star"></i><span>Recibe notificaciones del estatus de tus envíos.</span></div>
+          </li>
+          <li>
+            <div class="specs-list-item"><i class="fa fa-star"></i><span>Descargar todas tus etiquetas de cada envío.</span></div>
+          </li>
+          <li>
+            <div class="specs-list-item"><i class="fa fa-star"></i><span>Recibe, administra y consulta tus facturas en línea.</span></div>
+          </li>
+          <li>
+            <div class="specs-list-item"><i class="fa fa-star"></i><span>Obtén un crédito de hasta 30 días al crear tu cuenta empresarial.</span></div>
+          </li>
+          <li>
+            <div class="specs-list-item"><i class="fa fa-star"></i><span>Acceder a nuestra API (cotizaciones, rastreos, recolecciones, generación de etiquetas).</span></div>
+          </li>
+          <li>
+            <div class="specs-list-item"><i class="fa fa-star"></i><span>Asistencia personalizada las 24 hrs. del día (Telefónica, Chat Online, whatsapp, E-mail).</span></div>
+          </li>
+          <li>
+            <div class="specs-list-item"><i class="fa fa-star"></i><span>Conecta tu e-commerce con nuestros Plugins (Shopify & Woocommerce)</span></div>
+          </li>
+        </ul>
+      </md-content>
+    </div>
+  </div>
+  <div class="col-sm-6" data-ng-if="accountType == 'enterprise'">
+    <h3 class="align-center">Información de la empresa</h3>
+    <div class="padding-left">
+      <md-content class="layout-padding _md" layout-padding="layout-padding">
+        <div>
+          <md-input-container class="md-block">
+            <label for="companyName" data-ng-bind="shell.labels.register.form.companyName"></label>
+            <input name="companyName" data-ng-model="account.companyName" ng-required="account.invoice"/>
+            <div data-ng-messages="registerFormAlt.companyName.$error">
+              <div data-ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label for="taxId" data-ng-bind="shell.labels.register.form.taxId"></label>
+            <input name="taxId" data-ng-model="account.taxId" ng-required="account.invoice"/>
+            <div data-ng-messages="registerFormAlt.taxId.$error">
+              <div data-ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label for="taxName" data-ng-bind="shell.labels.register.form.taxName"></label>
+            <input name="taxName" data-ng-model="account.taxName" ng-required="account.invoice"/>
+            <div data-ng-messages="registerFormAlt.taxName.$error">
+              <div data-ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block margin-bottom-2">
+            <label for="taxUse">Uso de CFDI:</label>
+            <md-select data-ng-model="account.taxUse">
+              <md-option data-ng-repeat="item in taxUses track by item.code" value="{{item.code}}">{{item.name}}</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+        <h3 class="custom-title-register-30">Información para complementos de CFDI</h3>
+        <div>
+          <md-input-container class="md-block">
+            <label for="CtaOrdenante" data-ng-bind="shell.labels.register.form.CtaOrdenante"></label>
+            <input name="CtaOrdenante" required="" data-ng-model="account.CtaOrdenante" ng-required="account.invoice"/>
+            <div data-ng-messages="registerFormAlt.CtaOrdenante.$error">
+              <div data-ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label for="RfcEmisorCtaOrd" data-ng-bind="shell.labels.register.form.RfcEmisorCtaOrd"></label>
+            <input name="RfcEmisorCtaOrd" required="" data-ng-model="account.RfcEmisorCtaOrd" ng-required="account.invoice"/>
+            <div data-ng-messages="registerFormAlt.RfcEmisorCtaOrd.$error">
+              <div data-ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label for="NomBancoOrdExt" data-ng-bind="shell.labels.register.form.NomBancoOrdExt"></label>
+            <input name="NomBancoOrdExt" required="" data-ng-model="account.NomBancoOrdExt" ng-required="account.invoice"/>
+            <div data-ng-messages="registerFormAlt.NomBancoOrdExt.$error">
+              <div data-ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label for="CtaBeneficiario" data-ng-bind="shell.labels.register.form.CtaBeneficiario"></label>
+            <input name="CtaBeneficiario" required="" data-ng-model="account.CtaBeneficiario" ng-required="account.invoice"/>
+            <div data-ng-messages="registerFormAlt.CtaBeneficiario.$error">
+              <div data-ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label for="RfcEmisorCtaBen" data-ng-bind="shell.labels.register.form.RfcEmisorCtaBen"></label>
+            <input name="RfcEmisorCtaBen" required="" data-ng-model="account.RfcEmisorCtaBen" ng-required="account.invoice"/>
+            <div data-ng-messages="registerFormAlt.RfcEmisorCtaBen.$error">
+              <div data-ng-message="required" data-ng-bind="shell.labels.form.errors.required"></div>
+            </div>
+          </md-input-container>
+        </div>
+      </md-content>
+    </div>
+  </div>
+</div>

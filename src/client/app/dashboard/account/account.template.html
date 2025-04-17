@@ -1,0 +1,175 @@
+
+<div class="dashboard-header">
+  <div class="dashboard-header-content">
+    <div class="dash-section-title" data-ng-bind="shell.dashboard.title"></div>
+    <div class="dash-section-subtitle hide-on-mobile" data-ng-bind="shell.dashboard.subtitle"></div>
+  </div>
+</div>
+<div class="dash-name-section">
+  <div class="big-text-welcome">¡Hola {{shell.setName}}!</div>
+  <div class="small-text-welcome"><a ui-sref="logout">Cerrar Sesión</a></div>
+</div>
+<div class="dashboard-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="section-space-right">
+          <div class="form-container">
+            <h1 class="accent align-center">Mis Datos de Cuenta</h1>
+            <form name="account.profile" novalidate="" data-ng-submit="account.updateProfile()">
+              <div layout-xs-sm="row">
+                <md-input-container class="md-block">
+                  <label for="name" data-ng-bind="account.labels.form.name"></label>
+                  <input name="name" data-ng-model="account.user.name" required=""/>
+                  <div ng-messages="account.account.name.$error">
+                    <div ng-message="required" data-ng-bind="account.labels.errors.required"></div>
+                  </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                  <label for="lastname" data-ng-bind="account.labels.form.lastname"></label>
+                  <input name="lastname" data-ng-model="account.user.lastname" required=""/>
+                  <div ng-messages="account.account.lastname.$error">
+                    <div ng-message="required" data-ng-bind="account.labels.errors.required"></div>
+                  </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                  <label for="username" data-ng-bind="account.labels.form.email"></label>
+                  <input name="username" type="email" data-ng-model="account.user.username" required=""/>
+                  <div ng-messages="account.account.username.$error">
+                    <div ng-message="required" data-ng-bind="account.labels.errors.required"></div>
+                  </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                  <label for="phone" data-ng-bind="account.labels.form.mobile"></label>
+                  <input name="phone" data-ng-model="account.user.phone" required="" data-ng-pattern="account.mobilePattern"/>
+                  <div ng-messages="account.account.phone.$error">
+                    <div ng-message="required" data-ng-bind="account.labels.errors.required"></div>
+                    <div ng-message="pattern" data-ng-bind="account.labels.form.mobileInvalid"></div>
+                  </div>
+                </md-input-container>
+              </div>
+              <div class="align-center">
+                <md-button class="md-raised md-primary" type="submit" data-ng-bind="account.labels.form.save" aria-label="account.labels.form.save"></md-button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="section-space-right">
+          <div class="form-container">
+            <h1 class="accent align-center">Cambiar Contraseña</h1>
+            <form name="account.password" data-ng-submit="account.updatePassword()" novalidate="">
+              <div layout-xs-sm="row">
+                <md-input-container class="md-block">
+                  <label for="oldPassword" data-ng-bind="account.labels.form.oldPassword"></label>
+                  <input name="oldPassword" type="password" data-ng-model="account.oldPassword" required=""/>
+                  <div ng-messages="passwordForm.oldPassword.$error">
+                    <div ng-message="required">Es requerido</div>
+                  </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                  <label for="password" data-ng-bind="account.labels.form.newPassword"></label>
+                  <input class="pure-input-1" id="password" name="password" type="password" data-ng-model="account.newPassword" required="" password-match="passwordMatch"/>
+                  <div ng-messages="passwordForm.password.$error">
+                    <div ng-message="required">Es requerido</div>
+                    <div ng-message="match" data-ng-bind="account.labels.form.newPasswordNoMatch"></div>
+                  </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                  <label for="confirmPassword" data-ng-bind="account.labels.form.confirmPassword"></label>
+                  <input class="pure-input-1" name="confirmPassword" type="password" data-ng-model="passwordMatch" required=""/>
+                  <div ng-messages="passwordForm.password.$error">
+                    <div ng-message="required">
+                          Es requerido</div>
+                  </div>
+                </md-input-container>
+              </div>
+              <div class="align-center">
+                <md-button class="md-raised md-primary" type="submit" data-ng-bind="account.labels.form.update" aria-label="account.labels.form.update"></md-button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="section-space-right">
+          <div class="form-container margin-top-2">
+            <h1 class="accent align-center">Mis datos de Facturación</h1>
+            <form name="account.taxForm" novalidate="" data-ng-submit="account.updateTaxes()">
+              <div layout-xs-sm="row">
+                <md-input-container class="md-block no-margin">
+                  <label>Requiero Factura Fiscal</label>
+                  <md-switch class="md-primary margin-top-2" ng-model="account.taxes.invoice" aria-label="Requiero Factura"><span data-ng-if="account.taxes.invoice">Sí</span><span data-ng-if="!account.taxes.invoice">No</span></md-switch>
+                </md-input-container>
+                <md-input-container class="md-block">
+                  <label for="taxId" data-ng-bind="account.labels.form.taxId"></label>
+                  <input name="taxId" data-ng-model="account.taxes.taxId" required=""/>
+                  <div ng-messages="account.taxForm.name.$error">
+                    <div ng-message="required" data-ng-bind="account.labels.errors.required"></div>
+                  </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                  <label for="taxName" data-ng-bind="account.labels.form.taxName"></label>
+                  <input name="taxName" data-ng-model="account.taxes.taxName" required=""/>
+                  <div ng-messages="account.taxForm.taxName.$error">
+                    <div ng-message="required" data-ng-bind="account.labels.errors.required"></div>
+                  </div>
+                </md-input-container>
+                <md-input-container class="md-block margin-bottom-2">
+                  <label for="taxUse">Uso de CFDI:</label>
+                  <md-select data-ng-model="account.taxes.taxUse">
+                    <md-option data-ng-repeat="item in account.taxUses track by item.code" value="{{item.code}}">{{item.name}}</md-option>
+                  </md-select>
+                </md-input-container>
+                <div data-ng-show="account.taxes.isEnterprise">
+                  <h3>Datos de complemento de CFDI:</h3><br/>
+                  <md-input-container class="md-block">
+                    <label for="CtaOrdenante" data-ng-bind="account.labels.form.CtaOrdenante"></label>
+                    <input name="CtaOrdenante" data-ng-model="account.taxes.CtaOrdenante" required=""/>
+                    <div ng-messages="account.taxForm.CtaOrdenante.$error">
+                      <div ng-message="required" data-ng-bind="account.labels.errors.required"></div>
+                    </div>
+                  </md-input-container>
+                  <md-input-container class="md-block">
+                    <label for="RfcEmisorCtaOrd" data-ng-bind="account.labels.form.RfcEmisorCtaOrd"></label>
+                    <input name="RfcEmisorCtaOrd" data-ng-model="account.taxes.RfcEmisorCtaOrd" required=""/>
+                    <div ng-messages="account.taxForm.RfcEmisorCtaOrd.$error">
+                      <div ng-message="required" data-ng-bind="account.labels.errors.required"></div>
+                    </div>
+                  </md-input-container>
+                  <md-input-container class="md-block">
+                    <label for="NomBancoOrdExt" data-ng-bind="account.labels.form.NomBancoOrdExt"></label>
+                    <input name="NomBancoOrdExt" data-ng-model="account.taxes.NomBancoOrdExt" required=""/>
+                    <div ng-messages="account.taxForm.NomBancoOrdExt.$error">
+                      <div ng-message="required" data-ng-bind="account.labels.errors.required"></div>
+                    </div>
+                  </md-input-container>
+                  <md-input-container class="md-block">
+                    <label for="CtaBeneficiario" data-ng-bind="account.labels.form.CtaBeneficiario"></label>
+                    <input name="CtaBeneficiario" data-ng-model="account.taxes.CtaBeneficiario" required=""/>
+                    <div ng-messages="account.taxForm.CtaBeneficiario.$error">
+                      <div ng-message="required" data-ng-bind="account.labels.errors.required"></div>
+                    </div>
+                  </md-input-container>
+                  <md-input-container class="md-block">
+                    <label for="RfcEmisorCtaBen" data-ng-bind="account.labels.form.RfcEmisorCtaBen"></label>
+                    <input name="RfcEmisorCtaBen" data-ng-model="account.taxes.RfcEmisorCtaBen" required=""/>
+                    <div ng-messages="account.taxForm.RfcEmisorCtaBen.$error">
+                      <div ng-message="required" data-ng-bind="account.labels.errors.required"></div>
+                    </div>
+                  </md-input-container>
+                </div>
+              </div>
+              <div class="align-center">
+                <md-button class="md-raised md-primary" type="submit" data-ng-bind="account.labels.form.save" aria-label="account.labels.form.save"></md-button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

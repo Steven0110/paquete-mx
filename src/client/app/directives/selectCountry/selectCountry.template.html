@@ -1,0 +1,12 @@
+
+<div class="country-container">
+  <div class="country-data" data-ng-click="vm.showCountries()"><span class="country-name"><span class="flag-icon flag-icon-{{vm.country.code}}"></span>{{vm.country.code}}<i class="fa fa-angle-down"></i></span></div>
+  <div class="select-box" data-ng-show="vm.show">
+    <ul>
+      <li class="select-item">
+        <input class="country-search" data-ng-model="vm.search" placeholder="Buscar País"/>
+      </li>
+      <li class="select-item country-option" data-ng-repeat="item in vm.list | filter:vm.search" data-ng-click="vm.selectItem(item)"><span class="country-name"><span class="flag-icon flag-icon-{{item.code}}"></span>{{item.name}}</span></li>
+    </ul>
+  </div>
+</div>

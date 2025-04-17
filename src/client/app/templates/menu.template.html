@@ -1,0 +1,24 @@
+
+<div class="menu-logo"><a class="logo-link" ui-sref="home"></a></div>
+<div class="navs mobile">
+  <nav class="container-bars" data-ng-click="shell.menuOpen = !shell.menuOpen" data-ng-class="{'active':shell.menuOpen}">
+    <div class="menu-bar bar1"></div>
+    <div class="menu-bar bar2"></div>
+    <div class="menu-bar bar3"></div>
+  </nav>
+</div>
+<div class="menu-mobile" data-ng-class="{'active':shell.menuOpen}">
+  <nav class="active"><a href="home">INICIO</a></nav>
+  <nav><a href="home">COTIZAR</a></nav>
+  <nav><a href="dashboard.shippings">RASTREAR</a></nav>
+  <nav><a href="#">eCOMMERCE</a></nav>
+  <nav><a href="#">MÉTODOS DE PAGO</a></nav>
+  <nav><a href="#">SEGURIDAD</a></nav>
+  <nav><a href="#">¿COMÓ FUNCIONA?</a></nav>
+  <nav><a href="#">MI CUENTA</a></nav>
+</div>
+<div class="navs desktop">
+  <nav class="active" ui-sref="dashboard.shippings"><a>MI CUENTA</a></nav>
+  <nav ui-sref="home">INICIO</nav>
+  <nav ui-sref="home">¡COTIZA AHORA!</nav>
+</div>
