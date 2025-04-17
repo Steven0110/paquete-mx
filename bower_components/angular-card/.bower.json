@@ -1,0 +1,14 @@
+{
+  "name": "angular-card",
+  "homepage": "https://github.com/gavruk/angular-card",
+  "version": "0.3.13",
+  "_release": "0.3.13",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.3.13",
+    "commit": "d3eb563571be4d19d1ad8e1860ce4573486b1801"
+  },
+  "_source": "https://github.com/gavruk/angular-card.git",
+  "_target": "^0.3.12",
+  "_originalSource": "angular-card"
+}
