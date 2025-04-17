@@ -6,7 +6,10 @@ config.$inject = ['$locationProvider', '$urlRouterProvider','$stateProvider','$m
 
 function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingProvider,localStorageServiceProvider) {
 
-  $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode({
+    enabled: true,
+    requireBase: true
+  });
   localStorageServiceProvider.setPrefix('paquete_mx');
 
   $mdThemingProvider.definePalette('customPalette', {
@@ -52,47 +55,47 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
   $stateProvider
     .state('home',{
       url:'/?shipping',
-      templateUrl : 'paquete-mx/app/home/home.template.html',
+      templateUrl : 'app/home/home.template.html',
       controller: 'Home',
       reloadOnSearch: false,
       controllerAs: 'home'
     })
     .state('home-section',{
       url:'/:section',
-      templateUrl : 'paquete-mx/app/home/home.template.html',
+      templateUrl : 'app/home/home.template.html',
       controller: 'Home',
       reloadOnSearch: false,
       controllerAs: 'home'
     })
     .state('privacy',{
       url:'/aviso-de-privacidad',
-      templateUrl : 'paquete-mx/app/privacy/privacy.html'
+      templateUrl : 'app/privacy/privacy.html'
     })
     .state('conditions',{
       url:'/terminos-y-condiciones',
-      templateUrl : 'paquete-mx/app/conditions/conditions.template.html'
+      templateUrl : 'app/conditions/conditions.template.html'
     })
     .state('denied',{
       url:'/materiales-y-articulos-prohibidos',
-      templateUrl : 'paquete-mx/app/denied/denied.template.html'
+      templateUrl : 'app/denied/denied.template.html'
     })
     .state('checkout',{
       url:'/checkout',
-      templateUrl : 'paquete-mx/app/checkout/checkout.template.html',
+      templateUrl : 'app/checkout/checkout.template.html',
       controller: 'Checkout',
       controllerAs: 'checkout'
 
     })
     .state('login',{
       url:'/login',
-      templateUrl : 'paquete-mx/app/login/login.template.html',
+      templateUrl : 'app/login/login.template.html',
       controller: 'Login',
       controllerAs: 'login'
 
     })
     .state('registro',{
       url:'/registro',
-      templateUrl : 'paquete-mx/app/register-alt/register-alt.template.html',
+      templateUrl : 'app/register-alt/register-alt.template.html',
       controller: 'RegisterAlt',
       controllerAs: 'registerAlt'
 
@@ -105,31 +108,31 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
     })
     .state('forgot',{
       url:'/forgot-password',
-      templateUrl : 'paquete-mx/app/forgot/forgot.template.html',
+      templateUrl : 'app/forgot/forgot.template.html',
       controller: 'Forgot',
       controllerAs: 'forgot'
     })
     .state('recovery',{
       url:'/recovery-password/:recoveryKey',
-      templateUrl : 'paquete-mx/app/recovery/recovery.template.html',
+      templateUrl : 'app/recovery/recovery.template.html',
       controller: 'Recovery',
       controllerAs: 'recovery'
     })
     .state('payment-method',{
       url:'/metodos-de-pago',
-      templateUrl : 'paquete-mx/app/general/paymentMethod/paymentMethod.template.html'
+      templateUrl : 'app/general/paymentMethod/paymentMethod.template.html'
     })
     .state('security',{
       url:'/seguridad',
-      templateUrl : 'paquete-mx/app/general/security/security.template.html'
+      templateUrl : 'app/general/security/security.template.html'
     })
     .state('ecommerce',{
       url:'/plugins-ecommerce',
-      templateUrl : 'paquete-mx/app/general/ecommerce/ecommerce.template.html'
+      templateUrl : 'app/general/ecommerce/ecommerce.template.html'
     })
     .state('dashboard',{
       url:'/dashboard',
-      templateUrl: 'paquete-mx/app/dashboard/dashboard.template.html',
+      templateUrl: 'app/dashboard/dashboard.template.html',
       controller: 'Dashboard',
       controllerAs: 'dashboard',
       data:{
@@ -139,13 +142,13 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
     })
     .state('dashboard.start',{
       url:'/start',
-      templateUrl: 'paquete-mx/app/dashboard/start/start.template.html',
+      templateUrl: 'app/dashboard/start/start.template.html',
       controller: 'Start',
       controllerAs: 'start'
     })
     .state('dashboard.account',{
       url:'/account',
-      templateUrl: 'paquete-mx/app/dashboard/account/account.template.html',
+      templateUrl: 'app/dashboard/account/account.template.html',
       controller: 'Account',
       controllerAs: 'account',
       data:{
@@ -155,7 +158,7 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
     })
     .state('dashboard.shippings',{
       url:'/shipping',
-      templateUrl: 'paquete-mx/app/dashboard/shipping/shippings.template.html',
+      templateUrl: 'app/dashboard/shipping/shippings.template.html',
       controller: 'Shippings',
       controllerAs: 'shippings',
       data:{
@@ -183,7 +186,7 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
     })
     .state('dashboard.enterprise',{
       url:'/enterprise',
-      templateUrl: 'paquete-mx/app/dashboard/enterprise/enterprise.template.html',
+      templateUrl: 'app/dashboard/enterprise/enterprise.template.html',
       controller: 'Enterprise',
       controllerAs: 'enterprise',
       data:{
@@ -211,7 +214,7 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
     })
     .state('dashboard.shipping',{
       url:'/shipping/:trackId',
-      templateUrl: 'paquete-mx/app/dashboard/shipping/shipping.template.html',
+      templateUrl: 'app/dashboard/shipping/shipping.template.html',
       controller: 'Shipping',
       controllerAs: 'shipping',
       data:{
@@ -227,7 +230,7 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
     })
     .state('dashboard.payment',{
       url:'/payment',
-      templateUrl: 'paquete-mx/app/dashboard/payment/payment.template.html',
+      templateUrl: 'app/dashboard/payment/payment.template.html',
       controller: 'Payments',
       controllerAs: 'payments',
       data:{
@@ -242,7 +245,7 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
     })
     .state('dashboard.address',{
       url:'/address',
-      templateUrl: 'paquete-mx/app/dashboard/address/addresses.template.html',
+      templateUrl: 'app/dashboard/address/addresses.template.html',
       controller: 'Addresses',
       controllerAs: 'addresses',
       data:{
@@ -254,7 +257,7 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
     })
     .state('dashboard.paymentMethod',{
       url:'/payment-method',
-      templateUrl: 'paquete-mx/app/dashboard/paymentMethod/paymentMethod.template.html',
+      templateUrl: 'app/dashboard/paymentMethod/paymentMethod.template.html',
       controller: 'PaymentMethod',
       controllerAs: 'paymentMethod',
       data:{
@@ -271,7 +274,7 @@ function config($locationProvider,$urlRouterProvider, $stateProvider,$mdThemingP
     })
     .state('dashboard.editAddress',{
       url:'/address/:objectId',
-      templateUrl: 'paquete-mx/app/dashboard/address/address.template.html',
+      templateUrl: 'app/dashboard/address/address.template.html',
       controller: 'Address',
       controllerAs: 'address',
       resolve:{
